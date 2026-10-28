@@ -1,0 +1,1183 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "8ee526c66f9b48c9857b727efac788eb",
+      "requested_url": "https://www.bing.com/search?q=Dyson+counterfeit+listing+report&first=1",
+      "started_at": "2026-10-28T08:50:36.453377+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Dyson+counterfeit+listing+report&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129367,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Dyson+counterfeit+listing+report&first=1"
+      ],
+      "duration_ms": 4487.818
+    },
+    {
+      "operation_id": "1ca9e6eee24c4af68f459065321c722d",
+      "requested_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report&format=rss",
+      "started_at": "2026-10-28T08:50:36.455516+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1066,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report&format=rss"
+      ],
+      "duration_ms": 5518.727
+    },
+    {
+      "operation_id": "987e2d84ee6f4ae8935687034dcbdf2a",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:41.976430+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 10052,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2737.122
+    },
+    {
+      "operation_id": "bd1bd071fb1340d6bb0e431453469cdb",
+      "requested_url": "https://search.yahoo.com/search?p=Dyson+counterfeit+listing+report",
+      "started_at": "2026-10-28T08:50:40.967408+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5002.898
+    },
+    {
+      "operation_id": "74a67b1142534a8683fb5d45692f6af2",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:45.970524+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 10052,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1198.654
+    },
+    {
+      "operation_id": "7eeefe5652484b5f946fe993db9ed156",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&format=rss",
+      "started_at": "2026-10-28T08:50:51.805995+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1938,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&format=rss"
+      ],
+      "duration_ms": 4175.286
+    },
+    {
+      "operation_id": "1f0ffc6e304d4b1185760a31bbee9cce",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&first=1",
+      "started_at": "2026-10-28T08:50:52.027577+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131989,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&first=1"
+      ],
+      "duration_ms": 4066.853
+    },
+    {
+      "operation_id": "220c2a2bcf1e43b78f437ef3c0079a00",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&first=1",
+      "started_at": "2026-10-28T08:50:51.805643+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131713,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&first=1"
+      ],
+      "duration_ms": 4579.119
+    },
+    {
+      "operation_id": "034e615644114d32a7324f89eeb9fd22",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:55.983807+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1503,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1246.216
+    },
+    {
+      "operation_id": "7c4f2cbeee684386bd160294f2fcc53b",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:57.232404+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1503,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1202.689
+    },
+    {
+      "operation_id": "7f5e8939a498478dbefe2c704fb98781",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F",
+      "started_at": "2026-10-28T08:50:56.161938+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3513.873
+    },
+    {
+      "operation_id": "06d8dc30c77843af9b15e266b67f759b",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source",
+      "started_at": "2026-10-28T08:50:56.405702+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5012.194
+    },
+    {
+      "operation_id": "5faf5505bff14fc19bafa3d65d194186",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:59.676045+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9609,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1858.153
+    },
+    {
+      "operation_id": "cc7a6027ded64b6b8bd6df7bf63f395c",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:01.418289+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1477,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3164.956
+    },
+    {
+      "operation_id": "2f217d4c5782489587ebd6fc4b4cda4c",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&first=1",
+      "started_at": "2026-10-28T08:51:06.361880+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 126364,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&first=1"
+      ],
+      "duration_ms": 3370.713
+    },
+    {
+      "operation_id": "81115cf6fb6c4a2cbb0a7e013d63c605",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&first=1",
+      "started_at": "2026-10-28T08:51:06.362290+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 159677,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&first=1"
+      ],
+      "duration_ms": 3845.863
+    },
+    {
+      "operation_id": "a01fb02329af481881a8afd4156e40cb",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com",
+      "started_at": "2026-10-28T08:51:09.747785+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3876.883
+    },
+    {
+      "operation_id": "053423d000914de0af6e9bbd0bcbb61d",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov",
+      "started_at": "2026-10-28T08:51:10.218016+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5011.23
+    },
+    {
+      "operation_id": "f193161745ce4752a2f6e87d9373dd8e",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:13.624865+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1513,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1925.306
+    },
+    {
+      "operation_id": "51c4f7dccfd249efbc9f06a76f9e5abc",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:15.229428+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1507,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1032.271
+    },
+    {
+      "operation_id": "b0d4a864e11043b0b9a4dc5ec30feb8a",
+      "requested_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:51:17.515684+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1358,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1934.154
+    },
+    {
+      "operation_id": "189529fe3349499395f2985ee9993cb3",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:19.450929+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1271,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1747.205
+    },
+    {
+      "operation_id": "99d75aec0a7d464bb230e41a8ac9762b",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:21.199347+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1271,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1516.365
+    },
+    {
+      "operation_id": "8873bbd953ff4eca84f24a9ccf1dcc2b",
+      "requested_url": "https://www.reddit.com/r/stocks/.rss",
+      "started_at": "2026-10-28T08:51:20.048672+00:00",
+      "http_status": 200,
+      "final_url": "https://www.reddit.com/r/stocks/.rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 87988,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.reddit.com/r/stocks/.rss"
+      ],
+      "duration_ms": 4090.075
+    },
+    {
+      "operation_id": "63a201cc4f724e4c99b1b776a0375ec8",
+      "requested_url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "started_at": "2026-10-28T08:51:24.183357+00:00",
+      "http_status": 429,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "RATE_LIMITED",
+      "network_observed": true,
+      "duration_ms": 1288.382
+    },
+    {
+      "operation_id": "8f111332840946799552baecd60218b6",
+      "requested_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement&format=rss",
+      "started_at": "2026-10-28T08:51:26.082278+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1051,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement&format=rss"
+      ],
+      "duration_ms": 1337.681
+    },
+    {
+      "operation_id": "d1653b53dddf4680912d755d163830d3",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:27.421164+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 17607,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2675.642
+    },
+    {
+      "operation_id": "8c75f94b64a849b8834c96fe409a9ad2",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&first=1",
+      "started_at": "2026-10-28T08:51:26.081722+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5010.427
+    },
+    {
+      "operation_id": "05afc08f9c5e4a3ab7edf54481cde5ae",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29",
+      "started_at": "2026-10-28T08:51:31.092331+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 2785.811
+    },
+    {
+      "operation_id": "ad3e28282ed24a838c295bc2e9f4ce97",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:33.878274+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.045
+    },
+    {
+      "operation_id": "2d064d954ae24a558cf9729b6dd08c9b",
+      "requested_url": "https://www.bing.com/search?q=Dyson+counterfeit+enforcement&first=1",
+      "started_at": "2026-10-28T08:51:35.834413+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Dyson+counterfeit+enforcement&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128104,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Dyson+counterfeit+enforcement&first=1"
+      ],
+      "duration_ms": 3883.126
+    },
+    {
+      "operation_id": "9da6e3cdc3cb470f970f80ee2267944e",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&first=1",
+      "started_at": "2026-10-28T08:51:35.834674+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 140878,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&first=1"
+      ],
+      "duration_ms": 4410.594
+    },
+    {
+      "operation_id": "f8ae167901ae4fda865d41abb1071b61",
+      "requested_url": "https://search.yahoo.com/search?p=Dyson+counterfeit+enforcement",
+      "started_at": "2026-10-28T08:51:39.728639+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 3368.475
+    },
+    {
+      "operation_id": "00980b850b3a425898ac4a1d6e4db928",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29",
+      "started_at": "2026-10-28T08:51:40.269049+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.7
+    },
+    {
+      "operation_id": "6e5121e546d142cea00fc2856e5dee31",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:43.097276+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 17607,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2467.686
+    },
+    {
+      "operation_id": "9356ee98299b4939be8af5355b42a799",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:45.270998+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1609,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2041.527
+    },
+    {
+      "operation_id": "bb373ef9f9144cbfb7f9d1ce80f20c8c",
+      "requested_url": "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation&format=rss",
+      "started_at": "2026-10-28T08:51:50.181952+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1086,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation&format=rss"
+      ],
+      "duration_ms": 1726.156
+    },
+    {
+      "operation_id": "ba11e3f26b9649858a392b0155c9df31",
+      "requested_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:51:50.181378+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1343,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 3546.071
+    },
+    {
+      "operation_id": "15132ab4748645ebb985c04e78a46148",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:51.909276+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2337,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2239.733
+    },
+    {
+      "operation_id": "02a06844ab6c4c309b90c43cab62d32b",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:53.728698+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1265,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2044.052
+    },
+    {
+      "operation_id": "58d06741e55d49a8935c136338ecef2d",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:54.150980+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2337,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3368.368
+    },
+    {
+      "operation_id": "7daa81bfc1274919a2b152cfbf4abb5f",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:51:55.777322+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1265,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4541.259
+    },
+    {
+      "operation_id": "146a3894c9084db4bcc01b830b55ca8d",
+      "requested_url": "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:52:02.437023+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1378,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1953.826
+    },
+    {
+      "operation_id": "4d45770d340e4776a83ceb81e8741a2d",
+      "requested_url": "https://www.bing.com/search?q=Dyson+unauthorized+seller+allegation&first=1",
+      "started_at": "2026-10-28T08:52:02.437670+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Dyson+unauthorized+seller+allegation&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129056,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Dyson+unauthorized+seller+allegation&first=1"
+      ],
+      "duration_ms": 3582.941
+    },
+    {
+      "operation_id": "fccec4296de343ab954cad0f36e166bb",
+      "requested_url": "https://search.yahoo.com/search?p=Dyson+unauthorized+seller+allegation",
+      "started_at": "2026-10-28T08:52:06.037416+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.032
+    },
+    {
+      "operation_id": "11e3b9f3937f4619ade7ce2d934802fc",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:52:06.037521+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 417.94
+    },
+    {
+      "operation_id": "5965521ac3954c22b730017631742343",
+      "requested_url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:52:04.392040+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 2067.31
+    },
+    {
+      "operation_id": "f25d7b74b7544b53803bd0521bbd1d84",
+      "requested_url": "https://www.ftc.gov/robots.txt",
+      "started_at": "2026-10-28T08:52:06.464713+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/robots.txt",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3056,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/robots.txt"
+      ],
+      "duration_ms": 2834.078
+    },
+    {
+      "operation_id": "b599e68bcb5b49ea92b92792a1201139",
+      "requested_url": "https://www.thisismoney.co.uk",
+      "started_at": "2026-10-28T08:52:06.845140+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 3175.08
+    },
+    {
+      "operation_id": "083a9d2bd3584f64a9981f25cfa073bb",
+      "requested_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "started_at": "2026-10-28T08:52:14.300265+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 11879,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/feeds/press-release.xml"
+      ],
+      "duration_ms": 2896.573
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/search?q=Dyson+counterfeit+listing+report&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "8ee526c66f9b48c9857b727efac788eb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "1ca9e6eee24c4af68f459065321c722d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Dyson+counterfeit+listing+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bd1bd071fb1340d6bb0e431453469cdb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "987e2d84ee6f4ae8935687034dcbdf2a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Dyson+counterfeit+listing+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bd1bd071fb1340d6bb0e431453469cdb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "74a67b1142534a8683fb5d45692f6af2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "220c2a2bcf1e43b78f437ef3c0079a00",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "7eeefe5652484b5f946fe993db9ed156",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "1f0ffc6e304d4b1185760a31bbee9cce",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "034e615644114d32a7324f89eeb9fd22",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f5e8939a498478dbefe2c704fb98781",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "06d8dc30c77843af9b15e266b67f759b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.thisismoney.co.uk%2BI%2Bbought%2Ba%2Bcounterfeit%2BDyson%2Bhairdryer%2Bon%2BeBay%253A%2BWhere%2Bis%2Bmy%2Brefund%253F&_bvc=1.41fa6fa9199851bc35db2d90c46897bb2afac4be312a45cee23350fa6ffff751",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f5e8939a498478dbefe2c704fb98781",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7c4f2cbeee684386bd160294f2fcc53b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.thisismoney.co.uk%2BI%2Bbought%2Ba%2Bcounterfeit%2BDyson%2Bhairdryer%2Bon%2BeBay%253A%2BWhere%2Bis%2Bmy%2Brefund%253F&_bvc=2.e01b4e657bb9a2f6c18a3ee230bf8b2c25b167d1fb629aeb04a038fe4e1d2b3e",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f5e8939a498478dbefe2c704fb98781",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2BDyson%2Bcounterfeit%2Bproducts%252C%2Bphishing%2Bpromotions%2Band%2Bofficial%2Bconsumer%2Bwarnings.%2BIdentify%2Bactual%2Bdocumented%2Bincidents%252C%2Brelevant%2Bdates%2Band%2Bsource%2Bauthority.%2Bofficial%2Bsource&_bvc=1.ec1acff0878f13c25702e25ca6e46ec4507ce3ccdadb7127cab416e48435d59a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "06d8dc30c77843af9b15e266b67f759b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2BDyson%2Bcounterfeit%2Bproducts%252C%2Bphishing%2Bpromotions%2Band%2Bofficial%2Bconsumer%2Bwarnings.%2BIdentify%2Bactual%2Bdocumented%2Bincidents%252C%2Brelevant%2Bdates%2Band%2Bsource%2Bauthority.%2Bofficial%2Bsource&_bvc=2.fa7cda001d9cfb12d5af52479c4550d4875980f3fa03398f334e552e0271dbf2",
+      "host": "search.yahoo.com",
+      "http_operation_id": "06d8dc30c77843af9b15e266b67f759b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f5e8939a498478dbefe2c704fb98781",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.thisismoney.co.uk+I+bought+a+counterfeit+Dyson+hairdryer+on+eBay%3A+Where+is+my+refund%3F&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5faf5505bff14fc19bafa3d65d194186",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "06d8dc30c77843af9b15e266b67f759b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "cc7a6027ded64b6b8bd6df7bf63f395c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "2f217d4c5782489587ebd6fc4b4cda4c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "81115cf6fb6c4a2cbb0a7e013d63c605",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a01fb02329af481881a8afd4156e40cb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "053423d000914de0af6e9bbd0bcbb61d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a01fb02329af481881a8afd4156e40cb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2BDyson%2Bcounterfeit%2Bproducts%252C%2Bphishing%2Bpromotions%2Band%2Bofficial%2Bconsumer%2Bwarnings.%2BIdentify%2Bactual%2Bdocumented%2Bincidents%252C%2Brelevant%2Bdates%2Band%2Bsource%2Bauthority.%2Breported%2Bincident%2Bsite%253Aftc.gov&_bvc=1.4960f6837803f977295076870c399730e8cdb6fa4f872c314917fb3758d4db72",
+      "host": "search.yahoo.com",
+      "http_operation_id": "053423d000914de0af6e9bbd0bcbb61d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f193161745ce4752a2f6e87d9373dd8e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2BDyson%2Bcounterfeit%2Bproducts%252C%2Bphishing%2Bpromotions%2Band%2Bofficial%2Bconsumer%2Bwarnings.%2BIdentify%2Bactual%2Bdocumented%2Bincidents%252C%2Brelevant%2Bdates%2Band%2Bsource%2Bauthority.%2Breported%2Bincident%2Bsite%253Aftc.gov&_bvc=2.fb2ec4741953cde4057d687bc8225be8750b6ea808b8a92e620be15d6d2d57a9",
+      "host": "search.yahoo.com",
+      "http_operation_id": "053423d000914de0af6e9bbd0bcbb61d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "053423d000914de0af6e9bbd0bcbb61d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "51c4f7dccfd249efbc9f06a76f9e5abc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "b0d4a864e11043b0b9a4dc5ec30feb8a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "189529fe3349499395f2985ee9993cb3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/stocks/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "8873bbd953ff4eca84f24a9ccf1dcc2b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "99d75aec0a7d464bb230e41a8ac9762b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "63a201cc4f724e4c99b1b776a0375ec8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "8c75f94b64a849b8834c96fe409a9ad2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "8f111332840946799552baecd60218b6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d1653b53dddf4680912d755d163830d3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "05afc08f9c5e4a3ab7edf54481cde5ae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2BDyson%2Bcounterfeit%2Bproducts%252C%2Bphishing%2Bpromotions%2Band%2Bofficial%2Bconsumer%2Bwarnings.%2BIdentify%2Bactual%2Bdocumented%2Bincidents%252C%2Brelevant%2Bdates%2Band%2Bsource%2Bauthority.%2Blatest%2Bindependent%2Breporting%2B%2528site%253Ajustice.gov%2BOR%2Bsite%253Acbp.gov%2BOR%2Bsite%253Aeuropol.europa.eu%2529&_bvc=1.de63e63d9c3a0a8372d14e211d28081424cb09a7a344735afe7ff49bd07b44b9",
+      "host": "search.yahoo.com",
+      "http_operation_id": "05afc08f9c5e4a3ab7edf54481cde5ae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "05afc08f9c5e4a3ab7edf54481cde5ae",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ad3e28282ed24a838c295bc2e9f4ce97",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/search?q=Dyson+counterfeit+enforcement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "2d064d954ae24a558cf9729b6dd08c9b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "9da6e3cdc3cb470f970f80ee2267944e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Dyson+counterfeit+enforcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f8ae167901ae4fda865d41abb1071b61",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "00980b850b3a425898ac4a1d6e4db928",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DDyson%2Bcounterfeit%2Benforcement&_bvc=1.855d64f2ee313a121be9b74ff248e239004442a64cab3e03172bf72c26f49358",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f8ae167901ae4fda865d41abb1071b61",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2BDyson%2Bcounterfeit%2Bproducts%252C%2Bphishing%2Bpromotions%2Band%2Bofficial%2Bconsumer%2Bwarnings.%2BIdentify%2Bactual%2Bdocumented%2Bincidents%252C%2Brelevant%2Bdates%2Band%2Bsource%2Bauthority.%2Blatest%2Bindependent%2Breporting%2B%2528site%253Aftc.gov%2BOR%2Bsite%253Aeuropa.eu%2BOR%2Bsite%253Aaccc.gov.au%2529&_bvc=1.7d3c4b118db0258f9f50fc89183c129e17de69bd0b5bbf5a74e6b506f033006b",
+      "host": "search.yahoo.com",
+      "http_operation_id": "00980b850b3a425898ac4a1d6e4db928",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Dyson+counterfeit+enforcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f8ae167901ae4fda865d41abb1071b61",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2BDyson%2Bcounterfeit%2Bproducts%252C%2Bphishing%2Bpromotions%2Band%2Bofficial%2Bconsumer%2Bwarnings.%2BIdentify%2Bactual%2Bdocumented%2Bincidents%252C%2Brelevant%2Bdates%2Band%2Bsource%2Bauthority.%2Blatest%2Bindependent%2Breporting%2B%2528site%253Aftc.gov%2BOR%2Bsite%253Aeuropa.eu%2BOR%2Bsite%253Aaccc.gov.au%2529&_bvc=2.e3253133d64b20ef63af5a0286fdb4d0aef7f60681d4adceeca93ce5eec832db",
+      "host": "search.yahoo.com",
+      "http_operation_id": "00980b850b3a425898ac4a1d6e4db928",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DDyson%2Bcounterfeit%2Benforcement&_bvc=1.855d64f2ee313a121be9b74ff248e239004442a64cab3e03172bf72c26f49358",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f8ae167901ae4fda865d41abb1071b61",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "6e5121e546d142cea00fc2856e5dee31",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+Dyson+counterfeit+products%2C+phishing+promotions+and+official+consumer+warnings.+Identify+actual+documented+incidents%2C+relevant+dates+and+source+authority.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "9356ee98299b4939be8af5355b42a799",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ba11e3f26b9649858a392b0155c9df31",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "bb373ef9f9144cbfb7f9d1ce80f20c8c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "15132ab4748645ebb985c04e78a46148",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "02a06844ab6c4c309b90c43cab62d32b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "58d06741e55d49a8935c136338ecef2d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7daa81bfc1274919a2b152cfbf4abb5f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Dyson+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "146a3894c9084db4bcc01b830b55ca8d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Dyson+unauthorized+seller+allegation&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4d45770d340e4776a83ceb81e8741a2d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5965521ac3954c22b730017631742343",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Dyson+unauthorized+seller+allegation",
+      "host": "search.yahoo.com",
+      "http_operation_id": "fccec4296de343ab954cad0f36e166bb",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Dyson+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "11e3b9f3937f4619ade7ce2d934802fc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.thisismoney.co.uk",
+      "host": "www.thisismoney.co.uk",
+      "http_operation_id": "b599e68bcb5b49ea92b92792a1201139",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/robots.txt",
+      "host": "www.ftc.gov",
+      "http_operation_id": "f25d7b74b7544b53803bd0521bbd1d84",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.thisismoney.co.uk/money/index.html",
+      "host": "www.thisismoney.co.uk",
+      "http_operation_id": "b599e68bcb5b49ea92b92792a1201139",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/feeds/press-release.xml",
+      "host": "www.ftc.gov",
+      "http_operation_id": "083a9d2bd3584f64a9981f25cfa073bb",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 65,
+  "admission_rejections": 4,
+  "pipeline_errors": []
+}

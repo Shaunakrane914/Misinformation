@@ -1,0 +1,25 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "55c15fd2febcbe7ff45f403a68d0446143f1dd178f8b42056c29f77a0e9e3c2c",
+  "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
+  "mock_llm": false,
+  "live_ai_authorized": true,
+  "acquisition_controller": "pipelined_v1",
+  "requested_audit_bounds": {
+    "research_timeout_seconds": 240.0,
+    "max_deep_reads": 24,
+    "research_profile": "DEEP"
+  },
+  "advisory_model_check": {
+    "status": "BUDGET_BLOCKED",
+    "model": "gemini-3.5-flash-lite",
+    "reason": "DAILY_REQUEST_BUDGET",
+    "calls_reserved": 8
+  },
+  "final_application_sha256": "55c15fd2febcbe7ff45f403a68d0446143f1dd178f8b42056c29f77a0e9e3c2c",
+  "stable_application": true,
+  "live_ai_calls_reserved": 0,
+  "shared_ai_calls_reserved_before_batch": 0,
+  "shared_ai_calls_reserved_after_batch": 0,
+  "live_ai_observations": []
+}

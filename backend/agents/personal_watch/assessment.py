@@ -188,7 +188,7 @@ def _source_report_synthesis(subject_name, evidence_list):
               "deepfake_claims": [], "ai_enrichment_active": False}
     kinds = [
         ("IMPERSONATION", r"impersonat|fake account|fake profile|spoofed|fake handle"),
-        ("SCAM", r"scam|phishing|fake giveaway|crypto fraud|send btc|investment scheme"),
+        ("SCAM", r"scam|phishing|fake giveaway|fraud|send btc|investment scheme"),
         ("DEEPFAKE", r"deepfake|ai[- ]generated|ai voice|voice clone|manipulated video|synthetic audio|elevenlabs"),
         ("DOXXING_PRIVACY", r"doxx|leaked database|leaked phone|leaked address|credential breach"),
         ("REPUTATION_ATTACK", r"allegation|controversy|smear|lawsuit|boycott|rumor|defamation"),
@@ -324,6 +324,7 @@ def synthesize_personal_threats(subject_info, evidence_list):
     if not threat_records:
         result["claims"] = []
     observed_attributions = {"OBSERVED_FEED_AUTHOR", "OBSERVED_SPEAKER_SECTION", "OBSERVED_SPEAKER_LABEL",
+                             "OBSERVED_TRANSCRIPT_SPEAKER_SECTION",
                              "REPORTED_QUOTATION", "REPORTED_QUOTATION_SURNAME_IN_CAPTURE"}
     result["public_statements"] = [copy.deepcopy(p) for record in records for p in record["passages"]
                                    if p["content_role"] == "PUBLIC_STATEMENT"

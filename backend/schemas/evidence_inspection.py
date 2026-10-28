@@ -264,6 +264,8 @@ def public_capture_metadata(item, max_chars=20_000):
                 if isinstance(s, str) and s.startswith('https://creativecommons.org/licenses/')]
         if page.get('rights_exception_observed') is True:
             public_page['rights_exception_observed'] = True
+        if page.get('rights_notice_observed') is True:
+            public_page['rights_notice_observed'] = True
         for key in ("pdf_page_count", "pdf_truncated", "table_structure_verified"):
             if type(page.get(key)) in (int, bool):
                 public_page[key] = page[key]

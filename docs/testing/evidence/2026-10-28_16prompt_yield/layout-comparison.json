@@ -1,0 +1,26 @@
+[
+  {
+    "id": "S1",
+    "before_height": 3351,
+    "after_height": 2924,
+    "before_words": 5685,
+    "after_words": 5685,
+    "scope": "OFFLINE_SAME_CAPTURE_LAYOUT_NOT_NEW_ACQUISITION"
+  },
+  {
+    "id": "P1",
+    "before_height": 2673,
+    "after_height": 2299,
+    "before_words": 334,
+    "after_words": 334,
+    "scope": "OFFLINE_SAME_CAPTURE_LAYOUT_NOT_NEW_ACQUISITION"
+  },
+  {
+    "id": "T2_REPLAY",
+    "before_height": 2904,
+    "after_height": 2477,
+    "before_words": 239,
+    "after_words": 239,
+    "scope": "OFFLINE_SAME_CAPTURE_LAYOUT_NOT_NEW_ACQUISITION"
+  }
+]

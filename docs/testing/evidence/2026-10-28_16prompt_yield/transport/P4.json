@@ -1,0 +1,1581 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "c997ed1b77a848a5b9c773f17af2d923",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&format=rss",
+      "started_at": "2026-10-28T09:15:31.181158+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1178,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&format=rss"
+      ],
+      "duration_ms": 3191.438
+    },
+    {
+      "operation_id": "a3cbf73467c04438b81cbd092b0f7563",
+      "requested_url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&first=1",
+      "started_at": "2026-10-28T09:15:31.181616+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.47
+    },
+    {
+      "operation_id": "b07508169bb1487594314e5010f159a0",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:15:34.375349+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 14110,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4292.804
+    },
+    {
+      "operation_id": "50036b7d294e49a38143d4db7d50a9be",
+      "requested_url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+impersonation+allegation+report",
+      "started_at": "2026-10-28T09:15:36.184345+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.401
+    },
+    {
+      "operation_id": "d38a2860d7ec4dd8b2eb581cb35cffb3",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:15:41.192990+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 14110,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3299.761
+    },
+    {
+      "operation_id": "4ebf589e117f48c9a2c7ec29c09d16f0",
+      "requested_url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+statement+interview+transcript&first=1",
+      "started_at": "2026-10-28T09:15:46.478503+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.057
+    },
+    {
+      "operation_id": "c43bc23c46664a5a8078f1cfba013b73",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&format=rss",
+      "started_at": "2026-10-28T09:15:46.479014+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1953,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&format=rss"
+      ],
+      "duration_ms": 7434.678
+    },
+    {
+      "operation_id": "19463e25ead24cd184da9dc36d309b49",
+      "requested_url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+statement+interview+transcript",
+      "started_at": "2026-10-28T09:15:51.483872+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5010.284
+    },
+    {
+      "operation_id": "a6e55e2d27f94078aa23caeee133816a",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:15:53.916260+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1509,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2857.588
+    },
+    {
+      "operation_id": "2b5ff635d06744cebd0cb72c40d2243e",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:15:56.776537+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1509,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1751.945
+    },
+    {
+      "operation_id": "c84e171e43bc42ff901b5e8eefcbd3bf",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:15:56.494415+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 25858,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4462.767
+    },
+    {
+      "operation_id": "83db2382b6594ae98770c6c739dc9db5",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&first=1",
+      "started_at": "2026-10-28T09:16:03.258117+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 139219,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&first=1"
+      ],
+      "duration_ms": 3958.092
+    },
+    {
+      "operation_id": "cb51c9ec813a43b797d5b6f232a2e9f2",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov&first=1",
+      "started_at": "2026-10-28T09:16:03.258576+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.919
+    },
+    {
+      "operation_id": "5dea0340d7d843b2a466bc65d87a3a4c",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov",
+      "started_at": "2026-10-28T09:16:08.271821+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3016.164
+    },
+    {
+      "operation_id": "3bb7ee922b514ab0ab2a975a0581e44b",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com",
+      "started_at": "2026-10-28T09:16:07.314343+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5011.085
+    },
+    {
+      "operation_id": "6554c7a8eebb42619819cac61a3356ed",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:11.288291+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1535,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2289.135
+    },
+    {
+      "operation_id": "86e56b3e83fb4d5baa036e5e5d277f35",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:12.325700+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1541,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1836.354
+    },
+    {
+      "operation_id": "99bf2855c6794473bfe1614b6d47b727",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:16:16.035139+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1470,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1933.665
+    },
+    {
+      "operation_id": "4dca0bdd174b435f9b15d3dcb828e470",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&format=rss",
+      "started_at": "2026-10-28T09:16:16.035520+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2615,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&format=rss"
+      ],
+      "duration_ms": 2857.187
+    },
+    {
+      "operation_id": "313ead6cf0734cd89a9e270512f1e7e8",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:17.971181+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 8508,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3085.042
+    },
+    {
+      "operation_id": "25bede4c4d0f473981838f15c7ae15a5",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:16:21.076001+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1415,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1899.74
+    },
+    {
+      "operation_id": "cc3deb3c418f484587120a406aed34d1",
+      "requested_url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&first=1",
+      "started_at": "2026-10-28T09:16:21.074970+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128324,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&first=1"
+      ],
+      "duration_ms": 4480.161
+    },
+    {
+      "operation_id": "dbb798f2d00a4e178225803fcf247914",
+      "requested_url": "https://www.moneycontrol.com/entertainment/hande-er-el-denies-calling-shah-rukh-khan-uncle-says-the-viral-post-is-fake-article-13783661.html",
+      "started_at": "2026-10-28T09:16:21.469098+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5019.861
+    },
+    {
+      "operation_id": "87ae896fdbca4af9b1f86e4c1157384c",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:22.978335+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 102029,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4631.627
+    },
+    {
+      "operation_id": "43770ddf720046578549359e813c8007",
+      "requested_url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+fake+account+warning",
+      "started_at": "2026-10-28T09:16:25.627126+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.75
+    },
+    {
+      "operation_id": "4d4e3846fd704f1785ba438e4a463606",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/hande-er-el-denies-calling-shah-rukh-khan-uncle-says-the-viral-post-is-fake-article-13783661.html",
+      "started_at": "2026-10-28T09:16:26.489316+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.069
+    },
+    {
+      "operation_id": "1e4af23ee91e481296e813476f52e13c",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:30.629181+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 140293,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4835.851
+    },
+    {
+      "operation_id": "1df8bbd2e9894dbf95e4b1bac545ce54",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/hande-er-el-denies-calling-shah-rukh-khan-uncle-says-the-viral-post-is-fake-article-13783661.html",
+      "started_at": "2026-10-28T09:16:31.496769+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 4971.953
+    },
+    {
+      "operation_id": "e52c51364782427fa3db314cda4a2e00",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&format=rss",
+      "started_at": "2026-10-28T09:16:35.590198+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1173,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&format=rss"
+      ],
+      "duration_ms": 1635.128
+    },
+    {
+      "operation_id": "8e0cdac9455b4aa18abb6874da79d475",
+      "requested_url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&first=1",
+      "started_at": "2026-10-28T09:16:35.590593+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.632
+    },
+    {
+      "operation_id": "3649f82050f7469e8b4cb2a7a77cc338",
+      "requested_url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+impersonation+company+response",
+      "started_at": "2026-10-28T09:16:40.598530+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.395
+    },
+    {
+      "operation_id": "c4f3d1774c974177bfda1762785b4455",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:45.612231+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.122
+    },
+    {
+      "operation_id": "de74b81343a446afbe13cdf4791989c6",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:37.227793+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 23106,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 8900.677
+    },
+    {
+      "operation_id": "8d8fd4a6119b426396c97dd09bfb1af3",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+interview&format=rss",
+      "started_at": "2026-10-28T09:16:49.123988+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+interview&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 7589,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+interview&format=rss"
+      ],
+      "duration_ms": 3146.879
+    },
+    {
+      "operation_id": "b6ee5c8bd0f1458ba7ff25120effca24",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.indiatvnews.com+Shah+Rukh+Khan+motivates+graduating+students+with+must-watch+speech+at+Dhirubhai+Ambani+International+School&first=1",
+      "started_at": "2026-10-28T09:16:49.376746+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.319
+    },
+    {
+      "operation_id": "30172e3b76404d81be5317e67f923c39",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:16:49.059886+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1465,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 6084.488
+    },
+    {
+      "operation_id": "8cebbc52ac6744c785d6f70675470fc5",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.indiatvnews.com+Shah+Rukh+Khan+motivates+graduating+students+with+must-watch+speech+at+Dhirubhai+Ambani+International+School",
+      "started_at": "2026-10-28T09:16:54.379336+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5043.646
+    },
+    {
+      "operation_id": "7b9412d82e59478a8931c22ddebbbaa1",
+      "requested_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:16:55.146638+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 21531,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4809.292
+    },
+    {
+      "operation_id": "33a81db036ad449f93ad866b8a7ea818",
+      "requested_url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:16:59.978053+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 1206.115
+    },
+    {
+      "operation_id": "03bc1a67969146e29744aab2c76b0a05",
+      "requested_url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+interview&first=1",
+      "started_at": "2026-10-28T09:16:59.978428+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 1206.357
+    },
+    {
+      "operation_id": "8035df13eafb4f1e97ca0e670f906831",
+      "requested_url": "https://www.news18.com/movies/bollywood/shah-rukh-khans-schoolmate-palash-sen-says-he-was-a-hit-with-teachers-but-reveals-his-one-flaw-10321466.html",
+      "started_at": "2026-10-28T09:17:00.366881+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.4
+    },
+    {
+      "operation_id": "c8488380bb6b4da1a2c382bf6d976acd",
+      "requested_url": "https://www.filmibeat.com/bollywood/news/2026/shah-rukh-khan-lady-gaga-viral-video-throwback-srk-awkward-watch-moment-draws-fans-cringe-comments-524703.html",
+      "started_at": "2026-10-28T09:17:00.769948+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.737
+    },
+    {
+      "operation_id": "9cc4f713c2754fbca9894aabd9ca9e3a",
+      "requested_url": "https://r.jina.ai/https://www.filmibeat.com/bollywood/news/2026/shah-rukh-khan-lady-gaga-viral-video-throwback-srk-awkward-watch-moment-draws-fans-cringe-comments-524703.html",
+      "started_at": "2026-10-28T09:17:05.783049+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1458.571
+    },
+    {
+      "operation_id": "e7f61bf4af6d42c1931576ebffd7a372",
+      "requested_url": "https://r.jina.ai/https://www.filmibeat.com/bollywood/news/2026/shah-rukh-khan-lady-gaga-viral-video-throwback-srk-awkward-watch-moment-draws-fans-cringe-comments-524703.html",
+      "started_at": "2026-10-28T09:17:07.241969+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1734.49
+    },
+    {
+      "operation_id": "e98bab24dd3c4443ae67fe2f5cc7bc63",
+      "requested_url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/shah-rukh-khans-schoolmate-palash-sen-says-he-was-a-hit-with-teachers-but-reveals-his-one-flaw-10321466.html",
+      "started_at": "2026-10-28T09:17:05.371759+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.765
+    },
+    {
+      "operation_id": "bc75e67f490f42f4b927fb303f46f4c8",
+      "requested_url": "https://www.moneycontrol.com/entertainment/when-shah-rukh-khan-revealed-he-adjusts-his-food-habits-when-he-is-at-someone-s-house-jo-wo-log-offer-karte-hain-main-sab-khata-hoon-be-it-biryani-lassi-or-article-13754848.html",
+      "started_at": "2026-10-28T09:17:09.006495+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.018
+    },
+    {
+      "operation_id": "eedd681c02da4fe2982e6f65b535bd95",
+      "requested_url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/shah-rukh-khans-schoolmate-palash-sen-says-he-was-a-hit-with-teachers-but-reveals-his-one-flaw-10321466.html",
+      "started_at": "2026-10-28T09:17:10.383912+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4997.863
+    },
+    {
+      "operation_id": "1cc2a8582ebb4242acbccc9df443d5b1",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/when-shah-rukh-khan-revealed-he-adjusts-his-food-habits-when-he-is-at-someone-s-house-jo-wo-log-offer-karte-hain-main-sab-khata-hoon-be-it-biryani-lassi-or-article-13754848.html",
+      "started_at": "2026-10-28T09:17:14.018807+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.696
+    },
+    {
+      "operation_id": "599a0bc4f0824a5b936cce373e3303e0",
+      "requested_url": "https://www.news18.com/news/buzz/srk-birthday-15-times-shah-rukh-khan-proved-why-he-is-called-the-king-of-bollywood-1927383.html",
+      "started_at": "2026-10-28T09:17:15.406853+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.972
+    },
+    {
+      "operation_id": "fe11251388b14eeba9a482f965487bfa",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/when-shah-rukh-khan-revealed-he-adjusts-his-food-habits-when-he-is-at-someone-s-house-jo-wo-log-offer-karte-hain-main-sab-khata-hoon-be-it-biryani-lassi-or-article-13754848.html",
+      "started_at": "2026-10-28T09:17:19.026853+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4988.838
+    },
+    {
+      "operation_id": "8133c706fa264ed2a6b3c5d644239a27",
+      "requested_url": "https://r.jina.ai/https://www.news18.com/news/buzz/srk-birthday-15-times-shah-rukh-khan-proved-why-he-is-called-the-king-of-bollywood-1927383.html",
+      "started_at": "2026-10-28T09:17:20.415187+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.535
+    },
+    {
+      "operation_id": "ece2a57b6c3447df8797ce860be6b5bc",
+      "requested_url": "https://www.moneycontrol.com/entertainment/shah-rukh-khan-hasta-tha-phir-wapas-retake-lena-padta-and-i-i-used-to-gulp-water-when-satish-shah-revealed-how-srk-convinced-him-to-play-the-spitting-professor-in-main-hoon-na-article-14060317.html",
+      "started_at": "2026-10-28T09:17:24.040331+00:00",
+      "http_status": 200,
+      "final_url": "https://www.moneycontrol.com/entertainment/shah-rukh-khan-hasta-tha-phir-wapas-retake-lena-padta-and-i-i-used-to-gulp-water-when-satish-shah-revealed-how-srk-convinced-him-to-play-the-spitting-professor-in-main-hoon-na-article-14060317.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 140801,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.moneycontrol.com/entertainment/shah-rukh-khan-hasta-tha-phir-wapas-retake-lena-padta-and-i-i-used-to-gulp-water-when-satish-shah-revealed-how-srk-convinced-him-to-play-the-spitting-professor-in-main-hoon-na-article-14060317.html"
+      ],
+      "duration_ms": 4782.857
+    },
+    {
+      "operation_id": "a8c3c8adc05a4e80ba3525ed9a8d2dd5",
+      "requested_url": "https://r.jina.ai/https://www.news18.com/news/buzz/srk-birthday-15-times-shah-rukh-khan-proved-why-he-is-called-the-king-of-bollywood-1927383.html",
+      "started_at": "2026-10-28T09:17:25.425053+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4992.586
+    },
+    {
+      "operation_id": "3bc09bdc61a0465297151c7f3f0d5408",
+      "requested_url": "https://timesofindia.indiatimes.com/entertainment/hindi/bollywood/news/shah-rukh-khan-once-felt-it-was-too-late-to-enter-films-he-revealed-his-mothers-wish-inspired-him-she-always-wanted-to-see-me-up-there-on-the-silver-screen-someday/articleshow/134907676.cms",
+      "started_at": "2026-10-28T09:17:29.937845+00:00",
+      "http_status": 200,
+      "final_url": "https://timesofindia.indiatimes.com/entertainment/hindi/bollywood/news/shah-rukh-khan-once-felt-it-was-too-late-to-enter-films-he-revealed-his-mothers-wish-inspired-him-she-always-wanted-to-see-me-up-there-on-the-silver-screen-someday/articleshow/134907676.cms",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 56174,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://timesofindia.indiatimes.com/entertainment/hindi/bollywood/news/shah-rukh-khan-once-felt-it-was-too-late-to-enter-films-he-revealed-his-mothers-wish-inspired-him-she-always-wanted-to-see-me-up-there-on-the-silver-screen-someday/articleshow/134907676.cms"
+      ],
+      "duration_ms": 2704.296
+    },
+    {
+      "operation_id": "f19f88034ee44505a8a34a3f2b59b969",
+      "requested_url": "https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda",
+      "started_at": "2026-10-28T09:17:30.875997+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15571,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda"
+      ],
+      "duration_ms": 2264.886
+    },
+    {
+      "operation_id": "07c4e979aa954ee7ba5d76f9e43b1928",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda",
+      "started_at": "2026-10-28T09:17:33.211452+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.139
+    },
+    {
+      "operation_id": "4e26cf045c7740dc88dea7af3a4f0597",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.bollywoodhungama.com+EXCLUSIVE%3A+Rajat+Bedi+on+cloud+nine+with+The+Ba%2A%2A%2Ads+Of+Bollywood+response%3B+reveals+his+condition+to+Aryan%3A+%E2%80%9CI+told+him%2C+%E2%80%98I+started+my+career+with+your+father%3B+my+son+will+start+hi&first=1",
+      "started_at": "2026-10-28T09:17:33.610264+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.316
+    },
+    {
+      "operation_id": "5f7b31c7caf74400809e9d962170120d",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda",
+      "started_at": "2026-10-28T09:17:38.226017+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.279
+    },
+    {
+      "operation_id": "51b63a38908149fa9add1f41ecdc2845",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.bollywoodhungama.com+EXCLUSIVE%3A+Rajat+Bedi+on+cloud+nine+with+The+Ba%2A%2A%2Ads+Of+Bollywood+response%3B+reveals+his+condition+to+Aryan%3A+%E2%80%9CI+told+him%2C+%E2%80%98I+started+my+career+with+your+father%3B+my+son+will+start+hi",
+      "started_at": "2026-10-28T09:17:38.624895+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4990.686
+    },
+    {
+      "operation_id": "ad4a5bc77f7e4864ab7bfa5956de608b",
+      "requested_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "started_at": "2026-10-28T09:17:43.987109+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 11709,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/feeds/press-release.xml"
+      ],
+      "duration_ms": 1555.404
+    },
+    {
+      "operation_id": "dbdd910eb6534808a1094a41762bfa7c",
+      "requested_url": "https://www.indiatvnews.com",
+      "started_at": "2026-10-28T09:17:43.634719+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 78273,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com"
+      ],
+      "duration_ms": 4243.866
+    },
+    {
+      "operation_id": "4cad8df6d1bd4cc0af6ae44086bc5ecc",
+      "requested_url": "https://www.freepressjournal.in",
+      "started_at": "2026-10-28T09:17:48.893596+00:00",
+      "http_status": 200,
+      "final_url": "https://www.freepressjournal.in",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 34189,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.freepressjournal.in"
+      ],
+      "duration_ms": 2053.074
+    },
+    {
+      "operation_id": "e3c0babbbcb04a7fbf8b1776c87cf04a",
+      "requested_url": "https://www.freepressjournal.in/search?q=Shah+Rukh+Khan",
+      "started_at": "2026-10-28T09:17:51.627965+00:00",
+      "http_status": 200,
+      "final_url": "https://www.freepressjournal.in/search?q=Shah+Rukh+Khan",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 0,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.freepressjournal.in/search?q=Shah+Rukh+Khan"
+      ],
+      "duration_ms": 1571.762
+    },
+    {
+      "operation_id": "77717765ab8a4ce79fb4bdf505659d43",
+      "requested_url": "https://www.latestly.com",
+      "started_at": "2026-10-28T09:17:48.892557+00:00",
+      "http_status": 200,
+      "final_url": "https://www.latestly.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 161837,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.latestly.com"
+      ],
+      "duration_ms": 4455.376
+    },
+    {
+      "operation_id": "6271dc640a8d48748465e08c599e7eac",
+      "requested_url": "https://r.jina.ai/https://www.freepressjournal.in/search?q=Shah+Rukh+Khan",
+      "started_at": "2026-10-28T09:17:53.201228+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.597
+    },
+    {
+      "operation_id": "ba0cdf78ef854e5caf86b720a0005f42",
+      "requested_url": "https://www.latestly.com/topic/shah-rukh-khan/",
+      "started_at": "2026-10-28T09:17:54.006334+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5015.117
+    },
+    {
+      "operation_id": "87650a4567ae4325b45445d40cda3aed",
+      "requested_url": "https://r.jina.ai/https://www.freepressjournal.in/search?q=Shah+Rukh+Khan",
+      "started_at": "2026-10-28T09:17:58.203271+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.183
+    },
+    {
+      "operation_id": "0feb879db114432187aabda4729a66b5",
+      "requested_url": "https://r.jina.ai/https://www.latestly.com/topic/shah-rukh-khan/",
+      "started_at": "2026-10-28T09:17:59.021787+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.latestly.com/topic/shah-rukh-khan/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 675,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.latestly.com/topic/shah-rukh-khan/"
+      ],
+      "duration_ms": 4396.619
+    },
+    {
+      "operation_id": "748655de8d424b66be372e1b139ba0cc",
+      "requested_url": "https://www.latestly.com/entertainment/bollywood/king-shah-rukh-khans-new-poster-sparks-backlash-over-alleged-heavy-ai-edits-and-dhurandhar-similarities-7658551.html",
+      "started_at": "2026-10-28T09:18:03.447936+00:00",
+      "http_status": 200,
+      "final_url": "https://www.latestly.com/entertainment/bollywood/king-shah-rukh-khans-new-poster-sparks-backlash-over-alleged-heavy-ai-edits-and-dhurandhar-similarities-7658551.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 97547,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.latestly.com/entertainment/bollywood/king-shah-rukh-khans-new-poster-sparks-backlash-over-alleged-heavy-ai-edits-and-dhurandhar-similarities-7658551.html"
+      ],
+      "duration_ms": 4112.514
+    },
+    {
+      "operation_id": "00a28caf66a4428b92a688f8f2a7d9b9",
+      "requested_url": "https://www.latestly.com/search/?q=Shah+Rukh+Khan",
+      "started_at": "2026-10-28T09:18:07.871466+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5007.421
+    },
+    {
+      "operation_id": "3b4b7b9967ab434693dccdd189d94c3a",
+      "requested_url": "https://r.jina.ai/https://www.latestly.com/search/?q=Shah+Rukh+Khan",
+      "started_at": "2026-10-28T09:18:12.879313+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.199
+    },
+    {
+      "operation_id": "ed27f638d0074a98a70a4b9f49a1b0b4",
+      "requested_url": "https://www.thenews.com.pk",
+      "started_at": "2026-10-28T09:18:18.092642+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.734
+    },
+    {
+      "operation_id": "2f25cb3b7ce344bf88868c12fe39c1a3",
+      "requested_url": "https://r.jina.ai/https://www.thenews.com.pk",
+      "started_at": "2026-10-28T09:18:23.104695+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5015.12
+    },
+    {
+      "operation_id": "f4a80fbcb97b4b30ad3c821516d254b2",
+      "requested_url": "https://r.jina.ai/https://www.thenews.com.pk",
+      "started_at": "2026-10-28T09:18:28.120206+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.thenews.com.pk",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 19108,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.thenews.com.pk"
+      ],
+      "duration_ms": 3971.263
+    },
+    {
+      "operation_id": "ea4b2cea240e4a6a86f4cab6dade2a75",
+      "requested_url": "https://tribune.com.pk",
+      "started_at": "2026-10-28T09:18:32.303253+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.768
+    },
+    {
+      "operation_id": "2d1c47cc66e94861b3db88e1aa8f5b8f",
+      "requested_url": "https://r.jina.ai/https://tribune.com.pk",
+      "started_at": "2026-10-28T09:18:37.310363+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5003.113
+    },
+    {
+      "operation_id": "9e411dcae1b44b6bb25ca00ae88139ef",
+      "requested_url": "https://r.jina.ai/https://tribune.com.pk",
+      "started_at": "2026-10-28T09:18:42.313855+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://tribune.com.pk",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 22557,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://tribune.com.pk"
+      ],
+      "duration_ms": 1993.406
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "c997ed1b77a848a5b9c773f17af2d923",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "a3cbf73467c04438b81cbd092b0f7563",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "b07508169bb1487594314e5010f159a0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+impersonation+allegation+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "50036b7d294e49a38143d4db7d50a9be",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Shah%2BRukh%2BKhan%2522%2Bimpersonation%2Ballegation%2Breport&_bvc=1.9e2f4fbe1c1182a906753d3313ef2e602d152de6ba76799178fde9da430d80bd",
+      "host": "search.yahoo.com",
+      "http_operation_id": "50036b7d294e49a38143d4db7d50a9be",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d38a2860d7ec4dd8b2eb581cb35cffb3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+statement+interview+transcript&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4ebf589e117f48c9a2c7ec29c09d16f0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "c43bc23c46664a5a8078f1cfba013b73",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+statement+interview+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "19463e25ead24cd184da9dc36d309b49",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a6e55e2d27f94078aa23caeee133816a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+statement+interview+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "19463e25ead24cd184da9dc36d309b49",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "c84e171e43bc42ff901b5e8eefcbd3bf",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "2b5ff635d06744cebd0cb72c40d2243e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "83db2382b6594ae98770c6c739dc9db5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "cb51c9ec813a43b797d5b6f232a2e9f2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3bb7ee922b514ab0ab2a975a0581e44b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5dea0340d7d843b2a466bc65d87a3a4c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5dea0340d7d843b2a466bc65d87a3a4c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3bb7ee922b514ab0ab2a975a0581e44b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "6554c7a8eebb42619819cac61a3356ed",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+fake+endorsements%2C+impersonation+or+misattributed+quotations+involving+Shah+Rukh+Khan.+Use+relevant+entertainment+reporting%2C+original+statements+and+fact-checks+where+available.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "86e56b3e83fb4d5baa036e5e5d277f35",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "99bf2855c6794473bfe1614b6d47b727",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "4dca0bdd174b435f9b15d3dcb828e470",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "313ead6cf0734cd89a9e270512f1e7e8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "cc3deb3c418f484587120a406aed34d1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "25bede4c4d0f473981838f15c7ae15a5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/entertainment/hande-er-el-denies-calling-shah-rukh-khan-uncle-says-the-viral-post-is-fake-article-13783661.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "dbb798f2d00a4e178225803fcf247914",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "87ae896fdbca4af9b1f86e4c1157384c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+fake+account+warning",
+      "host": "search.yahoo.com",
+      "http_operation_id": "43770ddf720046578549359e813c8007",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/hande-er-el-denies-calling-shah-rukh-khan-uncle-says-the-viral-post-is-fake-article-13783661.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "4d4e3846fd704f1785ba438e4a463606",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Shah%2BRukh%2BKhan%2522%2Bfake%2Baccount%2Bwarning&_bvc=1.5da3d812adbdf27f4376f3877682527b791e5f9792f1eb6644651e053d7bf38c",
+      "host": "search.yahoo.com",
+      "http_operation_id": "43770ddf720046578549359e813c8007",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Shah%2BRukh%2BKhan%2522%2Bfake%2Baccount%2Bwarning&_bvc=2.fffa9cd64800a7c344fface96d5d4a59ed752d2b0398d755a1b8907a249b4bbe",
+      "host": "search.yahoo.com",
+      "http_operation_id": "43770ddf720046578549359e813c8007",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1e4af23ee91e481296e813476f52e13c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/hande-er-el-denies-calling-shah-rukh-khan-uncle-says-the-viral-post-is-fake-article-13783661.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "1df8bbd2e9894dbf95e4b1bac545ce54",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "e52c51364782427fa3db314cda4a2e00",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "8e0cdac9455b4aa18abb6874da79d475",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "de74b81343a446afbe13cdf4791989c6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Shah+Rukh+Khan%22+impersonation+company+response",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3649f82050f7469e8b4cb2a7a77cc338",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "c4f3d1774c974177bfda1762785b4455",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "30172e3b76404d81be5317e67f923c39",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+interview&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "8d8fd4a6119b426396c97dd09bfb1af3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.indiatvnews.com+Shah+Rukh+Khan+motivates+graduating+students+with+must-watch+speech+at+Dhirubhai+Ambani+International+School&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "b6ee5c8bd0f1458ba7ff25120effca24",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.indiatvnews.com+Shah+Rukh+Khan+motivates+graduating+students+with+must-watch+speech+at+Dhirubhai+Ambani+International+School",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8cebbc52ac6744c785d6f70675470fc5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Shah+Rukh+Khan%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7b9412d82e59478a8931c22ddebbbaa1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Shah+Rukh+Khan%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "33a81db036ad449f93ad866b8a7ea818",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Shah+Rukh+Khan%22+interview&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "03bc1a67969146e29744aab2c76b0a05",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/shah-rukh-khans-schoolmate-palash-sen-says-he-was-a-hit-with-teachers-but-reveals-his-one-flaw-10321466.html",
+      "host": "www.news18.com",
+      "http_operation_id": "8035df13eafb4f1e97ca0e670f906831",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.filmibeat.com/bollywood/news/2026/shah-rukh-khan-lady-gaga-viral-video-throwback-srk-awkward-watch-moment-draws-fans-cringe-comments-524703.html",
+      "host": "www.filmibeat.com",
+      "http_operation_id": "c8488380bb6b4da1a2c382bf6d976acd",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/shah-rukh-khans-schoolmate-palash-sen-says-he-was-a-hit-with-teachers-but-reveals-his-one-flaw-10321466.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "e98bab24dd3c4443ae67fe2f5cc7bc63",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.filmibeat.com/bollywood/news/2026/shah-rukh-khan-lady-gaga-viral-video-throwback-srk-awkward-watch-moment-draws-fans-cringe-comments-524703.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "9cc4f713c2754fbca9894aabd9ca9e3a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.filmibeat.com/bollywood/news/2026/shah-rukh-khan-lady-gaga-viral-video-throwback-srk-awkward-watch-moment-draws-fans-cringe-comments-524703.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "e7f61bf4af6d42c1931576ebffd7a372",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/entertainment/when-shah-rukh-khan-revealed-he-adjusts-his-food-habits-when-he-is-at-someone-s-house-jo-wo-log-offer-karte-hain-main-sab-khata-hoon-be-it-biryani-lassi-or-article-13754848.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "bc75e67f490f42f4b927fb303f46f4c8",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/shah-rukh-khans-schoolmate-palash-sen-says-he-was-a-hit-with-teachers-but-reveals-his-one-flaw-10321466.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "eedd681c02da4fe2982e6f65b535bd95",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/when-shah-rukh-khan-revealed-he-adjusts-his-food-habits-when-he-is-at-someone-s-house-jo-wo-log-offer-karte-hain-main-sab-khata-hoon-be-it-biryani-lassi-or-article-13754848.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "1cc2a8582ebb4242acbccc9df443d5b1",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/news/buzz/srk-birthday-15-times-shah-rukh-khan-proved-why-he-is-called-the-king-of-bollywood-1927383.html",
+      "host": "www.news18.com",
+      "http_operation_id": "599a0bc4f0824a5b936cce373e3303e0",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/entertainment/when-shah-rukh-khan-revealed-he-adjusts-his-food-habits-when-he-is-at-someone-s-house-jo-wo-log-offer-karte-hain-main-sab-khata-hoon-be-it-biryani-lassi-or-article-13754848.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "fe11251388b14eeba9a482f965487bfa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com/news/buzz/srk-birthday-15-times-shah-rukh-khan-proved-why-he-is-called-the-king-of-bollywood-1927383.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "8133c706fa264ed2a6b3c5d644239a27",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/entertainment/shah-rukh-khan-hasta-tha-phir-wapas-retake-lena-padta-and-i-i-used-to-gulp-water-when-satish-shah-revealed-how-srk-convinced-him-to-play-the-spitting-professor-in-main-hoon-na-article-14060317.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "ece2a57b6c3447df8797ce860be6b5bc",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com/news/buzz/srk-birthday-15-times-shah-rukh-khan-proved-why-he-is-called-the-king-of-bollywood-1927383.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "a8c3c8adc05a4e80ba3525ed9a8d2dd5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com/entertainment/hindi/bollywood/news/shah-rukh-khan-once-felt-it-was-too-late-to-enter-films-he-revealed-his-mothers-wish-inspired-him-she-always-wanted-to-see-me-up-there-on-the-silver-screen-someday/articleshow/134907676.cms",
+      "host": "timesofindia.indiatimes.com",
+      "http_operation_id": "3bc09bdc61a0465297151c7f3f0d5408",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda",
+      "host": "www.msn.com",
+      "http_operation_id": "f19f88034ee44505a8a34a3f2b59b969",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda",
+      "host": "r.jina.ai",
+      "http_operation_id": "07c4e979aa954ee7ba5d76f9e43b1928",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.bollywoodhungama.com+EXCLUSIVE%3A+Rajat+Bedi+on+cloud+nine+with+The+Ba%2A%2A%2Ads+Of+Bollywood+response%3B+reveals+his+condition+to+Aryan%3A+%E2%80%9CI+told+him%2C+%E2%80%98I+started+my+career+with+your+father%3B+my+son+will+start+hi&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4e26cf045c7740dc88dea7af3a4f0597",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/when-shah-rukh-khan-revealed-nana-patekar-got-him-out-of-jail-he-was-very-sweet/ar-AA2dXrda",
+      "host": "r.jina.ai",
+      "http_operation_id": "5f7b31c7caf74400809e9d962170120d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.bollywoodhungama.com+EXCLUSIVE%3A+Rajat+Bedi+on+cloud+nine+with+The+Ba%2A%2A%2Ads+Of+Bollywood+response%3B+reveals+his+condition+to+Aryan%3A+%E2%80%9CI+told+him%2C+%E2%80%98I+started+my+career+with+your+father%3B+my+son+will+start+hi",
+      "host": "search.yahoo.com",
+      "http_operation_id": "51b63a38908149fa9add1f41ecdc2845",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "dbdd910eb6534808a1094a41762bfa7c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/feeds/press-release.xml",
+      "host": "www.ftc.gov",
+      "http_operation_id": "ad4a5bc77f7e4864ab7bfa5956de608b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.latestly.com",
+      "host": "www.latestly.com",
+      "http_operation_id": "77717765ab8a4ce79fb4bdf505659d43",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.freepressjournal.in",
+      "host": "www.freepressjournal.in",
+      "http_operation_id": "4cad8df6d1bd4cc0af6ae44086bc5ecc",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.freepressjournal.in/search?q=Shah+Rukh+Khan",
+      "host": "www.freepressjournal.in",
+      "http_operation_id": "e3c0babbbcb04a7fbf8b1776c87cf04a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.freepressjournal.in/search?q=Shah+Rukh+Khan",
+      "host": "r.jina.ai",
+      "http_operation_id": "6271dc640a8d48748465e08c599e7eac",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.latestly.com/topic/shah-rukh-khan/",
+      "host": "www.latestly.com",
+      "http_operation_id": "ba0cdf78ef854e5caf86b720a0005f42",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.freepressjournal.in/search?q=Shah+Rukh+Khan",
+      "host": "r.jina.ai",
+      "http_operation_id": "87650a4567ae4325b45445d40cda3aed",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.latestly.com/topic/shah-rukh-khan/",
+      "host": "r.jina.ai",
+      "http_operation_id": "0feb879db114432187aabda4729a66b5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.latestly.com/entertainment/bollywood/king-shah-rukh-khans-new-poster-sparks-backlash-over-alleged-heavy-ai-edits-and-dhurandhar-similarities-7658551.html",
+      "host": "www.latestly.com",
+      "http_operation_id": "748655de8d424b66be372e1b139ba0cc",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.latestly.com/search/?q=Shah+Rukh+Khan",
+      "host": "www.latestly.com",
+      "http_operation_id": "00a28caf66a4428b92a688f8f2a7d9b9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.latestly.com/search/?q=Shah+Rukh+Khan",
+      "host": "www.latestly.com",
+      "http_operation_id": "00a28caf66a4428b92a688f8f2a7d9b9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.latestly.com/search/?q=Shah+Rukh+Khan",
+      "host": "r.jina.ai",
+      "http_operation_id": "3b4b7b9967ab434693dccdd189d94c3a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.thenews.com.pk",
+      "host": "www.thenews.com.pk",
+      "http_operation_id": "ed27f638d0074a98a70a4b9f49a1b0b4",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.thenews.com.pk",
+      "host": "r.jina.ai",
+      "http_operation_id": "2f25cb3b7ce344bf88868c12fe39c1a3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.thenews.com.pk",
+      "host": "r.jina.ai",
+      "http_operation_id": "f4a80fbcb97b4b30ad3c821516d254b2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://tribune.com.pk",
+      "host": "tribune.com.pk",
+      "http_operation_id": "ea4b2cea240e4a6a86f4cab6dade2a75",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://tribune.com.pk",
+      "host": "r.jina.ai",
+      "http_operation_id": "2d1c47cc66e94861b3db88e1aa8f5b8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://tribune.com.pk",
+      "host": "r.jina.ai",
+      "http_operation_id": "9e411dcae1b44b6bb25ca00ae88139ef",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 83,
+  "admission_rejections": 1,
+  "pipeline_errors": []
+}

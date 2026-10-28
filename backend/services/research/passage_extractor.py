@@ -224,7 +224,9 @@ class PassageExtractor:
                 if (structural_heading or p in page.get("headings", [])
                         or p in {item.title, page.get("title")}):
                     continue
-                from backend.services.research.passage_records import public_statement_attribution
+                from backend.services.research.passage_records import public_statement_attribution, _transcript_speaker_section
+                if domain == "personal" and _transcript_speaker_section(raw_text, start, clean_target, start + len(p)) == "OTHER_OBSERVED_TRANSCRIPT_SPEAKER":
+                    continue
                 attributed_statement = domain == "personal" and bool(public_statement_attribution(item, p, clean_target))
                 if not matches_objective(p, domain) and not attributed_statement:
                     continue

@@ -66,6 +66,8 @@ def main():
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--case", action="append", default=[], help="agent:input; otherwise fixed twelve")
     parser.add_argument("--query", action="append", default=[], help="Optional per-case query override; supply one per case, in case order")
+    parser.add_argument("--case-manifest", type=Path, help="Explicit local cases: id, agent, input, query, optional category")
+    parser.add_argument("--observe-website-http", action="store_true", help="Read-only transport/admission ledger; no extra requests")
     parser.add_argument("--capture-from", type=Path, help="Offline reprocessing of saved native responses; no provider acquisition")
     parser.add_argument("--timeout-seconds", type=float, help="Explicit research deadline for a bounded authorized audit")
     parser.add_argument("--max-deep-reads", type=int, help="Total deep-reader attempt allowance per case")
@@ -93,6 +95,22 @@ def main():
             parser.error("Invalid agent:input")
         cases.append((agent, query.strip()))
     cases = cases or CASES
+    manifest = None
+    if args.case_manifest:
+        if args.case or args.query:
+            parser.error("Case manifest cannot be combined with --case/--query")
+        manifest = json.loads(args.case_manifest.read_text(encoding="utf-8"))
+        if not isinstance(manifest, list) or not 1 <= len(manifest) <= 16:
+            parser.error("Case manifest requires 1..16 explicit cases")
+        for row in manifest:
+            if (row.get("agent") not in {a for a, _ in CASES}
+                    or not re.fullmatch(r"[A-Z][1-4]", row.get("id", ""))
+                    or not isinstance(row.get("input"), str) or not 1 <= len(row["input"]) <= 80
+                    or not isinstance(row.get("query"), str) or not 1 <= len(row["query"]) <= 2000):
+                parser.error("Invalid explicit case")
+        if len({r["id"] for r in manifest}) != len(manifest):
+            parser.error("Case IDs must be unique")
+        cases = [(r["agent"], r["input"]) for r in manifest]
     if args.allow_live_ai and len(cases) > 5:
         parser.error("AI-authorized batches are limited to five investigations")
     if args.query and len(args.query) != len(cases):
@@ -141,7 +159,9 @@ def main():
         return re.sub(r"([?&](?:key|token|api_key)=)[^&\s\"\\]+", r"\1[REDACTED]", text, flags=re.I)
 
     def save(name, value):
-        (out / name).write_text(redact(json.dumps(value, ensure_ascii=False, indent=2)), encoding="utf-8")
+        # Provider metadata can contain escaped UTF-16 surrogate code units.
+        # ASCII JSON preserves them without a failed UTF-8 write losing proof.
+        (out / name).write_text(redact(json.dumps(value, ensure_ascii=True, indent=2)), encoding="utf-8")
 
     class SafeFormatter(logging.Formatter):
         def format(self, record):
@@ -207,11 +227,21 @@ def main():
                 payload["category"] = "business" if query == "electric vehicles" else "technology"
             if args.query and args.query[number - 1]:
                 payload["query"] = args.query[number - 1]
+            if manifest:
+                definition = manifest[number - 1]
+                payload["query"] = definition["query"]
+                if agent == "trending":
+                    payload["asset_name"] = query
+                    payload["category"] = definition.get("category", "general")
             print("START " + case_id + " " + query, flush=True)
             started = time.perf_counter()
             sampler = ResourceSampler()
             with ExitStack() as stack:
                 stack.enter_context(sampler)
+                observer = None
+                if args.observe_website_http:
+                    from scripts.audits.website_yield_observer import WebsiteYieldObserver
+                    observer = stack.enter_context(WebsiteYieldObserver())
                 if args.capture_from:
                     saved = json.loads((args.capture_from / (case_id + ".json")).read_text(encoding="utf-8"))
                     from backend.services.agent_reach.channels import EvidenceFragment, RetrievalResult, QueryExecutionRecord
@@ -277,6 +307,12 @@ def main():
                     stack.enter_context(patch("backend.services.agent_reach.agent_reach_service.search_channel", return_value=[]))
                     stack.enter_context(patch("backend.services.research.primary_source_escalator.primary_source_escalator.escalate", return_value=([], {"queries": [], "escalations": 0})))
                 response = client.post("/api/" + route + "/stream", json=payload)
+            # Preserve the exact sanitized response before parsing/exporting
+            # nested provider metadata. This is not another network request.
+            (out / (case_id + "-response.sse")).write_text(redact(response.text), encoding="utf-8")
+            if observer is not None:
+                save(case_id + "-http.json", observer.export())
+                save(case_id + "-observed-pools.json", observer.captured_pools())
             events = parse_events(response.text)
             native = next((event["data"]["result"] for event in events if event["event"] == "result"), {})
             save(case_id + "-events.json", events)
@@ -298,6 +334,9 @@ def main():
                    "source_titles": [e.get("title") for e in records],
                    "background_evidence_ids": native.get("background_evidence_ids", []),
                    "resource_usage": sampler.result()}
+            if manifest:
+                row.update(prompt_id=definition["id"], requested_prompt=definition["query"],
+                           effective_payload=payload, application_sha256=initial)
             summary["cases"].append(row)
             print(redact(json.dumps(row, ensure_ascii=True)), flush=True)
             save("summary.json", summary)

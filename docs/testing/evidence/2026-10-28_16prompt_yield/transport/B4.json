@@ -1,0 +1,1458 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "129b162a874a47a898c8c077285e1ac0",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+phishing+incident+report&format=rss",
+      "started_at": "2026-10-28T09:10:32.615348+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+phishing+incident+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1056,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+phishing+incident+report&format=rss"
+      ],
+      "duration_ms": 2738.396
+    },
+    {
+      "operation_id": "780675bbd9b54c209d9dfd3e44426a49",
+      "requested_url": "https://www.bing.com/search?q=Apple+phishing+incident+report&first=1",
+      "started_at": "2026-10-28T09:10:32.615742+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Apple+phishing+incident+report&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129800,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Apple+phishing+incident+report&first=1"
+      ],
+      "duration_ms": 3238.087
+    },
+    {
+      "operation_id": "d66b30300f70476ba20d4371e94b76ba",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:35.356629+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 111678,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3955.077
+    },
+    {
+      "operation_id": "3f45c45e9a724dc9a40cfe042cfdda43",
+      "requested_url": "https://search.yahoo.com/search?p=Apple+phishing+incident+report",
+      "started_at": "2026-10-28T09:10:35.900504+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5012.76
+    },
+    {
+      "operation_id": "1768d60a70da45dba5b06d875f95202e",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:40.913484+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 111678,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2725.73
+    },
+    {
+      "operation_id": "e1a933c98eb840dfaa53662709cd7596",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:39.375494+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5001.408
+    },
+    {
+      "operation_id": "bd6bb8e3fbe84d7c8c94eb72265f7a8b",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&format=rss",
+      "started_at": "2026-10-28T09:10:48.637703+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1947,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&format=rss"
+      ],
+      "duration_ms": 1758.947
+    },
+    {
+      "operation_id": "53cde5d4bb7c4d2d82ec288a9dcc1cb1",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:50.399079+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1509,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2036.886
+    },
+    {
+      "operation_id": "771cf81b062d4a40af6926994620b31d",
+      "requested_url": "https://www.moneycontrol.com/news/business/companies/apple-supplier-tata-electronics-tightens-internal-controls-after-data-breach-report-13959577.html",
+      "started_at": "2026-10-28T09:10:49.778600+00:00",
+      "http_status": 200,
+      "final_url": "https://www.moneycontrol.com/news/business/companies/apple-supplier-tata-electronics-tightens-internal-controls-after-data-breach-report-13959577.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 144533,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.moneycontrol.com/news/business/companies/apple-supplier-tata-electronics-tightens-internal-controls-after-data-breach-report-13959577.html"
+      ],
+      "duration_ms": 2973.46
+    },
+    {
+      "operation_id": "9b8d763ad08c4e0a9af0f04cf8dba75a",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&first=1",
+      "started_at": "2026-10-28T09:10:48.637278+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 136311,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&first=1"
+      ],
+      "duration_ms": 4870.676
+    },
+    {
+      "operation_id": "23bf0843b4ed452881c3690a15ba9be2",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:52.439613+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1509,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1121.841
+    },
+    {
+      "operation_id": "26921c4aa9c645a8bb1932cd582573e6",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source",
+      "started_at": "2026-10-28T09:10:53.561012+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5002.373
+    },
+    {
+      "operation_id": "6436ca5fd02e4fa9887a5de90037d8ed",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:58.563717+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1483,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1974.493
+    },
+    {
+      "operation_id": "73b1b3627b264c738a8b73479e1c96b0",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&first=1",
+      "started_at": "2026-10-28T09:11:02.173575+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 121528,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&first=1"
+      ],
+      "duration_ms": 3701.971
+    },
+    {
+      "operation_id": "e993d4bfd1864323a1f3d4472cf5ae29",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&first=1",
+      "started_at": "2026-10-28T09:11:02.173969+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133966,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&first=1"
+      ],
+      "duration_ms": 3921.514
+    },
+    {
+      "operation_id": "3106f712c09a4cd0ac3b7ac814425388",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com",
+      "started_at": "2026-10-28T09:11:06.142693+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 1952.216
+    },
+    {
+      "operation_id": "258035c46e614258a85632b42fa0673f",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:08.095241+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1519,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1243.314
+    },
+    {
+      "operation_id": "e4c0792960e742e2bb022361de8dc9e3",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov",
+      "started_at": "2026-10-28T09:11:05.902308+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.488
+    },
+    {
+      "operation_id": "8ad84be5cd284455a5701c93f8aab6cd",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:10.908151+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1513,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1927.755
+    },
+    {
+      "operation_id": "a86c7509f0bb41e8b4c03338fe32edaa",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:11:14.022795+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1348,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 3199.226
+    },
+    {
+      "operation_id": "a5bbec94e03c4180b33bc7e337537e82",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:17.225238+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20333,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2138.741
+    },
+    {
+      "operation_id": "3048be4ee85046f19bf993e75bca3c38",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:19.395282+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20333,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2239.072
+    },
+    {
+      "operation_id": "83f0dc67ebec4c62935b7675515b3f21",
+      "requested_url": "https://www.reddit.com/r/stocks/.rss",
+      "started_at": "2026-10-28T09:11:18.344399+00:00",
+      "http_status": 200,
+      "final_url": "https://www.reddit.com/r/stocks/.rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 87939,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.reddit.com/r/stocks/.rss"
+      ],
+      "duration_ms": 3576.906
+    },
+    {
+      "operation_id": "84185a23f99f4126b51ad17f2e929559",
+      "requested_url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "started_at": "2026-10-28T09:11:22.111213+00:00",
+      "http_status": 429,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "RATE_LIMITED",
+      "network_observed": true,
+      "duration_ms": 2878.961
+    },
+    {
+      "operation_id": "841b29cf97ed45c4ac59b1c78e37b418",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+credential+theft+warning&format=rss",
+      "started_at": "2026-10-28T09:11:25.017953+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+credential+theft+warning&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2363,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+credential+theft+warning&format=rss"
+      ],
+      "duration_ms": 2438.183
+    },
+    {
+      "operation_id": "86b8ecf33d5c43a4bb004e6858333bbc",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&first=1",
+      "started_at": "2026-10-28T09:11:25.180933+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5037.612
+    },
+    {
+      "operation_id": "1b2e70f7e25f4d80b2c838b1a75c72ae",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:27.471180+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 44226,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3487.231
+    },
+    {
+      "operation_id": "bae4993f29684e0c824531e0b210c3b3",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29",
+      "started_at": "2026-10-28T09:11:30.218873+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.498
+    },
+    {
+      "operation_id": "4ba7ef7138954d20899801eeb8498b7d",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:35.233752+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1631,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3289.077
+    },
+    {
+      "operation_id": "daec753cf4a14b5691c827d0ef44299f",
+      "requested_url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&first=1",
+      "started_at": "2026-10-28T09:11:40.367356+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.133
+    },
+    {
+      "operation_id": "2fcf34b1a1104b9ba43a3870cbb140ec",
+      "requested_url": "https://www.bing.com/search?q=Apple+credential+theft+warning&first=1",
+      "started_at": "2026-10-28T09:11:40.366942+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.071
+    },
+    {
+      "operation_id": "8e086557bc484147bd6814e054fb01fa",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29",
+      "started_at": "2026-10-28T09:11:45.374818+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5014.38
+    },
+    {
+      "operation_id": "13716e38fd674344ac63379afc62eb1c",
+      "requested_url": "https://search.yahoo.com/search?p=Apple+credential+theft+warning",
+      "started_at": "2026-10-28T09:11:45.375187+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5020.7
+    },
+    {
+      "operation_id": "ad911b6f16b44782aded0013acc921bd",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:50.389507+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1615,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1029.287
+    },
+    {
+      "operation_id": "6f36ce216e1d4b23beae6709fda69db6",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:50.396081+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 44226,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2260.461
+    },
+    {
+      "operation_id": "25573554012b4ada80d4add73caff3d1",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+phishing+allegation+response&format=rss",
+      "started_at": "2026-10-28T09:11:54.182223+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+phishing+allegation+response&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1076,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+phishing+allegation+response&format=rss"
+      ],
+      "duration_ms": 2037.332
+    },
+    {
+      "operation_id": "a111d278f508477faedf47f8ae291c7d",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:11:54.180195+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1348,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 3076.665
+    },
+    {
+      "operation_id": "5c8696e8e6744bc4b180d973f631792b",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+phishing+allegation+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:56.222174+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+phishing+allegation+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 12995,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+phishing+allegation+response&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2384.563
+    },
+    {
+      "operation_id": "ad17216ec08b4610b70c59aa1860cfe0",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:11:57.259233+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13699,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3882.466
+    },
+    {
+      "operation_id": "7b7e4443b1f0421a8ae931e513405ac8",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+phishing+allegation+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:12:01.158844+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 1463.809
+    },
+    {
+      "operation_id": "7629d8bdcfc0456e84545c272daea3bf",
+      "requested_url": "https://www.bing.com/search?q=Apple+phishing+allegation+response&first=1",
+      "started_at": "2026-10-28T09:12:01.158475+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 1464.641
+    },
+    {
+      "operation_id": "ba4f4d401b504d14baa480700ef7af40",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures&first=1",
+      "started_at": "2026-10-28T09:12:02.637178+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130547,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures&first=1"
+      ],
+      "duration_ms": 4532.227
+    },
+    {
+      "operation_id": "1da014315eb54c2e88b7edcd46edcea7",
+      "requested_url": "https://www.linkedin.com",
+      "started_at": "2026-10-28T09:12:02.884445+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.885
+    },
+    {
+      "operation_id": "00c3d5f9ecb848bebd92c4e77fa23382",
+      "requested_url": "https://r.jina.ai/https://www.linkedin.com",
+      "started_at": "2026-10-28T09:12:07.889619+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1746.258
+    },
+    {
+      "operation_id": "d84f3ea50cbc4409a2745eebc75f30cf",
+      "requested_url": "https://r.jina.ai/https://www.linkedin.com",
+      "started_at": "2026-10-28T09:12:09.636223+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1137.999
+    },
+    {
+      "operation_id": "b0d7a2d1e9ce4c0894cd63ed5c292c45",
+      "requested_url": "https://www.ftc.gov/robots.txt",
+      "started_at": "2026-10-28T09:12:10.793021+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/robots.txt",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3056,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/robots.txt"
+      ],
+      "duration_ms": 995.947
+    },
+    {
+      "operation_id": "e8379b460e48405a9b8e330f3166e616",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures",
+      "started_at": "2026-10-28T09:12:07.216331+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4574.5
+    },
+    {
+      "operation_id": "77acda1020c442c69e50da31dec5b33d",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:12:11.791068+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 852.303
+    },
+    {
+      "operation_id": "30a303d5b3a94cf3a8882c62cdc8781a",
+      "requested_url": "https://www.bing.com/search?q=site%3Acyberguy.com+Apple+spyware+warning+hits+iPhones+in+110+countries&first=1",
+      "started_at": "2026-10-28T09:12:12.658521+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.807
+    },
+    {
+      "operation_id": "6875275672fe420c8cca65e8c84352bf",
+      "requested_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "started_at": "2026-10-28T09:12:16.791522+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 11709,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/feeds/press-release.xml"
+      ],
+      "duration_ms": 1951.948
+    },
+    {
+      "operation_id": "deaee225de9e43188d850fe7b42caf0b",
+      "requested_url": "https://www.cultofmac.com",
+      "started_at": "2026-10-28T09:12:19.068565+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cultofmac.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 54653,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cultofmac.com"
+      ],
+      "duration_ms": 3400.168
+    },
+    {
+      "operation_id": "d2e18b180b034729af87fbbe7849973b",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Acyberguy.com+Apple+spyware+warning+hits+iPhones+in+110+countries",
+      "started_at": "2026-10-28T09:12:17.661586+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.366
+    },
+    {
+      "operation_id": "4e041b71ddd04c55a82a3b377bb26465",
+      "requested_url": "https://cyberguy.com",
+      "started_at": "2026-10-28T09:12:23.381857+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 2641.453
+    },
+    {
+      "operation_id": "b1ea38234e434e25b25c6b109005b866",
+      "requested_url": "https://www.cultofmac.com/apple-watch-series-11",
+      "started_at": "2026-10-28T09:12:23.872967+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cultofmac.com/apple-watch-series-11",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 57740,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cultofmac.com/apple-watch-series-11"
+      ],
+      "duration_ms": 3085.018
+    },
+    {
+      "operation_id": "dee833b60c8b4dfa839bf21a75c116e2",
+      "requested_url": "https://www.cultofmac.com/apple-tv-how-to",
+      "started_at": "2026-10-28T09:12:28.251074+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cultofmac.com/apple-tv-how-to",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 53995,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cultofmac.com/apple-tv-how-to"
+      ],
+      "duration_ms": 2275.016
+    },
+    {
+      "operation_id": "f5b90a7051104e32ac459144c4e04cc4",
+      "requested_url": "https://www.cultofmac.com/apple-watch-how-to",
+      "started_at": "2026-10-28T09:12:31.699462+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cultofmac.com/apple-watch-how-to",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 60829,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cultofmac.com/apple-watch-how-to"
+      ],
+      "duration_ms": 4792.341
+    },
+    {
+      "operation_id": "1ce949835b4841bba647b5ea9c49f636",
+      "requested_url": "https://www.cultofmac.com/reviews/best-apple-watch-bands",
+      "started_at": "2026-10-28T09:12:38.089337+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.18
+    },
+    {
+      "operation_id": "17cd943400c74fa497e01f4779c36963",
+      "requested_url": "https://r.jina.ai/https://www.cultofmac.com/reviews/best-apple-watch-bands",
+      "started_at": "2026-10-28T09:12:43.093793+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.836
+    },
+    {
+      "operation_id": "294c0aba9d6b40489179433e60fd91b5",
+      "requested_url": "https://r.jina.ai/https://www.cultofmac.com/reviews/best-apple-watch-bands",
+      "started_at": "2026-10-28T09:12:48.107031+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 4989.209
+    },
+    {
+      "operation_id": "efdbae8dfc6246029a9f92c06a0ce3ad",
+      "requested_url": "https://www.cultofmac.com/apple-deals",
+      "started_at": "2026-10-28T09:12:53.123469+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5021.893
+    },
+    {
+      "operation_id": "745a08738c8f4502b5ed06c5455f2770",
+      "requested_url": "https://r.jina.ai/https://www.cultofmac.com/apple-deals",
+      "started_at": "2026-10-28T09:12:58.145654+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.568
+    },
+    {
+      "operation_id": "06cefc177a2a4064b292c9efd973f2ca",
+      "requested_url": "https://r.jina.ai/https://www.cultofmac.com/apple-deals",
+      "started_at": "2026-10-28T09:13:03.158535+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4976.278
+    },
+    {
+      "operation_id": "ceff88a932d04b6eaa14d85acb262846",
+      "requested_url": "https://www.cultofmac.com/apple-tv-reviews",
+      "started_at": "2026-10-28T09:13:08.155831+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5019.847
+    },
+    {
+      "operation_id": "4581d3307b8548468f0bfffcae00649b",
+      "requested_url": "https://r.jina.ai/https://www.cultofmac.com/apple-tv-reviews",
+      "started_at": "2026-10-28T09:13:13.175975+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.779
+    },
+    {
+      "operation_id": "e059b36cabef42a59e1759a27440cc8d",
+      "requested_url": "https://r.jina.ai/https://www.cultofmac.com/apple-tv-reviews",
+      "started_at": "2026-10-28T09:13:18.191107+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4971.226
+    },
+    {
+      "operation_id": "37cc920caaf5403dbf797af9d3d7c91e",
+      "requested_url": "https://www.cultofmac.com/apple-watch",
+      "started_at": "2026-10-28T09:13:23.196976+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cultofmac.com/apple-watch",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 66847,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cultofmac.com/apple-watch"
+      ],
+      "duration_ms": 4388.645
+    },
+    {
+      "operation_id": "67217c42f0f94c0f8799829744c53eaf",
+      "requested_url": "https://www.foxnews.com",
+      "started_at": "2026-10-28T09:13:30.320637+00:00",
+      "http_status": 200,
+      "final_url": "https://www.foxnews.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 80953,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.foxnews.com"
+      ],
+      "duration_ms": 3817.879
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+phishing+incident+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "129b162a874a47a898c8c077285e1ac0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Apple+phishing+incident+report&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "780675bbd9b54c209d9dfd3e44426a49",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d66b30300f70476ba20d4371e94b76ba",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+phishing+incident+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3f45c45e9a724dc9a40cfe042cfdda43",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e1a933c98eb840dfaa53662709cd7596",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+phishing+incident+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3f45c45e9a724dc9a40cfe042cfdda43",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1768d60a70da45dba5b06d875f95202e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "9b8d763ad08c4e0a9af0f04cf8dba75a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "bd6bb8e3fbe84d7c8c94eb72265f7a8b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/news/business/companies/apple-supplier-tata-electronics-tightens-internal-controls-after-data-breach-report-13959577.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "771cf81b062d4a40af6926994620b31d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "53cde5d4bb7c4d2d82ec288a9dcc1cb1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "23bf0843b4ed452881c3690a15ba9be2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "26921c4aa9c645a8bb1932cd582573e6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2Bfake%2BApple%2Bcustomer-support%2Bservices%252C%2Bphishing%2Band%2BApple-brand%2Bimpersonation.%2BDistinguish%2Bspecific%2Bobserved%2Bcampaigns%2Bfrom%2Bgeneral%2Bfraud-prevention%2Bguidance.%2Bofficial%2Bsource&_bvc=1.292fc01f1fbcb6407796b5ae8cf9ccf0b88f4bf437d368c8ebe13bd80ae4b5ef",
+      "host": "search.yahoo.com",
+      "http_operation_id": "26921c4aa9c645a8bb1932cd582573e6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "26921c4aa9c645a8bb1932cd582573e6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "6436ca5fd02e4fa9887a5de90037d8ed",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "73b1b3627b264c738a8b73479e1c96b0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "e993d4bfd1864323a1f3d4472cf5ae29",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e4c0792960e742e2bb022361de8dc9e3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3106f712c09a4cd0ac3b7ac814425388",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3106f712c09a4cd0ac3b7ac814425388",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "258035c46e614258a85632b42fa0673f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2Bfake%2BApple%2Bcustomer-support%2Bservices%252C%2Bphishing%2Band%2BApple-brand%2Bimpersonation.%2BDistinguish%2Bspecific%2Bobserved%2Bcampaigns%2Bfrom%2Bgeneral%2Bfraud-prevention%2Bguidance.%2Breported%2Bincident%2Bsite%253Aftc.gov&_bvc=1.b0e1945ce8d7895b70c79d53dee43387b115acfe72e9f5f7b563b6f9379f0975",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e4c0792960e742e2bb022361de8dc9e3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2Bfake%2BApple%2Bcustomer-support%2Bservices%252C%2Bphishing%2Band%2BApple-brand%2Bimpersonation.%2BDistinguish%2Bspecific%2Bobserved%2Bcampaigns%2Bfrom%2Bgeneral%2Bfraud-prevention%2Bguidance.%2Breported%2Bincident%2Bsite%253Aftc.gov&_bvc=2.a972df682ea9f8c275979ef67bda368cac55ce33b020eada76b68aec3eaac372",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e4c0792960e742e2bb022361de8dc9e3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8ad84be5cd284455a5701c93f8aab6cd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "a86c7509f0bb41e8b4c03338fe32edaa",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a5bbec94e03c4180b33bc7e337537e82",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/stocks/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "83f0dc67ebec4c62935b7675515b3f21",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+phishing+incident+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "3048be4ee85046f19bf993e75bca3c38",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "84185a23f99f4126b51ad17f2e929559",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+credential+theft+warning&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "841b29cf97ed45c4ac59b1c78e37b418",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "86b8ecf33d5c43a4bb004e6858333bbc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1b2e70f7e25f4d80b2c838b1a75c72ae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bae4993f29684e0c824531e0b210c3b3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2Bfake%2BApple%2Bcustomer-support%2Bservices%252C%2Bphishing%2Band%2BApple-brand%2Bimpersonation.%2BDistinguish%2Bspecific%2Bobserved%2Bcampaigns%2Bfrom%2Bgeneral%2Bfraud-prevention%2Bguidance.%2Blatest%2Bindependent%2Breporting%2B%2528site%253Ajustice.gov%2BOR%2Bsite%253Acbp.gov%2BOR%2Bsite%253Aeuropol.europa.eu%2529&_bvc=1.3047c30f47f8c685434da297a726700964debe0c70a9acd22a09f2fb11986811",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bae4993f29684e0c824531e0b210c3b3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Ajustice.gov+OR+site%3Acbp.gov+OR+site%3Aeuropol.europa.eu%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4ba7ef7138954d20899801eeb8498b7d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Apple+credential+theft+warning&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "2fcf34b1a1104b9ba43a3870cbb140ec",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "daec753cf4a14b5691c827d0ef44299f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8e086557bc484147bd6814e054fb01fa",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+credential+theft+warning",
+      "host": "search.yahoo.com",
+      "http_operation_id": "13716e38fd674344ac63379afc62eb1c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8e086557bc484147bd6814e054fb01fa",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Breported%2Bfake%2BApple%2Bcustomer-support%2Bservices%252C%2Bphishing%2Band%2BApple-brand%2Bimpersonation.%2BDistinguish%2Bspecific%2Bobserved%2Bcampaigns%2Bfrom%2Bgeneral%2Bfraud-prevention%2Bguidance.%2Blatest%2Bindependent%2Breporting%2B%2528site%253Aftc.gov%2BOR%2Bsite%253Aeuropa.eu%2BOR%2Bsite%253Aaccc.gov.au%2529&_bvc=1.c1980fc5c4065a74f2c8062acb75d7a15b0c640b7c57afc068a92fdf4591831e",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8e086557bc484147bd6814e054fb01fa",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+reported+fake+Apple+customer-support+services%2C+phishing+and+Apple-brand+impersonation.+Distinguish+specific+observed+campaigns+from+general+fraud-prevention+guidance.+latest+independent+reporting+%28site%3Aftc.gov+OR+site%3Aeuropa.eu+OR+site%3Aaccc.gov.au%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ad911b6f16b44782aded0013acc921bd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "6f36ce216e1d4b23beae6709fda69db6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "a111d278f508477faedf47f8ae291c7d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+phishing+allegation+response&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "25573554012b4ada80d4add73caff3d1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+phishing+allegation+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5c8696e8e6744bc4b180d973f631792b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+credential+theft+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ad17216ec08b4610b70c59aa1860cfe0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Apple+phishing+allegation+response&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "7629d8bdcfc0456e84545c272daea3bf",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+phishing+allegation+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "7b7e4443b1f0421a8ae931e513405ac8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ba4f4d401b504d14baa480700ef7af40",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.linkedin.com",
+      "host": "www.linkedin.com",
+      "http_operation_id": "1da014315eb54c2e88b7edcd46edcea7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e8379b460e48405a9b8e330f3166e616",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.linkedin.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "00c3d5f9ecb848bebd92c4e77fa23382",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.linkedin.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "d84f3ea50cbc4409a2745eebc75f30cf",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e8379b460e48405a9b8e330f3166e616",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.cultofmac.com%2BApple%2Bfaces%2Bfraud%2Ballegation%2Bover%2BiCloud%2BPrivate%2BRelay%2Bfailures&_bvc=1.a5d774b31b01d2c5e62917b8bb722eeef5316dd1914a6d3cb44751710a34f5d7",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e8379b460e48405a9b8e330f3166e616",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/robots.txt",
+      "host": "www.ftc.gov",
+      "http_operation_id": "b0d7a2d1e9ce4c0894cd63ed5c292c45",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.cultofmac.com+Apple+faces+fraud+allegation+over+iCloud+Private+Relay+failures&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "77acda1020c442c69e50da31dec5b33d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Acyberguy.com+Apple+spyware+warning+hits+iPhones+in+110+countries&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "30a303d5b3a94cf3a8882c62cdc8781a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/feeds/press-release.xml",
+      "host": "www.ftc.gov",
+      "http_operation_id": "6875275672fe420c8cca65e8c84352bf",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Acyberguy.com+Apple+spyware+warning+hits+iPhones+in+110+countries",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d2e18b180b034729af87fbbe7849973b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "deaee225de9e43188d850fe7b42caf0b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Acyberguy.com%2BApple%2Bspyware%2Bwarning%2Bhits%2BiPhones%2Bin%2B110%2Bcountries&_bvc=1.b8c2e43289e52ed07bacbf3f48b58355860fdc6a5e9010aa18a3e44a7fca3068",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d2e18b180b034729af87fbbe7849973b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Acyberguy.com%2BApple%2Bspyware%2Bwarning%2Bhits%2BiPhones%2Bin%2B110%2Bcountries&_bvc=2.ae56935c6745ab8164522ef2f31015063084670a4e623115cc7eba44dbcab082",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d2e18b180b034729af87fbbe7849973b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://cyberguy.com",
+      "host": "cyberguy.com",
+      "http_operation_id": "4e041b71ddd04c55a82a3b377bb26465",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com/apple-watch-series-11",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "b1ea38234e434e25b25c6b109005b866",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com/apple-tv-how-to",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "dee833b60c8b4dfa839bf21a75c116e2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com/apple-watch-how-to",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "f5b90a7051104e32ac459144c4e04cc4",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com/reviews/best-apple-watch-bands",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "1ce949835b4841bba647b5ea9c49f636",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cultofmac.com/reviews/best-apple-watch-bands",
+      "host": "r.jina.ai",
+      "http_operation_id": "17cd943400c74fa497e01f4779c36963",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cultofmac.com/reviews/best-apple-watch-bands",
+      "host": "r.jina.ai",
+      "http_operation_id": "294c0aba9d6b40489179433e60fd91b5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cultofmac.com/reviews/best-apple-watch-bands",
+      "host": "r.jina.ai",
+      "http_operation_id": "294c0aba9d6b40489179433e60fd91b5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com/apple-deals",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "efdbae8dfc6246029a9f92c06a0ce3ad",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cultofmac.com/apple-deals",
+      "host": "r.jina.ai",
+      "http_operation_id": "745a08738c8f4502b5ed06c5455f2770",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cultofmac.com/apple-deals",
+      "host": "r.jina.ai",
+      "http_operation_id": "06cefc177a2a4064b292c9efd973f2ca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com/apple-tv-reviews",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "ceff88a932d04b6eaa14d85acb262846",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cultofmac.com/apple-tv-reviews",
+      "host": "r.jina.ai",
+      "http_operation_id": "4581d3307b8548468f0bfffcae00649b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cultofmac.com/apple-tv-reviews",
+      "host": "r.jina.ai",
+      "http_operation_id": "e059b36cabef42a59e1759a27440cc8d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cultofmac.com/apple-watch",
+      "host": "www.cultofmac.com",
+      "http_operation_id": "37cc920caaf5403dbf797af9d3d7c91e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.foxnews.com",
+      "host": "www.foxnews.com",
+      "http_operation_id": "67217c42f0f94c0f8799829744c53eaf",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 81,
+  "admission_rejections": 0,
+  "pipeline_errors": []
+}

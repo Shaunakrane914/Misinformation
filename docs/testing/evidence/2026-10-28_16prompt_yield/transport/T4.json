@@ -1,0 +1,1533 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "cf89451b08e94bf2a572d3e552dab09d",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:13:36.884829+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5139,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 3309.215
+    },
+    {
+      "operation_id": "8fdf3ecdf2dc485d8c928f37237339bf",
+      "requested_url": "https://www.bing.com/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T09:13:36.885202+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132023,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 4518.777
+    },
+    {
+      "operation_id": "840094cc88484cfcb4756fe9570342c2",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&format=rss",
+      "started_at": "2026-10-28T09:13:41.475998+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1872,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&format=rss"
+      ],
+      "duration_ms": 2082.489
+    },
+    {
+      "operation_id": "fb4acfef22ce4f5cb9d123f39d118ed2",
+      "requested_url": "https://www.cricinfo.com/cricketers/virat-kohli-253802",
+      "started_at": "2026-10-28T09:13:42.327781+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1634.539
+    },
+    {
+      "operation_id": "ab1f5c66e3314ea58a2e81af7c02e88c",
+      "requested_url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&first=1",
+      "started_at": "2026-10-28T09:13:41.475600+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 136618,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&first=1"
+      ],
+      "duration_ms": 4014.764
+    },
+    {
+      "operation_id": "6810d2ce6f0248f69e787b0d93310798",
+      "requested_url": "https://www.cricbuzz.com/profiles/1413/virat-kohli",
+      "started_at": "2026-10-28T09:13:41.826575+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cricbuzz.com/profiles/1413/virat-kohli",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 88224,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cricbuzz.com/profiles/1413/virat-kohli"
+      ],
+      "duration_ms": 3883.286
+    },
+    {
+      "operation_id": "1d4def5d1ef64d6483af317977bd2fe6",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:13:43.561186+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1479,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2660.652
+    },
+    {
+      "operation_id": "00e11f25205d45beb5e55e89f4c7e567",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:13:46.338195+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1479,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1418.73
+    },
+    {
+      "operation_id": "81bfdcefc7d14f0fb65d66ecf263ce3b",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com",
+      "started_at": "2026-10-28T09:13:45.518248+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3651.831
+    },
+    {
+      "operation_id": "a105db7c10d9432da9655f0f29cce880",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:13:49.170352+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1455,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1743.517
+    },
+    {
+      "operation_id": "233c12ac4723464aabd7a96c344c6d80",
+      "requested_url": "https://www.indiatvnews.com/sports/cricket/virat-kohli-climbs-up-on-unwanted-golden-duck-record-after-latest-first-ball-nought-in-rcb-vs-mi-ipl-2026-2026-05-10-1040616",
+      "started_at": "2026-10-28T09:13:46.413926+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.269
+    },
+    {
+      "operation_id": "ada77b9f0b4d4fda9d38b6565d25dcec",
+      "requested_url": "https://www.outlookindia.com/sports/cricket/rcb-vs-mi-ipl-2026-virat-kohli-consecutive-ducks",
+      "started_at": "2026-10-28T09:13:46.827256+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.457
+    },
+    {
+      "operation_id": "ad27b51e75d141e3810634c01bfc8831",
+      "requested_url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/virat-kohli-climbs-up-on-unwanted-golden-duck-record-after-latest-first-ball-nought-in-rcb-vs-mi-ipl-2026-2026-05-10-1040616",
+      "started_at": "2026-10-28T09:13:51.416510+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.876
+    },
+    {
+      "operation_id": "057c7c32b6594b369bc3fc217f27f30c",
+      "requested_url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&first=1",
+      "started_at": "2026-10-28T09:13:53.313889+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 137234,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&first=1"
+      ],
+      "duration_ms": 3206.239
+    },
+    {
+      "operation_id": "12e2cf90da914205bd0b65c6b6b8a4f7",
+      "requested_url": "https://r.jina.ai/https://www.outlookindia.com/sports/cricket/rcb-vs-mi-ipl-2026-virat-kohli-consecutive-ducks",
+      "started_at": "2026-10-28T09:13:51.829996+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.032
+    },
+    {
+      "operation_id": "11edc95072c947809c0a47ad96e2b5f1",
+      "requested_url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source&first=1",
+      "started_at": "2026-10-28T09:13:53.314351+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.669
+    },
+    {
+      "operation_id": "fede308121dd4ac79a1521a36f28a1f8",
+      "requested_url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/virat-kohli-climbs-up-on-unwanted-golden-duck-record-after-latest-first-ball-nought-in-rcb-vs-mi-ipl-2026-2026-05-10-1040616",
+      "started_at": "2026-10-28T09:13:56.430755+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4997.913
+    },
+    {
+      "operation_id": "0dc6985f2eed4cf3ad085ab7ad3b3f5e",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org",
+      "started_at": "2026-10-28T09:13:56.592418+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5010.815
+    },
+    {
+      "operation_id": "6832299a7f824e2f8d2b58d0f9b38424",
+      "requested_url": "https://r.jina.ai/https://www.outlookindia.com/sports/cricket/rcb-vs-mi-ipl-2026-virat-kohli-consecutive-ducks",
+      "started_at": "2026-10-28T09:13:56.837386+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.228
+    },
+    {
+      "operation_id": "480de4f2261742a49e57b35cc563308e",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:01.603596+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1465,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1408.879
+    },
+    {
+      "operation_id": "42d0da5338844eca842ca6fe9577b371",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source",
+      "started_at": "2026-10-28T09:13:58.328367+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.124
+    },
+    {
+      "operation_id": "576494f85f2440b69d046d592d3a1472",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:03.334804+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1453,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2843.15
+    },
+    {
+      "operation_id": "22367d4fb7104af38a7aae16cf22a8c5",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:14:08.221966+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1586,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2139.327
+    },
+    {
+      "operation_id": "1baf1b5639d042f5b7de6055bca766a1",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:14:08.221548+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2798,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 3583.26
+    },
+    {
+      "operation_id": "5a54fb78df144f63ad7b26f1fef7f108",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:10.368678+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 8857,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1626.359
+    },
+    {
+      "operation_id": "9b2b69c598744bd0bce130d1db61f81e",
+      "requested_url": "https://www.bing.com/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&first=1",
+      "started_at": "2026-10-28T09:14:12.323666+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133881,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&first=1"
+      ],
+      "duration_ms": 3586.064
+    },
+    {
+      "operation_id": "7c1992a119134a25a9d7973e98b39b49",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:14:12.017629+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1566,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 4208.823
+    },
+    {
+      "operation_id": "a64d0ac73bb54701be5ce21cbf99340a",
+      "requested_url": "https://www.bing.com/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T09:14:12.018018+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130354,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 4900.399
+    },
+    {
+      "operation_id": "2da8fe0f20974b15bdbd049b25b2bd9e",
+      "requested_url": "https://www.indiatvnews.com/sports/cricket/when-will-virat-kohli-be-in-action-next-after-winning-ipl-2026-for-rcb-2026-06-01-1043225",
+      "started_at": "2026-10-28T09:14:12.482130+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com/sports/cricket/when-will-virat-kohli-be-in-action-next-after-winning-ipl-2026-for-rcb-2026-06-01-1043225",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 66597,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com/sports/cricket/when-will-virat-kohli-be-in-action-next-after-winning-ipl-2026-for-rcb-2026-06-01-1043225"
+      ],
+      "duration_ms": 4733.756
+    },
+    {
+      "operation_id": "aa7afc2024ae4304b229e9dc3ce5e532",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:16.228849+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4351,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2875.668
+    },
+    {
+      "operation_id": "ff6464885a294ec5820b4055304e7f8e",
+      "requested_url": "https://www.indiatvnews.com/topic/virat-kohli",
+      "started_at": "2026-10-28T09:14:17.579732+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com/topic/virat-kohli",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 58654,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com/topic/virat-kohli"
+      ],
+      "duration_ms": 1916.74
+    },
+    {
+      "operation_id": "46ab8c21f4b5489fb8db226d828e1aca",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29",
+      "started_at": "2026-10-28T09:14:15.961715+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4139.12
+    },
+    {
+      "operation_id": "c87f20426e8147ef96b195480104ecb6",
+      "requested_url": "https://www.bing.com/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T09:14:19.122407+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130807,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 2315.865
+    },
+    {
+      "operation_id": "9bf5bc5235c947f0b41ac4cbd489d464",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:20.101115+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 64655,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2154.761
+    },
+    {
+      "operation_id": "3f76e4404c83457c9212d076b72b8fa6",
+      "requested_url": "https://www.indiatvnews.com/sports/cricket/virat-kohlis-first-player-of-the-match-award-in-ipl-playoffs-sees-down-huge-record-2026-06-01-1043202",
+      "started_at": "2026-10-28T09:14:19.863605+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com/sports/cricket/virat-kohlis-first-player-of-the-match-award-in-ipl-playoffs-sees-down-huge-record-2026-06-01-1043202",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 66149,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com/sports/cricket/virat-kohlis-first-player-of-the-match-award-in-ipl-playoffs-sees-down-huge-record-2026-06-01-1043202"
+      ],
+      "duration_ms": 2575.07
+    },
+    {
+      "operation_id": "ff2c012cf4324f43b939719ada4aad3e",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:14:19.122801+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1304,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 4155.017
+    },
+    {
+      "operation_id": "e9651d9737cc4b0ea2b01da287b2ef39",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:23.280085+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 19427,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1922.695
+    },
+    {
+      "operation_id": "3946a23c19ba49df8d7d8ef5db59ac53",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:14:25.227795+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1319,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 1123.897
+    },
+    {
+      "operation_id": "6f58be502a884291b102d35380da42c2",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:14:25.228171+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1304,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 1331.521
+    },
+    {
+      "operation_id": "3fe82e38e6f84838990461daf71ba2d5",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:26.354033+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1253,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2029.993
+    },
+    {
+      "operation_id": "755f5189e8a24e1f921eacfbb32b662d",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:28.386673+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1253,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1031.993
+    },
+    {
+      "operation_id": "b959025e537e42ad8f0df5c82bcc7a34",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:26.563607+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 19427,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4207.677
+    },
+    {
+      "operation_id": "ff201bc6e879487f9071b09de8166161",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:14:31.502656+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1319,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2846.043
+    },
+    {
+      "operation_id": "1b9cdae4c90d4f43aea497712921500e",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:34.351072+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.101
+    },
+    {
+      "operation_id": "ce9e0fa4124f4ed6ab69a503cbb9fa33",
+      "requested_url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:34.351314+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.08
+    },
+    {
+      "operation_id": "d696c34bbdb44a06921a3c112082045e",
+      "requested_url": "https://www.bing.com/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T09:14:31.501798+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130709,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 4704.759
+    },
+    {
+      "operation_id": "9374ef5fadd642549d2673688fcbec08",
+      "requested_url": "https://www.bing.com/news/search?q=Virat+Kohli+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:14:36.602582+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Virat+Kohli+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 7369,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Virat+Kohli+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2553.715
+    },
+    {
+      "operation_id": "2bfa9a60db14420e87e945c0e8ee1646",
+      "requested_url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Virat+Kohli%22+sourcelang%3Aeng&mode=ArtList&maxrecords=6&format=json&sort=DateDesc&timespan=48h",
+      "started_at": "2026-10-28T09:14:36.731666+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 4505.788
+    },
+    {
+      "operation_id": "fd35ab8c671c451fa145ec99a305dfab",
+      "requested_url": "https://zeenews.india.com/cricket/virat-kohli-creates-history-in-ipl-2026-final-rcb-star-joins-elite-200-sixes-club-after-title-triumph-over-gt-3052185.html",
+      "started_at": "2026-10-28T09:14:41.631278+00:00",
+      "http_status": 200,
+      "final_url": "https://zeenews.india.com/cricket/virat-kohli-creates-history-in-ipl-2026-final-rcb-star-joins-elite-200-sixes-club-after-title-triumph-over-gt-3052185.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 36407,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://zeenews.india.com/cricket/virat-kohli-creates-history-in-ipl-2026-final-rcb-star-joins-elite-200-sixes-club-after-title-triumph-over-gt-3052185.html"
+      ],
+      "duration_ms": 2450.811
+    },
+    {
+      "operation_id": "6892914573ae47ed97b2f90112111147",
+      "requested_url": "https://www.bing.com/search?q=site%3Aindianexpress.com+Virat+Kohli+quietly+watches+as+Anushka+Sharma+claps+along+to+kirtan%2C+chants+%E2%80%98Radhe+Radhe%E2%80%99&first=1",
+      "started_at": "2026-10-28T09:14:41.265688+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.384
+    },
+    {
+      "operation_id": "4379c2dbc9994ad08835a762df32ffc0",
+      "requested_url": "https://zeenews.india.com/cricket/virat-kohli-creates-ipl-history-becomes-first-player-to-win-two-titles-with-650-run-seasons-3051922.html",
+      "started_at": "2026-10-28T09:14:44.360632+00:00",
+      "http_status": 200,
+      "final_url": "https://zeenews.india.com/cricket/virat-kohli-creates-ipl-history-becomes-first-player-to-win-two-titles-with-650-run-seasons-3051922.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 36271,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://zeenews.india.com/cricket/virat-kohli-creates-ipl-history-becomes-first-player-to-win-two-titles-with-650-run-seasons-3051922.html"
+      ],
+      "duration_ms": 3484.46
+    },
+    {
+      "operation_id": "45f39c7f767b45d9b401cc38626badb6",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Aindianexpress.com+Virat+Kohli+quietly+watches+as+Anushka+Sharma+claps+along+to+kirtan%2C+chants+%E2%80%98Radhe+Radhe%E2%80%99",
+      "started_at": "2026-10-28T09:14:46.280480+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4864.628
+    },
+    {
+      "operation_id": "1fb095ebedbe4b6aaf86f30f0284085a",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com+Virat+Kohli+quietly+watches+as+Anushka+Sharma+claps+along+to+kirtan%2C+chants+%E2%80%98Radhe+Radhe%E2%80%99&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:51.145379+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 143.05
+    },
+    {
+      "operation_id": "192c762102094c78a6efe719f087eacd",
+      "requested_url": "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohli-dons-special-t-shirt-dances-with-anushka-sharma-after-rcbs-ipl-2026-title-win-watch/articleshow/131432168.cms",
+      "started_at": "2026-10-28T09:14:48.094085+00:00",
+      "http_status": 200,
+      "final_url": "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohli-dons-special-t-shirt-dances-with-anushka-sharma-after-rcbs-ipl-2026-title-win-watch/articleshow/131432168.cms",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 60680,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohli-dons-special-t-shirt-dances-with-anushka-sharma-after-rcbs-ipl-2026-title-win-watch/articleshow/131432168.cms"
+      ],
+      "duration_ms": 4696.494
+    },
+    {
+      "operation_id": "4c8825f78c644733b2eb732e605d92a2",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug&first=1",
+      "started_at": "2026-10-28T09:14:51.311179+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 157984,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug&first=1"
+      ],
+      "duration_ms": 4323.605
+    },
+    {
+      "operation_id": "4a26ab2d99d14ad6889f7504c5fea6ba",
+      "requested_url": "https://www.rediff.com/cricket/report/ipl-2026-irfan-pathan-reveals-what-virat-kohli-did-before-his-epic-century/20260514.htm",
+      "started_at": "2026-10-28T09:14:53.885421+00:00",
+      "http_status": 200,
+      "final_url": "https://www.rediff.com/cricket/report/ipl-2026-irfan-pathan-reveals-what-virat-kohli-did-before-his-epic-century/20260514.htm",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 16220,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.rediff.com/cricket/report/ipl-2026-irfan-pathan-reveals-what-virat-kohli-did-before-his-epic-century/20260514.htm"
+      ],
+      "duration_ms": 2151.673
+    },
+    {
+      "operation_id": "f012b007fb0c47e993b642555a97d6af",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug",
+      "started_at": "2026-10-28T09:14:55.661527+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4270.987
+    },
+    {
+      "operation_id": "06be47d1d15d4aa58f71efa9036f885f",
+      "requested_url": "https://www.indiatvnews.com/sports/cricket/what-did-virat-kohli-say-to-vaibhav-sooryavanshi-after-ipl-2026-final-watch-video-2026-06-03-1043498",
+      "started_at": "2026-10-28T09:14:56.311764+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5010.065
+    },
+    {
+      "operation_id": "2cdd76fe608342439f826a9dffdc1c61",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:14:59.932801+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1389.706
+    },
+    {
+      "operation_id": "81246ffa01cc4ee683c87bc6f6717b25",
+      "requested_url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/what-did-virat-kohli-say-to-vaibhav-sooryavanshi-after-ipl-2026-final-watch-video-2026-06-03-1043498",
+      "started_at": "2026-10-28T09:15:01.322154+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.512
+    },
+    {
+      "operation_id": "d62d6f3ad77c489ab7cb07cfa3f0aeaf",
+      "requested_url": "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohlis-dhol-dance-with-krunal-pandya-goes-viral-after-rcbs-ipl-2026-title-triumph-watch/articleshow/131431735.cms",
+      "started_at": "2026-10-28T09:15:01.486078+00:00",
+      "http_status": 200,
+      "final_url": "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohlis-dhol-dance-with-krunal-pandya-goes-viral-after-rcbs-ipl-2026-title-triumph-watch/articleshow/131431735.cms",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 67091,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohlis-dhol-dance-with-krunal-pandya-goes-viral-after-rcbs-ipl-2026-title-triumph-watch/articleshow/131431735.cms"
+      ],
+      "duration_ms": 4920.875
+    },
+    {
+      "operation_id": "79715f3e9ec54c27930be779a3d43a52",
+      "requested_url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/what-did-virat-kohli-say-to-vaibhav-sooryavanshi-after-ipl-2026-final-watch-video-2026-06-03-1043498",
+      "started_at": "2026-10-28T09:15:06.331302+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4984.257
+    },
+    {
+      "operation_id": "b4fa8beb18464316b4efaf13bc67099f",
+      "requested_url": "https://www.crictracker.com/cricket-players/virat-kohli/news/",
+      "started_at": "2026-10-28T09:15:08.519190+00:00",
+      "http_status": 200,
+      "final_url": "https://www.crictracker.com/cricket-players/virat-kohli/news/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 30504,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.crictracker.com/cricket-players/virat-kohli/news/"
+      ],
+      "duration_ms": 3302.147
+    },
+    {
+      "operation_id": "27b92cebc2174280a8d67643e5e395fd",
+      "requested_url": "https://www.crictracker.com/cricket-news/virat-was-a-bit-bitter-wasim-jaffer-questions-ajit-agarkars-handling-of-kohli-before-test-retirement-7458/",
+      "started_at": "2026-10-28T09:15:12.174860+00:00",
+      "http_status": 200,
+      "final_url": "https://www.crictracker.com/cricket-news/virat-was-a-bit-bitter-wasim-jaffer-questions-ajit-agarkars-handling-of-kohli-before-test-retirement-7458/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 23744,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.crictracker.com/cricket-news/virat-was-a-bit-bitter-wasim-jaffer-questions-ajit-agarkars-handling-of-kohli-before-test-retirement-7458/"
+      ],
+      "duration_ms": 776.491
+    },
+    {
+      "operation_id": "8e1f323b868344e4a779d602f26efea4",
+      "requested_url": "https://www.crictracker.com/cricket-news/get-fully-fit-and-comfortable-and-you-are-there-amit-mishra-recalls-interaction-with-virat-kohli-5592/",
+      "started_at": "2026-10-28T09:15:13.150173+00:00",
+      "http_status": 200,
+      "final_url": "https://www.crictracker.com/cricket-news/get-fully-fit-and-comfortable-and-you-are-there-amit-mishra-recalls-interaction-with-virat-kohli-5592/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 24024,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.crictracker.com/cricket-news/get-fully-fit-and-comfortable-and-you-are-there-amit-mishra-recalls-interaction-with-virat-kohli-5592/"
+      ],
+      "duration_ms": 1427.514
+    },
+    {
+      "operation_id": "d57188d3ffa44702a4221ce989a786da",
+      "requested_url": "https://www.news18.com",
+      "started_at": "2026-10-28T09:15:11.708730+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.848
+    },
+    {
+      "operation_id": "f6c60905d537472a8d6411ca90a1bd69",
+      "requested_url": "https://www.crictracker.com/cricket-news/virat-kohli-pens-emotional-message-for-friend-harry-kane-on-winning-ballon-dor-2026-6084/",
+      "started_at": "2026-10-28T09:15:14.756913+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.654
+    },
+    {
+      "operation_id": "5063981cc1d24684be3c0cb7fefa893b",
+      "requested_url": "https://r.jina.ai/https://www.news18.com",
+      "started_at": "2026-10-28T09:15:16.716945+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5003.161
+    },
+    {
+      "operation_id": "c9551619118e4736909ad4c69a19baaa",
+      "requested_url": "https://r.jina.ai/https://www.crictracker.com/cricket-news/virat-kohli-pens-emotional-message-for-friend-harry-kane-on-winning-ballon-dor-2026-6084/",
+      "started_at": "2026-10-28T09:15:19.768942+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.677
+    },
+    {
+      "operation_id": "69c652ce7bf948b5af8636febd21dcd2",
+      "requested_url": "https://r.jina.ai/https://www.news18.com",
+      "started_at": "2026-10-28T09:15:21.720529+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4998.784
+    },
+    {
+      "operation_id": "22ec59f9f8404f28b0b7943482803319",
+      "requested_url": "https://r.jina.ai/https://www.crictracker.com/cricket-news/virat-kohli-pens-emotional-message-for-friend-harry-kane-on-winning-ballon-dor-2026-6084/",
+      "started_at": "2026-10-28T09:15:24.776971+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4993.394
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "cf89451b08e94bf2a572d3e552dab09d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "8fdf3ecdf2dc485d8c928f37237339bf",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ab1f5c66e3314ea58a2e81af7c02e88c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "840094cc88484cfcb4756fe9570342c2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cricbuzz.com/profiles/1413/virat-kohli",
+      "host": "www.cricbuzz.com",
+      "http_operation_id": "6810d2ce6f0248f69e787b0d93310798",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cricinfo.com/cricketers/virat-kohli-253802",
+      "host": "www.cricinfo.com",
+      "http_operation_id": "fb4acfef22ce4f5cb9d123f39d118ed2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1d4def5d1ef64d6483af317977bd2fe6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "81bfdcefc7d14f0fb65d66ecf263ce3b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Brecent%2Bpublic%2Bdevelopments%2Binvolving%2BVirat%2BKohli%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bsports%2Breporting%2Band%2Bofficial%2Bcricket%2Bsources%2Bwhen%2Bavailable.%2Bsite%253Ayoutube.com&_bvc=1.55dbdbf57be386e116752643b7d5389f91248ae66bcc6e0578332a7e1b30e118",
+      "host": "search.yahoo.com",
+      "http_operation_id": "81bfdcefc7d14f0fb65d66ecf263ce3b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "00e11f25205d45beb5e55e89f4c7e567",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/sports/cricket/virat-kohli-climbs-up-on-unwanted-golden-duck-record-after-latest-first-ball-nought-in-rcb-vs-mi-ipl-2026-2026-05-10-1040616",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "233c12ac4723464aabd7a96c344c6d80",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.outlookindia.com/sports/cricket/rcb-vs-mi-ipl-2026-virat-kohli-consecutive-ducks",
+      "host": "www.outlookindia.com",
+      "http_operation_id": "ada77b9f0b4d4fda9d38b6565d25dcec",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "81bfdcefc7d14f0fb65d66ecf263ce3b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Ayoutube.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a105db7c10d9432da9655f0f29cce880",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/virat-kohli-climbs-up-on-unwanted-golden-duck-record-after-latest-first-ball-nought-in-rcb-vs-mi-ipl-2026-2026-05-10-1040616",
+      "host": "r.jina.ai",
+      "http_operation_id": "ad27b51e75d141e3810634c01bfc8831",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.outlookindia.com/sports/cricket/rcb-vs-mi-ipl-2026-virat-kohli-consecutive-ducks",
+      "host": "r.jina.ai",
+      "http_operation_id": "12e2cf90da914205bd0b65c6b6b8a4f7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "057c7c32b6594b369bc3fc217f27f30c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "11edc95072c947809c0a47ad96e2b5f1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/virat-kohli-climbs-up-on-unwanted-golden-duck-record-after-latest-first-ball-nought-in-rcb-vs-mi-ipl-2026-2026-05-10-1040616",
+      "host": "r.jina.ai",
+      "http_operation_id": "fede308121dd4ac79a1521a36f28a1f8",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org",
+      "host": "search.yahoo.com",
+      "http_operation_id": "0dc6985f2eed4cf3ad085ab7ad3b3f5e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.outlookindia.com/sports/cricket/rcb-vs-mi-ipl-2026-virat-kohli-consecutive-ducks",
+      "host": "r.jina.ai",
+      "http_operation_id": "6832299a7f824e2f8d2b58d0f9b38424",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "42d0da5338844eca842ca6fe9577b371",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org",
+      "host": "search.yahoo.com",
+      "http_operation_id": "0dc6985f2eed4cf3ad085ab7ad3b3f5e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Brecent%2Bpublic%2Bdevelopments%2Binvolving%2BVirat%2BKohli%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bsports%2Breporting%2Band%2Bofficial%2Bcricket%2Bsources%2Bwhen%2Bavailable.%2Bsite%253Aglobalvoices.org&_bvc=1.2e6b0b648fa07d7ba6f9c5cb5e473026aadb13cb104fcc4c94b364fad6b516a7",
+      "host": "search.yahoo.com",
+      "http_operation_id": "0dc6985f2eed4cf3ad085ab7ad3b3f5e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+site%3Aglobalvoices.org&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "480de4f2261742a49e57b35cc563308e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Brecent%2Bpublic%2Bdevelopments%2Binvolving%2BVirat%2BKohli%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bsports%2Breporting%2Band%2Bofficial%2Bcricket%2Bsources%2Bwhen%2Bavailable.%2Bofficial%2Bsource&_bvc=1.d814fd257479645d4a03756087182bfae39ea4f7507b160904bc980b5bd210b7",
+      "host": "search.yahoo.com",
+      "http_operation_id": "42d0da5338844eca842ca6fe9577b371",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+recent+public+developments+involving+Virat+Kohli+over+the+last+seven+days%2C+using+relevant+sports+reporting+and+official+cricket+sources+when+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "576494f85f2440b69d046d592d3a1472",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "1baf1b5639d042f5b7de6055bca766a1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "22367d4fb7104af38a7aae16cf22a8c5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5a54fb78df144f63ad7b26f1fef7f108",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "7c1992a119134a25a9d7973e98b39b49",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "a64d0ac73bb54701be5ce21cbf99340a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "9b2b69c598744bd0bce130d1db61f81e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/sports/cricket/when-will-virat-kohli-be-in-action-next-after-winning-ipl-2026-for-rcb-2026-06-01-1043225",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "2da8fe0f20974b15bdbd049b25b2bd9e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46ab8c21f4b5489fb8db226d828e1aca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "aa7afc2024ae4304b229e9dc3ce5e532",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Amenafn.com%2BAnushka%2BSharma%252C%2BVirat%2BKohli%2BExpecting%2BThird%2BChild%253F%2BActress%2527%2BRecent%2BPublic%2BAppearance%2BSparks%2BBuzz%2B%2528Watch%2529&_bvc=1.e7aaa888e894e2501ab3b7e4569ad0b20c1fc084bd38c237c1b3121f4580879a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46ab8c21f4b5489fb8db226d828e1aca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/topic/virat-kohli",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "ff6464885a294ec5820b4055304e7f8e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46ab8c21f4b5489fb8db226d828e1aca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "c87f20426e8147ef96b195480104ecb6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ff2c012cf4324f43b939719ada4aad3e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Amenafn.com%2BAnushka%2BSharma%252C%2BVirat%2BKohli%2BExpecting%2BThird%2BChild%253F%2BActress%2527%2BRecent%2BPublic%2BAppearance%2BSparks%2BBuzz%2B%2528Watch%2529&_bvc=1.e7aaa888e894e2501ab3b7e4569ad0b20c1fc084bd38c237c1b3121f4580879a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46ab8c21f4b5489fb8db226d828e1aca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/sports/cricket/virat-kohlis-first-player-of-the-match-award-in-ipl-playoffs-sees-down-huge-record-2026-06-01-1043202",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "3f76e4404c83457c9212d076b72b8fa6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Amenafn.com+Anushka+Sharma%2C+Virat+Kohli+Expecting+Third+Child%3F+Actress%27+Recent+Public+Appearance+Sparks+Buzz+%28Watch%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "9bf5bc5235c947f0b41ac4cbd489d464",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e9651d9737cc4b0ea2b01da287b2ef39",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3946a23c19ba49df8d7d8ef5db59ac53",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "6f58be502a884291b102d35380da42c2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "3fe82e38e6f84838990461daf71ba2d5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "b959025e537e42ad8f0df5c82bcc7a34",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "755f5189e8a24e1f921eacfbb32b662d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "d696c34bbdb44a06921a3c112082045e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ff201bc6e879487f9071b09de8166161",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1b9cdae4c90d4f43aea497712921500e",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Virat+Kohli+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ce9e0fa4124f4ed6ab69a503cbb9fa33",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Virat+Kohli+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "9374ef5fadd642549d2673688fcbec08",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22Virat+Kohli%22+sourcelang%3Aeng&mode=ArtList&maxrecords=6&format=json&sort=DateDesc&timespan=48h",
+      "host": "api.gdeltproject.org",
+      "http_operation_id": "2bfa9a60db14420e87e945c0e8ee1646",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Aindianexpress.com+Virat+Kohli+quietly+watches+as+Anushka+Sharma+claps+along+to+kirtan%2C+chants+%E2%80%98Radhe+Radhe%E2%80%99&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "6892914573ae47ed97b2f90112111147",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://zeenews.india.com/cricket/virat-kohli-creates-history-in-ipl-2026-final-rcb-star-joins-elite-200-sixes-club-after-title-triumph-over-gt-3052185.html",
+      "host": "zeenews.india.com",
+      "http_operation_id": "fd35ab8c671c451fa145ec99a305dfab",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://zeenews.india.com/cricket/virat-kohli-creates-ipl-history-becomes-first-player-to-win-two-titles-with-650-run-seasons-3051922.html",
+      "host": "zeenews.india.com",
+      "http_operation_id": "4379c2dbc9994ad08835a762df32ffc0",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Aindianexpress.com+Virat+Kohli+quietly+watches+as+Anushka+Sharma+claps+along+to+kirtan%2C+chants+%E2%80%98Radhe+Radhe%E2%80%99",
+      "host": "search.yahoo.com",
+      "http_operation_id": "45f39c7f767b45d9b401cc38626badb6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohli-dons-special-t-shirt-dances-with-anushka-sharma-after-rcbs-ipl-2026-title-win-watch/articleshow/131432168.cms",
+      "host": "timesofindia.indiatimes.com",
+      "http_operation_id": "192c762102094c78a6efe719f087eacd",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Aindianexpress.com%2BVirat%2BKohli%2Bquietly%2Bwatches%2Bas%2BAnushka%2BSharma%2Bclaps%2Balong%2Bto%2Bkirtan%252C%2Bchants%2B%25E2%2580%2598Radhe%2BRadhe%25E2%2580%2599&_bvc=1.8811e2376851b6424da03eb2366e0ee432ae13384a590a904fd9919881cb13ff",
+      "host": "search.yahoo.com",
+      "http_operation_id": "45f39c7f767b45d9b401cc38626badb6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com+Virat+Kohli+quietly+watches+as+Anushka+Sharma+claps+along+to+kirtan%2C+chants+%E2%80%98Radhe+Radhe%E2%80%99&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1fb095ebedbe4b6aaf86f30f0284085a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4c8825f78c644733b2eb732e605d92a2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.rediff.com/cricket/report/ipl-2026-irfan-pathan-reveals-what-virat-kohli-did-before-his-epic-century/20260514.htm",
+      "host": "www.rediff.com",
+      "http_operation_id": "4a26ab2d99d14ad6889f7504c5fea6ba",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f012b007fb0c47e993b642555a97d6af",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/sports/cricket/what-did-virat-kohli-say-to-vaibhav-sooryavanshi-after-ipl-2026-final-watch-video-2026-06-03-1043498",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "06be47d1d15d4aa58f71efa9036f885f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.news18.com%2BAnushka%2BSharma-Virat%2BKohli%2BAttend%2BKrishna%2BDas%25E2%2580%2599%2BConcert%2BIn%2BMumbai%252C%2BLater%2BSpotted%2BReturning%2BFrom%2BAlibaug&_bvc=1.5af19212c397c4d613b6083ab7cf560268dbe75a49015a87ba6967cfee710a22",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f012b007fb0c47e993b642555a97d6af",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f012b007fb0c47e993b642555a97d6af",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.news18.com+Anushka+Sharma-Virat+Kohli+Attend+Krishna+Das%E2%80%99+Concert+In+Mumbai%2C+Later+Spotted+Returning+From+Alibaug&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "2cdd76fe608342439f826a9dffdc1c61",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/what-did-virat-kohli-say-to-vaibhav-sooryavanshi-after-ipl-2026-final-watch-video-2026-06-03-1043498",
+      "host": "r.jina.ai",
+      "http_operation_id": "81246ffa01cc4ee683c87bc6f6717b25",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com/sports/cricket/ipl/ipl-2026/virat-kohlis-dhol-dance-with-krunal-pandya-goes-viral-after-rcbs-ipl-2026-title-triumph-watch/articleshow/131431735.cms",
+      "host": "timesofindia.indiatimes.com",
+      "http_operation_id": "d62d6f3ad77c489ab7cb07cfa3f0aeaf",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.indiatvnews.com/sports/cricket/what-did-virat-kohli-say-to-vaibhav-sooryavanshi-after-ipl-2026-final-watch-video-2026-06-03-1043498",
+      "host": "r.jina.ai",
+      "http_operation_id": "79715f3e9ec54c27930be779a3d43a52",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.crictracker.com/cricket-players/virat-kohli/news/",
+      "host": "www.crictracker.com",
+      "http_operation_id": "b4fa8beb18464316b4efaf13bc67099f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com",
+      "host": "www.news18.com",
+      "http_operation_id": "d57188d3ffa44702a4221ce989a786da",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.crictracker.com/cricket-news/virat-was-a-bit-bitter-wasim-jaffer-questions-ajit-agarkars-handling-of-kohli-before-test-retirement-7458/",
+      "host": "www.crictracker.com",
+      "http_operation_id": "27b92cebc2174280a8d67643e5e395fd",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.crictracker.com/cricket-news/get-fully-fit-and-comfortable-and-you-are-there-amit-mishra-recalls-interaction-with-virat-kohli-5592/",
+      "host": "www.crictracker.com",
+      "http_operation_id": "8e1f323b868344e4a779d602f26efea4",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.crictracker.com/cricket-news/virat-kohli-pens-emotional-message-for-friend-harry-kane-on-winning-ballon-dor-2026-6084/",
+      "host": "www.crictracker.com",
+      "http_operation_id": "f6c60905d537472a8d6411ca90a1bd69",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "5063981cc1d24684be3c0cb7fefa893b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.crictracker.com/cricket-news/virat-kohli-pens-emotional-message-for-friend-harry-kane-on-winning-ballon-dor-2026-6084/",
+      "host": "r.jina.ai",
+      "http_operation_id": "c9551619118e4736909ad4c69a19baaa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "69c652ce7bf948b5af8636febd21dcd2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.crictracker.com/cricket-news/virat-kohli-pens-emotional-message-for-friend-harry-kane-on-winning-ballon-dor-2026-6084/",
+      "host": "r.jina.ai",
+      "http_operation_id": "22ec59f9f8404f28b0b7943482803319",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 80,
+  "admission_rejections": 2,
+  "pipeline_errors": []
+}

@@ -243,7 +243,7 @@ class NativeExecutor:
                 page_metadata["text_blocks"] = extracted["text_blocks"]
                 page_metadata["date_observations"] = extracted["date_observations"]
                 for key in ("body_quality", "extraction_method", "readable_word_count", "readable_character_count",
-                            "readable_text_sha256", "language", "language_basis", "licence_urls", "rights_exception_observed"):
+                            "readable_text_sha256", "language", "language_basis", "licence_urls", "rights_exception_observed", "rights_notice_observed"):
                     if key in extracted:
                         page_metadata[key] = extracted[key]
                 raw_text = extracted["raw_text"]

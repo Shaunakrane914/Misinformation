@@ -8,7 +8,7 @@ Supports environment overrides (LOCAL_RESEARCH_* and SERVER_RESEARCH_*).
 """
 
 import os
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, replace
 from typing import Any, Dict, Optional, Tuple
 
 
@@ -29,6 +29,15 @@ class ResearchBudget:
     # Explicitly constructed budgets retain the historical API. Runtime defaults
     # use acquisition-first STANDARD, with QUICK/DEEP selectable per request.
     research_profile: Optional[str] = None
+    profile_derived_limits: Tuple[str, ...] = ()
+
+    def for_profile(self, name):
+        """Rebase implicit defaults; preserve every explicitly configured cap."""
+        from backend.services.research.research_profiles import get_research_profile
+        profile = get_research_profile(name)
+        values = {'deep_read_budget': profile.max_reads, 'discovery_budget': profile.max_candidates,
+                  'timeout_seconds': profile.timeout_seconds}
+        return replace(self, **{key: values[key] for key in self.profile_derived_limits if key in values})
 
     # ── Backward-compatible properties ────────────────────────────────────
     @property
@@ -85,6 +94,7 @@ class ResearchBudget:
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
+        d.pop('profile_derived_limits', None)
         if self.research_profile is None:
             d.pop("research_profile")  # Preserve explicit legacy-budget serialization.
         d["discovery_timeout_seconds"] = self.discovery_timeout_seconds
@@ -121,6 +131,11 @@ class ResearchBudget:
             channel_timeout_seconds=ch_tout,
             deep_read_concurrency=int(os.getenv("RESEARCH_DEEP_READ_CONCURRENCY", "4")),
             research_profile=profile,
+            profile_derived_limits=tuple(field for field, names in {
+                'deep_read_budget': (f'{prefix}MAX_DEEP_READS', 'RESEARCH_MAX_DEEP_READS'),
+                'discovery_budget': (f'{prefix}MAX_QUERIES', 'RESEARCH_MAX_CANDIDATES'),
+                'timeout_seconds': (f'{prefix}TIMEOUT', 'RESEARCH_MAX_TOTAL_LATENCY_SECONDS'),
+            }.items() if not any(name in os.environ for name in names)),
         )
 
 

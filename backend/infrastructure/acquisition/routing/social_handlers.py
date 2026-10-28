@@ -28,6 +28,7 @@ from backend.services.agent_reach.native.source_discovery import (
 )
 from backend.infrastructure.acquisition.resolution import entity_social_resolver
 from backend.infrastructure.acquisition.network.budget import remaining_timeout
+from backend.infrastructure.acquisition.network.http import ProviderHTTPError
 
 if TYPE_CHECKING:
     from backend.infrastructure.acquisition.routing.router import NativeRouter
@@ -140,7 +141,12 @@ class SocialChannelHandlers:
                                     fragments.append(p)
                                 if len(fragments) >= (limit or 15):
                                     break
+                    except ProviderHTTPError:
+                        raise  # A denied/failed read must not activate an alternate reader.
                     except Exception as e_sub:
+                        from backend.services.research.source_registry import SourcePermissionError
+                        if isinstance(e_sub, SourcePermissionError):
+                            raise
                         logger.debug(f"[SocialHandlers] Subreddit resolution attempt for r/{sub_cand.subreddit}: {e_sub}")
                     if len(fragments) >= (limit or 15):
                         break

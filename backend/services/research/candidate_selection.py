@@ -154,7 +154,13 @@ def score_candidate(item, ctx, *, is_wrapper, is_index):
     if ctx.domain in OBJECTIVE_TERMS and matches_objective(snippet_title, ctx.domain):
         c["objective_match"] = 1.0
     if ctx.domain == "personal" and re.search(r"\b(?:statement|interview|transcript|speech|remarks|testimony)\b", title):
-        c["observed_statement_format"] = 1.5
+        c["observed_statement_format"] = 3.0
+    if ctx.domain == 'personal' and c.get('target_in_title', 0) >= 2:
+        statement = bool(re.search(r'\b(?:statement|interview|transcript|speech|remarks|testimony|said|told|wrote)\b', snippet_title))
+        if statement:
+            c['observed_attribution_lead'] = 1.5
+        elif re.search(r'\b(?:who can replace|may have to fire|net worth|stock picks|should resign|could replace)\b', snippet_title):
+            c['executive_speculation_without_statement'] = -3.0
     if is_wrapper:
         c["opaque_wrapper"] = -3.0
     elif is_index:
@@ -170,7 +176,9 @@ def score_candidate(item, ctx, *, is_wrapper, is_index):
         c["observed_primary_or_official_flag"] = 1.0
     group = group_of_url(url)
     if group and ctx.group_reads[group]:
-        c["publisher_diversity"] = -min(2.4, 0.6 * ctx.group_reads[group])
+        c["publisher_diversity"] = -min(3.6 if ctx.domain in {'personal', 'trending'} else 2.4,
+            (0.9 if ctx.domain in {'personal', 'trending'} else 0.6) * ctx.group_reads[group],
+            max(0.0, c.get('target_in_title', 0) + c.get('target_in_url', 0) - 1.0))
     memory = ctx.memory.signal(group)
     if memory:
         c["publisher_history_weak"] = round(memory, 3)

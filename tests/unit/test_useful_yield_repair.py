@@ -17,10 +17,10 @@ def article(body, objective="PUBLIC_STATEMENT"):
     "Research public statements and identity threats, including impersonation and synthetic media allegations",
     "Elena Rivera identity threat",
 ])
-def test_unchanged_statement_queries_keep_matching_routing_objective(intent):
+def test_default_interview_queries_keep_matching_routing_objective(intent):
     from backend.services.research.harvesting import diversified_queries
     queries = diversified_queries("Elena Rivera", "personal", intent=intent)
-    statement_queries = [row for row in queries if row["query_text"] == "Elena Rivera public statement"]
+    statement_queries = [row for row in queries if row["query_text"] == '"Elena Rivera" interview']
     assert {row["channel"] for row in statement_queries} == {"news", "web", "rss"}
     assert all(row["acquisition_objective"] == "PUBLIC_STATEMENT" for row in statement_queries)
     paragraph = '"We will publish the complete audited figures next month," Rivera, who joined the council in 2017, said in a statement.'
@@ -51,13 +51,33 @@ def test_observed_unambiguous_surname_with_job_title_and_relative_clause(attribu
     assert public_statement_attribution(article(body), paragraph, "Elena Rivera") == "REPORTED_QUOTATION_SURNAME_IN_CAPTURE"
 
 
+def test_saved_mary_article_keeps_reported_quote_from_incidental_discovery():
+    import json
+    import hashlib
+    from pathlib import Path
+    from backend.services.research.passage_extractor import PassageExtractor
+    source=json.loads((Path(__file__).parent/'fixtures/oct28_mary_reported_statement_capture.json').read_text(encoding='utf-8'))
+    body=source['readable_text']
+    assert hashlib.sha256(body.encode()).hexdigest()==source['raw_content_hash']
+    item=article(body, objective='IDENTITY_THREAT')
+    PassageExtractor().extract_passages([item], 'Mary Barra', domain='personal')
+    assert item.extraction_status=='SUCCESS' and item.relevant_excerpt
+    assert public_statement_attribution(item,item.relevant_excerpt,'Mary Barra')=='REPORTED_QUOTATION_SURNAME_IN_CAPTURE'
+    assert item.metadata['evidence_passages'] and item.content==body
+    item.content += '\n\nJessica Barra also commented on the announcement.'
+    assert public_statement_attribution(item,item.relevant_excerpt,'Mary Barra') is None
+    item.content=body
+    item.metadata['page_metadata']['body_kind']='NEWS_INDEX'
+    assert public_statement_attribution(item,item.relevant_excerpt,'Mary Barra') is None
+
+
 @pytest.mark.parametrize("prefix,objective,paragraph", [
     ("Elena Rivera and Jessica Rivera attended.", "PUBLIC_STATEMENT", '"We will publish complete figures next month," Rivera said.'),
-    ("Chief Executive Elena Rivera attended.", "IDENTITY_THREAT", '"We will publish complete figures next month," Rivera said.'),
+    ("Chief Executive Elena Rivera and Jessica Rivera attended.", "IDENTITY_THREAT", '"We will publish complete figures next month," Rivera said.'),
     ("Chief Executive Elena Rivera attended.", "PUBLIC_STATEMENT", 'The fake quote falsely attributed to Rivera said "We will publish complete figures next month."'),
     ("No full name was captured.", "PUBLIC_STATEMENT", '"We will publish complete figures next month," Rivera said.'),
 ])
-def test_surname_does_not_authenticate_disputed_ambiguous_or_incidental_quotes(prefix, objective, paragraph):
+def test_surname_does_not_attribute_disputed_ambiguous_or_unintroduced_quotes(prefix, objective, paragraph):
     assert public_statement_attribution(article(prefix + "\n\n" + paragraph, objective), paragraph, "Elena Rivera") is None
 
 

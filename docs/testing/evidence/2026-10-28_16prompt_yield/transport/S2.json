@@ -1,0 +1,1348 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "66d0f07c96ef42c3a3ba129fcca1c538",
+      "requested_url": "https://query1.finance.yahoo.com/v8/finance/chart/TATAMOTORS.NS?interval=1d&range=5d",
+      "started_at": "2026-10-28T08:48:38.716914+00:00",
+      "http_status": 404,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 1091.204
+    },
+    {
+      "operation_id": "d748d748477841e6b6ef53099eba1ff0",
+      "requested_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&format=rss",
+      "started_at": "2026-10-28T08:48:40.600870+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 6573,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&format=rss"
+      ],
+      "duration_ms": 2356.259
+    },
+    {
+      "operation_id": "207c9b93bff143daa87b94ee6bb7684e",
+      "requested_url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&first=1",
+      "started_at": "2026-10-28T08:48:39.997806+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.546
+    },
+    {
+      "operation_id": "34af06002c5c4cc38a0e127428dcce7c",
+      "requested_url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings",
+      "started_at": "2026-10-28T08:48:45.002697+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5001.684
+    },
+    {
+      "operation_id": "432ae4a66a31482a91be181fa8654b00",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:48:50.006572+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 7594,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1774.913
+    },
+    {
+      "operation_id": "f719846b70264ef9ab75ba596e9107a9",
+      "requested_url": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "started_at": "2026-10-28T08:48:53.043950+00:00",
+      "http_status": 200,
+      "final_url": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 19287,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://cv.tatamotors.com/intimation-to-stock-exchanges"
+      ],
+      "duration_ms": 2520.183
+    },
+    {
+      "operation_id": "268601f12c194aa2b6553514796db886",
+      "requested_url": "https://www.bing.com/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI&first=1",
+      "started_at": "2026-10-28T08:48:52.918635+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.988
+    },
+    {
+      "operation_id": "df2dcc0035bc4ef8b92910df5d08cc86",
+      "requested_url": "https://www.moneycontrol.com/news/business/stocks/tata-motors-cv-shares-rise-over-2-after-july-sales-growth-nomura-sees-iveco-recovery-key-for-earnings-13991854.html",
+      "started_at": "2026-10-28T08:48:53.722165+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5010.612
+    },
+    {
+      "operation_id": "a2832d2575c34357b04096fdd7083d32",
+      "requested_url": "https://www.marketsmojo.com/news/stocks-in-action/tata-motors-ltd-reports-mixed-quarterly-results-amid-margin-pressures-4238090",
+      "started_at": "2026-10-28T08:48:53.911307+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5017.714
+    },
+    {
+      "operation_id": "37f88dea0b78481fa6d4b273a9e1b7b0",
+      "requested_url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "started_at": "2026-10-28T08:48:55.782183+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.255
+    },
+    {
+      "operation_id": "36629b388afc4942ae19f6de6d9b2437",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI",
+      "started_at": "2026-10-28T08:48:57.921865+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.696
+    },
+    {
+      "operation_id": "1084f27174204b8c861fc9711f17d34c",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/stocks/tata-motors-cv-shares-rise-over-2-after-july-sales-growth-nomura-sees-iveco-recovery-key-for-earnings-13991854.html",
+      "started_at": "2026-10-28T08:48:58.733191+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.654
+    },
+    {
+      "operation_id": "1cc107b95a734ccba24f2c43800f9151",
+      "requested_url": "https://r.jina.ai/https://www.marketsmojo.com/news/stocks-in-action/tata-motors-ltd-reports-mixed-quarterly-results-amid-margin-pressures-4238090",
+      "started_at": "2026-10-28T08:48:58.929288+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.001
+    },
+    {
+      "operation_id": "d44329a564214b2ab630d7e428929184",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:02.934989+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1619,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1326.052
+    },
+    {
+      "operation_id": "7a6c9b643a394e6ab881b845b6b5278f",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/stocks/tata-motors-cv-shares-rise-over-2-after-july-sales-growth-nomura-sees-iveco-recovery-key-for-earnings-13991854.html",
+      "started_at": "2026-10-28T08:49:03.742061+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5028.684
+    },
+    {
+      "operation_id": "65850b8e07534757810f80991c34ee82",
+      "requested_url": "https://r.jina.ai/https://www.marketsmojo.com/news/stocks-in-action/tata-motors-ltd-reports-mixed-quarterly-results-amid-margin-pressures-4238090",
+      "started_at": "2026-10-28T08:49:03.938654+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4976.066
+    },
+    {
+      "operation_id": "5de77856f36e4feebde2e6e543791a45",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&format=rss",
+      "started_at": "2026-10-28T08:49:08.681025+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2063,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&format=rss"
+      ],
+      "duration_ms": 3386.129
+    },
+    {
+      "operation_id": "ba91d5b570234cbca85b9543cf7ecb1e",
+      "requested_url": "https://www.businesstoday.in/markets/stocks/story/tata-motors-cv-share-price-auto-stock-down-3-post-q3-earnings-brokerage-sees-20-upside-513662-2026-01-30",
+      "started_at": "2026-10-28T08:49:09.495957+00:00",
+      "http_status": 200,
+      "final_url": "https://www.businesstoday.in/markets/stocks/story/tata-motors-cv-share-price-auto-stock-down-3-post-q3-earnings-brokerage-sees-20-upside-513662-2026-01-30",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 140134,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.businesstoday.in/markets/stocks/story/tata-motors-cv-share-price-auto-stock-down-3-post-q3-earnings-brokerage-sees-20-upside-513662-2026-01-30"
+      ],
+      "duration_ms": 3358.164
+    },
+    {
+      "operation_id": "ec2be6e3e6ac4657abf115145e9b86c2",
+      "requested_url": "https://www.news18.com/business/markets/tata-motors-shares-drop-3-ahead-of-q2-earnings-announcement-9703656.html",
+      "started_at": "2026-10-28T08:49:09.496726+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/business/markets/tata-motors-shares-drop-3-ahead-of-q2-earnings-announcement-9703656.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 126673,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/business/markets/tata-motors-shares-drop-3-ahead-of-q2-earnings-announcement-9703656.html"
+      ],
+      "duration_ms": 3599.265
+    },
+    {
+      "operation_id": "04f149f89a1745e681fcc4fe10daa42b",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:12.074312+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1553,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1692.113
+    },
+    {
+      "operation_id": "5ac74b5c09184ce2830354312c29831e",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:13.824781+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1553,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1908.625
+    },
+    {
+      "operation_id": "cf512c4ac25e43ae8e3c3a58453361c0",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&format=rss",
+      "started_at": "2026-10-28T08:49:08.680638+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2088,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&format=rss"
+      ],
+      "duration_ms": 7773.061
+    },
+    {
+      "operation_id": "695f1c40d9174fc0acc9d65470bbae6f",
+      "requested_url": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "started_at": "2026-10-28T08:49:13.981986+00:00",
+      "http_status": 200,
+      "final_url": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 19287,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://cv.tatamotors.com/intimation-to-stock-exchanges"
+      ],
+      "duration_ms": 3196.348
+    },
+    {
+      "operation_id": "c6dbfa6793504bc3a806ee74733ef2dd",
+      "requested_url": "https://www.news18.com/topics/tata-motors/",
+      "started_at": "2026-10-28T08:49:14.136424+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/topics/tata-motors/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 109275,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/topics/tata-motors/"
+      ],
+      "duration_ms": 4799.446
+    },
+    {
+      "operation_id": "63225e7df1fc455b8455f3f8405d2173",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:16.456292+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1563,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2480.374
+    },
+    {
+      "operation_id": "783c41b5e21840f99eb5bbd506fc89d8",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:18.975223+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1563,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2295.714
+    },
+    {
+      "operation_id": "d6dcc79560534b6081aa299f4236c404",
+      "requested_url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "started_at": "2026-10-28T08:49:17.399622+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20808,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges"
+      ],
+      "duration_ms": 4879.615
+    },
+    {
+      "operation_id": "420308622b194b6aa69e11d636748340",
+      "requested_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:49:25.130878+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2151,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1167.679
+    },
+    {
+      "operation_id": "33b394aecb5d4a91a6b166ca27735095",
+      "requested_url": "https://www.bing.com/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&first=1",
+      "started_at": "2026-10-28T08:49:25.129495+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 137509,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&first=1"
+      ],
+      "duration_ms": 3117.272
+    },
+    {
+      "operation_id": "426c93ec8b1d44f9af3540a46b622c57",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov",
+      "started_at": "2026-10-28T08:49:28.271534+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5000.212
+    },
+    {
+      "operation_id": "78a658cdb94c4683abc2d62db2b83162",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:33.272054+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1545,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1712.525
+    },
+    {
+      "operation_id": "8e414f904e6242cc9f0e9082dcd5dc55",
+      "requested_url": "https://cv.tatamotors.com/intimation-to-stock-exchanges (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "started_at": "2026-10-28T08:49:36.318314+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 255.414
+    },
+    {
+      "operation_id": "b54632384c0543fea9e5f047fb214da4",
+      "requested_url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "started_at": "2026-10-28T08:49:36.573875+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 140.15
+    },
+    {
+      "operation_id": "49e17312ca21429c93ae58e9a70b5978",
+      "requested_url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "started_at": "2026-10-28T08:49:36.714198+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 182.971
+    },
+    {
+      "operation_id": "20d8e8a7e96a42d09dc11da94299abe9",
+      "requested_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&format=rss",
+      "started_at": "2026-10-28T08:49:36.317718+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2613,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&format=rss"
+      ],
+      "duration_ms": 2251.127
+    },
+    {
+      "operation_id": "3e4ed0f3fc4645ff8f7a57c0c7b19198",
+      "requested_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:49:38.586656+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1445,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1315.055
+    },
+    {
+      "operation_id": "4b12604f753d4b22a34e19bff0b6e8fb",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:39.905657+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.081
+    },
+    {
+      "operation_id": "8958a5973768405a8df3c55d780af3ed",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:39.905856+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.068
+    },
+    {
+      "operation_id": "d4ab119dc48749fbad57d6749ab3fe98",
+      "requested_url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&first=1",
+      "started_at": "2026-10-28T08:49:38.586368+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128762,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&first=1"
+      ],
+      "duration_ms": 1751.728
+    },
+    {
+      "operation_id": "039ee342b201450eb161a149c8ed76d8",
+      "requested_url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure",
+      "started_at": "2026-10-28T08:49:40.382320+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.066
+    },
+    {
+      "operation_id": "f388b1680f9c4f188e2b68b97ef50705",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:40.382531+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.069
+    },
+    {
+      "operation_id": "a40c4e34cb114363b7ed98e464d39816",
+      "requested_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss",
+      "started_at": "2026-10-28T08:49:41.059559+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2103,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss"
+      ],
+      "duration_ms": 1517.291
+    },
+    {
+      "operation_id": "0717f5a91b9a43ed811671aaa1175f06",
+      "requested_url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&first=1",
+      "started_at": "2026-10-28T08:49:41.059820+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131873,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&first=1"
+      ],
+      "duration_ms": 2024.097
+    },
+    {
+      "operation_id": "14e70f26a25f462dbce1f47e86489175",
+      "requested_url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements",
+      "started_at": "2026-10-28T08:49:43.114858+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5001.117
+    },
+    {
+      "operation_id": "87b669d3c5cb43349a82f433898bceb5",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:49:48.116250+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 8707,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2538.677
+    },
+    {
+      "operation_id": "3dac2a4e7d114ef494b56c61367c726d",
+      "requested_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&format=rss",
+      "started_at": "2026-10-28T08:49:53.589434+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3485,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&format=rss"
+      ],
+      "duration_ms": 978.968
+    },
+    {
+      "operation_id": "90515b02514040e6b450959136426275",
+      "requested_url": "https://www.reuters.com/world/india/indias-tata-motors-posts-second-quarter-profit-2026-10-23/",
+      "started_at": "2026-10-28T08:49:53.856302+00:00",
+      "http_status": 401,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "AUTH_REQUIRED",
+      "network_observed": true,
+      "duration_ms": 1392.611
+    },
+    {
+      "operation_id": "bad38b1469d54522aecc9cd777a4704e",
+      "requested_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss",
+      "started_at": "2026-10-28T08:49:53.588851+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2103,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss"
+      ],
+      "duration_ms": 3411.724
+    },
+    {
+      "operation_id": "562fe1ec45c04428ae6e5b882ca3f380",
+      "requested_url": "https://query2.finance.yahoo.com/v1/finance/search?q=Tata+Motors+%28TATAMOTORS.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false",
+      "started_at": "2026-10-28T08:49:57.182950+00:00",
+      "http_status": 200,
+      "final_url": "https://query2.finance.yahoo.com/v1/finance/search?q=Tata+Motors+%28TATAMOTORS.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 442,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://query2.finance.yahoo.com/v1/finance/search?q=Tata+Motors+%28TATAMOTORS.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false"
+      ],
+      "duration_ms": 941.731
+    },
+    {
+      "operation_id": "e0e387e840af4d13b166ba6d94319b6f",
+      "requested_url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&first=1",
+      "started_at": "2026-10-28T08:49:57.011724+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 115902,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&first=1"
+      ],
+      "duration_ms": 3596.468
+    },
+    {
+      "operation_id": "ee7ef59124a44c93a87fbb659097b9ae",
+      "requested_url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance",
+      "started_at": "2026-10-28T08:50:00.627477+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3745.3
+    },
+    {
+      "operation_id": "1541a99b1ad54b67a36b707d03283813",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:04.373011+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9096,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2055.358
+    },
+    {
+      "operation_id": "f60fe1ea372447b8aa81b37da59fbf71",
+      "requested_url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History&first=1",
+      "started_at": "2026-10-28T08:50:08.191023+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131789,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History&first=1"
+      ],
+      "duration_ms": 3057.114
+    },
+    {
+      "operation_id": "428d3e031006487c891688716d8a83ba",
+      "requested_url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History",
+      "started_at": "2026-10-28T08:50:11.277774+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4173.648
+    },
+    {
+      "operation_id": "17e54e0d3ea049bfaf2e141609d61f07",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:15.451648+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 2739.742
+    },
+    {
+      "operation_id": "de2eee85bec74ecabe123bbe6aefa3ea",
+      "requested_url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data&first=1",
+      "started_at": "2026-10-28T08:50:18.216135+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132468,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data&first=1"
+      ],
+      "duration_ms": 3277.031
+    },
+    {
+      "operation_id": "3025f3cd52b44d5192696150971d2188",
+      "requested_url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data",
+      "started_at": "2026-10-28T08:50:21.524879+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4957.831
+    },
+    {
+      "operation_id": "af593519c8b247ceaea70e50d71574b6",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:26.482968+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1737.648
+    },
+    {
+      "operation_id": "e5a209e1050d45338a63bf6d4627acc9",
+      "requested_url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history&first=1",
+      "started_at": "2026-10-28T08:50:28.235958+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5000.936
+    },
+    {
+      "operation_id": "ef1a9839686049fba5c599a08375e54b",
+      "requested_url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history",
+      "started_at": "2026-10-28T08:50:33.237181+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 623.304
+    },
+    {
+      "operation_id": "ea7855da722a4ae2afc036f1f94da89e",
+      "requested_url": "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:50:33.860657+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13853,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1843.849
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "207c9b93bff143daa87b94ee6bb7684e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "d748d748477841e6b6ef53099eba1ff0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings",
+      "host": "search.yahoo.com",
+      "http_operation_id": "34af06002c5c4cc38a0e127428dcce7c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DTata%2BMotors%2B%2528TATAMOTORS.NS%2529%2Bquarterly%2Bearnings&_bvc=1.bb7cb8ff21fb87593dbbe12da846d156c8227d9fccf73204d21c65181aa1484f",
+      "host": "search.yahoo.com",
+      "http_operation_id": "34af06002c5c4cc38a0e127428dcce7c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DTata%2BMotors%2B%2528TATAMOTORS.NS%2529%2Bquarterly%2Bearnings&_bvc=2.11ee0d7fac3485607d84e3c9ac6ca730e0e0b21a82430165e9153ca793dc925d",
+      "host": "search.yahoo.com",
+      "http_operation_id": "34af06002c5c4cc38a0e127428dcce7c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings",
+      "host": "search.yahoo.com",
+      "http_operation_id": "34af06002c5c4cc38a0e127428dcce7c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "432ae4a66a31482a91be181fa8654b00",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "268601f12c194aa2b6553514796db886",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "host": "cv.tatamotors.com",
+      "http_operation_id": "f719846b70264ef9ab75ba596e9107a9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/news/business/stocks/tata-motors-cv-shares-rise-over-2-after-july-sales-growth-nomura-sees-iveco-recovery-key-for-earnings-13991854.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "df2dcc0035bc4ef8b92910df5d08cc86",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.marketsmojo.com/news/stocks-in-action/tata-motors-ltd-reports-mixed-quarterly-results-amid-margin-pressures-4238090",
+      "host": "www.marketsmojo.com",
+      "http_operation_id": "a2832d2575c34357b04096fdd7083d32",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "host": "r.jina.ai",
+      "http_operation_id": "37f88dea0b78481fa6d4b273a9e1b7b0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI",
+      "host": "search.yahoo.com",
+      "http_operation_id": "36629b388afc4942ae19f6de6d9b2437",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/stocks/tata-motors-cv-shares-rise-over-2-after-july-sales-growth-nomura-sees-iveco-recovery-key-for-earnings-13991854.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "1084f27174204b8c861fc9711f17d34c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.marketsmojo.com/news/stocks-in-action/tata-motors-ltd-reports-mixed-quarterly-results-amid-margin-pressures-4238090",
+      "host": "r.jina.ai",
+      "http_operation_id": "1cc107b95a734ccba24f2c43800f9151",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2BTata%2BMotors%2527%2Blatest%2Breported%2Bfinancial%2Bperformance%2Band%2Bmajor%2Bautomotive%2Bor%2BEV%2Bbusiness%2Bdevelopments.%2BPrioritize%2Bofficial%2Bcompany%2Band%2Bexchange%2Binformation%252C%2Bthen%2Bcompare%2Bclaims%2Bin%2Bindependent%2Breporting.%2Bsite%253Atatamotors.com%2Bquarterly%2Bresults%2Bfiling%2BSEBI&_bvc=1.26533d921db44eeb591b0d19edc2c0b16f9a87e06229e3d2df40f13ba7ffe569",
+      "host": "search.yahoo.com",
+      "http_operation_id": "36629b388afc4942ae19f6de6d9b2437",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2BTata%2BMotors%2527%2Blatest%2Breported%2Bfinancial%2Bperformance%2Band%2Bmajor%2Bautomotive%2Bor%2BEV%2Bbusiness%2Bdevelopments.%2BPrioritize%2Bofficial%2Bcompany%2Band%2Bexchange%2Binformation%252C%2Bthen%2Bcompare%2Bclaims%2Bin%2Bindependent%2Breporting.%2Bsite%253Atatamotors.com%2Bquarterly%2Bresults%2Bfiling%2BSEBI&_bvc=2.601797e24abfc62d5fced9beda3c1e357eb87eedcf8f962c0edaa0c7e2bd4d13",
+      "host": "search.yahoo.com",
+      "http_operation_id": "36629b388afc4942ae19f6de6d9b2437",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2BTata%2BMotors%2527%2Blatest%2Breported%2Bfinancial%2Bperformance%2Band%2Bmajor%2Bautomotive%2Bor%2BEV%2Bbusiness%2Bdevelopments.%2BPrioritize%2Bofficial%2Bcompany%2Band%2Bexchange%2Binformation%252C%2Bthen%2Bcompare%2Bclaims%2Bin%2Bindependent%2Breporting.%2Bsite%253Atatamotors.com%2Bquarterly%2Bresults%2Bfiling%2BSEBI&_bvc=3.2f56fc586f57c800f71dee295751f26f46fd0a6d2077c9e9d33e640c80a09726",
+      "host": "search.yahoo.com",
+      "http_operation_id": "36629b388afc4942ae19f6de6d9b2437",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Atatamotors.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d44329a564214b2ab630d7e428929184",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/stocks/tata-motors-cv-shares-rise-over-2-after-july-sales-growth-nomura-sees-iveco-recovery-key-for-earnings-13991854.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "7a6c9b643a394e6ab881b845b6b5278f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.marketsmojo.com/news/stocks-in-action/tata-motors-ltd-reports-mixed-quarterly-results-amid-margin-pressures-4238090",
+      "host": "r.jina.ai",
+      "http_operation_id": "65850b8e07534757810f80991c34ee82",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "cf512c4ac25e43ae8e3c3a58453361c0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "5de77856f36e4feebde2e6e543791a45",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.businesstoday.in/markets/stocks/story/tata-motors-cv-share-price-auto-stock-down-3-post-q3-earnings-brokerage-sees-20-upside-513662-2026-01-30",
+      "host": "www.businesstoday.in",
+      "http_operation_id": "ba91d5b570234cbca85b9543cf7ecb1e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/business/markets/tata-motors-shares-drop-3-ahead-of-q2-earnings-announcement-9703656.html",
+      "host": "www.news18.com",
+      "http_operation_id": "ec2be6e3e6ac4657abf115145e9b86c2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "04f149f89a1745e681fcc4fe10daa42b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5ac74b5c09184ce2830354312c29831e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "host": "cv.tatamotors.com",
+      "http_operation_id": "695f1c40d9174fc0acc9d65470bbae6f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/topics/tata-motors/",
+      "host": "www.news18.com",
+      "http_operation_id": "c6dbfa6793504bc3a806ee74733ef2dd",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "63225e7df1fc455b8455f3f8405d2173",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges",
+      "host": "r.jina.ai",
+      "http_operation_id": "d6dcc79560534b6081aa299f4236c404",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "783c41b5e21840f99eb5bbd506fc89d8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "33b394aecb5d4a91a6b166ca27735095",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "420308622b194b6aa69e11d636748340",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "426c93ec8b1d44f9af3540a46b622c57",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2BTata%2BMotors%2527%2Blatest%2Breported%2Bfinancial%2Bperformance%2Band%2Bmajor%2Bautomotive%2Bor%2BEV%2Bbusiness%2Bdevelopments.%2BPrioritize%2Bofficial%2Bcompany%2Band%2Bexchange%2Binformation%252C%2Bthen%2Bcompare%2Bclaims%2Bin%2Bindependent%2Breporting.%2Bsite%253Asec.gov&_bvc=1.c00ddbea9519574e77ee38a058502b265ebe4dc6fba3645b21a5044e1b295329",
+      "host": "search.yahoo.com",
+      "http_operation_id": "426c93ec8b1d44f9af3540a46b622c57",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2BTata%2BMotors%2527%2Blatest%2Breported%2Bfinancial%2Bperformance%2Band%2Bmajor%2Bautomotive%2Bor%2BEV%2Bbusiness%2Bdevelopments.%2BPrioritize%2Bofficial%2Bcompany%2Band%2Bexchange%2Binformation%252C%2Bthen%2Bcompare%2Bclaims%2Bin%2Bindependent%2Breporting.%2Bsite%253Asec.gov&_bvc=2.e91303d347efe42f1b4ee3561b49d1f59e957c590b65067525f5f2640b81eaeb",
+      "host": "search.yahoo.com",
+      "http_operation_id": "426c93ec8b1d44f9af3540a46b622c57",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2BTata%2BMotors%2527%2Blatest%2Breported%2Bfinancial%2Bperformance%2Band%2Bmajor%2Bautomotive%2Bor%2BEV%2Bbusiness%2Bdevelopments.%2BPrioritize%2Bofficial%2Bcompany%2Band%2Bexchange%2Binformation%252C%2Bthen%2Bcompare%2Bclaims%2Bin%2Bindependent%2Breporting.%2Bsite%253Asec.gov&_bvc=3.7d67006ad739757f5599600f7e781364274785c82a76a0c39544672f4c3ff52c",
+      "host": "search.yahoo.com",
+      "http_operation_id": "426c93ec8b1d44f9af3540a46b622c57",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2BTata%2BMotors%2527%2Blatest%2Breported%2Bfinancial%2Bperformance%2Band%2Bmajor%2Bautomotive%2Bor%2BEV%2Bbusiness%2Bdevelopments.%2BPrioritize%2Bofficial%2Bcompany%2Band%2Bexchange%2Binformation%252C%2Bthen%2Bcompare%2Bclaims%2Bin%2Bindependent%2Breporting.%2Bsite%253Asec.gov&_bvc=4.c383ec08530940d322738e29cd8a83a52094383082b076a04d9cf201e5106439",
+      "host": "search.yahoo.com",
+      "http_operation_id": "426c93ec8b1d44f9af3540a46b622c57",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+Tata+Motors%27+latest+reported+financial+performance+and+major+automotive+or+EV+business+developments.+Prioritize+official+company+and+exchange+information%2C+then+compare+claims+in+independent+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "78a658cdb94c4683abc2d62db2b83162",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "20d8e8a7e96a42d09dc11da94299abe9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://cv.tatamotors.com/intimation-to-stock-exchanges (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "host": "cv.tatamotors.com",
+      "http_operation_id": "8e414f904e6242cc9f0e9082dcd5dc55",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "host": "r.jina.ai",
+      "http_operation_id": "b54632384c0543fea9e5f047fb214da4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://cv.tatamotors.com/intimation-to-stock-exchanges (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "host": "r.jina.ai",
+      "http_operation_id": "49e17312ca21429c93ae58e9a70b5978",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "d4ab119dc48749fbad57d6749ab3fe98",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3e4ed0f3fc4645ff8f7a57c0c7b19198",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4b12604f753d4b22a34e19bff0b6e8fb",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8958a5973768405a8df3c55d780af3ed",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure",
+      "host": "search.yahoo.com",
+      "http_operation_id": "039ee342b201450eb161a149c8ed76d8",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f388b1680f9c4f188e2b68b97ef50705",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "a40c4e34cb114363b7ed98e464d39816",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "0717f5a91b9a43ed811671aaa1175f06",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements",
+      "host": "search.yahoo.com",
+      "http_operation_id": "14e70f26a25f462dbce1f47e86489175",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DTata%2BMotors%2B%2528TATAMOTORS.NS%2529%2Bfinancial%2Bstatements&_bvc=1.4c7dab3d98058b55ae70226e768b4dff44b2f704bf3a25ad2e8b42bb73b50453",
+      "host": "search.yahoo.com",
+      "http_operation_id": "14e70f26a25f462dbce1f47e86489175",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements",
+      "host": "search.yahoo.com",
+      "http_operation_id": "14e70f26a25f462dbce1f47e86489175",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "87b669d3c5cb43349a82f433898bceb5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+financial+statements&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "bad38b1469d54522aecc9cd777a4704e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3dac2a4e7d114ef494b56c61367c726d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reuters.com/world/india/indias-tata-motors-posts-second-quarter-profit-2026-10-23/",
+      "host": "www.reuters.com",
+      "http_operation_id": "90515b02514040e6b450959136426275",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "e0e387e840af4d13b166ba6d94319b6f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://query2.finance.yahoo.com/v1/finance/search?q=Tata+Motors+%28TATAMOTORS.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false",
+      "host": "query2.finance.yahoo.com",
+      "http_operation_id": "562fe1ec45c04428ae6e5b882ca3f380",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ee7ef59124a44c93a87fbb659097b9ae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ee7ef59124a44c93a87fbb659097b9ae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+%28TATAMOTORS.NS%29+company+guidance&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1541a99b1ad54b67a36b707d03283813",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "f60fe1ea372447b8aa81b37da59fbf71",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History",
+      "host": "search.yahoo.com",
+      "http_operation_id": "428d3e031006487c891688716d8a83ba",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History",
+      "host": "search.yahoo.com",
+      "http_operation_id": "428d3e031006487c891688716d8a83ba",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+Stock+Price%2C+News%2C+Quote+%26+History&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "17e54e0d3ea049bfaf2e141609d61f07",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "de2eee85bec74ecabe123bbe6aefa3ea",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3025f3cd52b44d5192696150971d2188",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DTata%2BMotors%2BLimited%2B%2528TMCV.NS%2529%2Bstock%2Bhistorical%2Bprices%2Band%2Bdata&_bvc=1.4343681ee979607d83122ccfc937beabe3450ff650e667cdea97ed2c0747ba80",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3025f3cd52b44d5192696150971d2188",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3025f3cd52b44d5192696150971d2188",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+historical+prices+and+data&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "af593519c8b247ceaea70e50d71574b6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "e5a209e1050d45338a63bf6d4627acc9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ef1a9839686049fba5c599a08375e54b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DTata%2BMotors%2BLimited%2B%2528TMCV.NS%2529%2Bstock%2Bprice%252C%2Bnews%252C%2Bquote%2Band%2Bhistory&_bvc=1.e58b816d2db933d645027506029cc28e01e6451387b3533f5d912ecc057a0411",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ef1a9839686049fba5c599a08375e54b",
+      "phase": "reading",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Tata+Motors+Limited+%28TMCV.NS%29+stock+price%2C+news%2C+quote+and+history&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ea7855da722a4ae2afc036f1f94da89e",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 72,
+  "admission_rejections": 5,
+  "pipeline_errors": []
+}

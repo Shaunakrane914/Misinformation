@@ -303,12 +303,14 @@ function renderWorkbenchPage(workbench, filters = {}) {
   const cards = selected.rows.map(row => {
     const url = safeEvidenceUrl(row.source_url);
     return `<article class="ur-workbench-passage"><h4>${esc(row.source_title || 'Captured source')}</h4>
-      <p class="ur-ev-note">${esc(row.publisher_host || 'Unknown publisher')} · ${esc(row.content_role || 'SOURCE ASSERTION')} · UNVERIFIED</p>
+      <p class="ur-ev-note">${esc(row.publisher_host || 'Unknown publisher')} · ${esc(row.content_role || 'SOURCE ASSERTION')} · UNVERIFIED · ${esc(row.published_at || 'Publication date unknown')}</p>
       ${row.context_labels && typeof row.context_labels === 'object' ? `<p class="ur-ev-note">${Object.values(row.context_labels).filter(value => typeof value === 'string').map(esc).join(' · ')}</p>` : ''}
       ${row.source_permission && safeEvidenceUrl(row.source_permission.licence_url) ? `<p class="ur-ev-note">Source credit: ${esc(row.source_permission.author || row.publisher_host || 'Original publisher')} · Exact excerpt · ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Original source</a> · ` : ''}<a href="${esc(safeEvidenceUrl(row.source_permission.licence_url))}" target="_blank" rel="noopener noreferrer">Source licence</a></p>` : ''}
       <blockquote>${esc(row.text)}</blockquote>
-      ${row.content_language ? `<p class="ur-ev-note">Source language: ${esc(row.content_language)} · Original text; no generated translation.</p>` : ''}
-      <p class="ur-ev-note">${esc(row.evidence_id)} / ${esc(row.passage_id)} · offsets ${esc(row.start)}–${esc(row.end)} · ${esc(row.published_at || 'Publication date unknown')}</p>
+      <details class="ur-capture-details"><summary>Capture and attribution details</summary>
+        ${row.content_language ? `<p class="ur-ev-note">Source language: ${esc(row.content_language)} · Original text; no generated translation.</p>` : ''}
+        <p class="ur-ev-note">${esc(row.evidence_id)} / ${esc(row.passage_id)} · offsets ${esc(row.start)}–${esc(row.end)}</p>
+      </details>
       ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open reporting source</a>` : '<p>Source URL unavailable</p>'}
       ${array(row.also_reported_by).length ? `<p class="ur-ev-note">Identical passage also observed in ${array(row.also_reported_by).length} source record(s); not additional independent confirmation.</p>` : ''}
       </article>`;
@@ -621,6 +623,22 @@ function renderAgentIntelligence(report) {
             ${fc.discrepancies.map(d => `<li><strong>${esc(d.metric || 'Metric')}:</strong> Filing = ${esc(d.filing_value || '—')}, Reported = ${esc(d.reported_value || '—')} (Variance: ${esc(d.variance || '—')})</li>`).join('')}
           </ul>` : ''}
       </div>`);
+  }
+
+  const reference = intel.reference_background;
+  if (reference && Array.isArray(reference.sources)) {
+    modules.push(`<div class="ur-intel-card" data-ur-reference-background><h3 class="ur-intel-head">General background</h3>
+      <p class="ur-ev-note">Reference context only. This does not verify current finances, incidents, disputed quotations or virality. Task evidence gaps remain unresolved.</p>
+      ${reference.sources.map(row => {
+        const href = safeEvidenceUrl(row.url);
+        const credit = row.source_permission || {};
+        const licence = safeEvidenceUrl(credit.licence_url);
+        return `<article><strong>GENERAL BACKGROUND | Publication date unknown</strong>
+          <h4>${href ? `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(row.title)}</a>` : esc(row.title)}</h4>
+          <p>Source credit: ${esc(credit.author || row.publisher)} | ${esc(row.evidence_id)}</p>
+          ${licence ? `<a href="${esc(licence)}" target="_blank" rel="noopener noreferrer">Source licence</a>` : ''}
+          <blockquote>${esc(row.passage)}</blockquote></article>`;
+      }).join('') || '<p>No unambiguous permitted reference was acquired.</p>'}</div>`);
   }
 
   // A current article set is a development briefing, not measured popularity.
@@ -941,6 +959,36 @@ function renderUnifiedReport(container, report) {
   // above those sections too, not several screens below an empty dashboard.
   const parent = container.parentElement;
   if (parent && typeof parent.prepend === 'function') {
+    parent.querySelector('[data-evidence-navigation]')?.remove();
+    const passages = array(report.evidence_workbench && report.evidence_workbench.passages);
+    const background = array(report.agent_intelligence && report.agent_intelligence.historical_background && report.agent_intelligence.historical_background.sources)
+      .concat(array(report.agent_intelligence && report.agent_intelligence.reference_background && report.agent_intelligence.reference_background.sources));
+    if (passages.length || background.length) {
+      const navigation = document.createElement('nav');
+      navigation.dataset.evidenceNavigation = 'true';
+      navigation.className = 'ur-evidence-navigation';
+      navigation.setAttribute('aria-label', 'Investigation evidence');
+      const texts = [...new Set(passages.map(p => String(p.text || '').trim()).filter(Boolean))];
+      const words = texts.reduce((sum, text) => sum + text.split(/\s+/).length, 0);
+      const firstWords = workbenchPage(report.evidence_workbench).rows.reduce((sum, p) => sum + String(p.text || '').trim().split(/\s+/).filter(Boolean).length, 0);
+      navigation.innerHTML = passages.length
+        ? `<a href="#ur-evidence-workbench">View cited passages</a><span>${words} quoted words across all passage pages · ${firstWords} on the first page. Source assertions require review.</span>`
+        : '<a href="#ur-agent-intel">View background</a><span>No current qualified passages. Reference and older source text are labeled separately.</span>';
+      if (typeof navigation.addEventListener === 'function') {
+        navigation.addEventListener('click', event => {
+          const link = event.target.closest('a');
+          if (!link) return;
+          const target = container.querySelector(passages.length ? '#ur-evidence-workbench' : '#ur-agent-intel');
+          if (!target) return;
+          event.preventDefault();
+          // Keep the heading clear of the fixed site navigation, including
+          // browsers that align a hash target inside overflow-hidden cards.
+          window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - 96), behavior: 'instant' });
+          target.querySelector('.ur-heading-button')?.focus({ preventScroll: true });
+        });
+      }
+      parent.prepend(navigation);
+    }
     parent.querySelector('[data-acquisition-alert]')?.remove();
     if (report.investigation_status === 'ACQUISITION_FAILED') {
       const alert = document.createElement('div');

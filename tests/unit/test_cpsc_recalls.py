@@ -184,7 +184,7 @@ def test_unsuccessful_or_wrong_document_cannot_normalize():
     assert adapter.health()["live_health_verified"] is False
 
 
-def test_registered_expanded_cpsc_discovery_preserves_index_provenance_only(monkeypatch, synthetic_record):
+def test_registered_expanded_cpsc_preserves_observed_structured_record(monkeypatch, synthetic_record):
     from backend.infrastructure.acquisition.adapters import expanded_catalog
     assert expanded_catalog.ADAPTERS['cpsc_recalls'] == ('consumer.cpsc_recalls', 'CpscRecallsAdapter')
     fetch = install_response(monkeypatch, [synthetic_record])
@@ -192,18 +192,14 @@ def test_registered_expanded_cpsc_discovery_preserves_index_provenance_only(monk
                         lambda: {'cpsc_recalls': cpsc.CpscRecallsAdapter()})
     fragment, = expanded_catalog.ExpandedSourceChannel().search('cpsc_recalls|Synthetic Example')
     fetch.assert_called_once()
-    assert fragment.content == ''
-    assert fragment.content_depth == 'INDEX_SNIPPET'
-    assert not fragment.published
-    assert fragment.raw_metadata['cpsc_recall_id'] == synthetic_record['RecallID']
-    assert fragment.raw_metadata['cpsc_record_index'] == 0
-    assert fragment.raw_metadata['cpsc_issue_date'] == synthetic_record['RecallDate']
-    assert fragment.raw_metadata['cpsc_api_url'].startswith(cpsc.CPSC_API_URL + '?')
-    assert fragment.raw_metadata['discovery_only'] is True
-    assert fragment.raw_metadata['linked_article_retrieved'] is False
-    assert fragment.raw_metadata['primary_source'] is False
+    assert synthetic_record['Description'] in fragment.content
+    assert fragment.content_depth == 'STRUCTURED_PUBLIC_DATA'
+    assert fragment.raw_metadata['body_acquired_during_discovery'] is True
+    assert fragment.raw_metadata['article_body_acquired'] is False
+    assert fragment.raw_metadata['source_assertion_only'] is True
+    assert fragment.raw_metadata['source_family'] == 'cpsc'
     assert 'cpsc_record' not in fragment.raw_metadata
-    assert 'published' not in fragment.raw_metadata and 'published_at' not in fragment.raw_metadata
+
 
 
 def test_generic_expanded_reader_leaves_cpsc_html_to_ordinary_reader(monkeypatch):

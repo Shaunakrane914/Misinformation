@@ -1,0 +1,1279 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "058dc6c9827949c48e74c44427956b94",
+      "requested_url": "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?interval=1d&range=5d",
+      "started_at": "2026-10-28T08:34:49.723450+00:00",
+      "http_status": 200,
+      "final_url": "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?interval=1d&range=5d",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1733,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?interval=1d&range=5d"
+      ],
+      "duration_ms": 822.275
+    },
+    {
+      "operation_id": "ea414908a0d949dbb84cf6630e20bf18",
+      "requested_url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+quarterly+earnings&first=1",
+      "started_at": "2026-10-28T08:34:50.743518+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.713
+    },
+    {
+      "operation_id": "de5fae1e1f6a4def8077f7d0b8bf8386",
+      "requested_url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+quarterly+earnings",
+      "started_at": "2026-10-28T08:34:55.746648+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5010.862
+    },
+    {
+      "operation_id": "f53a797e4459436d98f595bc599c94b0",
+      "requested_url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings&format=rss",
+      "started_at": "2026-10-28T08:34:51.456389+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 8267,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings&format=rss"
+      ],
+      "duration_ms": 10871.647
+    },
+    {
+      "operation_id": "4e2283321aa34e138475c557b7c5baea",
+      "requested_url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:00.759875+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 57229,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2504.937
+    },
+    {
+      "operation_id": "b56f250b7fff4fee97d43e02d9185f94",
+      "requested_url": "https://stocksdownunder.com/nvidia-earnings-today-what-to-expect-nvda/",
+      "started_at": "2026-10-28T08:35:03.572170+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1732.824
+    },
+    {
+      "operation_id": "e764462516c04b0682e1dd45e695d7eb",
+      "requested_url": "https://stocksdownunder.com/why-nvidia-nvda-stock-jumped-anthropic-ipo/",
+      "started_at": "2026-10-28T08:35:05.310712+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 659.687
+    },
+    {
+      "operation_id": "24a20880f43b49218094aa452ef3c487",
+      "requested_url": "https://blockonomi.com/nvidia-nvda-stock-hits-221-as-ai-demand-supports-strong-earnings/",
+      "started_at": "2026-10-28T08:35:04.170487+00:00",
+      "http_status": 200,
+      "final_url": "https://blockonomi.com/nvidia-nvda-stock-hits-221-as-ai-demand-supports-strong-earnings/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 60050,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://blockonomi.com/nvidia-nvda-stock-hits-221-as-ai-demand-supports-strong-earnings/"
+      ],
+      "duration_ms": 2161.982
+    },
+    {
+      "operation_id": "a5caf179a9264ca088ba338229cc4ee9",
+      "requested_url": "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&first=1",
+      "started_at": "2026-10-28T08:35:03.300797+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 142236,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&first=1"
+      ],
+      "duration_ms": 3553.374
+    },
+    {
+      "operation_id": "8cba45788e8448e8b44832da1b0026ab",
+      "requested_url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.&first=1",
+      "started_at": "2026-10-28T08:35:03.301322+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 141076,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.&first=1"
+      ],
+      "duration_ms": 3797.505
+    },
+    {
+      "operation_id": "5cef034a3f624f7c898b5886952cbdc7",
+      "requested_url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.",
+      "started_at": "2026-10-28T08:35:07.161784+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 2706.686
+    },
+    {
+      "operation_id": "8aff0722b8424f60abbd46e61fe3e5e2",
+      "requested_url": "https://note.com/japansho/n/n2fa056e4c656?hl=en",
+      "started_at": "2026-10-28T08:35:07.103955+00:00",
+      "http_status": 200,
+      "final_url": "https://note.com/japansho/n/n2fa056e4c656?hl=en",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 57108,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://note.com/japansho/n/n2fa056e4c656?hl=en"
+      ],
+      "duration_ms": 2989.183
+    },
+    {
+      "operation_id": "70dce3c09c3542838bf0746489715761",
+      "requested_url": "https://search.yahoo.com/search?p=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC",
+      "started_at": "2026-10-28T08:35:06.877687+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3770.054
+    },
+    {
+      "operation_id": "b4d16f430cda4e65a757468bade41946",
+      "requested_url": "https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-leverages-ai-growth-134714955.html",
+      "started_at": "2026-10-28T08:35:06.100909+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5010.599
+    },
+    {
+      "operation_id": "335b6ecd848f4af3b9a96c02eb69202a",
+      "requested_url": "https://shattered.io/magnificent-seven-earnings-preview-nvidia-61-percent-growth-mag-6-lags-2026/",
+      "started_at": "2026-10-28T08:35:10.278125+00:00",
+      "http_status": 200,
+      "final_url": "https://shattered.io/magnificent-seven-earnings-preview-nvidia-61-percent-growth-mag-6-lags-2026/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 53160,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://shattered.io/magnificent-seven-earnings-preview-nvidia-61-percent-growth-mag-6-lags-2026/"
+      ],
+      "duration_ms": 2974.508
+    },
+    {
+      "operation_id": "135790eb03af4b11af0c3d302c63051a",
+      "requested_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:10.648009+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 32372,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4583.386
+    },
+    {
+      "operation_id": "32341fdeaaa240a1982cdb6f6629e256",
+      "requested_url": "https://www.financialexpress.com/business/investing-abroad-nvidia-earnings-when-will-the-fourth-quarter-results-be-released-3760586/",
+      "started_at": "2026-10-28T08:35:11.755455+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.725
+    },
+    {
+      "operation_id": "f6d1f210a2fc41ccb9f9817ae38c2e70",
+      "requested_url": "https://blockonomi.com/nvidia-nvda-stock-rises-as-company-achieves-quantum-computing-breakthrough-in-europe/",
+      "started_at": "2026-10-28T08:35:13.516269+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.807
+    },
+    {
+      "operation_id": "d534d0722f8345a1bc04d506a908d4b5",
+      "requested_url": "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&format=rss",
+      "started_at": "2026-10-28T08:35:15.272901+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2313,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&format=rss"
+      ],
+      "duration_ms": 3783.396
+    },
+    {
+      "operation_id": "dd4fe03db9ab4d01b50523c12ab5fa0d",
+      "requested_url": "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&format=rss",
+      "started_at": "2026-10-28T08:35:15.272318+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2338,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&format=rss"
+      ],
+      "duration_ms": 3893.659
+    },
+    {
+      "operation_id": "c2f59b89be154b35b26412e8487b4058",
+      "requested_url": "https://r.jina.ai/https://www.financialexpress.com/business/investing-abroad-nvidia-earnings-when-will-the-fourth-quarter-results-be-released-3760586/",
+      "started_at": "2026-10-28T08:35:16.765451+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.financialexpress.com/business/investing-abroad-nvidia-earnings-when-will-the-fourth-quarter-results-be-released-3760586/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 761,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.financialexpress.com/business/investing-abroad-nvidia-earnings-when-will-the-fourth-quarter-results-be-released-3760586/"
+      ],
+      "duration_ms": 2763.964
+    },
+    {
+      "operation_id": "bb9c055401bb4f708da073e55bc163f3",
+      "requested_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:19.058349+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 32316,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1510.937
+    },
+    {
+      "operation_id": "067f4588743f45f18aaa057838bec89b",
+      "requested_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:19.173096+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 11875,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1796.577
+    },
+    {
+      "operation_id": "8d46170da99a452f97e3b6038113e289",
+      "requested_url": "https://r.jina.ai/https://blockonomi.com/nvidia-nvda-stock-rises-as-company-achieves-quantum-computing-breakthrough-in-europe/",
+      "started_at": "2026-10-28T08:35:18.529458+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://blockonomi.com/nvidia-nvda-stock-rises-as-company-achieves-quantum-computing-breakthrough-in-europe/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5401,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://blockonomi.com/nvidia-nvda-stock-rises-as-company-achieves-quantum-computing-breakthrough-in-europe/"
+      ],
+      "duration_ms": 2645.544
+    },
+    {
+      "operation_id": "bef74505bd0d4e358ae6131ca0c02a13",
+      "requested_url": "https://note.com/tsomgaman/n/n5a6772aaa26c?hl=en",
+      "started_at": "2026-10-28T08:35:19.543555+00:00",
+      "http_status": 200,
+      "final_url": "https://note.com/tsomgaman/n/n5a6772aaa26c?hl=en",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 66865,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://note.com/tsomgaman/n/n5a6772aaa26c?hl=en"
+      ],
+      "duration_ms": 2872.559
+    },
+    {
+      "operation_id": "60becd32768045369cdbcbd07cddaa5f",
+      "requested_url": "https://www.nvidia.com/en-us/software/nvidia-app/",
+      "started_at": "2026-10-28T08:35:21.779259+00:00",
+      "http_status": 200,
+      "final_url": "https://www.nvidia.com/en-us/software/nvidia-app/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 44683,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.nvidia.com/en-us/software/nvidia-app/"
+      ],
+      "duration_ms": 1119.72
+    },
+    {
+      "operation_id": "cbd92826f9344e7cb9a8e0e495d74c06",
+      "requested_url": "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&first=1",
+      "started_at": "2026-10-28T08:35:20.989159+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 141028,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&first=1"
+      ],
+      "duration_ms": 3017.194
+    },
+    {
+      "operation_id": "fe115ce706d547338a73d95201a88924",
+      "requested_url": "https://www.nvidia.com/en-us/drivers/",
+      "started_at": "2026-10-28T08:35:23.689531+00:00",
+      "http_status": 200,
+      "final_url": "https://www.nvidia.com/en-us/drivers/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 76412,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.nvidia.com/en-us/drivers/"
+      ],
+      "duration_ms": 1875.129
+    },
+    {
+      "operation_id": "e22da36148ae4098a61631b506ff9fff",
+      "requested_url": "https://www.nvidia.in/content/DriverDownloads/confirmation.php?url=%2FWindows%2F512.59%2F512.59-desktop-win10-win11-64bit-international-nsd-dch-whql.exe&lang=in&type=GeForce",
+      "started_at": "2026-10-28T08:35:23.071045+00:00",
+      "http_status": 200,
+      "final_url": "https://www.nvidia.in/content/DriverDownloads/confirmation.php?url=%2FWindows%2F512.59%2F512.59-desktop-win10-win11-64bit-international-nsd-dch-whql.exe&lang=in&type=GeForce",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4471,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.nvidia.in/content/DriverDownloads/confirmation.php?url=%2FWindows%2F512.59%2F512.59-desktop-win10-win11-64bit-international-nsd-dch-whql.exe&lang=in&type=GeForce"
+      ],
+      "duration_ms": 2790.292
+    },
+    {
+      "operation_id": "94540d1646b94b7b88078ba90f337fb3",
+      "requested_url": "https://www.nvidia.com/en-us/geforce/drivers/",
+      "started_at": "2026-10-28T08:35:27.072385+00:00",
+      "http_status": 200,
+      "final_url": "https://www.nvidia.com/en-us/geforce/drivers/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 61032,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.nvidia.com/en-us/geforce/drivers/"
+      ],
+      "duration_ms": 1671.14
+    },
+    {
+      "operation_id": "cf9c802500224e2194e38c063e511ca3",
+      "requested_url": "https://search.yahoo.com/search?p=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov",
+      "started_at": "2026-10-28T08:35:24.029264+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5044.278
+    },
+    {
+      "operation_id": "58c9396c89cd4666b2b766d72986930b",
+      "requested_url": "https://www.bing.com/search?q=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F&first=1",
+      "started_at": "2026-10-28T08:35:26.096600+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131896,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F&first=1"
+      ],
+      "duration_ms": 3572.779
+    },
+    {
+      "operation_id": "a1ab7968929441b487f20fe57947e22e",
+      "requested_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:29.073789+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 33454,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2947.36
+    },
+    {
+      "operation_id": "d483e250935a4c66aa3448bdc7764dd8",
+      "requested_url": "https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "started_at": "2026-10-28T08:35:29.908920+00:00",
+      "http_status": 200,
+      "final_url": "https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 10970,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us"
+      ],
+      "duration_ms": 2135.396
+    },
+    {
+      "operation_id": "c9442e5e763d4a888e255f3ec1f830c7",
+      "requested_url": "https://search.yahoo.com/search?p=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F",
+      "started_at": "2026-10-28T08:35:29.694657+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5013.31
+    },
+    {
+      "operation_id": "6a27737889ed48e3897722a3ce0484f9",
+      "requested_url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1",
+      "started_at": "2026-10-28T08:35:32.044642+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 143951,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1"
+      ],
+      "duration_ms": 3691.936
+    },
+    {
+      "operation_id": "01334c97c2d9462bbae83e8e386c2a1a",
+      "requested_url": "https://news.google.com/rss/search?q=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:34.708209+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1318.265
+    },
+    {
+      "operation_id": "905f575c43a4420ca162f85fd4d27eb1",
+      "requested_url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:35:32.044999+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9058,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 4391.645
+    },
+    {
+      "operation_id": "9bee14728a3f483d9b8418c372a53e44",
+      "requested_url": "https://r.jina.ai/https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "started_at": "2026-10-28T08:35:32.343555+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5020.234
+    },
+    {
+      "operation_id": "09e7e0b44cd147cba03cf9e04179e4af",
+      "requested_url": "https://r.jina.ai/https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "started_at": "2026-10-28T08:35:37.366116+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20788,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us"
+      ],
+      "duration_ms": 1938.166
+    },
+    {
+      "operation_id": "1422b902e63f4d05b27be6e651379036",
+      "requested_url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29",
+      "started_at": "2026-10-28T08:35:35.774807+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5002.87
+    },
+    {
+      "operation_id": "907e520bbbf345ee81b672d4ff528b58",
+      "requested_url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:40.777987+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5551,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2231.934
+    },
+    {
+      "operation_id": "a58920a35c774fdf946465505eaef7c3",
+      "requested_url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+investor+disclosure&first=1",
+      "started_at": "2026-10-28T08:35:46.588118+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.065
+    },
+    {
+      "operation_id": "a0e1278be37048f087352edb650ca73e",
+      "requested_url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+investor+disclosure",
+      "started_at": "2026-10-28T08:35:46.588291+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.05
+    },
+    {
+      "operation_id": "8e126ce0dd3945318ca116293c760c36",
+      "requested_url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:35:46.588446+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.058
+    },
+    {
+      "operation_id": "1567da9c464d484c9018bdc6cd79de2d",
+      "requested_url": "https://www.thestreet.com/latest-news/nvidia-corp-nvda-q2-2027-earnings-call-updates",
+      "started_at": "2026-10-28T08:35:47.094784+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 317.985
+    },
+    {
+      "operation_id": "c2b36e5106e9413ca07293486f3b77e7",
+      "requested_url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+investor+disclosure&format=rss",
+      "started_at": "2026-10-28T08:35:46.587807+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+investor+disclosure&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 8992,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+investor+disclosure&format=rss"
+      ],
+      "duration_ms": 1639.173
+    },
+    {
+      "operation_id": "a2b063e377294db9b4f89f6be84e9bea",
+      "requested_url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+      "started_at": "2026-10-28T08:35:47.907868+00:00",
+      "http_status": 200,
+      "final_url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 68411,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/"
+      ],
+      "duration_ms": 1836.91
+    },
+    {
+      "operation_id": "1e6cd76fe0b84176b568ee83a699377e",
+      "requested_url": "https://www.cnbc.com/2026/05/20/nvidia-nvda-earnings-report-q1-2027.html",
+      "started_at": "2026-10-28T08:35:47.095433+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cnbc.com/2026/05/20/nvidia-nvda-earnings-report-q1-2027.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 165277,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cnbc.com/2026/05/20/nvidia-nvda-earnings-report-q1-2027.html"
+      ],
+      "duration_ms": 3489.896
+    },
+    {
+      "operation_id": "b147968d38584a67ac39aa40c2174d61",
+      "requested_url": "https://www.tipranks.com/news/nvidia-stock-nvda-gets-rare-sell-rating-heres-why",
+      "started_at": "2026-10-28T08:35:51.795089+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 2165.089
+    },
+    {
+      "operation_id": "f483bf68743548c8aee7f691a444d6b3",
+      "requested_url": "https://www.insidermonkey.com/news/why-did-nvidia-nvda-rise-only-19-while-its-suppliers-did-far-better-1855483/",
+      "started_at": "2026-10-28T08:35:50.461046+00:00",
+      "http_status": 200,
+      "final_url": "https://www.insidermonkey.com/news/why-did-nvidia-nvda-rise-only-19-while-its-suppliers-did-far-better-1855483/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 104172,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.insidermonkey.com/news/why-did-nvidia-nvda-rise-only-19-while-its-suppliers-did-far-better-1855483/"
+      ],
+      "duration_ms": 4804.002
+    },
+    {
+      "operation_id": "966a36169cb94c9c9b408b5ed68f038e",
+      "requested_url": "https://www.fool.com/investing/2026/08/30/nvidia-stock-overvalued-2028-buy-nvda/",
+      "started_at": "2026-10-28T08:35:55.616234+00:00",
+      "http_status": 200,
+      "final_url": "https://www.fool.com/investing/2026/08/30/nvidia-stock-overvalued-2028-buy-nvda/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 63924,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.fool.com/investing/2026/08/30/nvidia-stock-overvalued-2028-buy-nvda/"
+      ],
+      "duration_ms": 2427.627
+    },
+    {
+      "operation_id": "691fb94d92654961b4ca539ab450446e",
+      "requested_url": "https://uk.finance.yahoo.com/news/nvidia-nvda-20-billion-groq-205449946.html",
+      "started_at": "2026-10-28T08:35:54.347299+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5015.468
+    },
+    {
+      "operation_id": "41cacef3653d49b7a747f14a689c7840",
+      "requested_url": "https://www.insidermonkey.com/news/nvidia-nvda-can-paid-software-make-its-earnings-less-dependent-on-hardware-sales-1854604/",
+      "started_at": "2026-10-28T08:35:58.429401+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5017.793
+    },
+    {
+      "operation_id": "afbb7c89aaf842669f71df78d8186f6e",
+      "requested_url": "https://finance.yahoo.com/markets/stocks/articles/nvda-stock-alert-know-nvidia-213223836.html",
+      "started_at": "2026-10-28T08:35:59.391996+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5000.192
+    },
+    {
+      "operation_id": "abcc929590ff421490ffea273674cb31",
+      "requested_url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-can-paid-software-make-its-earnings-less-dependent-on-hardware-sales-1854604/",
+      "started_at": "2026-10-28T08:36:03.447512+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.992
+    },
+    {
+      "operation_id": "8b1700d0991546b7bf4174fde7e23108",
+      "requested_url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-can-paid-software-make-its-earnings-less-dependent-on-hardware-sales-1854604/",
+      "started_at": "2026-10-28T08:36:08.461852+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4973.866
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "f53a797e4459436d98f595bc599c94b0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+quarterly+earnings&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ea414908a0d949dbb84cf6630e20bf18",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+quarterly+earnings",
+      "host": "search.yahoo.com",
+      "http_operation_id": "de5fae1e1f6a4def8077f7d0b8bf8386",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNvidia%2B%2528NVDA%2529%2Bquarterly%2Bearnings&_bvc=1.2e59f7acc36107ea8cfdba226534c23964aabc9f3165ed2a8bc63ebf897d2c18",
+      "host": "search.yahoo.com",
+      "http_operation_id": "de5fae1e1f6a4def8077f7d0b8bf8386",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNvidia%2B%2528NVDA%2529%2Bquarterly%2Bearnings&_bvc=2.f8831efe2343e05ba6e9e588379aa22160d3f414b120c7ec1c1e619f6f81c161",
+      "host": "search.yahoo.com",
+      "http_operation_id": "de5fae1e1f6a4def8077f7d0b8bf8386",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+quarterly+earnings",
+      "host": "search.yahoo.com",
+      "http_operation_id": "de5fae1e1f6a4def8077f7d0b8bf8386",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNvidia%2B%2528NVDA%2529%2Bquarterly%2Bearnings&_bvc=1.cedc3528c1abb5e9f23f55210a6d015f3bd3b397337fa36a0eb52c096eb1ca26",
+      "host": "search.yahoo.com",
+      "http_operation_id": "de5fae1e1f6a4def8077f7d0b8bf8386",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4e2283321aa34e138475c557b7c5baea",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "a5caf179a9264ca088ba338229cc4ee9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "8cba45788e8448e8b44832da1b0026ab",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://stocksdownunder.com/nvidia-earnings-today-what-to-expect-nvda/",
+      "host": "stocksdownunder.com",
+      "http_operation_id": "b56f250b7fff4fee97d43e02d9185f94",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://blockonomi.com/nvidia-nvda-stock-hits-221-as-ai-demand-supports-strong-earnings/",
+      "host": "blockonomi.com",
+      "http_operation_id": "24a20880f43b49218094aa452ef3c487",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://stocksdownunder.com/why-nvidia-nvda-stock-jumped-anthropic-ipo/",
+      "host": "stocksdownunder.com",
+      "http_operation_id": "e764462516c04b0682e1dd45e695d7eb",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-leverages-ai-growth-134714955.html",
+      "host": "finance.yahoo.com",
+      "http_operation_id": "b4d16f430cda4e65a757468bade41946",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC",
+      "host": "search.yahoo.com",
+      "http_operation_id": "70dce3c09c3542838bf0746489715761",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://note.com/japansho/n/n2fa056e4c656?hl=en",
+      "host": "note.com",
+      "http_operation_id": "8aff0722b8424f60abbd46e61fe3e5e2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5cef034a3f624f7c898b5886952cbdc7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DResearch%2BNVIDIA%2527s%2Bmost%2Brecent%2Breported%2Bquarterly%2Brevenue%2Band%2Bdata-center%2Bperformance.%2BCompare%2Bthe%2Bactual%2Breporting%2Bperiod%2Bwith%2BNVIDIA%2527s%2Bofficial%2Binvestor%2Bdisclosures%2Band%2Brelevant%2Bindependent%2Bfinancial%2Breporting.%2BClearly%2Bdistinguish%2Bactual%2Bfigures%2Bfrom%2Bforecasts.%2Bsite%253Anvidia.com%2Bquarterly%2Bresults%2Bfiling%2BSEC&_bvc=1.4b09c7e2a417548b457eb7eabfd16393b01a7c1b9cbea7b0e011bffe7361586d",
+      "host": "search.yahoo.com",
+      "http_operation_id": "70dce3c09c3542838bf0746489715761",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNvidia%2B%2528NVDA%2529%2Bdenied%2Brumor%2Bfalse%2Breport%2BResearch%2BNVIDIA%2527s%2Bmost%2Brecent%2Breported%2Bquarterly%2Brevenue%2Band%2Bdata-center%2Bperformance.%2BCompare%2Bthe%2Bactual%2Breporting%2Bperiod%2Bwith%2BNVIDIA%2527s%2Bofficial%2Binvestor%2Bdisclosures%2Band%2Brelevant%2Bindependent%2Bfinancial%2Breporting.%2BClearly%2Bdistinguish%2Bactual%2Bfigures%2Bfrom%2Bforecasts.&_bvc=1.7d55c2dcf78f9b411c1b60e86ddf05399c31dfc3d8340c55cecb37590219250c",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5cef034a3f624f7c898b5886952cbdc7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DResearch%2BNVIDIA%2527s%2Bmost%2Brecent%2Breported%2Bquarterly%2Brevenue%2Band%2Bdata-center%2Bperformance.%2BCompare%2Bthe%2Bactual%2Breporting%2Bperiod%2Bwith%2BNVIDIA%2527s%2Bofficial%2Binvestor%2Bdisclosures%2Band%2Brelevant%2Bindependent%2Bfinancial%2Breporting.%2BClearly%2Bdistinguish%2Bactual%2Bfigures%2Bfrom%2Bforecasts.%2Bsite%253Anvidia.com%2Bquarterly%2Bresults%2Bfiling%2BSEC&_bvc=2.b2ecbfa22e14e8b151190469d8cb581ae4932ef9780e4b6368a7fb6e93ecde4b",
+      "host": "search.yahoo.com",
+      "http_operation_id": "70dce3c09c3542838bf0746489715761",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5cef034a3f624f7c898b5886952cbdc7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC",
+      "host": "search.yahoo.com",
+      "http_operation_id": "70dce3c09c3542838bf0746489715761",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://shattered.io/magnificent-seven-earnings-preview-nvidia-61-percent-growth-mag-6-lags-2026/",
+      "host": "shattered.io",
+      "http_operation_id": "335b6ecd848f4af3b9a96c02eb69202a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Anvidia.com+quarterly+results+filing+SEC&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "135790eb03af4b11af0c3d302c63051a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.financialexpress.com/business/investing-abroad-nvidia-earnings-when-will-the-fourth-quarter-results-be-released-3760586/",
+      "host": "www.financialexpress.com",
+      "http_operation_id": "32341fdeaaa240a1982cdb6f6629e256",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://blockonomi.com/nvidia-nvda-stock-rises-as-company-achieves-quantum-computing-breakthrough-in-europe/",
+      "host": "blockonomi.com",
+      "http_operation_id": "f6d1f210a2fc41ccb9f9817ae38c2e70",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "dd4fe03db9ab4d01b50523c12ab5fa0d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "d534d0722f8345a1bc04d506a908d4b5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.financialexpress.com/business/investing-abroad-nvidia-earnings-when-will-the-fourth-quarter-results-be-released-3760586/",
+      "host": "r.jina.ai",
+      "http_operation_id": "c2f59b89be154b35b26412e8487b4058",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://blockonomi.com/nvidia-nvda-stock-rises-as-company-achieves-quantum-computing-breakthrough-in-europe/",
+      "host": "r.jina.ai",
+      "http_operation_id": "8d46170da99a452f97e3b6038113e289",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "bb9c055401bb4f708da073e55bc163f3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "067f4588743f45f18aaa057838bec89b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://note.com/tsomgaman/n/n5a6772aaa26c?hl=en",
+      "host": "note.com",
+      "http_operation_id": "bef74505bd0d4e358ae6131ca0c02a13",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "cbd92826f9344e7cb9a8e0e495d74c06",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.nvidia.com/en-us/software/nvidia-app/",
+      "host": "www.nvidia.com",
+      "http_operation_id": "60becd32768045369cdbcbd07cddaa5f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.nvidia.in/content/DriverDownloads/confirmation.php?url=%2FWindows%2F512.59%2F512.59-desktop-win10-win11-64bit-international-nsd-dch-whql.exe&lang=in&type=GeForce",
+      "host": "www.nvidia.in",
+      "http_operation_id": "e22da36148ae4098a61631b506ff9fff",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.nvidia.com/en-us/drivers/",
+      "host": "www.nvidia.com",
+      "http_operation_id": "fe115ce706d547338a73d95201a88924",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cf9c802500224e2194e38c063e511ca3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DResearch%2BNVIDIA%2527s%2Bmost%2Brecent%2Breported%2Bquarterly%2Brevenue%2Band%2Bdata-center%2Bperformance.%2BCompare%2Bthe%2Bactual%2Breporting%2Bperiod%2Bwith%2BNVIDIA%2527s%2Bofficial%2Binvestor%2Bdisclosures%2Band%2Brelevant%2Bindependent%2Bfinancial%2Breporting.%2BClearly%2Bdistinguish%2Bactual%2Bfigures%2Bfrom%2Bforecasts.%2Bsite%253Asec.gov&_bvc=1.75d12e4f416c3d9fd9ddc45337fe959f7e256f126af763f51c8b0b885a50bebf",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cf9c802500224e2194e38c063e511ca3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "58c9396c89cd4666b2b766d72986930b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DResearch%2BNVIDIA%2527s%2Bmost%2Brecent%2Breported%2Bquarterly%2Brevenue%2Band%2Bdata-center%2Bperformance.%2BCompare%2Bthe%2Bactual%2Breporting%2Bperiod%2Bwith%2BNVIDIA%2527s%2Bofficial%2Binvestor%2Bdisclosures%2Band%2Brelevant%2Bindependent%2Bfinancial%2Breporting.%2BClearly%2Bdistinguish%2Bactual%2Bfigures%2Bfrom%2Bforecasts.%2Bsite%253Asec.gov&_bvc=2.f608ecb53bc6e044647d02f839199163d73e9952de9df77a192fb16727502cfc",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cf9c802500224e2194e38c063e511ca3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.nvidia.com/en-us/geforce/drivers/",
+      "host": "www.nvidia.com",
+      "http_operation_id": "94540d1646b94b7b88078ba90f337fb3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cf9c802500224e2194e38c063e511ca3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a1ab7968929441b487f20fe57947e22e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c9442e5e763d4a888e255f3ec1f830c7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "host": "www.nvidia.co.uk",
+      "http_operation_id": "d483e250935a4c66aa3448bdc7764dd8",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNVIDIA%2BEarnings%2Bin%2B5%2BDays%253A%2BShould%2BYou%2BBuy%252C%2BHold%252C%2Bor%2BSell%2BNVDA%253F&_bvc=1.c5e9f9d9e04cb39d73f0227e30a1b6313e039036e93200978c6c7b435514559d",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c9442e5e763d4a888e255f3ec1f830c7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "6a27737889ed48e3897722a3ce0484f9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "905f575c43a4420ca162f85fd4d27eb1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "host": "r.jina.ai",
+      "http_operation_id": "9bee14728a3f483d9b8418c372a53e44",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNVIDIA%2BEarnings%2Bin%2B5%2BDays%253A%2BShould%2BYou%2BBuy%252C%2BHold%252C%2Bor%2BSell%2BNVDA%253F&_bvc=2.79619c552b9b14cb2df5aaab00d3ecd309f1505c41dfec480bb0b929d0513505",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c9442e5e763d4a888e255f3ec1f830c7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNVIDIA%2BEarnings%2Bin%2B5%2BDays%253A%2BShould%2BYou%2BBuy%252C%2BHold%252C%2Bor%2BSell%2BNVDA%253F&_bvc=3.d74af38ce1dfe4d79356bc61496fe0002d495388b0683a2b71784a6b9e24a7bb",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c9442e5e763d4a888e255f3ec1f830c7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=NVIDIA+Earnings+in+5+Days%3A+Should+You+Buy%2C+Hold%2C+or+Sell+NVDA%3F&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "01334c97c2d9462bbae83e8e386c2a1a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1422b902e63f4d05b27be6e651379036",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNvidia%2B%2528NVDA%2529%2Bdenied%2Brumor%2Bfalse%2Breport%2BResearch%2BNVIDIA%2527s%2Bmost%2Brecent%2Breported%2Bquarterly%2Brevenue%2Band%2Bdata-center%2Bperformance.%2BCompare%2Bthe%2Bactual%2Breporting%2Bperiod%2Bwith%2BNVIDIA%2527s%2Bofficial%2Binvestor%2Bdisclosures%2Band%2Brelevant%2Bindependent%2Bfinancial%2Breporting.%2BClearly%2Bdistinguish%2Bactual%2Bfigures%2Bfrom%2Bforecasts.%2B%2528site%253Atheguardian.com%2BOR%2Bsite%253Adw.com%2BOR%2Bsite%253Aaljazeera.com%2529&_bvc=1.42d60b494aae2fb0ba40efc252126710cd54ed61989642c8afc1032d5c2a871a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1422b902e63f4d05b27be6e651379036",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.nvidia.co.uk/Download/indexsg.aspx?lang=en-us",
+      "host": "r.jina.ai",
+      "http_operation_id": "09e7e0b44cd147cba03cf9e04179e4af",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1422b902e63f4d05b27be6e651379036",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+denied+rumor+false+report+Research+NVIDIA%27s+most+recent+reported+quarterly+revenue+and+data-center+performance.+Compare+the+actual+reporting+period+with+NVIDIA%27s+official+investor+disclosures+and+relevant+independent+financial+reporting.+Clearly+distinguish+actual+figures+from+forecasts.+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "907e520bbbf345ee81b672d4ff528b58",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nvidia+%28NVDA%29+investor+disclosure&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "c2b36e5106e9413ca07293486f3b77e7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nvidia+%28NVDA%29+investor+disclosure&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "a58920a35c774fdf946465505eaef7c3",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nvidia+%28NVDA%29+investor+disclosure",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a0e1278be37048f087352edb650ca73e",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nvidia+%28NVDA%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8e126ce0dd3945318ca116293c760c36",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.thestreet.com/latest-news/nvidia-corp-nvda-q2-2027-earnings-call-updates",
+      "host": "www.thestreet.com",
+      "http_operation_id": "1567da9c464d484c9018bdc6cd79de2d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cnbc.com/2026/05/20/nvidia-nvda-earnings-report-q1-2027.html",
+      "host": "www.cnbc.com",
+      "http_operation_id": "1e6cd76fe0b84176b568ee83a699377e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+      "host": "www.fool.com",
+      "http_operation_id": "a2b063e377294db9b4f89f6be84e9bea",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.insidermonkey.com/news/why-did-nvidia-nvda-rise-only-19-while-its-suppliers-did-far-better-1855483/",
+      "host": "www.insidermonkey.com",
+      "http_operation_id": "f483bf68743548c8aee7f691a444d6b3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.tipranks.com/news/nvidia-stock-nvda-gets-rare-sell-rating-heres-why",
+      "host": "www.tipranks.com",
+      "http_operation_id": "b147968d38584a67ac39aa40c2174d61",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://uk.finance.yahoo.com/news/nvidia-nvda-20-billion-groq-205449946.html",
+      "host": "uk.finance.yahoo.com",
+      "http_operation_id": "691fb94d92654961b4ca539ab450446e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.fool.com/investing/2026/08/30/nvidia-stock-overvalued-2028-buy-nvda/",
+      "host": "www.fool.com",
+      "http_operation_id": "966a36169cb94c9c9b408b5ed68f038e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.insidermonkey.com/news/nvidia-nvda-can-paid-software-make-its-earnings-less-dependent-on-hardware-sales-1854604/",
+      "host": "www.insidermonkey.com",
+      "http_operation_id": "41cacef3653d49b7a747f14a689c7840",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://finance.yahoo.com/markets/stocks/articles/nvda-stock-alert-know-nvidia-213223836.html",
+      "host": "finance.yahoo.com",
+      "http_operation_id": "afbb7c89aaf842669f71df78d8186f6e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-can-paid-software-make-its-earnings-less-dependent-on-hardware-sales-1854604/",
+      "host": "r.jina.ai",
+      "http_operation_id": "abcc929590ff421490ffea273674cb31",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-can-paid-software-make-its-earnings-less-dependent-on-hardware-sales-1854604/",
+      "host": "r.jina.ai",
+      "http_operation_id": "8b1700d0991546b7bf4174fde7e23108",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 70,
+  "admission_rejections": 3
+}

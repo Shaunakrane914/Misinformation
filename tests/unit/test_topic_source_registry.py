@@ -168,7 +168,7 @@ def test_topic_diversification_does_not_add_science_to_entertainment_or_unknown_
 
 def test_registry_records_explicit_capability_depth_cost_and_unknown_availability():
     r=registry()
-    assert len(definitions())==60
+    assert len(definitions())==62
     data=r.describe('bollywood_hungama')
     assert data['capabilities']['DISCOVERY_ONLY']['status']=='UNVERIFIED'
     assert data['capabilities']['STRUCTURED_EVIDENCE']['runtime_availability']=='UNVERIFIED'

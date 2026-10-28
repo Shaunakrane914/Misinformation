@@ -1,0 +1,1628 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "3368c26a93cb4e7a961054fe9e6ced9e",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:52:17.334187+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1309,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2433.392
+    },
+    {
+      "operation_id": "bb1e6674a8de4b38bb7f399585b4b36a",
+      "requested_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:52:17.333987+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.94
+    },
+    {
+      "operation_id": "80fc3dfc2ad744828b757069868c845d",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:52:19.768776+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 87380,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 5320.793
+    },
+    {
+      "operation_id": "705d3e37e57f4514aaf3fd6347e88c0e",
+      "requested_url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:52:22.340118+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5014.584
+    },
+    {
+      "operation_id": "5b286c70159246e38b45c79d2079a7c1",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:52:27.355017+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 87380,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3147.383
+    },
+    {
+      "operation_id": "f5092c6349244df4a79c32f74e6d85b7",
+      "requested_url": "https://www.bing.com/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source&first=1",
+      "started_at": "2026-10-28T08:52:30.543157+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.418
+    },
+    {
+      "operation_id": "9f06c7f5055b437980656d46081a232e",
+      "requested_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.&first=1",
+      "started_at": "2026-10-28T08:52:30.612076+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5035.396
+    },
+    {
+      "operation_id": "28d27c6c308346cca8c385f36f84977e",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source",
+      "started_at": "2026-10-28T08:52:35.551833+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5001.015
+    },
+    {
+      "operation_id": "c57fb3e06745463abd49332eae63e847",
+      "requested_url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.",
+      "started_at": "2026-10-28T08:52:35.647706+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5015.911
+    },
+    {
+      "operation_id": "fb9810d34fde48898ae752046e15e3ea",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:52:40.553125+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1493,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1618.899
+    },
+    {
+      "operation_id": "61cf64af432448fca4ffdaf2e9acf8c1",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:52:40.663861+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1533,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2108.908
+    },
+    {
+      "operation_id": "8fed3d3ef59e43919aa9f21ebb9f4891",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+latest+independent+reporting&format=rss",
+      "started_at": "2026-10-28T08:52:46.076307+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+latest+independent+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2884,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+latest+independent+reporting&format=rss"
+      ],
+      "duration_ms": 2146.889
+    },
+    {
+      "operation_id": "ef97f30f748443d391c2c7d474646d05",
+      "requested_url": "https://www.bing.com/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "started_at": "2026-10-28T08:52:46.075948+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 139577,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1"
+      ],
+      "duration_ms": 3376.645
+    },
+    {
+      "operation_id": "23b3e520d7894ae9a6d7c9f4f0a8954c",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "started_at": "2026-10-28T08:52:49.495004+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5010.83
+    },
+    {
+      "operation_id": "7301652a998e460397a7cd57a4d669a1",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:52:54.506153+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5015.553
+    },
+    {
+      "operation_id": "d244db459b6b4d5b9133deb9c73cba21",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:53:00.528585+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1289,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2350.266
+    },
+    {
+      "operation_id": "336a9f2ef0a549068b9611091f35f22e",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:53:00.528250+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1601,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2351.211
+    },
+    {
+      "operation_id": "32ca4c364c96428bbf33fa80e140d48f",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:02.979772+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 16562,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2251.636
+    },
+    {
+      "operation_id": "959986eb8a254f22b0b144b6c2c22618",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:02.883383+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 56099,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 5304.717
+    },
+    {
+      "operation_id": "edf92e12a42846dc9254c4c816c37e30",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:53:08.217133+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1581,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1815.858
+    },
+    {
+      "operation_id": "dd970d3d0893447a8c4bca021514ab21",
+      "requested_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:53:08.216716+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128761,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 3989.576
+    },
+    {
+      "operation_id": "e5b6639629ee4d2bbb6ec25c1f55e861",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:10.034963+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 6838,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4106.635
+    },
+    {
+      "operation_id": "cce504eea1e7427da28f542e1f586e9c",
+      "requested_url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:53:12.268221+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 4305.158
+    },
+    {
+      "operation_id": "d580c520ac8f4af4a74f8a3b4d7b7edc",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:16.573552+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.071
+    },
+    {
+      "operation_id": "147d0f46ef734ec6ad9b340814be8212",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:53:18.340552+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1319,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2029.871
+    },
+    {
+      "operation_id": "4c78971b1e334867ac2da7bf0a8bf3e6",
+      "requested_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:53:18.341722+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128278,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 3878.435
+    },
+    {
+      "operation_id": "8941daa142fa4695b161da53703ea531",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:20.372580+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 98791,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 5017.614
+    },
+    {
+      "operation_id": "2f03734265c343f396599f2fd0346e04",
+      "requested_url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:53:22.275005+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5014.745
+    },
+    {
+      "operation_id": "3fbcb3a8ba2945b893afaded69890fe2",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:27.289968+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 98791,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4245.074
+    },
+    {
+      "operation_id": "feb040865a4a45029a077e583ab80b43",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:53:31.634785+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1319,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 1010.974
+    },
+    {
+      "operation_id": "1382419d40724044a6b8b8fd263e31e2",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:53:31.593728+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1334,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 1052.257
+    },
+    {
+      "operation_id": "8972e6540f6e4563b7f65c2b89732b71",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:32.647802+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 98791,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2581.385
+    },
+    {
+      "operation_id": "57b8e54ef0f14ac097be6be8c15e00e1",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:32.773900+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 18881,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4212.329
+    },
+    {
+      "operation_id": "2c67107eb7be4024a7662450993645ca",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:53:37.013772+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1334,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 1379.542
+    },
+    {
+      "operation_id": "4c29e3f83328482e87005640d66b39d3",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:38.395301+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 18881,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2066.619
+    },
+    {
+      "operation_id": "bf7c9560fb8145edbe2572d7875f299d",
+      "requested_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:53:37.013484+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128697,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 3643.908
+    },
+    {
+      "operation_id": "8b7ebfadf2f4492e9e5612186f73b2e7",
+      "requested_url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:53:40.695047+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.074
+    },
+    {
+      "operation_id": "1dbb52651c51484a9cce653b691d02d1",
+      "requested_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:40.695261+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 18881,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 977.479
+    },
+    {
+      "operation_id": "8b43643ea38d48a2bfd895019da0ee66",
+      "requested_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:53:42.375279+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2228,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Shah+Rukh+Khan+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 3009.766
+    },
+    {
+      "operation_id": "a0195485e8014870b94468c852535e62",
+      "requested_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+      "started_at": "2026-10-28T08:53:45.541716+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 122394,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html"
+      ],
+      "duration_ms": 4014.775
+    },
+    {
+      "operation_id": "a8a1b11f75884dad97d94fc888607560",
+      "requested_url": "https://www.bing.com/search?q=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece&first=1",
+      "started_at": "2026-10-28T08:53:45.424233+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 134222,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece&first=1"
+      ],
+      "duration_ms": 4847.168
+    },
+    {
+      "operation_id": "d41c5d26d6a44f37a7eadc7f16d8c185",
+      "requested_url": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+      "started_at": "2026-10-28T08:53:49.904920+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 122699,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html"
+      ],
+      "duration_ms": 3118.128
+    },
+    {
+      "operation_id": "bf42eca9e7324a4aaac79188d6377222",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece",
+      "started_at": "2026-10-28T08:53:50.299841+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 4159.966
+    },
+    {
+      "operation_id": "62a72466e4a94c5ba37053385e89a654",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:54.459984+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 974.724
+    },
+    {
+      "operation_id": "c811e30251774a359a79b9dd42521822",
+      "requested_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+      "started_at": "2026-10-28T08:53:53.401209+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 122619,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html"
+      ],
+      "duration_ms": 3321.293
+    },
+    {
+      "operation_id": "42e3e138ddf547a2b51bbc8050c94510",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&first=1",
+      "started_at": "2026-10-28T08:53:55.456272+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129774,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&first=1"
+      ],
+      "duration_ms": 2900.013
+    },
+    {
+      "operation_id": "706f5abda40f4396a968452ef1d2020e",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25",
+      "started_at": "2026-10-28T08:53:58.377935+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.067
+    },
+    {
+      "operation_id": "9313746f0a7543be9d9876a5af29fa9f",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:53:58.378148+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3879,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1517.834
+    },
+    {
+      "operation_id": "7886efead711480fb7e551c239ff7476",
+      "requested_url": "https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "started_at": "2026-10-28T08:53:57.083165+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5000.815
+    },
+    {
+      "operation_id": "b05ce5308fcb41c0810c9517d09735e6",
+      "requested_url": "https://www.afaqs.com",
+      "started_at": "2026-10-28T08:54:03.816248+00:00",
+      "http_status": 200,
+      "final_url": "https://www.afaqs.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 54245,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.afaqs.com"
+      ],
+      "duration_ms": 2122.699
+    },
+    {
+      "operation_id": "652d81494f824434a0157b6429cf1357",
+      "requested_url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "started_at": "2026-10-28T08:54:02.084271+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.974
+    },
+    {
+      "operation_id": "f11f8068ca794916b308a4fc765d49c9",
+      "requested_url": "https://www.afaqs.com/rss",
+      "started_at": "2026-10-28T08:54:06.481388+00:00",
+      "http_status": 200,
+      "final_url": "https://www.afaqs.com/rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 74213,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.afaqs.com/rss"
+      ],
+      "duration_ms": 1833.737
+    },
+    {
+      "operation_id": "9df17d51ba5c43288a88824ea324221b",
+      "requested_url": "https://r.jina.ai/https://www.afaqs.com/rss",
+      "started_at": "2026-10-28T08:54:08.317103+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.afaqs.com/rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 18656,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.afaqs.com/rss"
+      ],
+      "duration_ms": 1937.781
+    },
+    {
+      "operation_id": "a82241c7f83d4fcd82c8e30e81d7a734",
+      "requested_url": "https://bdnews24.com",
+      "started_at": "2026-10-28T08:54:10.445098+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 35947,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com"
+      ],
+      "duration_ms": 1629.395
+    },
+    {
+      "operation_id": "f839ba9cda194207b242bcbe6536aaed",
+      "requested_url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "started_at": "2026-10-28T08:54:07.086602+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5023.91
+    },
+    {
+      "operation_id": "9ffc8d39f4a147e79b3c0e655c0a1cf0",
+      "requested_url": "https://bdnews24.com/entertainment/5n5qg2p254",
+      "started_at": "2026-10-28T08:54:13.065814+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com/entertainment/5n5qg2p254",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 29745,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/5n5qg2p254"
+      ],
+      "duration_ms": 2387.527
+    },
+    {
+      "operation_id": "84f6b147f0d64ff3a341da6374884cc3",
+      "requested_url": "https://bdnews24.com/topic/shah-rukh-khan",
+      "started_at": "2026-10-28T08:54:15.759080+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com/topic/shah-rukh-khan",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 21376,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com/topic/shah-rukh-khan"
+      ],
+      "duration_ms": 1444.832
+    },
+    {
+      "operation_id": "4133613ead6f4e40bf5afa11dd2bc74c",
+      "requested_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+      "started_at": "2026-10-28T08:54:12.620795+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 125135,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html"
+      ],
+      "duration_ms": 4646.916
+    },
+    {
+      "operation_id": "67f4ab1768cc4e958920ecac77516547",
+      "requested_url": "https://bdnews24.com/entertainment/eqp2ob77t1",
+      "started_at": "2026-10-28T08:54:17.730152+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com/entertainment/eqp2ob77t1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 27651,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/eqp2ob77t1"
+      ],
+      "duration_ms": 2851.511
+    },
+    {
+      "operation_id": "ca4b90b753a04f3cb4d6d48edd2c559b",
+      "requested_url": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+      "started_at": "2026-10-28T08:54:17.866419+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 123091,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html"
+      ],
+      "duration_ms": 3430.891
+    },
+    {
+      "operation_id": "645cd35466874f8180b11facca6bf466",
+      "requested_url": "https://bdnews24.com/entertainment/lerpec5rkf",
+      "started_at": "2026-10-28T08:54:20.906937+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com/entertainment/lerpec5rkf",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 27606,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/lerpec5rkf"
+      ],
+      "duration_ms": 1931.875
+    },
+    {
+      "operation_id": "b5c45eea0b8f43698e20885beb823681",
+      "requested_url": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+      "started_at": "2026-10-28T08:54:21.642242+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 122150,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html"
+      ],
+      "duration_ms": 4064.904
+    },
+    {
+      "operation_id": "df00e56ffa4842c5855f80d7b055bf52",
+      "requested_url": "https://bdnews24.com/entertainment/rnotd7lxnj",
+      "started_at": "2026-10-28T08:54:23.120417+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com/entertainment/rnotd7lxnj",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 27701,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/rnotd7lxnj"
+      ],
+      "duration_ms": 4547.634
+    },
+    {
+      "operation_id": "3d6095c7b06246ce872abcd795b9f5a8",
+      "requested_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+      "started_at": "2026-10-28T08:54:26.073837+00:00",
+      "http_status": 200,
+      "final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 120899,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html"
+      ],
+      "duration_ms": 3822.426
+    },
+    {
+      "operation_id": "031c5ebefc704d25bf003cf99fcd9d75",
+      "requested_url": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+      "started_at": "2026-10-28T08:54:27.931007+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 23557,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com/archive?q=Shah+Rukh+Khan"
+      ],
+      "duration_ms": 2401.523
+    },
+    {
+      "operation_id": "ebc126bb199341e694f3a41fa641f036",
+      "requested_url": "https://bdnews24.com/entertainment/28a429fa505b",
+      "started_at": "2026-10-28T08:54:30.611626+00:00",
+      "http_status": 200,
+      "final_url": "https://bdnews24.com/entertainment/28a429fa505b",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 27034,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/28a429fa505b"
+      ],
+      "duration_ms": 1542.158
+    },
+    {
+      "operation_id": "1ed02c7a440a4c4f91004b61152b4a3b",
+      "requested_url": "https://timesofindia.indiatimes.com",
+      "started_at": "2026-10-28T08:54:30.647477+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.134
+    },
+    {
+      "operation_id": "40987bdf944b47f0849ebff9a741e90e",
+      "requested_url": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+      "started_at": "2026-10-28T08:54:35.655856+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.896
+    },
+    {
+      "operation_id": "c383de900213462e9d27d643c52b27db",
+      "requested_url": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+      "started_at": "2026-10-28T08:54:40.663078+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 230525,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://timesofindia.indiatimes.com"
+      ],
+      "duration_ms": 4926.517
+    },
+    {
+      "operation_id": "ada1646f7dc64d5c9009efb1f0a63018",
+      "requested_url": "https://www.idiva.com",
+      "started_at": "2026-10-28T08:54:46.480750+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.333
+    },
+    {
+      "operation_id": "f3835696f2754dd696dc49549b6a243b",
+      "requested_url": "https://r.jina.ai/https://www.idiva.com",
+      "started_at": "2026-10-28T08:54:51.482361+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.idiva.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 651,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.idiva.com"
+      ],
+      "duration_ms": 2910.728
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "bb1e6674a8de4b38bb7f399585b4b36a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3368c26a93cb4e7a961054fe9e6ced9e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "80fc3dfc2ad744828b757069868c845d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "705d3e37e57f4514aaf3fd6347e88c0e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "705d3e37e57f4514aaf3fd6347e88c0e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5b286c70159246e38b45c79d2079a7c1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "f5092c6349244df4a79c32f74e6d85b7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "9f06c7f5055b437980656d46081a232e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "28d27c6c308346cca8c385f36f84977e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c57fb3e06745463abd49332eae63e847",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c57fb3e06745463abd49332eae63e847",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "28d27c6c308346cca8c385f36f84977e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Brecent%2Bdevelopments%2Binvolving%2BShah%2BRukh%2BKhan%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bentertainment%2Breporting%2Band%2Boriginal%2Bproduction%2Bor%2Binterview%2Bsources%2Bwhere%2Bavailable.%2Bofficial%2Bsource&_bvc=1.258a2abec574eeb6701b6d504a72bcfe875239a2ed081c01021b5a3cedd7c7f9",
+      "host": "search.yahoo.com",
+      "http_operation_id": "28d27c6c308346cca8c385f36f84977e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DShah%2BRukh%2BKhan%2Bdebunked%2Bfalse%2Brumor%2BInvestigate%2Brecent%2Bdevelopments%2Binvolving%2BShah%2BRukh%2BKhan%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bentertainment%2Breporting%2Band%2Boriginal%2Bproduction%2Bor%2Binterview%2Bsources%2Bwhere%2Bavailable.&_bvc=1.1777b6f89a80e91056696ae2ea00425d2dd78f13cb3654847ce4ed3ff84d3386",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c57fb3e06745463abd49332eae63e847",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DShah%2BRukh%2BKhan%2Bdebunked%2Bfalse%2Brumor%2BInvestigate%2Brecent%2Bdevelopments%2Binvolving%2BShah%2BRukh%2BKhan%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bentertainment%2Breporting%2Band%2Boriginal%2Bproduction%2Bor%2Binterview%2Bsources%2Bwhere%2Bavailable.&_bvc=2.2f6f150eb8bf272376b9788041ff4295973130595f5905426c14d9985a80125e",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c57fb3e06745463abd49332eae63e847",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "fb9810d34fde48898ae752046e15e3ea",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+debunked+false+rumor+Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "61cf64af432448fca4ffdaf2e9acf8c1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ef97f30f748443d391c2c7d474646d05",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+latest+independent+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "8fed3d3ef59e43919aa9f21ebb9f4891",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "23b3e520d7894ae9a6d7c9f4f0a8954c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Brecent%2Bdevelopments%2Binvolving%2BShah%2BRukh%2BKhan%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bentertainment%2Breporting%2Band%2Boriginal%2Bproduction%2Bor%2Binterview%2Bsources%2Bwhere%2Bavailable.%2Bofficial%2Bsource%2B%2528site%253Areuters.com%2BOR%2Bsite%253Aapnews.com%2BOR%2Bsite%253Abbc.com%2529&_bvc=1.242d8879164aae6c93f371cc3275e350b76d5a3ec40afc6d3491b6b1a06e5b35",
+      "host": "search.yahoo.com",
+      "http_operation_id": "23b3e520d7894ae9a6d7c9f4f0a8954c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Brecent%2Bdevelopments%2Binvolving%2BShah%2BRukh%2BKhan%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bentertainment%2Breporting%2Band%2Boriginal%2Bproduction%2Bor%2Binterview%2Bsources%2Bwhere%2Bavailable.%2Bofficial%2Bsource%2B%2528site%253Areuters.com%2BOR%2Bsite%253Aapnews.com%2BOR%2Bsite%253Abbc.com%2529&_bvc=2.247947baaf84074c1fcaada28b346f0a428c0a3c28578af06863fcae01e32f7a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "23b3e520d7894ae9a6d7c9f4f0a8954c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Brecent%2Bdevelopments%2Binvolving%2BShah%2BRukh%2BKhan%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Busing%2Brelevant%2Bentertainment%2Breporting%2Band%2Boriginal%2Bproduction%2Bor%2Binterview%2Bsources%2Bwhere%2Bavailable.%2Bofficial%2Bsource%2B%2528site%253Areuters.com%2BOR%2Bsite%253Aapnews.com%2BOR%2Bsite%253Abbc.com%2529&_bvc=3.a8e878fcca929187e1d21459db99e1c61dcdd5b972fb94a4db8b20e89109f8f6",
+      "host": "search.yahoo.com",
+      "http_operation_id": "23b3e520d7894ae9a6d7c9f4f0a8954c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+recent+developments+involving+Shah+Rukh+Khan+over+the+last+seven+days%2C+using+relevant+entertainment+reporting+and+original+production+or+interview+sources+where+available.+official+source+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7301652a998e460397a7cd57a4d669a1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "336a9f2ef0a549068b9611091f35f22e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "d244db459b6b4d5b9133deb9c73cba21",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "959986eb8a254f22b0b144b6c2c22618",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "32ca4c364c96428bbf33fa80e140d48f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "dd970d3d0893447a8c4bca021514ab21",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "edf92e12a42846dc9254c4c816c37e30",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e5b6639629ee4d2bbb6ec25c1f55e861",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cce504eea1e7427da28f542e1f586e9c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DShah%2BRukh%2BKhan%2Bresearch%2Bupdate%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=1.bcc25749e87c0a6d970ce60c7a0a95c47b58f3d1c655a7b1614b78ac9014a898",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cce504eea1e7427da28f542e1f586e9c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DShah%2BRukh%2BKhan%2Bresearch%2Bupdate%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=2.f4a18f2d9c73e6efbc2a636c8824cca22455d5974cc70583cc9044eb0296ffd7",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cce504eea1e7427da28f542e1f586e9c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DShah%2BRukh%2BKhan%2Bresearch%2Bupdate%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=3.c1a1b7ccd9f4b4ea74237ec5b8541494f0bdc8788b06c6c0239de555d92d46e5",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cce504eea1e7427da28f542e1f586e9c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DShah%2BRukh%2BKhan%2Bresearch%2Bupdate%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=4.4be54c040e42c8d656fea7f9d836d998ccac12f3f3cab64d408a37f4195e39c0",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cce504eea1e7427da28f542e1f586e9c",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cce504eea1e7427da28f542e1f586e9c",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d580c520ac8f4af4a74f8a3b4d7b7edc",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "147d0f46ef734ec6ad9b340814be8212",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4c78971b1e334867ac2da7bf0a8bf3e6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8941daa142fa4695b161da53703ea531",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2f03734265c343f396599f2fd0346e04",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2f03734265c343f396599f2fd0346e04",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DShah%2BRukh%2BKhan%2Bindustry%2Bannouncement%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=1.b6025dac171b54549edb4f99d20f47d10b2f326169c46d31d862f319940a51c7",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2f03734265c343f396599f2fd0346e04",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "3fbcb3a8ba2945b893afaded69890fe2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "1382419d40724044a6b8b8fd263e31e2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "feb040865a4a45029a077e583ab80b43",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8972e6540f6e4563b7f65c2b89732b71",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "57b8e54ef0f14ac097be6be8c15e00e1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "bf7c9560fb8145edbe2572d7875f299d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "2c67107eb7be4024a7662450993645ca",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4c29e3f83328482e87005640d66b39d3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8b7ebfadf2f4492e9e5612186f73b2e7",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Shah+Rukh+Khan+institution+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1dbb52651c51484a9cce653b691d02d1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Shah+Rukh+Khan+latest+news+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "8b43643ea38d48a2bfd895019da0ee66",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "a8a1b11f75884dad97d94fc888607560",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+      "host": "www.news18.com",
+      "http_operation_id": "a0195485e8014870b94468c852535e62",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+      "host": "www.news18.com",
+      "http_operation_id": "d41c5d26d6a44f37a7eadc7f16d8c185",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bf42eca9e7324a4aaac79188d6377222",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Atimesofindia.indiatimes.com%2BShah%2BRukh%2BKhan%2527s%2B%2527King%2527%2Bposter%2Bdraws%2Bcomparisons%2Bwith%2B%2527Dhurandhar%2B2%2527%2Bon%2Bsocial%2Bmedia%253A%2B%2527Every%2Bmasterpiece&_bvc=1.df19de9913b791070529e1bffd71318ddc38a01701a73e4327830df222cec0b3",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bf42eca9e7324a4aaac79188d6377222",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Atimesofindia.indiatimes.com%2BShah%2BRukh%2BKhan%2527s%2B%2527King%2527%2Bposter%2Bdraws%2Bcomparisons%2Bwith%2B%2527Dhurandhar%2B2%2527%2Bon%2Bsocial%2Bmedia%253A%2B%2527Every%2Bmasterpiece&_bvc=2.107d8ad5a25e0fad53e07dbee922076f584bfe01cfbabdbc1ed7b1f5844cc3d3",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bf42eca9e7324a4aaac79188d6377222",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Atimesofindia.indiatimes.com%2BShah%2BRukh%2BKhan%2527s%2B%2527King%2527%2Bposter%2Bdraws%2Bcomparisons%2Bwith%2B%2527Dhurandhar%2B2%2527%2Bon%2Bsocial%2Bmedia%253A%2B%2527Every%2Bmasterpiece&_bvc=3.43dc0c5d5c51fb77277c278d492fa84b41a74e3b6b6800d47ce19f66b8ebc1f7",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bf42eca9e7324a4aaac79188d6377222",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+      "host": "www.news18.com",
+      "http_operation_id": "c811e30251774a359a79b9dd42521822",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Atimesofindia.indiatimes.com%2BShah%2BRukh%2BKhan%2527s%2B%2527King%2527%2Bposter%2Bdraws%2Bcomparisons%2Bwith%2B%2527Dhurandhar%2B2%2527%2Bon%2Bsocial%2Bmedia%253A%2B%2527Every%2Bmasterpiece&_bvc=4.28a4401ad3e5499e7674cb10092fd246c4fb896c01182cb66b61da62d7e376ad",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bf42eca9e7324a4aaac79188d6377222",
+      "phase": "reading",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Atimesofindia.indiatimes.com+Shah+Rukh+Khan%27s+%27King%27+poster+draws+comparisons+with+%27Dhurandhar+2%27+on+social+media%3A+%27Every+masterpiece&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "62a72466e4a94c5ba37053385e89a654",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "42e3e138ddf547a2b51bbc8050c94510",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "host": "www.news18.com",
+      "http_operation_id": "7886efead711480fb7e551c239ff7476",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25",
+      "host": "search.yahoo.com",
+      "http_operation_id": "706f5abda40f4396a968452ef1d2020e",
+      "phase": "reading",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.afaqs.com+Shah+Rukh+Khan+leads+TV+ad+visibility+as+celebrity+ad+volumes+fall+17%25&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "9313746f0a7543be9d9876a5af29fa9f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "652d81494f824434a0157b6429cf1357",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.afaqs.com",
+      "host": "www.afaqs.com",
+      "http_operation_id": "b05ce5308fcb41c0810c9517d09735e6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.afaqs.com/rss",
+      "host": "www.afaqs.com",
+      "http_operation_id": "f11f8068ca794916b308a4fc765d49c9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "f839ba9cda194207b242bcbe6536aaed",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.afaqs.com/rss",
+      "host": "r.jina.ai",
+      "http_operation_id": "9df17d51ba5c43288a88824ea324221b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com",
+      "host": "bdnews24.com",
+      "http_operation_id": "a82241c7f83d4fcd82c8e30e81d7a734",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+      "host": "www.news18.com",
+      "http_operation_id": "4133613ead6f4e40bf5afa11dd2bc74c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com/entertainment/5n5qg2p254",
+      "host": "bdnews24.com",
+      "http_operation_id": "9ffc8d39f4a147e79b3c0e655c0a1cf0",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com/topic/shah-rukh-khan",
+      "host": "bdnews24.com",
+      "http_operation_id": "84f6b147f0d64ff3a341da6374884cc3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com/entertainment/eqp2ob77t1",
+      "host": "bdnews24.com",
+      "http_operation_id": "67f4ab1768cc4e958920ecac77516547",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+      "host": "www.news18.com",
+      "http_operation_id": "ca4b90b753a04f3cb4d6d48edd2c559b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com/entertainment/lerpec5rkf",
+      "host": "bdnews24.com",
+      "http_operation_id": "645cd35466874f8180b11facca6bf466",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+      "host": "www.news18.com",
+      "http_operation_id": "b5c45eea0b8f43698e20885beb823681",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com/entertainment/rnotd7lxnj",
+      "host": "bdnews24.com",
+      "http_operation_id": "df00e56ffa4842c5855f80d7b055bf52",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+      "host": "www.news18.com",
+      "http_operation_id": "3d6095c7b06246ce872abcd795b9f5a8",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+      "host": "bdnews24.com",
+      "http_operation_id": "031c5ebefc704d25bf003cf99fcd9d75",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://bdnews24.com/entertainment/28a429fa505b",
+      "host": "bdnews24.com",
+      "http_operation_id": "ebc126bb199341e694f3a41fa641f036",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com",
+      "host": "timesofindia.indiatimes.com",
+      "http_operation_id": "1ed02c7a440a4c4f91004b61152b4a3b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "40987bdf944b47f0849ebff9a741e90e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "c383de900213462e9d27d643c52b27db",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.idiva.com",
+      "host": "www.idiva.com",
+      "http_operation_id": "ada1646f7dc64d5c9009efb1f0a63018",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.idiva.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "f3835696f2754dd696dc49549b6a243b",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 85,
+  "admission_rejections": 6,
+  "pipeline_errors": []
+}

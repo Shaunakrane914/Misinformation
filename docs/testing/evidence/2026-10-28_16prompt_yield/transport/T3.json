@@ -1,0 +1,1310 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "40e106d2c7a344c1871efffeef2a30ed",
+      "requested_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T09:04:31.179041+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131822,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 4331.657
+    },
+    {
+      "operation_id": "ca9cee9f11ae46c1925b95b6e7b2965e",
+      "requested_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:04:31.179448+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3721,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 4527.763
+    },
+    {
+      "operation_id": "3cdc2eeafd2942f493b0c176181e8191",
+      "requested_url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "started_at": "2026-10-28T09:04:35.541609+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.477
+    },
+    {
+      "operation_id": "4869ef5a283f4427878037c291b72157",
+      "requested_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:04:40.553410+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5010.681
+    },
+    {
+      "operation_id": "147d560fc79943ce83c83afee5f5da5f",
+      "requested_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.&first=1",
+      "started_at": "2026-10-28T09:04:47.494451+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5003.207
+    },
+    {
+      "operation_id": "19b9bdb5fdc44347963efb6469e6898c",
+      "requested_url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement&first=1",
+      "started_at": "2026-10-28T09:04:47.494852+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5003.297
+    },
+    {
+      "operation_id": "5aaa3711fb1b474b88283a0cd1f1f0c8",
+      "requested_url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.",
+      "started_at": "2026-10-28T09:04:52.497950+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5014.754
+    },
+    {
+      "operation_id": "7f4e1b78e8934091a484a193a981f5fd",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement",
+      "started_at": "2026-10-28T09:04:52.498344+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.886
+    },
+    {
+      "operation_id": "7a1c5d640afc48f18ec4dfe0d86b8a3d",
+      "requested_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:04:57.512983+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1583,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1326.645
+    },
+    {
+      "operation_id": "45d61ae378a448f99c4c49e091b7d2dc",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:04:57.513455+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3805,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1326.855
+    },
+    {
+      "operation_id": "bdd8b59539c54c6eac25341772f4704d",
+      "requested_url": "https://news.webindia123.com/news/Articles/Business/20260815/4487500.html",
+      "started_at": "2026-10-28T09:05:00.810637+00:00",
+      "http_status": 200,
+      "final_url": "https://news.webindia123.com/news/Articles/Business/20260815/4487500.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 14820,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.webindia123.com/news/Articles/Business/20260815/4487500.html"
+      ],
+      "duration_ms": 916.923
+    },
+    {
+      "operation_id": "95bcb5afb77c40b0a0cbe9bfa732406c",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&format=rss",
+      "started_at": "2026-10-28T09:05:00.613336+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1899,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&format=rss"
+      ],
+      "duration_ms": 1313.157
+    },
+    {
+      "operation_id": "6bfd8a10590e4a62b5b59363b8edd657",
+      "requested_url": "https://www.dqindia.com/news/india-semiconductor-mission-20-a-push-for-chip-manufacturing-and-jobs-11069535",
+      "started_at": "2026-10-28T09:05:00.811539+00:00",
+      "http_status": 200,
+      "final_url": "https://www.dqindia.com/news/india-semiconductor-mission-20-a-push-for-chip-manufacturing-and-jobs-11069535",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 57369,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.dqindia.com/news/india-semiconductor-mission-20-a-push-for-chip-manufacturing-and-jobs-11069535"
+      ],
+      "duration_ms": 1218.329
+    },
+    {
+      "operation_id": "f7902e5085df4bbcaeecb234ede3344e",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:02.068099+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3407,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2198.534
+    },
+    {
+      "operation_id": "c3a2f0e9213d4cadb34f85f5bd248f06",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:04.271573+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3407,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1623.986
+    },
+    {
+      "operation_id": "641c07a1476c4a79a53615a1bfc0b43b",
+      "requested_url": "https://r.jina.ai/https://news.webindia123.com/news/Articles/Business/20260815/4487500.html",
+      "started_at": "2026-10-28T09:05:01.728447+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.75
+    },
+    {
+      "operation_id": "608952550e094058a34c439f3cbda12c",
+      "requested_url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "started_at": "2026-10-28T09:05:08.157883+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 142547,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1"
+      ],
+      "duration_ms": 2489.916
+    },
+    {
+      "operation_id": "ec689cdcdb054a14847e9dc1650c3565",
+      "requested_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1",
+      "started_at": "2026-10-28T09:05:08.158288+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 135414,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1"
+      ],
+      "duration_ms": 2632.875
+    },
+    {
+      "operation_id": "638fe453b2514421a14caec8a684c364",
+      "requested_url": "https://r.jina.ai/https://news.webindia123.com/news/Articles/Business/20260815/4487500.html",
+      "started_at": "2026-10-28T09:05:06.736633+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.994
+    },
+    {
+      "operation_id": "79b9deb44c0642cbb6492e50f61c7f07",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29",
+      "started_at": "2026-10-28T09:05:10.677450+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5020.268
+    },
+    {
+      "operation_id": "d63ede284f38430caa14a05ed2afcd0a",
+      "requested_url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29",
+      "started_at": "2026-10-28T09:05:10.818498+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.449
+    },
+    {
+      "operation_id": "2ccf23c76a5846deb3173fab17315080",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:15.698047+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3939,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1672.131
+    },
+    {
+      "operation_id": "eb4b69b4f6254d2b88a3b509a1658738",
+      "requested_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:15.825243+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5012.345
+    },
+    {
+      "operation_id": "1b924105db604d53bac6a6fcb2224dbc",
+      "requested_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:05:22.393206+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2447,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1532.922
+    },
+    {
+      "operation_id": "746dc345e49e49ecbccfa649a7991ba9",
+      "requested_url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "started_at": "2026-10-28T09:05:22.392787+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 142684,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1"
+      ],
+      "duration_ms": 4723.877
+    },
+    {
+      "operation_id": "bceff1d1712b480f8038ce4019c36a04",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "started_at": "2026-10-28T09:05:27.177149+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5016.092
+    },
+    {
+      "operation_id": "c9f0b1d6fb4e4378b6fb7ce97efd217e",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:32.193534+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5791,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1351.732
+    },
+    {
+      "operation_id": "7bc581cdfb7c472daa4ee1b9a4d44047",
+      "requested_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:05:35.012111+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4458,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2529.241
+    },
+    {
+      "operation_id": "4ce0665494244686a494d5ca54af21a9",
+      "requested_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T09:05:35.012527+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131872,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 4375.757
+    },
+    {
+      "operation_id": "1bc43d4d01c246b294b199eb513bdc6c",
+      "requested_url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "started_at": "2026-10-28T09:05:39.444116+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5002.609
+    },
+    {
+      "operation_id": "4dd9a550298a4724a96eef8c859aaf44",
+      "requested_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:44.446974+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.1
+    },
+    {
+      "operation_id": "ce751fc25f86495493892ac6bab95e3e",
+      "requested_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:05:46.509504+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1676,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1377.666
+    },
+    {
+      "operation_id": "03321a784a5b47f29f8329c87f073e32",
+      "requested_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:05:46.509004+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4492,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2947.288
+    },
+    {
+      "operation_id": "117e545a43d94c31bcc193c7f59890ef",
+      "requested_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:47.891098+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 16224,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1669.947
+    },
+    {
+      "operation_id": "31aaa07028e94287844e97940f97ce85",
+      "requested_url": "https://www.indiatvnews.com/technology/news/semicon-2-0-gets-cabinet-approval-india-expands-push-for-semiconductor-manufacturing-design-and-r-d-2026-07-15-1048323",
+      "started_at": "2026-10-28T09:05:47.280754+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com/technology/news/semicon-2-0-gets-cabinet-approval-india-expands-push-for-semiconductor-manufacturing-design-and-r-d-2026-07-15-1048323",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 68376,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com/technology/news/semicon-2-0-gets-cabinet-approval-india-expands-push-for-semiconductor-manufacturing-design-and-r-d-2026-07-15-1048323"
+      ],
+      "duration_ms": 3671.658
+    },
+    {
+      "operation_id": "0789d1c2b3d34d3080bf6974e2725646",
+      "requested_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T09:05:49.589333+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4492,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2906.016
+    },
+    {
+      "operation_id": "b182db07c37043b78026f48c43ca1a39",
+      "requested_url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T09:05:49.588899+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.886
+    },
+    {
+      "operation_id": "93d753c7058c460397533932b96dac7b",
+      "requested_url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "started_at": "2026-10-28T09:05:54.604072+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.524
+    },
+    {
+      "operation_id": "f1155000f3d04a878fb7d5de084a2bb5",
+      "requested_url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:05:59.610937+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1579.524
+    },
+    {
+      "operation_id": "2d0865c230244971b390e57a67223ba2",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions&first=1",
+      "started_at": "2026-10-28T09:06:01.209440+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133318,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions&first=1"
+      ],
+      "duration_ms": 4592.34
+    },
+    {
+      "operation_id": "9ea750267edf44f881568bda25b0d9b1",
+      "requested_url": "https://www.indiatvnews.com/science/india-semiconductor-ecosystem-support-ism-2-rollout-single-window-portal-2026-02-26-1031710",
+      "started_at": "2026-10-28T09:06:01.369780+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com/science/india-semiconductor-ecosystem-support-ism-2-rollout-single-window-portal-2026-02-26-1031710",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 66891,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com/science/india-semiconductor-ecosystem-support-ism-2-rollout-single-window-portal-2026-02-26-1031710"
+      ],
+      "duration_ms": 4981.304
+    },
+    {
+      "operation_id": "d77357d880ea4d08b7fcc5a8707bb517",
+      "requested_url": "https://www.indiatvnews.com/technology/news/uttar-pradesh-to-become-electronics-and-semiconductor-hub-as-jewar-manufacturing-project-starts-ashwini-vaishnav-2026-06-28-1046418",
+      "started_at": "2026-10-28T09:06:06.715856+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com/technology/news/uttar-pradesh-to-become-electronics-and-semiconductor-hub-as-jewar-manufacturing-project-starts-ashwini-vaishnav-2026-06-28-1046418",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 67638,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com/technology/news/uttar-pradesh-to-become-electronics-and-semiconductor-hub-as-jewar-manufacturing-project-starts-ashwini-vaishnav-2026-06-28-1046418"
+      ],
+      "duration_ms": 3212.103
+    },
+    {
+      "operation_id": "43c65a4932fb4873acb114d288ba9faa",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions",
+      "started_at": "2026-10-28T09:06:05.841693+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5012.123
+    },
+    {
+      "operation_id": "bad8899355674fe089348508d5600136",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:06:10.854108+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 360.87
+    },
+    {
+      "operation_id": "c684007be9e64be69d0cdedeace23e98",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&first=1",
+      "started_at": "2026-10-28T09:06:11.238566+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 136857,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&first=1"
+      ],
+      "duration_ms": 2555.075
+    },
+    {
+      "operation_id": "39727b7e9211435db9e3791cf02f4e73",
+      "requested_url": "https://www.indiatvnews.com/news/india/india-semiconductor-ecosystem-makes-big-leap-with-rs-7-500-crore-facility-in-gujarat-here-s-why-it-matters-2026-07-04-1047137",
+      "started_at": "2026-10-28T09:06:10.310662+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.037
+    },
+    {
+      "operation_id": "6e7a990675c640bcbf83b75b9328fcae",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities",
+      "started_at": "2026-10-28T09:06:13.835571+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 2647.741
+    },
+    {
+      "operation_id": "2a3d41c79c76400ebfbbd2501008f072",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:06:16.483588+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20403,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2128.384
+    },
+    {
+      "operation_id": "21d00026d0ce42c481cc52c722b08d47",
+      "requested_url": "https://r.jina.ai/https://www.indiatvnews.com/news/india/india-semiconductor-ecosystem-makes-big-leap-with-rs-7-500-crore-facility-in-gujarat-here-s-why-it-matters-2026-07-04-1047137",
+      "started_at": "2026-10-28T09:06:15.315980+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.indiatvnews.com/news/india/india-semiconductor-ecosystem-makes-big-leap-with-rs-7-500-crore-facility-in-gujarat-here-s-why-it-matters-2026-07-04-1047137",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13046,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.indiatvnews.com/news/india/india-semiconductor-ecosystem-makes-big-leap-with-rs-7-500-crore-facility-in-gujarat-here-s-why-it-matters-2026-07-04-1047137"
+      ],
+      "duration_ms": 4829.692
+    },
+    {
+      "operation_id": "bd1ef7149fea4fc1b9dbc3bfce1017c9",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&first=1",
+      "started_at": "2026-10-28T09:06:18.645581+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 117668,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&first=1"
+      ],
+      "duration_ms": 3335.002
+    },
+    {
+      "operation_id": "f97d3af66fd746489c68347bc31884de",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions",
+      "started_at": "2026-10-28T09:06:21.997422+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.086
+    },
+    {
+      "operation_id": "fa3d344d3e6641d68092bc1cf76696e5",
+      "requested_url": "https://www.moneycontrol.com/news/business/karnataka-eyes-rs-15-000-crore-semiconductor-investment-pipeline-after-semicon-india-2026-mb-patil-14033581.html",
+      "started_at": "2026-10-28T09:06:20.347048+00:00",
+      "http_status": 200,
+      "final_url": "https://www.moneycontrol.com/news/business/karnataka-eyes-rs-15-000-crore-semiconductor-investment-pipeline-after-semicon-india-2026-mb-patil-14033581.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 143440,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.moneycontrol.com/news/business/karnataka-eyes-rs-15-000-crore-semiconductor-investment-pipeline-after-semicon-india-2026-mb-patil-14033581.html"
+      ],
+      "duration_ms": 2452.75
+    },
+    {
+      "operation_id": "4d23c7db8e2849daa8f96c15c7dcdf1f",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:06:21.997701+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 151300,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4304.227
+    },
+    {
+      "operation_id": "f2d81cdf4864482d9a34d1d47275bcc8",
+      "requested_url": "https://www.moneycontrol.com/news/videos/business/pm-modi-semicon-india-2026-india-s-semiconductor-ecosystem-unlocking-new-opportunities-14031933.html",
+      "started_at": "2026-10-28T09:06:24.249554+00:00",
+      "http_status": 200,
+      "final_url": "https://www.moneycontrol.com/news/videos/business/pm-modi-semicon-india-2026-india-s-semiconductor-ecosystem-unlocking-new-opportunities-14031933.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 112822,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.moneycontrol.com/news/videos/business/pm-modi-semicon-india-2026-india-s-semiconductor-ecosystem-unlocking-new-opportunities-14031933.html"
+      ],
+      "duration_ms": 2863.654
+    },
+    {
+      "operation_id": "2ee5b2d4e31142e08d3e2b4227b61e6b",
+      "requested_url": "https://www.thehindu.com/news/national/semicon-india-2026-indias-semiconductor-ecosystem-expanding-opening-new-opportunities-says-modi/article71475696.ece",
+      "started_at": "2026-10-28T09:06:27.854084+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1416.286
+    },
+    {
+      "operation_id": "2814f8d99eff4a9aa0b5d33cdfb9b7d6",
+      "requested_url": "https://www.aninews.in",
+      "started_at": "2026-10-28T09:06:29.465229+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1033.586
+    },
+    {
+      "operation_id": "77bcb8a76b2a47e4b01c51b3e95a1273",
+      "requested_url": "https://www.fortuneindia.com/startups-news/indias-semiconductor-ecosystem-grows-to-3557-companies-funding-reaches-14-billion-report/159260",
+      "started_at": "2026-10-28T09:06:26.801779+00:00",
+      "http_status": 200,
+      "final_url": "https://www.fortuneindia.com/startups-news/indias-semiconductor-ecosystem-grows-to-3557-companies-funding-reaches-14-billion-report/159260",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129447,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.fortuneindia.com/startups-news/indias-semiconductor-ecosystem-grows-to-3557-companies-funding-reaches-14-billion-report/159260"
+      ],
+      "duration_ms": 3816.616
+    },
+    {
+      "operation_id": "a8e07bea083740f6bef0e2880dd2b88a",
+      "requested_url": "https://www.edexlive.com",
+      "started_at": "2026-10-28T09:06:30.619443+00:00",
+      "http_status": 200,
+      "final_url": "https://www.edexlive.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 107756,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.edexlive.com"
+      ],
+      "duration_ms": 2863.517
+    },
+    {
+      "operation_id": "b19f94e0fedf42c983e0a7bdc2195d0c",
+      "requested_url": "https://www.thehawk.in",
+      "started_at": "2026-10-28T09:06:31.729458+00:00",
+      "http_status": 200,
+      "final_url": "https://www.thehawk.in",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 91281,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.thehawk.in"
+      ],
+      "duration_ms": 3160.343
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "40e106d2c7a344c1871efffeef2a30ed",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ca9cee9f11ae46c1925b95b6e7b2965e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3cdc2eeafd2942f493b0c176181e8191",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DIndia%2BSemiconductor%2BManufacturing%2Brecent%2Bdevelopments%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=1.cdeaf49059fdc0cebccdf2b8aff696f1346a31a0fb4a64da642b850b7c5e545e",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3cdc2eeafd2942f493b0c176181e8191",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4869ef5a283f4427878037c291b72157",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "147d560fc79943ce83c83afee5f5da5f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "19b9bdb5fdc44347963efb6469e6898c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5aaa3711fb1b474b88283a0cd1f1f0c8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f4e1b78e8934091a484a193a981f5fd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bdevelopments%2Bin%2BIndia%2527s%2Bsemiconductor%2Bmanufacturing%2Bindustry%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Bincluding%2Bplant%2Bannouncements%252C%2Bpolicy%2Bdecisions%2Band%2Bmanufacturing%2Bmilestones.%2Bproduct%2Bannouncement&_bvc=1.e5e617e811c3908e120403282823d25b9a2cecd39480e272968410bc43a9f9a5",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f4e1b78e8934091a484a193a981f5fd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5aaa3711fb1b474b88283a0cd1f1f0c8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+rumor+debunked+false+announcement+Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7a1c5d640afc48f18ec4dfe0d86b8a3d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "45d61ae378a448f99c4c49e091b7d2dc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "95bcb5afb77c40b0a0cbe9bfa732406c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.webindia123.com/news/Articles/Business/20260815/4487500.html",
+      "host": "news.webindia123.com",
+      "http_operation_id": "bdd8b59539c54c6eac25341772f4704d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.dqindia.com/news/india-semiconductor-mission-20-a-push-for-chip-manufacturing-and-jobs-11069535",
+      "host": "www.dqindia.com",
+      "http_operation_id": "6bfd8a10590e4a62b5b59363b8edd657",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://news.webindia123.com/news/Articles/Business/20260815/4487500.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "641c07a1476c4a79a53615a1bfc0b43b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f7902e5085df4bbcaeecb234ede3344e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "c3a2f0e9213d4cadb34f85f5bd248f06",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://news.webindia123.com/news/Articles/Business/20260815/4487500.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "638fe453b2514421a14caec8a684c364",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "608952550e094058a34c439f3cbda12c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ec689cdcdb054a14847e9dc1650c3565",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "79b9deb44c0642cbb6492e50f61c7f07",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d63ede284f38430caa14a05ed2afcd0a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bdevelopments%2Bin%2BIndia%2527s%2Bsemiconductor%2Bmanufacturing%2Bindustry%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Bincluding%2Bplant%2Bannouncements%252C%2Bpolicy%2Bdecisions%2Band%2Bmanufacturing%2Bmilestones.%2Bproduct%2Bannouncement%2B%2528site%253Aarstechnica.com%2BOR%2Bsite%253Atechcrunch.com%2BOR%2Bsite%253Atheverge.com%2529&_bvc=1.9d153a5204e32e474998561210f8931487873d5e549af7a557d16ef84e7dba4f",
+      "host": "search.yahoo.com",
+      "http_operation_id": "79b9deb44c0642cbb6492e50f61c7f07",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DIndia%2BSemiconductor%2BManufacturing%2Bresearch%2Bupdate%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29%2B%2528site%253Anature.com%2BOR%2Bsite%253Asciencedaily.com%2BOR%2Bsite%253Aphys.org%2529&_bvc=1.e3dede7b5d3802e759b066e9f225d6b406ac9baef70332bd8f45573435d4bec7",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d63ede284f38430caa14a05ed2afcd0a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+product+announcement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "2ccf23c76a5846deb3173fab17315080",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "eb4b69b4f6254d2b88a3b509a1658738",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "746dc345e49e49ecbccfa649a7991ba9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+recent+developments+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "1b924105db604d53bac6a6fcb2224dbc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bceff1d1712b480f8038ce4019c36a04",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bceff1d1712b480f8038ce4019c36a04",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bdevelopments%2Bin%2BIndia%2527s%2Bsemiconductor%2Bmanufacturing%2Bindustry%2Bover%2Bthe%2Blast%2Bseven%2Bdays%252C%2Bincluding%2Bplant%2Bannouncements%252C%2Bpolicy%2Bdecisions%2Band%2Bmanufacturing%2Bmilestones.%2Bhardware%2Breporting%2B%2528site%253Areuters.com%2BOR%2Bsite%253Aapnews.com%2BOR%2Bsite%253Abbc.com%2529&_bvc=1.ca00c2f75f1977891684e946819b83dbea541112f0967592985356e81f884f09",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bceff1d1712b480f8038ce4019c36a04",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+developments+in+India%27s+semiconductor+manufacturing+industry+over+the+last+seven+days%2C+including+plant+announcements%2C+policy+decisions+and+manufacturing+milestones.+hardware+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "c9f0b1d6fb4e4378b6fb7ce97efd217e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "7bc581cdfb7c472daa4ee1b9a4d44047",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4ce0665494244686a494d5ca54af21a9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1bc43d4d01c246b294b199eb513bdc6c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DIndia%2BSemiconductor%2BManufacturing%2Bresearch%2Bupdate%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=1.0f86d99dcfa638f125948f579578be843fefccf558b51cf8e2add074229d921a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1bc43d4d01c246b294b199eb513bdc6c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DIndia%2BSemiconductor%2BManufacturing%2Bresearch%2Bupdate%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=2.2b8ba92c28c29c889d3e50be23a716186ca5d02995bea5ccd09dc21c20bc8a1a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1bc43d4d01c246b294b199eb513bdc6c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4dd9a550298a4724a96eef8c859aaf44",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "03321a784a5b47f29f8329c87f073e32",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ce751fc25f86495493892ac6bab95e3e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/technology/news/semicon-2-0-gets-cabinet-approval-india-expands-push-for-semiconductor-manufacturing-design-and-r-d-2026-07-15-1048323",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "31aaa07028e94287844e97940f97ce85",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+research+update+when%3A7d+after%3A2026-10-21+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "117e545a43d94c31bcc193c7f59890ef",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "b182db07c37043b78026f48c43ca1a39",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "0789d1c2b3d34d3080bf6974e2725646",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "93d753c7058c460397533932b96dac7b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DIndia%2BSemiconductor%2BManufacturing%2Bindustry%2Bannouncement%2Bwhen%253A7d%2Bafter%253A2026-10-21%2Bbefore%253A2026-10-29&_bvc=1.c1662f6adcb37f78b4a9b3928730d720134973d1881c1e0ef5469f22f4a8bb18",
+      "host": "search.yahoo.com",
+      "http_operation_id": "93d753c7058c460397533932b96dac7b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=India+Semiconductor+Manufacturing+industry+announcement+when%3A7d+after%3A2026-10-21+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f1155000f3d04a878fb7d5de084a2bb5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "2d0865c230244971b390e57a67223ba2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/science/india-semiconductor-ecosystem-support-ism-2-rollout-single-window-portal-2026-02-26-1031710",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "9ea750267edf44f881568bda25b0d9b1",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions",
+      "host": "search.yahoo.com",
+      "http_operation_id": "43c65a4932fb4873acb114d288ba9faa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/technology/news/uttar-pradesh-to-become-electronics-and-semiconductor-hub-as-jewar-manufacturing-project-starts-ashwini-vaishnav-2026-06-28-1046418",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "d77357d880ea4d08b7fcc5a8707bb517",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.edexlive.com%2BSemiconductor%2Band%2Bgreen%2Bhydrogen%2Bcollaboration%2Bleads%2Bfresh%2BIndia-Netherlands%2Bindustrial%2Bdiscussions&_bvc=1.1edacc6126e999bef49ecf297cfb28d325d9601bdf270a95394b68aaf249160d",
+      "host": "search.yahoo.com",
+      "http_operation_id": "43c65a4932fb4873acb114d288ba9faa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.edexlive.com%2BSemiconductor%2Band%2Bgreen%2Bhydrogen%2Bcollaboration%2Bleads%2Bfresh%2BIndia-Netherlands%2Bindustrial%2Bdiscussions&_bvc=2.25f74c138f94f503615ede252f6599241ab164390e27894a15a2ad742d69ba41",
+      "host": "search.yahoo.com",
+      "http_operation_id": "43c65a4932fb4873acb114d288ba9faa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/news/india/india-semiconductor-ecosystem-makes-big-leap-with-rs-7-500-crore-facility-in-gujarat-here-s-why-it-matters-2026-07-04-1047137",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "39727b7e9211435db9e3791cf02f4e73",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.edexlive.com%2BSemiconductor%2Band%2Bgreen%2Bhydrogen%2Bcollaboration%2Bleads%2Bfresh%2BIndia-Netherlands%2Bindustrial%2Bdiscussions&_bvc=3.19bcca75d88941de163faafa73c96e99d83c7f368d3e8f9a2bffb097533436c1",
+      "host": "search.yahoo.com",
+      "http_operation_id": "43c65a4932fb4873acb114d288ba9faa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.edexlive.com+Semiconductor+and+green+hydrogen+collaboration+leads+fresh+India-Netherlands+industrial+discussions&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "bad8899355674fe089348508d5600136",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "c684007be9e64be69d0cdedeace23e98",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6e7a990675c640bcbf83b75b9328fcae",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.indiatvnews.com/news/india/india-semiconductor-ecosystem-makes-big-leap-with-rs-7-500-crore-facility-in-gujarat-here-s-why-it-matters-2026-07-04-1047137",
+      "host": "r.jina.ai",
+      "http_operation_id": "21d00026d0ce42c481cc52c722b08d47",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6e7a990675c640bcbf83b75b9328fcae",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.thehawk.in+Piyush+Goyal+invites+Dutch+firms+to+join+India%E2%80%99s+chip+ecosystem%2C+explore+manufacturing+capabilities&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "2a3d41c79c76400ebfbbd2501008f072",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "bd1ef7149fea4fc1b9dbc3bfce1017c9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/news/business/karnataka-eyes-rs-15-000-crore-semiconductor-investment-pipeline-after-semicon-india-2026-mb-patil-14033581.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "fa3d344d3e6641d68092bc1cf76696e5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f97d3af66fd746489c68347bc31884de",
+      "phase": "reading",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.aninews.in+Priti+Adani+pushes+for+industry-aligned+education+to+boost+India%27s+semiconductor+ambitions&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4d23c7db8e2849daa8f96c15c7dcdf1f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/news/videos/business/pm-modi-semicon-india-2026-india-s-semiconductor-ecosystem-unlocking-new-opportunities-14031933.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "f2d81cdf4864482d9a34d1d47275bcc8",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.fortuneindia.com/startups-news/indias-semiconductor-ecosystem-grows-to-3557-companies-funding-reaches-14-billion-report/159260",
+      "host": "www.fortuneindia.com",
+      "http_operation_id": "77bcb8a76b2a47e4b01c51b3e95a1273",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.thehindu.com/news/national/semicon-india-2026-indias-semiconductor-ecosystem-expanding-opening-new-opportunities-says-modi/article71475696.ece",
+      "host": "www.thehindu.com",
+      "http_operation_id": "2ee5b2d4e31142e08d3e2b4227b61e6b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.aninews.in",
+      "host": "www.aninews.in",
+      "http_operation_id": "2814f8d99eff4a9aa0b5d33cdfb9b7d6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.edexlive.com",
+      "host": "www.edexlive.com",
+      "http_operation_id": "a8e07bea083740f6bef0e2880dd2b88a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.thehawk.in",
+      "host": "www.thehawk.in",
+      "http_operation_id": "b19f94e0fedf42c983e0a7bdc2195d0c",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 71,
+  "admission_rejections": 2,
+  "pipeline_errors": []
+}

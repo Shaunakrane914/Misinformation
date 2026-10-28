@@ -1,0 +1,1797 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "c757389777c14332b3f0b27488aa66cf",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report&format=rss",
+      "started_at": "2026-10-28T08:58:26.751609+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1955,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report&format=rss"
+      ],
+      "duration_ms": 1326.825
+    },
+    {
+      "operation_id": "c37291ca49f74f4388f36dad7efa3b4e",
+      "requested_url": "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+allegation+report&first=1",
+      "started_at": "2026-10-28T08:58:26.574999+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+allegation+report&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128688,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+allegation+report&first=1"
+      ],
+      "duration_ms": 3556.114
+    },
+    {
+      "operation_id": "65c640ad0f1d46d1ba6476dea3e83a43",
+      "requested_url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+impersonation+allegation+report",
+      "started_at": "2026-10-28T08:58:30.163331+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4593.484
+    },
+    {
+      "operation_id": "702ab446e21b4dd6ab8f57fc64729bf8",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:58:34.758753+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15129,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2096.677
+    },
+    {
+      "operation_id": "c75eb7c1509c4400896c1b9846ef7123",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&format=rss",
+      "started_at": "2026-10-28T08:58:36.873960+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1807,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&format=rss"
+      ],
+      "duration_ms": 1134.366
+    },
+    {
+      "operation_id": "1a32e734315e4c3c9c6af4fdb125c9eb",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:58:38.014029+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1453,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2581.264
+    },
+    {
+      "operation_id": "5cdcb83caf214704a7dda4260124d7d3",
+      "requested_url": "https://www.bing.com/search?q=%22Sam+Altman%22+statement+interview+transcript&first=1",
+      "started_at": "2026-10-28T08:58:36.873635+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Sam+Altman%22+statement+interview+transcript&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128760,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Sam+Altman%22+statement+interview+transcript&first=1"
+      ],
+      "duration_ms": 3845.944
+    },
+    {
+      "operation_id": "4d6058f43bf849199feaf146d5bf1624",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:58:40.597654+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1453,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 918.951
+    },
+    {
+      "operation_id": "b10e6a0da0ee43f0aa6a8cde3e0f378c",
+      "requested_url": "https://www.moneycontrol.com/news/business/information-technology/why-sam-altman-was-fired-new-report-reveals-openai-board-s-lying-and-deception-allegations-13883183.html",
+      "started_at": "2026-10-28T08:58:37.712567+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.835
+    },
+    {
+      "operation_id": "d63f7bbcd5e5489fa970f2a953740cc1",
+      "requested_url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+statement+interview+transcript",
+      "started_at": "2026-10-28T08:58:40.758473+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5006.283
+    },
+    {
+      "operation_id": "5e303cea0bd64daeb8aa7ea1f57376eb",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/information-technology/why-sam-altman-was-fired-new-report-reveals-openai-board-s-lying-and-deception-allegations-13883183.html",
+      "started_at": "2026-10-28T08:58:42.726925+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5019.749
+    },
+    {
+      "operation_id": "8804df80f8ad4d5a9c38299f0d59b4ed",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:58:45.764973+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 62628,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Sam+Altman%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2588.525
+    },
+    {
+      "operation_id": "ea7fee9be8bc4f01b3dec8966909880e",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+statement&format=rss",
+      "started_at": "2026-10-28T08:58:48.399147+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+statement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 7514,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+statement&format=rss"
+      ],
+      "duration_ms": 2318.064
+    },
+    {
+      "operation_id": "7a97a993d42b45b089287bd1292aff69",
+      "requested_url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/information-technology/why-sam-altman-was-fired-new-report-reveals-openai-board-s-lying-and-deception-allegations-13883183.html",
+      "started_at": "2026-10-28T08:58:47.749012+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4968.757
+    },
+    {
+      "operation_id": "08b78f33024e4374992c6aa2139e41a8",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com&first=1",
+      "started_at": "2026-10-28T08:58:48.398666+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4999.986
+    },
+    {
+      "operation_id": "dfcbf559d62543868f30ff660777e6be",
+      "requested_url": "https://www.bing.com/search?q=Transcript%3A+Sam+Altman+Interview+on+OpenAI%2C+New+AI+Model+and+Global+Growth+%E2%80%93+G20+Innovation+Summit&first=1",
+      "started_at": "2026-10-28T08:58:48.649108+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.069
+    },
+    {
+      "operation_id": "56b5039f22b545f490c21286e417cf11",
+      "requested_url": "https://search.yahoo.com/search?p=Transcript%3A+Sam+Altman+Interview+on+OpenAI%2C+New+AI+Model+and+Global+Growth+%E2%80%93+G20+Innovation+Summit",
+      "started_at": "2026-10-28T08:58:53.658438+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3690.502
+    },
+    {
+      "operation_id": "661ff0edfb174a48ad05c8e014e9a787",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com",
+      "started_at": "2026-10-28T08:58:53.398969+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5011.467
+    },
+    {
+      "operation_id": "f6929b4b62fc4ab1ab0335b51347d82e",
+      "requested_url": "https://news.google.com/rss/search?q=Transcript%3A+Sam+Altman+Interview+on+OpenAI%2C+New+AI+Model+and+Global+Growth+%E2%80%93+G20+Innovation+Summit&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:58:57.349148+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 1314.292
+    },
+    {
+      "operation_id": "7ac48c4d60cd47ea9454bfada42ac6e8",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:58:58.410666+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1485,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1209.038
+    },
+    {
+      "operation_id": "a4e03a27b79d4d5ab3bdbf302b518856",
+      "requested_url": "https://www.bing.com/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&first=1",
+      "started_at": "2026-10-28T08:58:58.677382+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131645,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&first=1"
+      ],
+      "duration_ms": 1967.98
+    },
+    {
+      "operation_id": "7bae4e6b3ec24998a9f22185a035dc50",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:59:03.381071+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1450,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1791.505
+    },
+    {
+      "operation_id": "bd58b06c5da544c880a35c51ea24fe03",
+      "requested_url": "https://search.yahoo.com/search?p=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today",
+      "started_at": "2026-10-28T08:59:00.673229+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5003.954
+    },
+    {
+      "operation_id": "92e92bc9e8b148178ac8d51740ec3dfc",
+      "requested_url": "https://www.sportskeeda.com/pop-culture/what-allegations-sam-altman-annie-altman-s-lawsuit-explored-openai-ceo-issues-statement",
+      "started_at": "2026-10-28T08:59:01.122320+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.773
+    },
+    {
+      "operation_id": "dd72ba2f719d4b8fa3036d8e5165bf34",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&first=1",
+      "started_at": "2026-10-28T08:59:03.380495+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 135158,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&first=1"
+      ],
+      "duration_ms": 3006.16
+    },
+    {
+      "operation_id": "b42ce6d7ebce4a99b9e97eaf110b888b",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:05.175210+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5627,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1530.398
+    },
+    {
+      "operation_id": "76532fdaa3fa4f6d80a9a58ca6420722",
+      "requested_url": "https://news.google.com/rss/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:05.677535+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4973,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1618.448
+    },
+    {
+      "operation_id": "70c36e3601744941b347f234248e243c",
+      "requested_url": "https://r.jina.ai/https://www.sportskeeda.com/pop-culture/what-allegations-sam-altman-annie-altman-s-lawsuit-explored-openai-ceo-issues-statement",
+      "started_at": "2026-10-28T08:59:06.124375+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1171.739
+    },
+    {
+      "operation_id": "7e3b1ceebbad4ae599ed27bc74f8bb04",
+      "requested_url": "https://r.jina.ai/https://www.sportskeeda.com/pop-culture/what-allegations-sam-altman-annie-altman-s-lawsuit-explored-openai-ceo-issues-statement",
+      "started_at": "2026-10-28T08:59:07.296436+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 825.127
+    },
+    {
+      "operation_id": "a234b6dacc3141119ac018f8a23473c2",
+      "requested_url": "https://www.moneycontrol.com/news/trends/sam-altman-s-sister-accuses-him-of-sexual-abuse-files-lawsuit-against-him-openai-ceo-issues-statement-12905434.html",
+      "started_at": "2026-10-28T08:59:08.131495+00:00",
+      "http_status": 200,
+      "final_url": "https://www.moneycontrol.com/news/trends/sam-altman-s-sister-accuses-him-of-sexual-abuse-files-lawsuit-against-him-openai-ceo-issues-statement-12905434.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 136283,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.moneycontrol.com/news/trends/sam-altman-s-sister-accuses-him-of-sexual-abuse-files-lawsuit-against-him-openai-ceo-issues-statement-12905434.html"
+      ],
+      "duration_ms": 2749.603
+    },
+    {
+      "operation_id": "917787cd5eaa42bc8fd59992866b0bc6",
+      "requested_url": "https://english.gujaratsamachar.com/news/science-technology/sam-altman-lawsuit-dismissed-57869718757",
+      "started_at": "2026-10-28T08:59:09.048731+00:00",
+      "http_status": 200,
+      "final_url": "https://english.gujaratsamachar.com/news/science-technology/sam-altman-lawsuit-dismissed-57869718757",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 33827,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://english.gujaratsamachar.com/news/science-technology/sam-altman-lawsuit-dismissed-57869718757"
+      ],
+      "duration_ms": 2276.254
+    },
+    {
+      "operation_id": "1a22d7361acf4dac974eac17d0871bd4",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov",
+      "started_at": "2026-10-28T08:59:06.410142+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5048.927
+    },
+    {
+      "operation_id": "6af9f3ff9d174e4ba6786f4a6221c897",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:11.459364+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1479,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1679.977
+    },
+    {
+      "operation_id": "9949fd7972f84cde89b8ad65d48f7ae2",
+      "requested_url": "https://www.newsbytesapp.com/news/science/sam-altman-wins-dismissal-of-sister-s-sexual-abuse-lawsuit/story",
+      "started_at": "2026-10-28T08:59:12.410655+00:00",
+      "http_status": 200,
+      "final_url": "https://www.newsbytesapp.com/news/science/sam-altman-wins-dismissal-of-sister-s-sexual-abuse-lawsuit/story",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 23615,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.newsbytesapp.com/news/science/sam-altman-wins-dismissal-of-sister-s-sexual-abuse-lawsuit/story"
+      ],
+      "duration_ms": 1843.277
+    },
+    {
+      "operation_id": "505971a752894c9eac415dbd560c7c7a",
+      "requested_url": "https://www.moneycontrol.com/world/sam-altman-sister-s-abuse-claims-against-him-dismissed-by-judge-article-14056189.html",
+      "started_at": "2026-10-28T08:59:12.009879+00:00",
+      "http_status": 200,
+      "final_url": "https://www.moneycontrol.com/world/sam-altman-sister-s-abuse-claims-against-him-dismissed-by-judge-article-14056189.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132454,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.moneycontrol.com/world/sam-altman-sister-s-abuse-claims-against-him-dismissed-by-judge-article-14056189.html"
+      ],
+      "duration_ms": 4206.952
+    },
+    {
+      "operation_id": "92c54bffdab940a39bc0a341016b1b18",
+      "requested_url": "https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf",
+      "started_at": "2026-10-28T08:59:14.805212+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15548,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf"
+      ],
+      "duration_ms": 3662.846
+    },
+    {
+      "operation_id": "ed11f621f5ba467e9776d92541a732cb",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning&format=rss",
+      "started_at": "2026-10-28T08:59:14.925130+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2625,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning&format=rss"
+      ],
+      "duration_ms": 3543.66
+    },
+    {
+      "operation_id": "5900ab22c0104c7db6b79d3a47f19776",
+      "requested_url": "https://timesofindia.indiatimes.com/technology/tech-news/chatgpt-maker-openai-ceo-sam-altmans-sister-accuses-him-of-sexual-abuse-family-responds/articleshow/117038723.cms",
+      "started_at": "2026-10-28T08:59:17.788313+00:00",
+      "http_status": 200,
+      "final_url": "https://timesofindia.indiatimes.com/technology/tech-news/chatgpt-maker-openai-ceo-sam-altmans-sister-accuses-him-of-sexual-abuse-family-responds/articleshow/117038723.cms",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 59102,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://timesofindia.indiatimes.com/technology/tech-news/chatgpt-maker-openai-ceo-sam-altmans-sister-accuses-him-of-sexual-abuse-family-responds/articleshow/117038723.cms"
+      ],
+      "duration_ms": 1492.124
+    },
+    {
+      "operation_id": "b5276ec113284135a54c65accaad31c4",
+      "requested_url": "https://www.bing.com/search?q=%22Sam+Altman%22+fake+account+warning&first=1",
+      "started_at": "2026-10-28T08:59:14.925462+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5059.539
+    },
+    {
+      "operation_id": "24aca2ef1cdc4d40ac61ea991406577c",
+      "requested_url": "https://www.bing.com/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&first=1",
+      "started_at": "2026-10-28T08:59:19.929215+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131551,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&first=1"
+      ],
+      "duration_ms": 1721.761
+    },
+    {
+      "operation_id": "c3fc12ca91ef4863bd526cd1a786c01b",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf",
+      "started_at": "2026-10-28T08:59:18.485561+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.004
+    },
+    {
+      "operation_id": "46095540df9f4d1f88701167f9df1c50",
+      "requested_url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+fake+account+warning",
+      "started_at": "2026-10-28T08:59:19.985235+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 4928.574
+    },
+    {
+      "operation_id": "b9a5e58f7838476c82608c592f862290",
+      "requested_url": "https://search.yahoo.com/search?p=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness",
+      "started_at": "2026-10-28T08:59:21.677543+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.147
+    },
+    {
+      "operation_id": "61a41074f65e47cbba8930fde1450409",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:24.913967+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 127646,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2994.925
+    },
+    {
+      "operation_id": "012f135be8d842b786b4fa459598f6b1",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf",
+      "started_at": "2026-10-28T08:59:23.488003+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.056
+    },
+    {
+      "operation_id": "4e88333125004fc7803fd5fc13334537",
+      "requested_url": "https://news.google.com/rss/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:26.678968+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 11114,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2529.814
+    },
+    {
+      "operation_id": "4f2c6e6c99f1488f995baec139180204",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:59:27.975484+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1395,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2691.646
+    },
+    {
+      "operation_id": "2baa115dcd3347bdabff98082ec1ec96",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response&format=rss",
+      "started_at": "2026-10-28T08:59:27.975772+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1871,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response&format=rss"
+      ],
+      "duration_ms": 2817.617
+    },
+    {
+      "operation_id": "d5a471cc32ea463497f489c1d098be27",
+      "requested_url": "https://www.indiatimes.com/trending/something-a-supervillain-would-say-sam-altmans-ai-downsides-comment-sparks-backlash-as-he-says-world-must-accept-them-for-techs-benefits/articleshow/134715091.html",
+      "started_at": "2026-10-28T08:59:29.842799+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatimes.com/trending/something-a-supervillain-would-say-sam-altmans-ai-downsides-comment-sparks-backlash-as-he-says-world-must-accept-them-for-techs-benefits/articleshow/134715091.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 35394,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatimes.com/trending/something-a-supervillain-would-say-sam-altmans-ai-downsides-comment-sparks-backlash-as-he-says-world-must-accept-them-for-techs-benefits/articleshow/134715091.html"
+      ],
+      "duration_ms": 1334.691
+    },
+    {
+      "operation_id": "93db6240fc2c40eea091e7ce5e55f41c",
+      "requested_url": "https://www.newsbytesapp.com/news/science/sam-altman",
+      "started_at": "2026-10-28T08:59:31.492754+00:00",
+      "http_status": 200,
+      "final_url": "https://www.newsbytesapp.com/news/science/sam-altman",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 32546,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.newsbytesapp.com/news/science/sam-altman"
+      ],
+      "duration_ms": 1506.613
+    },
+    {
+      "operation_id": "418e5e0736ed48b5985a4a07a86e27d9",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:30.669671+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 22516,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2330.174
+    },
+    {
+      "operation_id": "e73ca08b50874fa99936a72d3e3df08d",
+      "requested_url": "https://www.moneycontrol.com/technology/it-s-insanely-suicidal-for-microsoft-says-elon-musk-as-sam-altman-claims-slack-breeds-fake-work-article-13662356.html",
+      "started_at": "2026-10-28T08:59:28.516787+00:00",
+      "http_status": 200,
+      "final_url": "https://www.moneycontrol.com/technology/it-s-insanely-suicidal-for-microsoft-says-elon-musk-as-sam-altman-claims-slack-breeds-fake-work-article-13662356.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 142132,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.moneycontrol.com/technology/it-s-insanely-suicidal-for-microsoft-says-elon-musk-as-sam-altman-claims-slack-breeds-fake-work-article-13662356.html"
+      ],
+      "duration_ms": 4644.595
+    },
+    {
+      "operation_id": "01756d3592fc4dfab42b83429680fcd2",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:59:33.768156+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1445,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1888.801
+    },
+    {
+      "operation_id": "95f74e19d4274da4864ed58ac329d237",
+      "requested_url": "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+company+response&first=1",
+      "started_at": "2026-10-28T08:59:33.767671+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+company+response&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 126465,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+company+response&first=1"
+      ],
+      "duration_ms": 2830.534
+    },
+    {
+      "operation_id": "7fc1985273d944c3a51a553642f937da",
+      "requested_url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+impersonation+company+response",
+      "started_at": "2026-10-28T08:59:36.620214+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.069
+    },
+    {
+      "operation_id": "b3fb7e75e2924b25abfccbdf734bc2fc",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:35.658978+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15194,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2149.489
+    },
+    {
+      "operation_id": "62e5135d7b224ffc940a7ef9b6c0f001",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:36.620426+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 47897,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2949.398
+    },
+    {
+      "operation_id": "a21237702ae44033baf83cb9c04a761c",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview&format=rss",
+      "started_at": "2026-10-28T08:59:39.658707+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9083,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview&format=rss"
+      ],
+      "duration_ms": 919.144
+    },
+    {
+      "operation_id": "babde6763de14f7da4cd7f27da5305cc",
+      "requested_url": "https://www.bing.com/search?q=%22Sam+Altman%22+interview&first=1",
+      "started_at": "2026-10-28T08:59:39.616012+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Sam+Altman%22+interview&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128677,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Sam+Altman%22+interview&first=1"
+      ],
+      "duration_ms": 2312.066
+    },
+    {
+      "operation_id": "6cdd889882764b8d82ed0f748d81205a",
+      "requested_url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+interview",
+      "started_at": "2026-10-28T08:59:41.956387+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.074
+    },
+    {
+      "operation_id": "58cc602db18c4cd8bf8ccd32d2622a56",
+      "requested_url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:59:41.956631+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5000.569
+    },
+    {
+      "operation_id": "1f590b304a064c30a6bd0b47f41f4cd8",
+      "requested_url": "https://thediff.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T08:59:49.899991+00:00",
+      "http_status": 200,
+      "final_url": "https://thediff.substack.com/api/v1/posts?limit=5&sort=top",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5000,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://thediff.substack.com/api/v1/posts?limit=5&sort=top"
+      ],
+      "duration_ms": 1121.589
+    },
+    {
+      "operation_id": "8538b982cc6a45488ab38e413fab446b",
+      "requested_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:59:49.434641+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4582,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2908.837
+    },
+    {
+      "operation_id": "0ecc307f15cd41a2892903d468b926e7",
+      "requested_url": "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T08:59:51.329731+00:00",
+      "http_status": 200,
+      "final_url": "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2315,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top"
+      ],
+      "duration_ms": 1234.231
+    },
+    {
+      "operation_id": "d786cee9a23b427ba524bc15af0473d9",
+      "requested_url": "https://brobible.com/culture/article/openai-staffer-tried-to-end-sam-altman-interview-viral-video/",
+      "started_at": "2026-10-28T08:59:49.940005+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.246
+    },
+    {
+      "operation_id": "d7b25dd00cce4fa5b1b6b04fb79fd150",
+      "requested_url": "https://www.dailymail.com/media/article-16184111/openai-publicist-intervene-ceo-sam-altman-vanity-fair-interview-suicide-question.html",
+      "started_at": "2026-10-28T08:59:49.998619+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5016.773
+    },
+    {
+      "operation_id": "cbabc4a67a92491d8cc71a10d597928e",
+      "requested_url": "https://doomberg.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T08:59:52.663255+00:00",
+      "http_status": 301,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 2496.051
+    },
+    {
+      "operation_id": "d928ec3e25794971b7a99d68fb72c80e",
+      "requested_url": "https://pragmaticengineer.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T08:59:55.862759+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 552.741
+    },
+    {
+      "operation_id": "bc189f0819fb4a33a547f447e3373b13",
+      "requested_url": "https://r.jina.ai/https://brobible.com/culture/article/openai-staffer-tried-to-end-sam-altman-interview-viral-video/",
+      "started_at": "2026-10-28T08:59:54.949545+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.357
+    },
+    {
+      "operation_id": "53521d3abfc74b5885091035e7e14662",
+      "requested_url": "https://r.jina.ai/https://www.dailymail.com/media/article-16184111/openai-publicist-intervene-ceo-sam-altman-vanity-fair-interview-suicide-question.html",
+      "started_at": "2026-10-28T08:59:55.015684+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.489
+    },
+    {
+      "operation_id": "54c633babaf84ccb977aec262b27f9c9",
+      "requested_url": "https://r.jina.ai/https://brobible.com/culture/article/openai-staffer-tried-to-end-sam-altman-interview-viral-video/",
+      "started_at": "2026-10-28T08:59:59.956265+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4986.07
+    },
+    {
+      "operation_id": "7eb0a1c970cf44d596e457880109bb24",
+      "requested_url": "https://r.jina.ai/https://www.dailymail.com/media/article-16184111/openai-publicist-intervene-ceo-sam-altman-vanity-fair-interview-suicide-question.html",
+      "started_at": "2026-10-28T09:00:00.023528+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4982.768
+    },
+    {
+      "operation_id": "563ad432cfb448e7adde6e86bc61f42f",
+      "requested_url": "https://cryptobriefing.com/sam-altman-cnbc-interview-openai-ipo-wld/",
+      "started_at": "2026-10-28T09:00:05.359082+00:00",
+      "http_status": 200,
+      "final_url": "https://cryptobriefing.com/sam-altman-cnbc-interview-openai-ipo-wld/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 44471,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://cryptobriefing.com/sam-altman-cnbc-interview-openai-ipo-wld/"
+      ],
+      "duration_ms": 1639.999
+    },
+    {
+      "operation_id": "b7aadef39b5349958c127e5f1ac39d56",
+      "requested_url": "https://au.news.yahoo.com/openai-publicist-interrupts-interview-ceo-235934644.html",
+      "started_at": "2026-10-28T09:00:05.472884+00:00",
+      "http_status": 200,
+      "final_url": "https://au.news.yahoo.com/openai-publicist-interrupts-interview-ceo-235934644.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 85763,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://au.news.yahoo.com/openai-publicist-interrupts-interview-ceo-235934644.html"
+      ],
+      "duration_ms": 1667.957
+    },
+    {
+      "operation_id": "fb693559ea8c46369f0eb86bd5210320",
+      "requested_url": "https://www.axios.com/2026/09/03/axios-interview-sam-altmans-sobering-siren",
+      "started_at": "2026-10-28T09:00:08.150797+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1722.809
+    },
+    {
+      "operation_id": "ba8bcda8391c45408dd2d8b91ada41df",
+      "requested_url": "https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd",
+      "started_at": "2026-10-28T09:00:07.500434+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15436,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd"
+      ],
+      "duration_ms": 2996.252
+    },
+    {
+      "operation_id": "35e00af3ee354a878a00cef084c96581",
+      "requested_url": "https://www.firstpost.com/explainers/suchir-balaji-death-sam-altman-elon-musk-clash-13933110.html",
+      "started_at": "2026-10-28T09:00:10.172873+00:00",
+      "http_status": 200,
+      "final_url": "https://www.firstpost.com/explainers/suchir-balaji-death-sam-altman-elon-musk-clash-13933110.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 72144,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.firstpost.com/explainers/suchir-balaji-death-sam-altman-elon-musk-clash-13933110.html"
+      ],
+      "duration_ms": 4095.35
+    },
+    {
+      "operation_id": "a4dc3950d5cf4a50b63da9832c5d40d9",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd",
+      "started_at": "2026-10-28T09:00:10.513153+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.518
+    },
+    {
+      "operation_id": "10b4b9a9379c469788637f2695a10853",
+      "requested_url": "https://www.marca.com/en/technology/2026/10/21/sam-altman-and-the-development-of-chatgpt-s-moral-framework-i-haven-t-slept-well-single-night-since-it-launched.html",
+      "started_at": "2026-10-28T09:00:15.789626+00:00",
+      "http_status": 200,
+      "final_url": "https://www.marca.com/en/technology/2026/10/21/sam-altman-and-the-development-of-chatgpt-s-moral-framework-i-haven-t-slept-well-single-night-since-it-launched.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 39833,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.marca.com/en/technology/2026/10/21/sam-altman-and-the-development-of-chatgpt-s-moral-framework-i-haven-t-slept-well-single-night-since-it-launched.html"
+      ],
+      "duration_ms": 3594.061
+    },
+    {
+      "operation_id": "67291adb60cc486a9ba83648c69c945b",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd",
+      "started_at": "2026-10-28T09:00:15.526901+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.974
+    },
+    {
+      "operation_id": "6e575372d8e94c46bd6614376bd6867c",
+      "requested_url": "https://www.firstpost.com/tech/sam-altman-says-ai-could-help-discover-a-cure-for-a-major-disease-within-two-years-14054486.html",
+      "started_at": "2026-10-28T09:00:19.537572+00:00",
+      "http_status": 200,
+      "final_url": "https://www.firstpost.com/tech/sam-altman-says-ai-could-help-discover-a-cure-for-a-major-disease-within-two-years-14054486.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 72480,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.firstpost.com/tech/sam-altman-says-ai-could-help-discover-a-cure-for-a-major-disease-within-two-years-14054486.html"
+      ],
+      "duration_ms": 1692.863
+    },
+    {
+      "operation_id": "b1513fa755cf448ab8ba2775ed528b9d",
+      "requested_url": "https://www.businessinsider.com/sam-altman-says-ai-benefits-outweigh-some-bad-things-happening-2026-10",
+      "started_at": "2026-10-28T09:00:21.124504+00:00",
+      "http_status": 200,
+      "final_url": "https://www.businessinsider.com/sam-altman-says-ai-benefits-outweigh-some-bad-things-happening-2026-10",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 76057,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.businessinsider.com/sam-altman-says-ai-benefits-outweigh-some-bad-things-happening-2026-10"
+      ],
+      "duration_ms": 2549.658
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "c757389777c14332b3f0b27488aa66cf",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+allegation+report&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "c37291ca49f74f4388f36dad7efa3b4e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+impersonation+allegation+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "65c640ad0f1d46d1ba6476dea3e83a43",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+impersonation+allegation+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "65c640ad0f1d46d1ba6476dea3e83a43",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "702ab446e21b4dd6ab8f57fc64729bf8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Sam+Altman%22+statement+interview+transcript&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "5cdcb83caf214704a7dda4260124d7d3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "c75eb7c1509c4400896c1b9846ef7123",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/news/business/information-technology/why-sam-altman-was-fired-new-report-reveals-openai-board-s-lying-and-deception-allegations-13883183.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "b10e6a0da0ee43f0aa6a8cde3e0f378c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1a32e734315e4c3c9c6af4fdb125c9eb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4d6058f43bf849199feaf146d5bf1624",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+statement+interview+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d63f7bbcd5e5489fa970f2a953740cc1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Sam%2BAltman%2522%2Bstatement%2Binterview%2Btranscript&_bvc=1.a38c84b110cd03d93bc24b414a119522b753d4de072a3836bb43afaea4d371b0",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d63f7bbcd5e5489fa970f2a953740cc1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/information-technology/why-sam-altman-was-fired-new-report-reveals-openai-board-s-lying-and-deception-allegations-13883183.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "5e303cea0bd64daeb8aa7ea1f57376eb",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Sam%2BAltman%2522%2Bstatement%2Binterview%2Btranscript&_bvc=2.040937ce608c64742d02e6ea16debb3a19ae84c4de2b8d819b5406c5aba84172",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d63f7bbcd5e5489fa970f2a953740cc1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+statement+interview+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d63f7bbcd5e5489fa970f2a953740cc1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8804df80f8ad4d5a9c38299f0d59b4ed",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.moneycontrol.com/news/business/information-technology/why-sam-altman-was-fired-new-report-reveals-openai-board-s-lying-and-deception-allegations-13883183.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "7a97a993d42b45b089287bd1292aff69",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "08b78f33024e4374992c6aa2139e41a8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+statement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ea7fee9be8bc4f01b3dec8966909880e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Transcript%3A+Sam+Altman+Interview+on+OpenAI%2C+New+AI+Model+and+Global+Growth+%E2%80%93+G20+Innovation+Summit&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "dfcbf559d62543868f30ff660777e6be",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "661ff0edfb174a48ad05c8e014e9a787",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Transcript%3A+Sam+Altman+Interview+on+OpenAI%2C+New+AI+Model+and+Global+Growth+%E2%80%93+G20+Innovation+Summit",
+      "host": "search.yahoo.com",
+      "http_operation_id": "56b5039f22b545f490c21286e417cf11",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Transcript%3A+Sam+Altman+Interview+on+OpenAI%2C+New+AI+Model+and+Global+Growth+%E2%80%93+G20+Innovation+Summit",
+      "host": "search.yahoo.com",
+      "http_operation_id": "56b5039f22b545f490c21286e417cf11",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Breported%2Bimpersonation%252C%2Bfabricated%2Bendorsements%2Bor%2Bmisattributed%2Bstatements%2Binvolving%2BSam%2BAltman.%2BDistinguish%2Bconfirmed%2Bincidents%2Bfrom%2Bunverified%2Ballegations.%2Bsite%253Areddit.com&_bvc=1.ebcb0ad9ae3fb5dc1599914e34c970626451e79fe92ca5e9eed4d7eb677ba53c",
+      "host": "search.yahoo.com",
+      "http_operation_id": "661ff0edfb174a48ad05c8e014e9a787",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Transcript%3A+Sam+Altman+Interview+on+OpenAI%2C+New+AI+Model+and+Global+Growth+%E2%80%93+G20+Innovation+Summit&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f6929b4b62fc4ab1ab0335b51347d82e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "661ff0edfb174a48ad05c8e014e9a787",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7ac48c4d60cd47ea9454bfada42ac6e8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "a4e03a27b79d4d5ab3bdbf302b518856",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bd58b06c5da544c880a35c51ea24fe03",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.sportskeeda.com/pop-culture/what-allegations-sam-altman-annie-altman-s-lawsuit-explored-openai-ceo-issues-statement",
+      "host": "www.sportskeeda.com",
+      "http_operation_id": "92e92bc9e8b148178ac8d51740ec3dfc",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DFirst%2Bon%2BCNBC%253A%2BTranscript%253A%2BOpenAI%2BCEO%2BSam%2BAltman%2BSpeaks%2Bwith%2BCNBC%25E2%2580%2599s%2BKate%2BRooney%2Bon%2B%25E2%2580%259CHalftime%2BReport%25E2%2580%259D%2BToday&_bvc=1.0aa9887cc2de48912332bb9866947244de98d2df0452c56118622c5491dec2cf",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bd58b06c5da544c880a35c51ea24fe03",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "dd72ba2f719d4b8fa3036d8e5165bf34",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "7bae4e6b3ec24998a9f22185a035dc50",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bd58b06c5da544c880a35c51ea24fe03",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DFirst%2Bon%2BCNBC%253A%2BTranscript%253A%2BOpenAI%2BCEO%2BSam%2BAltman%2BSpeaks%2Bwith%2BCNBC%25E2%2580%2599s%2BKate%2BRooney%2Bon%2B%25E2%2580%259CHalftime%2BReport%25E2%2580%259D%2BToday&_bvc=1.0aa9887cc2de48912332bb9866947244de98d2df0452c56118622c5491dec2cf",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bd58b06c5da544c880a35c51ea24fe03",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "b42ce6d7ebce4a99b9e97eaf110b888b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=First+on+CNBC%3A+Transcript%3A+OpenAI+CEO+Sam+Altman+Speaks+with+CNBC%E2%80%99s+Kate+Rooney+on+%E2%80%9CHalftime+Report%E2%80%9D+Today&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "76532fdaa3fa4f6d80a9a58ca6420722",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.sportskeeda.com/pop-culture/what-allegations-sam-altman-annie-altman-s-lawsuit-explored-openai-ceo-issues-statement",
+      "host": "r.jina.ai",
+      "http_operation_id": "70c36e3601744941b347f234248e243c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1a22d7361acf4dac974eac17d0871bd4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.sportskeeda.com/pop-culture/what-allegations-sam-altman-annie-altman-s-lawsuit-explored-openai-ceo-issues-statement",
+      "host": "r.jina.ai",
+      "http_operation_id": "7e3b1ceebbad4ae599ed27bc74f8bb04",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/news/trends/sam-altman-s-sister-accuses-him-of-sexual-abuse-files-lawsuit-against-him-openai-ceo-issues-statement-12905434.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "a234b6dacc3141119ac018f8a23473c2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1a22d7361acf4dac974eac17d0871bd4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://english.gujaratsamachar.com/news/science-technology/sam-altman-lawsuit-dismissed-57869718757",
+      "host": "english.gujaratsamachar.com",
+      "http_operation_id": "917787cd5eaa42bc8fd59992866b0bc6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Breported%2Bimpersonation%252C%2Bfabricated%2Bendorsements%2Bor%2Bmisattributed%2Bstatements%2Binvolving%2BSam%2BAltman.%2BDistinguish%2Bconfirmed%2Bincidents%2Bfrom%2Bunverified%2Ballegations.%2Bsite%253Aftc.gov&_bvc=1.b8963fb1f3bad9c4cf9d474aaf34da50f9ba9a9adb08f930ee1c8ed47f91ff72",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1a22d7361acf4dac974eac17d0871bd4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Breported%2Bimpersonation%252C%2Bfabricated%2Bendorsements%2Bor%2Bmisattributed%2Bstatements%2Binvolving%2BSam%2BAltman.%2BDistinguish%2Bconfirmed%2Bincidents%2Bfrom%2Bunverified%2Ballegations.%2Bsite%253Aftc.gov&_bvc=2.8a865c66222f3bdf0d45430e447dcc7237e4f2ab1e9bff3b54a5b63009f5bb4f",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1a22d7361acf4dac974eac17d0871bd4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+reported+impersonation%2C+fabricated+endorsements+or+misattributed+statements+involving+Sam+Altman.+Distinguish+confirmed+incidents+from+unverified+allegations.+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "6af9f3ff9d174e4ba6786f4a6221c897",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/world/sam-altman-sister-s-abuse-claims-against-him-dismissed-by-judge-article-14056189.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "505971a752894c9eac415dbd560c7c7a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.newsbytesapp.com/news/science/sam-altman-wins-dismissal-of-sister-s-sexual-abuse-lawsuit/story",
+      "host": "www.newsbytesapp.com",
+      "http_operation_id": "9949fd7972f84cde89b8ad65d48f7ae2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf",
+      "host": "www.msn.com",
+      "http_operation_id": "92c54bffdab940a39bc0a341016b1b18",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ed11f621f5ba467e9776d92541a732cb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Sam+Altman%22+fake+account+warning&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "b5276ec113284135a54c65accaad31c4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com/technology/tech-news/chatgpt-maker-openai-ceo-sam-altmans-sister-accuses-him-of-sexual-abuse-family-responds/articleshow/117038723.cms",
+      "host": "timesofindia.indiatimes.com",
+      "http_operation_id": "5900ab22c0104c7db6b79d3a47f19776",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf",
+      "host": "r.jina.ai",
+      "http_operation_id": "c3fc12ca91ef4863bd526cd1a786c01b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "24aca2ef1cdc4d40ac61ea991406577c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+fake+account+warning",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46095540df9f4d1f88701167f9df1c50",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Sam%2BAltman%2522%2Bfake%2Baccount%2Bwarning&_bvc=1.d28b1141af55e094b9ef9a9e2d0a14bf809b186ae20e7913bfbc03e9a69b9575",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46095540df9f4d1f88701167f9df1c50",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Sam%2BAltman%2522%2Bfake%2Baccount%2Bwarning&_bvc=2.193a519597ab912788d960e69e1900a42d5e51f6b3ab5340594d015953ddedba",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46095540df9f4d1f88701167f9df1c50",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness",
+      "host": "search.yahoo.com",
+      "http_operation_id": "b9a5e58f7838476c82608c592f862290",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Sam%2BAltman%2522%2Bfake%2Baccount%2Bwarning&_bvc=3.649215d1935a96749bae65c353939347b861fee4d47d47438d39d1e5c22d4f39",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46095540df9f4d1f88701167f9df1c50",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/news/other/sam-altman-wins-court-dismisses-sexual-abuse-case-by-his-sister/ar-AA2fHmNf",
+      "host": "r.jina.ai",
+      "http_operation_id": "012f135be8d842b786b4fa459598f6b1",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Sam%2BAltman%2522%2Bfake%2Baccount%2Bwarning&_bvc=4.6cb89c66859ebfe9be1a2ab187211d65a86378d4091b0c6af9f92d8a601fb363",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46095540df9f4d1f88701167f9df1c50",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "61a41074f65e47cbba8930fde1450409",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Transcript%3A+Sam+Altman+Testifies+At+US+Senate+Hearing+On+AI+Competitiveness&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4e88333125004fc7803fd5fc13334537",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "4f2c6e6c99f1488f995baec139180204",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "2baa115dcd3347bdabff98082ec1ec96",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.moneycontrol.com/technology/it-s-insanely-suicidal-for-microsoft-says-elon-musk-as-sam-altman-claims-slack-breeds-fake-work-article-13662356.html",
+      "host": "www.moneycontrol.com",
+      "http_operation_id": "e73ca08b50874fa99936a72d3e3df08d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatimes.com/trending/something-a-supervillain-would-say-sam-altmans-ai-downsides-comment-sparks-backlash-as-he-says-world-must-accept-them-for-techs-benefits/articleshow/134715091.html",
+      "host": "www.indiatimes.com",
+      "http_operation_id": "d5a471cc32ea463497f489c1d098be27",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+fake+account+warning+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "418e5e0736ed48b5985a4a07a86e27d9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.newsbytesapp.com/news/science/sam-altman",
+      "host": "www.newsbytesapp.com",
+      "http_operation_id": "93db6240fc2c40eea091e7ce5e55f41c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Sam+Altman%22+impersonation+company+response&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "95f74e19d4274da4864ed58ac329d237",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "01756d3592fc4dfab42b83429680fcd2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "b3fb7e75e2924b25abfccbdf734bc2fc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+impersonation+company+response",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7fc1985273d944c3a51a553642f937da",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+impersonation+company+response&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "62e5135d7b224ffc940a7ef9b6c0f001",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Sam+Altman%22+interview&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "babde6763de14f7da4cd7f27da5305cc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "a21237702ae44033baf83cb9c04a761c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Sam+Altman%22+interview",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6cdd889882764b8d82ed0f748d81205a",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Sam+Altman%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "58cc602db18c4cd8bf8ccd32d2622a56",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Sam+Altman%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "8538b982cc6a45488ab38e413fab446b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://thediff.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "thediff.substack.com",
+      "http_operation_id": "1f590b304a064c30a6bd0b47f41f4cd8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://brobible.com/culture/article/openai-staffer-tried-to-end-sam-altman-interview-viral-video/",
+      "host": "brobible.com",
+      "http_operation_id": "d786cee9a23b427ba524bc15af0473d9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.dailymail.com/media/article-16184111/openai-publicist-intervene-ceo-sam-altman-vanity-fair-interview-suicide-question.html",
+      "host": "www.dailymail.com",
+      "http_operation_id": "d7b25dd00cce4fa5b1b6b04fb79fd150",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "stratechery.substack.com",
+      "http_operation_id": "0ecc307f15cd41a2892903d468b926e7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://doomberg.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "doomberg.substack.com",
+      "http_operation_id": "cbabc4a67a92491d8cc71a10d597928e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://brobible.com/culture/article/openai-staffer-tried-to-end-sam-altman-interview-viral-video/",
+      "host": "r.jina.ai",
+      "http_operation_id": "bc189f0819fb4a33a547f447e3373b13",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.dailymail.com/media/article-16184111/openai-publicist-intervene-ceo-sam-altman-vanity-fair-interview-suicide-question.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "53521d3abfc74b5885091035e7e14662",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://pragmaticengineer.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "pragmaticengineer.substack.com",
+      "http_operation_id": "d928ec3e25794971b7a99d68fb72c80e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://brobible.com/culture/article/openai-staffer-tried-to-end-sam-altman-interview-viral-video/",
+      "host": "r.jina.ai",
+      "http_operation_id": "54c633babaf84ccb977aec262b27f9c9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.dailymail.com/media/article-16184111/openai-publicist-intervene-ceo-sam-altman-vanity-fair-interview-suicide-question.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "7eb0a1c970cf44d596e457880109bb24",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://cryptobriefing.com/sam-altman-cnbc-interview-openai-ipo-wld/",
+      "host": "cryptobriefing.com",
+      "http_operation_id": "563ad432cfb448e7adde6e86bc61f42f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://au.news.yahoo.com/openai-publicist-interrupts-interview-ceo-235934644.html",
+      "host": "au.news.yahoo.com",
+      "http_operation_id": "b7aadef39b5349958c127e5f1ac39d56",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd",
+      "host": "www.msn.com",
+      "http_operation_id": "ba8bcda8391c45408dd2d8b91ada41df",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.axios.com/2026/09/03/axios-interview-sam-altmans-sobering-siren",
+      "host": "www.axios.com",
+      "http_operation_id": "fb693559ea8c46369f0eb86bd5210320",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.firstpost.com/explainers/suchir-balaji-death-sam-altman-elon-musk-clash-13933110.html",
+      "host": "www.firstpost.com",
+      "http_operation_id": "35e00af3ee354a878a00cef084c96581",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd",
+      "host": "r.jina.ai",
+      "http_operation_id": "a4dc3950d5cf4a50b63da9832c5d40d9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/tv/news/openai-publicist-cuts-in-to-try-to-stop-interview-when-sam-altman-is-asked-about-chatgpt-being-linked-to-suicide/ar-AA2dCpUd",
+      "host": "r.jina.ai",
+      "http_operation_id": "67291adb60cc486a9ba83648c69c945b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.marca.com/en/technology/2026/10/21/sam-altman-and-the-development-of-chatgpt-s-moral-framework-i-haven-t-slept-well-single-night-since-it-launched.html",
+      "host": "www.marca.com",
+      "http_operation_id": "10b4b9a9379c469788637f2695a10853",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.firstpost.com/tech/sam-altman-says-ai-could-help-discover-a-cure-for-a-major-disease-within-two-years-14054486.html",
+      "host": "www.firstpost.com",
+      "http_operation_id": "6e575372d8e94c46bd6614376bd6867c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.businessinsider.com/sam-altman-says-ai-benefits-outweigh-some-bad-things-happening-2026-10",
+      "host": "www.businessinsider.com",
+      "http_operation_id": "b1513fa755cf448ab8ba2775ed528b9d",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 96,
+  "admission_rejections": 3,
+  "pipeline_errors": []
+}

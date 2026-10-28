@@ -158,11 +158,17 @@ def extract_readable_page(soup) -> dict:
     language = str((soup.find('html') or {}).get('lang') or '')[:35]
     licences = list(dict.fromkeys(str(node.get('href')) for node in soup.select('a[rel~="license"], link[rel~="license"]')
                                   if str(node.get('href') or '').startswith('https://creativecommons.org/licenses/')))[:4]
-    rights_exception = bool(re.search(r'\b(?:not covered by (?:the |this )?(?:creative commons|licen[sc]e)|all rights reserved|republished with permission)\b', raw, re.I))
+    # A generic copyright notice is an observation, not an article-specific
+    # exception to the separately reviewed source-use policy. Explicit reuse
+    # exceptions and third-party-content reservations still require review.
+    rights_notice = bool(re.search(r'\ball rights reserved\b', raw, re.I))
+    rights_exception = bool(re.search(r'\b(?:not covered by (?:the |this )?(?:creative commons|licen[sc]e)|republished with permission)\b', raw, re.I)
+        or re.search(r'\bthird.party (?:content|text|material|article).{0,180}\ball rights reserved\b', raw, re.I))
     return {"raw_text": raw, "text": text, **structure, "content_scope": scope,
             **({'language': language, 'language_basis': 'CAPTURED_HTML_LANG'} if language else {}),
             **({'licence_urls': licences} if licences else {}),
             **({'rights_exception_observed': True} if rights_exception else {}),
+            **({'rights_notice_observed': True} if rights_notice else {}),
             "selection_method": method, "extraction_method": method,
             "readable_word_count": len(text.split()), "readable_character_count": len(text),
             "readable_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),

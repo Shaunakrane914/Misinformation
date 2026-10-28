@@ -1,0 +1,145 @@
+[
+  {
+    "wave": "wave1",
+    "advisory_model_check": {
+      "status": "ENABLED",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "STRICT_DAILY_RUNTIME_SCOPE",
+      "capability_cached": false,
+      "capability_http_status": 200,
+      "calls_reserved": 3,
+      "daily_request_cap": 8
+    },
+    "live_ai_calls_reserved": 2,
+    "shared_ai_calls_reserved_before_batch": 3,
+    "shared_ai_calls_reserved_after_batch": 5,
+    "live_ai_observations": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "http_status": 200,
+        "status": "GENERATED",
+        "latency_ms": 1524.09,
+        "investigation_id": "3b86c7ef5782432dab850c313e5e9449",
+        "provider_model": "gemini-3.5-flash-lite",
+        "usage_source": "provider",
+        "prompt_tokens": 306,
+        "completion_tokens": 61,
+        "total_tokens": 367
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "status": "ReadTimeout",
+        "latency_ms": 2969.92,
+        "investigation_id": "f9c2506923a741bcb592df6fe40aa908"
+      }
+    ],
+    "stable_application": true,
+    "application_sha256": "ee16620e1175ed1f7f03b3d11549368061cc74a5911b9d451e9c370bed0c1f1d",
+    "final_application_sha256": "ee16620e1175ed1f7f03b3d11549368061cc74a5911b9d451e9c370bed0c1f1d"
+  },
+  {
+    "wave": "wave2",
+    "advisory_model_check": {
+      "status": "ENABLED",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "STRICT_DAILY_RUNTIME_SCOPE",
+      "capability_cached": false,
+      "capability_http_status": 200,
+      "calls_reserved": 5,
+      "daily_request_cap": 8
+    },
+    "live_ai_calls_reserved": 1,
+    "shared_ai_calls_reserved_before_batch": 5,
+    "shared_ai_calls_reserved_after_batch": 6,
+    "live_ai_observations": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "http_status": 200,
+        "status": "GENERATED",
+        "latency_ms": 2843.35,
+        "investigation_id": "342be79deb814c7f822a5610884758a1",
+        "provider_model": "gemini-3.5-flash-lite",
+        "usage_source": "provider",
+        "prompt_tokens": 322,
+        "completion_tokens": 84,
+        "total_tokens": 406
+      }
+    ],
+    "stable_application": true,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "final_application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b"
+  },
+  {
+    "wave": "wave2tail",
+    "advisory_model_check": {
+      "status": "ENABLED",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "STRICT_DAILY_RUNTIME_SCOPE",
+      "capability_cached": false,
+      "capability_http_status": 200,
+      "calls_reserved": 6,
+      "daily_request_cap": 8
+    },
+    "live_ai_calls_reserved": 1,
+    "shared_ai_calls_reserved_before_batch": 6,
+    "shared_ai_calls_reserved_after_batch": 7,
+    "live_ai_observations": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "status": "ReadTimeout",
+        "latency_ms": 2513.04,
+        "investigation_id": "b4ee366ed79448ba88895ae74f49e0de"
+      }
+    ],
+    "stable_application": true,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "final_application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b"
+  },
+  {
+    "wave": "wave3",
+    "advisory_model_check": {
+      "status": "ENABLED",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "STRICT_DAILY_RUNTIME_SCOPE",
+      "capability_cached": false,
+      "capability_http_status": 200,
+      "calls_reserved": 7,
+      "daily_request_cap": 8
+    },
+    "live_ai_calls_reserved": 1,
+    "shared_ai_calls_reserved_before_batch": 7,
+    "shared_ai_calls_reserved_after_batch": 8,
+    "live_ai_observations": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "status": "ReadTimeout",
+        "latency_ms": 3966.42,
+        "investigation_id": "e956e56c345243dcba40bcfd0f047f02"
+      }
+    ],
+    "stable_application": true,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "final_application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b"
+  },
+  {
+    "wave": "wave4",
+    "advisory_model_check": {
+      "status": "BUDGET_BLOCKED",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "DAILY_REQUEST_BUDGET",
+      "calls_reserved": 8
+    },
+    "live_ai_calls_reserved": 0,
+    "shared_ai_calls_reserved_before_batch": 0,
+    "shared_ai_calls_reserved_after_batch": 0,
+    "live_ai_observations": [],
+    "stable_application": true,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "final_application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b"
+  }
+]

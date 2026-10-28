@@ -376,6 +376,10 @@ class RawAcquisitionPool:
             })
             # Whitelisted structure/date observations are needed to re-run the
             # strict filter offline. Never retain arbitrary headers or cookies.
+            permission = meta.get('source_permission') or {}
+            if actual_type == 'BACKGROUND_REFERENCE':
+                record['source_permission'] = {key: value[:500] for key, value in permission.items()
+                    if key in {'author', 'licence_url', 'source_url'} and isinstance(value, str)}
             record["page_metadata"] = {}
             for key in ("title", "author", "published", "publication_time_basis", "publication_time_source", "content_scope", "extraction_method", "body_kind", "language", "language_basis"):
                 if isinstance(page.get(key), str):
@@ -385,6 +389,8 @@ class RawAcquisitionPool:
                     if isinstance(s, str) and s.startswith('https://creativecommons.org/licenses/')]
             if page.get('rights_exception_observed') is True:
                 record['page_metadata']['rights_exception_observed'] = True
+            if page.get('rights_notice_observed') is True:
+                record['page_metadata']['rights_notice_observed'] = True
             if type(page.get("publication_metadata_conflict")) is bool:
                 record["page_metadata"]["publication_metadata_conflict"] = page["publication_metadata_conflict"]
             observed_publications = page.get("publication_observations")
@@ -562,6 +568,7 @@ class RawAcquisitionPool:
                     content_depth=record["content_depth"], read_status="SUCCESS",
                     retrieval_mode=record["acquisition_method"],
                     metadata={"read_success": True, "raw_pool_source_type": record["source_type"],
+                        "source_permission": copy.deepcopy(record.get("source_permission", {})),
                         **_routing_snapshot(record),
                         "acquisition_objective": record.get("acquisition_objective"),
                         "raw_pool_aliases": list(record["aliases"]), "raw_pool_origin": self.acquisition_mode,

@@ -1,0 +1,420 @@
+[
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.sec.gov",
+    "operational_family": "sec",
+    "status": "EXISTING_ROUTE_POLICY",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://data.sec.gov",
+    "operational_family": "sec",
+    "status": "EXISTING_ROUTE_POLICY",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.sebi.gov.in",
+    "operational_family": "sebi",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.rbi.org.in",
+    "operational_family": "rbi",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.bseindia.com",
+    "operational_family": "bse",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.nseindia.com",
+    "operational_family": "nse",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.hkexnews.hk",
+    "operational_family": "hkex",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://developer.company-information.service.gov.uk",
+    "operational_family": "companies_house",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://filings.xbrl.org",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.federalreserve.gov",
+    "operational_family": "federal_reserve",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.cnbc.com",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.business-standard.com",
+    "operational_family": "business_standard",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.financialexpress.com",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.livemint.com",
+    "operational_family": "mint",
+    "status": "PERMISSION_REQUIRED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.marketwatch.com",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate_url_from_brief": "https://www.fool.com",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.ftc.gov",
+    "operational_family": "ftc",
+    "status": "REVIEW_APPROVED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.cpsc.gov",
+    "operational_family": "cpsc",
+    "status": "REVIEW_APPROVED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.saferproducts.gov",
+    "operational_family": "cpsc",
+    "status": "REVIEW_APPROVED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://open.fda.gov",
+    "operational_family": "fda",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.fca.org.uk",
+    "operational_family": "fca",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://ec.europa.eu/safety-gate-alerts",
+    "operational_family": "eu_safety_gate",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.scamwatch.gov.au",
+    "operational_family": "scamwatch",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.justice.gov",
+    "operational_family": "doj",
+    "status": "REVIEW_APPROVED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.sebi.gov.in",
+    "operational_family": "sebi",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.cert-in.org.in",
+    "operational_family": "cert_in",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.cisa.gov",
+    "operational_family": "cisa",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.asa.org.uk",
+    "operational_family": "asa",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.which.co.uk",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.bleepingcomputer.com",
+    "operational_family": "bleepingcomputer",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.securityweek.com",
+    "operational_family": "securityweek",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.theregister.com",
+    "operational_family": "the_register",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://www.boomlive.in",
+    "operational_family": "boom",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "brandshield",
+    "candidate_url_from_brief": "https://factcheck.afp.com",
+    "operational_family": "afp_factcheck",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.gov.uk",
+    "operational_family": "govuk",
+    "status": "REVIEW_APPROVED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.pib.gov.in",
+    "operational_family": "pib",
+    "status": "REVIEW_APPROVED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.youtube.com",
+    "operational_family": "youtube",
+    "status": "EXISTING_ROUTE_POLICY",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://developers.google.com/fact-check/tools/api",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.boomlive.in",
+    "operational_family": "boom",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://factcheck.afp.com",
+    "operational_family": "afp_factcheck",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://fullfact.org",
+    "operational_family": "full_fact",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.bollywoodhungama.com",
+    "operational_family": "bollywood_hungama",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.filmfare.com",
+    "operational_family": "filmfare",
+    "status": "PERMISSION_REQUIRED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.hindustantimes.com",
+    "operational_family": "hindustan_times",
+    "status": "PERMISSION_REQUIRED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://indianexpress.com",
+    "operational_family": "indian_express",
+    "status": "PERMISSION_REQUIRED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.firstpost.com",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.businessinsider.com",
+    "operational_family": null,
+    "status": "DISCOVERED_NOT_TESTED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://techcrunch.com",
+    "operational_family": "techcrunch",
+    "status": "UNVERIFIED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.bcci.tv",
+    "operational_family": "bcci",
+    "status": "PERMISSION_REQUIRED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate_url_from_brief": "https://www.icc-cricket.com",
+    "operational_family": "icc",
+    "status": "PERMISSION_REQUIRED",
+    "scope": "CATALOG_OR_CARRIED_REVIEW_NOT_NEW_BODY_OR_TASK_SUCCESS",
+    "new_live_probe": "SEE_SEPARATE_PROBE_RESULTS; absence here is not an access test"
+  },
+  {
+    "agent": "scout",
+    "candidate": "Entity-linked official investor relations/newsroom/bio/security advisories",
+    "status": "DYNAMIC_OBSERVED_URL_DISCOVERY_REQUIRED",
+    "scope": "No universal hostname or fabricated URL; existing source planner and normal security/access gates"
+  },
+  {
+    "agent": "brandshield",
+    "candidate": "Entity-linked official investor relations/newsroom/bio/security advisories",
+    "status": "DYNAMIC_OBSERVED_URL_DISCOVERY_REQUIRED",
+    "scope": "No universal hostname or fabricated URL; existing source planner and normal security/access gates"
+  },
+  {
+    "agent": "personal_watch",
+    "candidate": "Entity-linked official investor relations/newsroom/bio/security advisories",
+    "status": "DYNAMIC_OBSERVED_URL_DISCOVERY_REQUIRED",
+    "scope": "No universal hostname or fabricated URL; existing source planner and normal security/access gates"
+  }
+]

@@ -24,16 +24,28 @@ from backend.services.research.source_quality import source_quality_engine
 
 
 def run_harvest_pipeline(request, budget, profile_name):
+    from backend.services.research.research_profiles import get_research_profile
+    from backend.infrastructure.acquisition.network.budget import PublicRequestBudget, public_request_budget
+    profile = get_research_profile(profile_name)
+    cap = {"QUICK": 40, "STANDARD": 80, "DEEP": 120}[profile.name]
+    cap = min(cap, max(1, int(os.getenv("AEGIS_HARVEST_HTTP_CAP", str(cap)))))
+    http_budget = PublicRequestBudget(total=cap, per_host=24)
+    try:
+        with public_request_budget(http_budget):
+            return _run_harvest_pipeline(request, budget, profile_name, http_budget)
+    finally:
+        http_budget.close()
+
+
+def _run_harvest_pipeline(request, budget, profile_name, http_budget):
     from backend.services.agent_reach import agent_reach_service
     from backend.services.research.harvesting import HarvestingEngine
     from backend.services.research.research_profiles import get_research_profile
     from backend.services.research.body_context import reconcile_captured_context
     from backend.infrastructure.llm.advisory_policy import observations
-    from backend.infrastructure.acquisition.network.budget import PublicRequestBudget, public_request_budget
-
     started = time.monotonic()
     profile = get_research_profile(profile_name)
-    timeout = min(profile.timeout_seconds, max(0.0, request.timeout_seconds
+    timeout = min(profile.timeout_seconds, max(0.0, budget.timeout_seconds), max(0.0, request.timeout_seconds
                   if request.timeout_seconds is not None else budget.timeout_seconds))
     # Explicit caller limits can lower, never silently enlarge, the selected mode.
     disabled = budget.max_deep_reads <= 0 or budget.max_candidates <= 0
@@ -57,9 +69,6 @@ def run_harvest_pipeline(request, budget, profile_name):
         report_progress(pipeline_pass=run_id, pipeline_step=label, pipeline_completed=completed, pipeline_total=len(labels))
         return result
 
-    http_cap = {"QUICK": 40, "STANDARD": 80, "DEEP": 120}[profile.name]
-    http_cap = min(http_cap, max(1, int(os.getenv("AEGIS_HARVEST_HTTP_CAP", str(http_cap)))))
-    http_budget = PublicRequestBudget(total=http_cap, per_host=24)
     # Preserve existing capability-aware specialist routes without replacing
     # publisher harvesting with a universal social-source sweep.
     from backend.services.agent_reach.source_planner import source_planning_engine
@@ -68,7 +77,7 @@ def run_harvest_pipeline(request, budget, profile_name):
         routing_hints={**request.extra_params, 'time_scope': request.time_scope},
         allowed_channels=request.extra_params.get('allowed_channels'))
     extra_queries = [{"channel": channel, **row} for channel, rows in source_plan.to_channel_queries().items()
-                     if channel not in {"reddit", "twitter"} for row in rows]
+                     for row in rows]
     for row in extra_queries:
         row['source_plan_action_id'] = row['query_id']
     specialist_plan = None
@@ -86,21 +95,23 @@ def run_harvest_pipeline(request, budget, profile_name):
             and runtime_operation_capabilities.assess("expanded_sources", "search")["decision"] not in {"EXCLUDE", "DEFER_TEMPORARY"}):
         core = [row for row in extra_queries if row.get("channel") in {"web", "news", "rss"}]
         optional = [row for row in extra_queries if row.get("channel") not in {"web", "news", "rss"}]
-        extra_queries = core + [expanded] + optional[:1]
-    try:
-        with public_request_budget(http_budget):
-            harvest = stage(labels[0], lambda: HarvestingEngine(agent_reach_service).run(
-                target=request.target, domain=request.domain, intent=request.intent, agent_name=request.agent_name,
-                profile=profile, deadline=started + timeout * .90, request=request,
-                source_url=request.source_url, query_plan=extra_queries,
-                source_plan=source_plan,
-                controller=os.getenv("AEGIS_ACQUISITION_CONTROLLER", "legacy"),
-                specialist_tasks=(specialist_plan or {}).get("requested_tasks", []),
-                specialist_task_explicit=bool((specialist_plan or {}).get("explicit_task")),
-                progress=lambda counts: report_progress(phase="harvesting", **counts)))
-    finally:
-        http_budget.close()
+        extra_queries = core + optional + [expanded]
+    from backend.services.research.platform_selection import select_platform_queries
+    extra_queries, platform_decisions = select_platform_queries(request, extra_queries)
+    reference_background = None
+    reserve = 2 if profile.max_reads >= 6 and not request.source_url else 0
+    harvest_profile = replace(profile, max_reads=profile.max_reads - reserve)
+    harvest = stage(labels[0], lambda: HarvestingEngine(agent_reach_service).run(
+        target=request.target, domain=request.domain, intent=request.intent, agent_name=request.agent_name,
+        profile=harvest_profile, deadline=started + timeout * .90, request=request,
+        source_url=request.source_url, query_plan=extra_queries,
+        source_plan=source_plan,
+        controller=os.getenv("AEGIS_ACQUISITION_CONTROLLER", "legacy"),
+        specialist_tasks=(specialist_plan or {}).get("requested_tasks", []),
+        specialist_task_explicit=bool((specialist_plan or {}).get("explicit_task")),
+        progress=lambda counts: report_progress(phase="harvesting", **counts)))
     harvest.metrics.update(http_budget.snapshot())
+    harvest.metrics["platform_selection"] = platform_decisions
     pool = RawAcquisitionPool(run_id)
     for candidate in harvest.candidates:
         pool.add_candidate(candidate)
@@ -129,7 +140,8 @@ def run_harvest_pipeline(request, budget, profile_name):
             item.relevant_excerpt = ""
             item.snippet = item.content[:12_000]
             source_quality_engine.classify_and_score(item, target_name=request.target)
-            result = relevance_gate.evaluate_item(item, request.target, domain=request.domain, intent=request.intent)
+            result = relevance_gate.evaluate_item(item, request.target, domain=request.domain, intent=request.intent,
+                window_hours=request.extra_params.get("trending_window_hours") if request.domain == "trending" else None)
             raw_record = pool.get(item.id) or {}
             structural_body = raw_record.get("source_type") in {"ARTICLE_BODY", "OFFICIAL_DOCUMENT", "COMMUNITY_POST", "STRUCTURED_PUBLIC_DATA"}
             from backend.services.research.source_registry import source_registry
@@ -167,7 +179,13 @@ def run_harvest_pipeline(request, budget, profile_name):
         "halt_reason": harvest.metrics.get("halt_reason", "HARVEST_COMPLETE"),
         "ai_search_advice": harvest.metrics.get("ai_search_advice", {"status": "DISABLED"})}, [])
     escalated = EscalatedEvidence(ranked, [], {"attempted": 0, "mode": "HARVESTED_WITH_SHARED_BUDGET"}, [])
-    read = ReadEvidence(harvest.captures, harvest.read_telemetry)
+    # The raw pool elects exact-body owners in candidate insertion order.
+    # Readers complete concurrently, so their completion order can differ.
+    # Passage deduplication must retain the same canonical captured owner;
+    # otherwise marking its duplicate QUALIFIED raises and loses the report.
+    ordered_captures = sorted(harvest.captures,
+        key=lambda item: bool((pool.get(item.id) or {}).get("duplicate_of")))
+    read = ReadEvidence(ordered_captures, harvest.read_telemetry)
     read = stage(labels[3], lambda: PassageAnalysisStage().run(request, ranked, read, 0.0))
     for item in read.investigated:
         if not item.metadata.get("layer2_eligible", False):
@@ -185,6 +203,25 @@ def run_harvest_pipeline(request, budget, profile_name):
     # classifiers on all harvested navigation/product text. Raw bytes and their
     # explicit rejection reasons remain inspectable in the pool below.
     read.investigated = [item for item in read.investigated if has_usable_passage(item)]
+    # The fallback decision follows exact passage qualification, not a long
+    # landing page or provisional title match. It shares the still-open request
+    # budget and the original deadline, including all prior host admissions.
+    if reserve and len(read.investigated) < 2:
+        from backend.services.research.reference_fallback import acquire_reference_background
+        references, reference_background = acquire_reference_background(request,
+            deadline=started + timeout * .95,
+            remaining_reads=max(0, profile.max_reads - harvest.read_telemetry.get("attempted", 0)),
+            cached_captures=harvest.captures)
+        for item in references:
+            harvest.candidates.append(item)
+            harvest.captures.append(item)
+            pool.add_candidate(item)
+            pool.add_capture(item)
+            pool.mark_qualification(item.id, "REJECTED", reasons=["GENERAL_BACKGROUND_ONLY"], useful_words=0)
+        harvest.read_telemetry["attempted"] += reference_background.get("read_attempts", 0)
+        harvest.metrics["reference_background"] = reference_background
+        harvest.metrics["reads_attempted"] = harvest.read_telemetry["attempted"]
+        harvest.metrics.update(http_budget.snapshot())
     analysis = stage(labels[4], lambda: GroundedSynthesisStage().run(request, ranked, read))
     analysis = stage(labels[5], lambda: EvidenceGraphStage().run(ranked, analysis))
     assembled = stage(labels[6], lambda: CorpusAssemblyStage().run(request, budget, plan, discovery, ranked,
@@ -195,6 +232,10 @@ def run_harvest_pipeline(request, budget, profile_name):
     assembled.telemetry.update(raw_acquisition_pool=pool.export(include_text=False), acquisition_metrics=pool.stats(),
         harvesting=harvest.metrics, research_profile=profile.name, stage_timings_ms=timings,
         ai_advisory_observations=observations(current_only=True))
+    if reference_background is not None:
+        assembled.telemetry["reference_background"] = reference_background
+    if request.domain == "trending":
+        assembled.telemetry["trending_window_hours"] = request.extra_params.get("trending_window_hours", 48.0)
     if specialist_plan is not None:
         assembled.telemetry["specialist_planning"] = {
             **specialist_plan,
@@ -205,7 +246,8 @@ def run_harvest_pipeline(request, budget, profile_name):
     assembled.telemetry["acquisition_metrics"]["publisher_independence_verified"] = False
     if request.domain == 'trending' and len(read.investigated) < 2:
         from backend.services.research.trending_background import historical_background
-        assembled.telemetry['historical_background'] = historical_background(harvest.captures, request.target)
+        assembled.telemetry['historical_background'] = historical_background(harvest.captures, request.target,
+            window_hours=request.extra_params.get("trending_window_hours", 48.0))
     measured = assembled.telemetry["acquisition_metrics"]
     funnel = assembled.telemetry["discovery_funnel"]
     from backend.services.research.discovery_funnel import summarize_qualification_decisions

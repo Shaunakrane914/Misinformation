@@ -1,0 +1,468 @@
+{
+  "definitions": "Whitespace words; exact source hash/offset citations; task evidence excludes general reference background. Identical capture replay is distinct from non-paired live retrieval.",
+  "paired_saved_captures": [
+    {
+      "id": "S1",
+      "version": "before",
+      "qualified_sources": 7,
+      "published_passage_words": 5685,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "S1",
+      "version": "after",
+      "qualified_sources": 7,
+      "published_passage_words": 5685,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "S2",
+      "version": "before",
+      "qualified_sources": 1,
+      "published_passage_words": 282,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "S2",
+      "version": "after",
+      "qualified_sources": 1,
+      "published_passage_words": 282,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "S3",
+      "version": "before",
+      "qualified_sources": 6,
+      "published_passage_words": 2388,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "S3",
+      "version": "after",
+      "qualified_sources": 6,
+      "published_passage_words": 2388,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "S4",
+      "version": "before",
+      "qualified_sources": 2,
+      "published_passage_words": 294,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "S4",
+      "version": "after",
+      "qualified_sources": 2,
+      "published_passage_words": 294,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B1",
+      "version": "before",
+      "qualified_sources": 1,
+      "published_passage_words": 79,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B1",
+      "version": "after",
+      "qualified_sources": 1,
+      "published_passage_words": 79,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B2",
+      "version": "before",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B2",
+      "version": "after",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B3",
+      "version": "before",
+      "qualified_sources": 2,
+      "published_passage_words": 240,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B3",
+      "version": "after",
+      "qualified_sources": 2,
+      "published_passage_words": 240,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B4",
+      "version": "before",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "B4",
+      "version": "after",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "T2",
+      "version": "before",
+      "qualified_sources": 2,
+      "published_passage_words": 239,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "T2",
+      "version": "after",
+      "qualified_sources": 2,
+      "published_passage_words": 239,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "T3",
+      "version": "before",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "T3",
+      "version": "after",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "T4",
+      "version": "before",
+      "qualified_sources": 1,
+      "published_passage_words": 132,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "T4",
+      "version": "after",
+      "qualified_sources": 1,
+      "published_passage_words": 132,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P1",
+      "version": "before",
+      "qualified_sources": 5,
+      "published_passage_words": 334,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P1",
+      "version": "after",
+      "qualified_sources": 5,
+      "published_passage_words": 334,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P2",
+      "version": "before",
+      "qualified_sources": 8,
+      "published_passage_words": 1111,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P2",
+      "version": "after",
+      "qualified_sources": 8,
+      "published_passage_words": 1111,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P3",
+      "version": "before",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P3",
+      "version": "after",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P4",
+      "version": "before",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    },
+    {
+      "id": "P4",
+      "version": "after",
+      "qualified_sources": 0,
+      "published_passage_words": 0,
+      "invalid_citations": 0,
+      "identity": true
+    }
+  ],
+  "unreplayable_case": {
+    "T1": "Original native pool missing; not invented"
+  },
+  "separate_reference_control": [
+    {
+      "version": "before",
+      "task_words": 0,
+      "background_words": 0,
+      "qualified_sources": 0,
+      "status": "INSUFFICIENT_EVIDENCE",
+      "background_citations": []
+    },
+    {
+      "version": "after",
+      "task_words": 0,
+      "background_words": 77,
+      "qualified_sources": 0,
+      "status": "INSUFFICIENT_EVIDENCE",
+      "background_citations": [
+        {
+          "source_id": "ev_cd48af25dc35",
+          "valid": true,
+          "scope": "GENERAL_BACKGROUND_ONLY"
+        }
+      ]
+    }
+  ],
+  "new_live_cases": [
+    {
+      "prompt_id": "S4",
+      "agent": "scout",
+      "mode": "LIVE",
+      "seconds": 37.03,
+      "source_records": 44,
+      "article_bodies": 7,
+      "raw_article_words": 4024,
+      "deduplicated_article_words": 4024,
+      "qualified_sources": 7,
+      "qualified_publishers": [
+        "finance.yahoo.com",
+        "www.ciol.com",
+        "www.financialexpress.com",
+        "www.indiatvnews.com",
+        "www.theglobeandmail.com"
+      ],
+      "qualified_unique_passage_words": 1775,
+      "published_unique_evidence_words": 1775,
+      "selected_pre_workbench_passage_words": 1775,
+      "invalid_pre_workbench_passages": 0,
+      "historical_background_words": 0,
+      "valid_citations": 29,
+      "invalid_citations": 0,
+      "background_invalid_citations": 0,
+      "reads_attempted": 16,
+      "native_http_admissions": 57,
+      "observed_native_http_admissions": 57,
+      "ledger_native_http_admissions": 57,
+      "effective_profile": "DEEP",
+      "effective_http_cap": 120,
+      "effective_trending_window_hours": null,
+      "status": "COMPLETED",
+      "workbench_accounting": {
+        "source_records_with_passages": 7,
+        "observed_publisher_hosts": 5,
+        "available_unique_passages": 29,
+        "published_passages": 29,
+        "published_unique_words": 1775,
+        "published_text_utf8_bytes": 10702,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "HISTORICAL_FINANCIAL_CONTEXT": 10,
+          "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 11,
+          "ARTICLE_CONTENT": 6,
+          "FINANCIAL_STATEMENT": 2
+        },
+        "independence_verified": false
+      },
+      "failures": {
+        "NOT_ACQUIRED_OR_NOT_USABLE": 34,
+        "NO_STRUCTURAL_BODY": 3,
+        "BUDGET_EXHAUSTED": 3,
+        "ACCESS_DENIED": 4,
+        "PUBLISHER_UNRESOLVED": 1,
+        "LOW_QUERY_COVERAGE": 10,
+        "SITE_SCOPE_MISMATCH": 12,
+        "HTTP_FAILURE": 5,
+        "PROVIDER_FAILURE": 3,
+        "TIMEOUT": 1
+      },
+      "capture_accounting_status": "COMPLETE_NATIVE_POOL",
+      "input": "Infosys",
+      "requested_prompt": "Research Infosys' most recent financial results and revenue guidance. Separate actual results from management forecasts, preserve the currency and fiscal year, and compare official disclosures with reporting.",
+      "application_sha256": "55c15fd2febcbe7ff45f403a68d0446143f1dd178f8b42056c29f77a0e9e3c2c",
+      "native_file_sha256": "f36ae677201799288e3bf718b7d9abecbec23bc48319a5d818a9a2791cdc4c96"
+    },
+    {
+      "prompt_id": "B2",
+      "agent": "brandshield",
+      "mode": "LIVE",
+      "seconds": 57.66,
+      "source_records": 3,
+      "article_bodies": 0,
+      "raw_article_words": 0,
+      "deduplicated_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_publishers": [],
+      "qualified_unique_passage_words": 0,
+      "published_unique_evidence_words": 0,
+      "selected_pre_workbench_passage_words": null,
+      "invalid_pre_workbench_passages": 0,
+      "historical_background_words": 0,
+      "valid_citations": 0,
+      "invalid_citations": 0,
+      "background_invalid_citations": 0,
+      "reads_attempted": 4,
+      "native_http_admissions": 72,
+      "observed_native_http_admissions": 72,
+      "ledger_native_http_admissions": 72,
+      "effective_profile": "DEEP",
+      "effective_http_cap": 120,
+      "effective_trending_window_hours": null,
+      "status": "INSUFFICIENT_EVIDENCE",
+      "workbench_accounting": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "failures": {
+        "PATH_OUTSIDE_REVIEWED_SCOPE": 1,
+        "NOT_ACQUIRED_OR_NOT_USABLE": 1,
+        "PUBLISHER_UNRESOLVED": 1,
+        "Insufficient entity match confidence (0.0 < 0.35)": 1,
+        "SUBJECT_MISMATCH": 30,
+        "LOW_QUERY_COVERAGE": 13,
+        "SITE_SCOPE_MISMATCH": 10,
+        "HTTP_FAILURE": 7,
+        "TIMEOUT": 7
+      },
+      "capture_accounting_status": "COMPLETE_NATIVE_POOL",
+      "input": "Dyson",
+      "requested_prompt": "Investigate reported Dyson counterfeit products, phishing promotions and official consumer warnings. Identify actual documented incidents, relevant dates and source authority.",
+      "application_sha256": "55c15fd2febcbe7ff45f403a68d0446143f1dd178f8b42056c29f77a0e9e3c2c",
+      "native_file_sha256": "5be323b90c9b58bb8448b69b6fbbddbd4b2a21b7d751a8c89fa962fa5ba417d4"
+    },
+    {
+      "prompt_id": "P3",
+      "agent": "personal_watch",
+      "mode": "LIVE",
+      "seconds": 120.93,
+      "source_records": 48,
+      "article_bodies": 0,
+      "raw_article_words": 0,
+      "deduplicated_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_publishers": [],
+      "qualified_unique_passage_words": 0,
+      "published_unique_evidence_words": 0,
+      "selected_pre_workbench_passage_words": null,
+      "invalid_pre_workbench_passages": 0,
+      "historical_background_words": 0,
+      "valid_citations": 0,
+      "invalid_citations": 0,
+      "background_invalid_citations": 0,
+      "reads_attempted": 17,
+      "native_http_admissions": 88,
+      "observed_native_http_admissions": 88,
+      "ledger_native_http_admissions": 88,
+      "effective_profile": "DEEP",
+      "effective_http_cap": 120,
+      "effective_trending_window_hours": null,
+      "status": "INSUFFICIENT_EVIDENCE",
+      "workbench_accounting": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "failures": {
+        "NO_STRUCTURAL_BODY": 3,
+        "NOT_ACQUIRED_OR_NOT_USABLE": 41,
+        "PUBLISHER_UNRESOLVED": 3,
+        "Insufficient entity match confidence (0.0 < 0.35)": 4,
+        "BUDGET_EXHAUSTED": 18,
+        "READER_NOT_SELECTED": 1,
+        "SUBJECT_MISMATCH": 83,
+        "SITE_SCOPE_MISMATCH": 20,
+        "HTTP_FAILURE": 13,
+        "TIMEOUT": 2
+      },
+      "capture_accounting_status": "COMPLETE_NATIVE_POOL",
+      "input": "Mary Barra",
+      "requested_prompt": "Find attributable public statements by Mary Barra about General Motors and the automotive industry. Clearly distinguish historical statements from recent coverage and unrelated executive speculation.",
+      "application_sha256": "55c15fd2febcbe7ff45f403a68d0446143f1dd178f8b42056c29f77a0e9e3c2c",
+      "native_file_sha256": "3172b56f2e3980a18c6325ee67f9266cd66f12867f9196f4182796a23abcb10c"
+    }
+  ],
+  "claim": "No causal qualified-passage improvement demonstrated on identical old captures. New source retrieval has different live source availability."
+}

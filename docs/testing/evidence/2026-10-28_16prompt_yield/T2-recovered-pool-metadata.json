@@ -1,0 +1,2524 @@
+{
+  "mode": "METADATA_ONLY_ORIGINAL_POOL_PRESERVED_PRIVATELY",
+  "stats": {
+    "source_count": 49,
+    "candidate_urls": 49,
+    "by_type": {
+      "BLOCKED_OR_FAILED": 4,
+      "FEED_ENTRY": 18,
+      "PUBLISHER_HOMEPAGE": 4,
+      "DISCOVERY_LEAD": 9,
+      "ARTICLE_BODY": 12,
+      "SOURCE_INDEX": 2
+    },
+    "reads_attempted": 23,
+    "successful_captures": 19,
+    "article_bodies": 12,
+    "raw_article_words": 7682,
+    "raw_source_words": 12488,
+    "duplicate_captures": 0,
+    "qualified_source_count": 2,
+    "relevant_words": 73,
+    "unique_publishers": 1,
+    "publisher_independence": "NOT_ESTABLISHED",
+    "storage_bytes": 489645,
+    "acquisition_mode": "OBSERVED_ACQUISITION",
+    "ambiguous_alias_count": 0,
+    "failed_reads_by_cause": {
+      "PUBLISHER_UNRESOLVED": 3,
+      "BUDGET_EXHAUSTED": 1
+    },
+    "dropped_by_limit": {}
+  },
+  "sources": [
+    {
+      "source_id": "ev_hv_0a6139a63e64be5fb30b",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE0wbjVBUHZNWU1CSUExY0dzdVN5VUpWS0l5ZXp5VkFNQWpISy1keUJjbDZhbGFsTUUyNDNpRl9PazNfRUJjSVpPTEdPRHRnN0VZZFpSbFJ1Y2o?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE0wbjVBUHZNWU1CSUExY0dzdVN5VUpWS0l5ZXp5VkFNQWpISy1keUJjbDZhbGFsTUUyNDNpRl9PazNfRUJjSVpPTEdPRHRnN0VZZFpSbFJ1Y2o?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMiWEFVX3lxTE0wbjVBUHZNWU1CSUExY0dzdVN5VUpWS0l5ZXp5VkFNQWpISy1keUJjbDZhbGFsTUUyNDNpRl9PazNfRUJjSVpPTEdPRHRnN0VZZFpSbFJ1Y2o?oc=5"
+      ],
+      "query_id": "hv_q_004",
+      "query_ids": [
+        "hv_q_004"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan set to skip birthday fan meet for \u2018King\u2019 shoot - bdnews24.com",
+      "source_type": "BLOCKED_OR_FAILED",
+      "published_at": "Wed, 28 Oct 2026 06:47:00 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.428333+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "FAILED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 1,
+      "errors": [
+        {
+          "type": "PUBLISHER_UNRESOLVED",
+          "detail": "",
+          "at": "2026-10-28T08:54:54.612549+00:00",
+          "query_id": "hv_q_004",
+          "http_status": null
+        }
+      ],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_fa08217024ea255cd698",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQbWl0LUZEWXA3aVlWUWlFOWU2U2FzZ2VSY1I5Y0lJbnJvZVYwekdMUjlNc1JRanQwRlZtOTUzSUxpM0FjN0Q3VDRub1FORkZGeTVZaWhuZ3hzYWQ5Vnp3cnVEX3pPcVgyOGI1cWhkS1NYNFZyVlRvWGF4aVRodXVMUTRaQXJESVdlSE5pQUdqMy1aUWNLc1pIZzVQZl8xSjJPVXVjSlFzeV9ZZzJiUXctel9XUVJyWWlLVThV0gHAAUFVX3lxTE1wcHdYUzZyam53VjFGSE9zWE9xUTdmVXhqZzZ1Ry1WczhVZU9yZjhYM3Rlc0hnR2xvM0xLbkx4aFEzcVV0MlBvZ08wVnFXTk51eUM4TG81VWRPVHJuSS1ZOUctd1M0QUJNaFVFMDZBaVM4Rm5idWotQWZNbndDTy1uUTdlSjl4MERFTjRCRzMtUUFOSFZYRWpFRzFWaW1ZQ0Uyb3hQNHJZVlktRzg1M3k3ZGM4TTdUWHVoVHd3R0RUeg?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQbWl0LUZEWXA3aVlWUWlFOWU2U2FzZ2VSY1I5Y0lJbnJvZVYwekdMUjlNc1JRanQwRlZtOTUzSUxpM0FjN0Q3VDRub1FORkZGeTVZaWhuZ3hzYWQ5Vnp3cnVEX3pPcVgyOGI1cWhkS1NYNFZyVlRvWGF4aVRodXVMUTRaQXJESVdlSE5pQUdqMy1aUWNLc1pIZzVQZl8xSjJPVXVjSlFzeV9ZZzJiUXctel9XUVJyWWlLVThV0gHAAUFVX3lxTE1wcHdYUzZyam53VjFGSE9zWE9xUTdmVXhqZzZ1Ry1WczhVZU9yZjhYM3Rlc0hnR2xvM0xLbkx4aFEzcVV0MlBvZ08wVnFXTk51eUM4TG81VWRPVHJuSS1ZOUctd1M0QUJNaFVFMDZBaVM4Rm5idWotQWZNbndDTy1uUTdlSjl4MERFTjRCRzMtUUFOSFZYRWpFRzFWaW1ZQ0Uyb3hQNHJZVlktRzg1M3k3ZGM4TTdUWHVoVHd3R0RUeg?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQbWl0LUZEWXA3aVlWUWlFOWU2U2FzZ2VSY1I5Y0lJbnJvZVYwekdMUjlNc1JRanQwRlZtOTUzSUxpM0FjN0Q3VDRub1FORkZGeTVZaWhuZ3hzYWQ5Vnp3cnVEX3pPcVgyOGI1cWhkS1NYNFZyVlRvWGF4aVRodXVMUTRaQXJESVdlSE5pQUdqMy1aUWNLc1pIZzVQZl8xSjJPVXVjSlFzeV9ZZzJiUXctel9XUVJyWWlLVThV0gHAAUFVX3lxTE1wcHdYUzZyam53VjFGSE9zWE9xUTdmVXhqZzZ1Ry1WczhVZU9yZjhYM3Rlc0hnR2xvM0xLbkx4aFEzcVV0MlBvZ08wVnFXTk51eUM4TG81VWRPVHJuSS1ZOUctd1M0QUJNaFVFMDZBaVM4Rm5idWotQWZNbndDTy1uUTdlSjl4MERFTjRCRzMtUUFOSFZYRWpFRzFWaW1ZQ0Uyb3hQNHJZVlktRzg1M3k3ZGM4TTdUWHVoVHd3R0RUeg?oc=5"
+      ],
+      "query_id": "hv_q_004",
+      "query_ids": [
+        "hv_q_004"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "\u2018Qaatil Nahi, Aashiq Hoon\u2019: Shah Rukh Khan Unveils New King Poster, Shows Off His Ripped Body - iDiva",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 05:30:50 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.428478+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_61baae4a1bd3ad432939",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOeGlPMmRISXFQYW9JaDJPb3FIZXl5bXVaeGItSEtFSGVhaHVMT0JxVjFMR3dveUVJMWJ1MjZRSlp4VFZFUkJVclRETVdKZGVWMzlqTVJNVkFCaUFyQnlRMnd6UkFCdUhVcXJNaU84UjRzU0JLZ0NXVThMaUhHQnVOLTRILVpUUmM4SXVpbG1lYkQ1MHVCNktsMVZqbEJxNW5Jb0tZUG96OVpaWEVPMzZ6ZHZTc3B3M24wSjktR3d5UUF2c1V5UmlzYmw2THN5WEVZdjRoSXdPNjnSAeABQVVfeXFMT24xMnhtWjlmUXdERXVEdVJVVkdlMDRvdVpETzRlb2kwMm8zMHhHcE4tWVduVDNVSzVYYmRMcEs5bmNadEN4a1RvZk1xWGRvdWdYZWdCZktzYnczQTI3VjRLeEdPM0J0RWtmZHdObjVvSnBBTkFqaFoydWpoNkZGU0E4UUR2cnpLVzdnN2w0anhwSWlOcFZhamtxNkROd0RfOU1XcTA0aXYxcWJZekd2MHVSaFdCNENYN0tfd0pFVG1RSWZvN1pmcko2dklhUW13S3R4MXNSQTlaSlJMa1dVUFg?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOeGlPMmRISXFQYW9JaDJPb3FIZXl5bXVaeGItSEtFSGVhaHVMT0JxVjFMR3dveUVJMWJ1MjZRSlp4VFZFUkJVclRETVdKZGVWMzlqTVJNVkFCaUFyQnlRMnd6UkFCdUhVcXJNaU84UjRzU0JLZ0NXVThMaUhHQnVOLTRILVpUUmM4SXVpbG1lYkQ1MHVCNktsMVZqbEJxNW5Jb0tZUG96OVpaWEVPMzZ6ZHZTc3B3M24wSjktR3d5UUF2c1V5UmlzYmw2THN5WEVZdjRoSXdPNjnSAeABQVVfeXFMT24xMnhtWjlmUXdERXVEdVJVVkdlMDRvdVpETzRlb2kwMm8zMHhHcE4tWVduVDNVSzVYYmRMcEs5bmNadEN4a1RvZk1xWGRvdWdYZWdCZktzYnczQTI3VjRLeEdPM0J0RWtmZHdObjVvSnBBTkFqaFoydWpoNkZGU0E4UUR2cnpLVzdnN2w0anhwSWlOcFZhamtxNkROd0RfOU1XcTA0aXYxcWJZekd2MHVSaFdCNENYN0tfd0pFVG1RSWZvN1pmcko2dklhUW13S3R4MXNSQTlaSlJMa1dVUFg?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOeGlPMmRISXFQYW9JaDJPb3FIZXl5bXVaeGItSEtFSGVhaHVMT0JxVjFMR3dveUVJMWJ1MjZRSlp4VFZFUkJVclRETVdKZGVWMzlqTVJNVkFCaUFyQnlRMnd6UkFCdUhVcXJNaU84UjRzU0JLZ0NXVThMaUhHQnVOLTRILVpUUmM4SXVpbG1lYkQ1MHVCNktsMVZqbEJxNW5Jb0tZUG96OVpaWEVPMzZ6ZHZTc3B3M24wSjktR3d5UUF2c1V5UmlzYmw2THN5WEVZdjRoSXdPNjnSAeABQVVfeXFMT24xMnhtWjlmUXdERXVEdVJVVkdlMDRvdVpETzRlb2kwMm8zMHhHcE4tWVduVDNVSzVYYmRMcEs5bmNadEN4a1RvZk1xWGRvdWdYZWdCZktzYnczQTI3VjRLeEdPM0J0RWtmZHdObjVvSnBBTkFqaFoydWpoNkZGU0E4UUR2cnpLVzdnN2w0anhwSWlOcFZhamtxNkROd0RfOU1XcTA0aXYxcWJZekd2MHVSaFdCNENYN0tfd0pFVG1RSWZvN1pmcko2dklhUW13S3R4MXNSQTlaSlJMa1dVUFg?oc=5"
+      ],
+      "query_id": "hv_q_004",
+      "query_ids": [
+        "hv_q_004"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Suryakumar Yadav, Wife Devisha Buy First Home In Dubai At Shah Rukh Khan-Inspired Luxury Project - NDTV Profit",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Fri, 23 Oct 2026 10:12:06 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.428632+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_97299934c87fc89e89a9",
+      "aliases": [],
+      "source_url": "https://bdnews24.com",
+      "canonical_url": "https://bdnews24.com/",
+      "source_urls": [
+        "https://bdnews24.com"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "bdnews24.com - Latest News | \u09ac\u09be\u0982\u09b2\u09be \u0996\u09ac\u09b0 \u0993 \u09b8\u09b0\u09cd\u09ac\u09b6\u09c7\u09b7 \u09b8\u0982\u09ac\u09be\u09a6",
+      "source_type": "PUBLISHER_HOMEPAGE",
+      "published_at": null,
+      "publication_time_basis": "CAPTURED_PUBLICATION_NOT_OBSERVED",
+      "acquired_at": "2026-10-28T08:54:54.493363+00:00",
+      "discovered_at": "2026-10-28T08:54:54.428743+00:00",
+      "raw_content_hash": "76a015f6002cc49cd1b2f554fc79a2cf0d4d3469a7c155a0c94197aa7513e37f",
+      "word_count": 1908,
+      "utf8_bytes": 12738,
+      "char_count": 12604,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "Insufficient multi-token topic match"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.493363+00:00",
+          "source_id": "ev_hv_97299934c87fc89e89a9",
+          "raw_content_hash": "76a015f6002cc49cd1b2f554fc79a2cf0d4d3469a7c155a0c94197aa7513e37f",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "e970c2ba2f3cb910c0317451aeca049153b700008aa5d170e0d993e64306063f",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com",
+        "requested_endpoint": "https://bdnews24.com",
+        "redirect_chain": [
+          "https://bdnews24.com"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 35947,
+        "decoded_body_bytes": 340490,
+        "network_latency_ms": 2591,
+        "raw_body_sha256": "4a55296ae1b95a752325b0932bb88baab3884e6d8dcfeb174ecbf39fea678621",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com",
+      "redirect_chain": [
+        "https://bdnews24.com"
+      ]
+    },
+    {
+      "source_id": "ev_hv_ea22050ae164153e715f",
+      "aliases": [],
+      "source_url": "https://www.livemint.com/news/india/shah-rukh-khan-ajay-devgn-tiger-shroff-issued-notice-by-fda-over-tobacco-ad-11786857314528.html",
+      "canonical_url": "https://www.livemint.com/news/india/shah-rukh-khan-ajay-devgn-tiger-shroff-issued-notice-by-fda-over-tobacco-ad-11786857314528.html",
+      "source_urls": [
+        "https://www.livemint.com/news/india/shah-rukh-khan-ajay-devgn-tiger-shroff-issued-notice-by-fda-over-tobacco-ad-11786857314528.html"
+      ],
+      "query_id": "hv_q_001",
+      "query_ids": [
+        "hv_q_001"
+      ],
+      "publisher": "Global Wire",
+      "publisher_host": "www.livemint.com",
+      "title": "Shah Rukh Khan, Ajay Devgn, Tiger Shroff issued notice by FDA over tobacco ad",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.428883+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "source_plan_action_ids": [
+        "spa_00e41b53e4"
+      ]
+    },
+    {
+      "source_id": "ev_hv_e05d6708c14510c49801",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/shah-rukh-khan-receives-death-threat-case-registered-in-bandra-report-9112195.html",
+      "canonical_url": "https://www.news18.com/movies/shah-rukh-khan-receives-death-threat-case-registered-in-bandra-report-9112195.html",
+      "source_urls": [
+        "https://www.news18.com/movies/shah-rukh-khan-receives-death-threat-case-registered-in-bandra-report-9112195.html"
+      ],
+      "query_id": "hv_q_003",
+      "query_ids": [
+        "hv_q_003"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Shah Rukh Khan Receives Death Threat, Rs 50-Lakh Extortion Call; Mumbai Police File FIR",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Thu, 07 Nov 2024 01:22:00 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.429046+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "source_plan_action_ids": [
+        "spa_78f4fcf98e"
+      ]
+    },
+    {
+      "source_id": "ev_hv_83a00f73d22fffa96087",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxPaUlrOV9mVUNzODNtWFFQQXpQRzdRZFFKVDYxMDdXLVZjRE9hUUZUVmZtZHcwNGNBcWlJRW5tNU13MUNFYUJsaHczb1I0dldEekJqWFl0M1lWY1F2a0JlbmFkT3NxblI3cjdMMGR1c3Z0cWppSE81VU5hTnZiQllFUU43VmZBWDZZQUxMb0pLZGpybURDcWxfTEV5VVlvNERKaDNzZlUyOFFsa0dlVmJEVGMwamVTVHRaOHM1QXlLajBRV3ZyamVhQW00UXlhZ1hyNGtuWFRDNm8xU0Y4VTBzUThiT0RHRHlDWXhmRkhnSmZlTVNlUC1oN9IB-AFBVV95cUxPaUlrOV9mVUNzODNtWFFQQXpQRzdRZFFKVDYxMDdXLVZjRE9hUUZUVmZtZHcwNGNBcWlJRW5tNU13MUNFYUJsaHczb1I0dldEekJqWFl0M1lWY1F2a0JlbmFkT3NxblI3cjdMMGR1c3Z0cWppSE81VU5hTnZiQllFUU43VmZBWDZZQUxMb0pLZGpybURDcWxfTEV5VVlvNERKaDNzZlUyOFFsa0dlVmJEVGMwamVTVHRaOHM1QXlLajBRV3ZyamVhQW00UXlhZ1hyNGtuWFRDNm8xU0Y4VTBzUThiT0RHRHlDWXhmRkhnSmZlTVNlUC1oNw?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxPaUlrOV9mVUNzODNtWFFQQXpQRzdRZFFKVDYxMDdXLVZjRE9hUUZUVmZtZHcwNGNBcWlJRW5tNU13MUNFYUJsaHczb1I0dldEekJqWFl0M1lWY1F2a0JlbmFkT3NxblI3cjdMMGR1c3Z0cWppSE81VU5hTnZiQllFUU43VmZBWDZZQUxMb0pLZGpybURDcWxfTEV5VVlvNERKaDNzZlUyOFFsa0dlVmJEVGMwamVTVHRaOHM1QXlLajBRV3ZyamVhQW00UXlhZ1hyNGtuWFRDNm8xU0Y4VTBzUThiT0RHRHlDWXhmRkhnSmZlTVNlUC1oN9IB-AFBVV95cUxPaUlrOV9mVUNzODNtWFFQQXpQRzdRZFFKVDYxMDdXLVZjRE9hUUZUVmZtZHcwNGNBcWlJRW5tNU13MUNFYUJsaHczb1I0dldEekJqWFl0M1lWY1F2a0JlbmFkT3NxblI3cjdMMGR1c3Z0cWppSE81VU5hTnZiQllFUU43VmZBWDZZQUxMb0pLZGpybURDcWxfTEV5VVlvNERKaDNzZlUyOFFsa0dlVmJEVGMwamVTVHRaOHM1QXlLajBRV3ZyamVhQW00UXlhZ1hyNGtuWFRDNm8xU0Y4VTBzUThiT0RHRHlDWXhmRkhnSmZlTVNlUC1oNw?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMi-AFBVV95cUxPaUlrOV9mVUNzODNtWFFQQXpQRzdRZFFKVDYxMDdXLVZjRE9hUUZUVmZtZHcwNGNBcWlJRW5tNU13MUNFYUJsaHczb1I0dldEekJqWFl0M1lWY1F2a0JlbmFkT3NxblI3cjdMMGR1c3Z0cWppSE81VU5hTnZiQllFUU43VmZBWDZZQUxMb0pLZGpybURDcWxfTEV5VVlvNERKaDNzZlUyOFFsa0dlVmJEVGMwamVTVHRaOHM1QXlLajBRV3ZyamVhQW00UXlhZ1hyNGtuWFRDNm8xU0Y4VTBzUThiT0RHRHlDWXhmRkhnSmZlTVNlUC1oN9IB-AFBVV95cUxPaUlrOV9mVUNzODNtWFFQQXpQRzdRZFFKVDYxMDdXLVZjRE9hUUZUVmZtZHcwNGNBcWlJRW5tNU13MUNFYUJsaHczb1I0dldEekJqWFl0M1lWY1F2a0JlbmFkT3NxblI3cjdMMGR1c3Z0cWppSE81VU5hTnZiQllFUU43VmZBWDZZQUxMb0pLZGpybURDcWxfTEV5VVlvNERKaDNzZlUyOFFsa0dlVmJEVGMwamVTVHRaOHM1QXlLajBRV3ZyamVhQW00UXlhZ1hyNGtuWFRDNm8xU0Y4VTBzUThiT0RHRHlDWXhmRkhnSmZlTVNlUC1oNw?oc=5"
+      ],
+      "query_id": "hv_q_007",
+      "query_ids": [
+        "hv_q_007"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Karan Johar cheers for Shah Rukh Khan's return as \"The One and Only King\" ahead of 'King's December release - Devdiscourse",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 12:07:56 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.429243+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_ddb89ceae1d0de64c822",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNYzZESk9SZHNmY0t1NThnLWR4c2ZBTGZYZFpCbG1Udk96MnZWQUNJU2ZnNkpjTnpTdzlDM29QU3R0OFV4WkJHTlhYZHRXQzlwdDBXcC15aS03NC1rX0tYRWl6Y3ZIVExFNUpnWVJnaVdFWXQzcmlRV0pEVVhlYjZOa2QxRzVZV1lZMmQ1cTdB?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNYzZESk9SZHNmY0t1NThnLWR4c2ZBTGZYZFpCbG1Udk96MnZWQUNJU2ZnNkpjTnpTdzlDM29QU3R0OFV4WkJHTlhYZHRXQzlwdDBXcC15aS03NC1rX0tYRWl6Y3ZIVExFNUpnWVJnaVdFWXQzcmlRV0pEVVhlYjZOa2QxRzVZV1lZMmQ1cTdB?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMijgFBVV95cUxNYzZESk9SZHNmY0t1NThnLWR4c2ZBTGZYZFpCbG1Udk96MnZWQUNJU2ZnNkpjTnpTdzlDM29QU3R0OFV4WkJHTlhYZHRXQzlwdDBXcC15aS03NC1rX0tYRWl6Y3ZIVExFNUpnWVJnaVdFWXQzcmlRV0pEVVhlYjZOa2QxRzVZV1lZMmQ1cTdB?oc=5"
+      ],
+      "query_id": "hv_q_007",
+      "query_ids": [
+        "hv_q_007"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan's King: New Poster Locks December 24 Release - www.krihaa.me",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 18:17:30 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.429427+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_858c954bd80c893f009f",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNUTBiN1Y5dldBQ3FzSEp4M1JVRFV1UWxoek1ZSTVITXpSWkhXREhMdDh2c1JtUE40UFRSaWtPOTkxWktNenlEUFRRWlNtZzZGdlRIRkE3bUtkWEZlTUlZUFk2Ql9BLUZ4OTZ5Q0NvMW1xbE1fSWtFUnp3VXhMbmhWaTY5VVp5cW16MXJ0ZF9mR3c2QXBBa3ZlczZNLWd3c3dRZi1PMFlnQmtDQnd4M3FGYy1JdkRnZ2RC0gG_AUFVX3lxTE85MENaUVpoRDhQNnZxbXhfcXVCVWdCV1p4MFpkSVJHYVlzcExiTl9HcDVHNERzMFJMWDktYTA5ZzFKZnB0aEJBUkV0MXFHakhUREd5SGlNVW1pbEYxYi1nVlpxYkFtT3VueUhrR1hzU1haOHVPdlRpRklVcFpfOXNvX2FFS2RBNkZROTNwYkhrZE9CcGhqOVE4c1RhOFRFX3pwUnV6N21kZG4xeWdabkNvVk8wTklCN0ZzbjE2cklJ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNUTBiN1Y5dldBQ3FzSEp4M1JVRFV1UWxoek1ZSTVITXpSWkhXREhMdDh2c1JtUE40UFRSaWtPOTkxWktNenlEUFRRWlNtZzZGdlRIRkE3bUtkWEZlTUlZUFk2Ql9BLUZ4OTZ5Q0NvMW1xbE1fSWtFUnp3VXhMbmhWaTY5VVp5cW16MXJ0ZF9mR3c2QXBBa3ZlczZNLWd3c3dRZi1PMFlnQmtDQnd4M3FGYy1JdkRnZ2RC0gG_AUFVX3lxTE85MENaUVpoRDhQNnZxbXhfcXVCVWdCV1p4MFpkSVJHYVlzcExiTl9HcDVHNERzMFJMWDktYTA5ZzFKZnB0aEJBUkV0MXFHakhUREd5SGlNVW1pbEYxYi1nVlpxYkFtT3VueUhrR1hzU1haOHVPdlRpRklVcFpfOXNvX2FFS2RBNkZROTNwYkhrZE9CcGhqOVE4c1RhOFRFX3pwUnV6N21kZG4xeWdabkNvVk8wTklCN0ZzbjE2cklJ?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNUTBiN1Y5dldBQ3FzSEp4M1JVRFV1UWxoek1ZSTVITXpSWkhXREhMdDh2c1JtUE40UFRSaWtPOTkxWktNenlEUFRRWlNtZzZGdlRIRkE3bUtkWEZlTUlZUFk2Ql9BLUZ4OTZ5Q0NvMW1xbE1fSWtFUnp3VXhMbmhWaTY5VVp5cW16MXJ0ZF9mR3c2QXBBa3ZlczZNLWd3c3dRZi1PMFlnQmtDQnd4M3FGYy1JdkRnZ2RC0gG_AUFVX3lxTE85MENaUVpoRDhQNnZxbXhfcXVCVWdCV1p4MFpkSVJHYVlzcExiTl9HcDVHNERzMFJMWDktYTA5ZzFKZnB0aEJBUkV0MXFHakhUREd5SGlNVW1pbEYxYi1nVlpxYkFtT3VueUhrR1hzU1haOHVPdlRpRklVcFpfOXNvX2FFS2RBNkZROTNwYkhrZE9CcGhqOVE4c1RhOFRFX3pwUnV6N21kZG4xeWdabkNvVk8wTklCN0ZzbjE2cklJ?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan finds being barefoot \u2018awkward\u2019: \u2018Baring my soul is easier\u2019 - The Indian Express",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Mon, 26 Oct 2026 17:30:26 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.429664+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_1c718b5fc9f77d2e995b",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMiuAJBVV95cUxNZXNHa2VaNko2TllHVGdCdkNadFkwTHEyVkFYdmc4S3BuREdITmxwaHkyQzNYLVRpbURJNVpsTjNIZWtCczVNdFZURzU5QVp0dWd3NmFtQUpTSjJnUl9OMWZramdHS2JYdVZSdXVlcHhtVmdGXzJjX1BCb3JWRzlFb3A5Mm9jT0IyU1lncTlYV29XOEd1UjhfQUZWc09VeDVWSG04UmRyMzRJT3QzYjBGc3JYVEFLRXZQZTVmUjJEYndQbUdReUJhcDVSRXpjVzRJT0RuejJCUzA3ck1ocnBMa3hMcFdjb1VzSEtrSzdxOVlsaWE4aFNYN005NzZWWjJJNDN2a295ZmxPQTZaVWRZNGo4Z2IyUVpQcWtGc0ZqNUFIOWlfZ09rQnljWENuRHZRdG5uSk5uQTLSAb4CQVVfeXFMT0ZfSTJhTVFFa3g4LVlNNzNIeVY3S1dkTjBfRXhPa05HQ3ltZUluM2VESXhqVTFmVExEWmVGbnNHVEhaQlRYUzhKV1pXNDY2TXN3Zm82NXE4cnFERFJ1MTBSdXAwaDFVVEVmOTNzMEQ4aXZiU1dxYk5Bcl9oRXZBeG5HZThfMDdSeDg0aDJwQmtJLW1kS0R2dXNkd2I2ZzJJY1p4TnhoaU0tNWk3azU0dWRiY0tuSDdqVlFRemJOZXl1WTVWRi11ODY5R0ZnTmhqNWVtMDFkamF1NTJJMzlhNDI5akhwZ1ZNM2FITzBWZERRQkZNTjNmaTkwd1FyNzBCY3ZDWjJpd3pMU09PX2FLNlVobWNldGxWY3lkOUwxYnpEc2NYalc5aFQzQlV2anRwaEhzTnpudWpGTmFqVFpR?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiuAJBVV95cUxNZXNHa2VaNko2TllHVGdCdkNadFkwTHEyVkFYdmc4S3BuREdITmxwaHkyQzNYLVRpbURJNVpsTjNIZWtCczVNdFZURzU5QVp0dWd3NmFtQUpTSjJnUl9OMWZramdHS2JYdVZSdXVlcHhtVmdGXzJjX1BCb3JWRzlFb3A5Mm9jT0IyU1lncTlYV29XOEd1UjhfQUZWc09VeDVWSG04UmRyMzRJT3QzYjBGc3JYVEFLRXZQZTVmUjJEYndQbUdReUJhcDVSRXpjVzRJT0RuejJCUzA3ck1ocnBMa3hMcFdjb1VzSEtrSzdxOVlsaWE4aFNYN005NzZWWjJJNDN2a295ZmxPQTZaVWRZNGo4Z2IyUVpQcWtGc0ZqNUFIOWlfZ09rQnljWENuRHZRdG5uSk5uQTLSAb4CQVVfeXFMT0ZfSTJhTVFFa3g4LVlNNzNIeVY3S1dkTjBfRXhPa05HQ3ltZUluM2VESXhqVTFmVExEWmVGbnNHVEhaQlRYUzhKV1pXNDY2TXN3Zm82NXE4cnFERFJ1MTBSdXAwaDFVVEVmOTNzMEQ4aXZiU1dxYk5Bcl9oRXZBeG5HZThfMDdSeDg0aDJwQmtJLW1kS0R2dXNkd2I2ZzJJY1p4TnhoaU0tNWk3azU0dWRiY0tuSDdqVlFRemJOZXl1WTVWRi11ODY5R0ZnTmhqNWVtMDFkamF1NTJJMzlhNDI5akhwZ1ZNM2FITzBWZERRQkZNTjNmaTkwd1FyNzBCY3ZDWjJpd3pMU09PX2FLNlVobWNldGxWY3lkOUwxYnpEc2NYalc5aFQzQlV2anRwaEhzTnpudWpGTmFqVFpR?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMiuAJBVV95cUxNZXNHa2VaNko2TllHVGdCdkNadFkwTHEyVkFYdmc4S3BuREdITmxwaHkyQzNYLVRpbURJNVpsTjNIZWtCczVNdFZURzU5QVp0dWd3NmFtQUpTSjJnUl9OMWZramdHS2JYdVZSdXVlcHhtVmdGXzJjX1BCb3JWRzlFb3A5Mm9jT0IyU1lncTlYV29XOEd1UjhfQUZWc09VeDVWSG04UmRyMzRJT3QzYjBGc3JYVEFLRXZQZTVmUjJEYndQbUdReUJhcDVSRXpjVzRJT0RuejJCUzA3ck1ocnBMa3hMcFdjb1VzSEtrSzdxOVlsaWE4aFNYN005NzZWWjJJNDN2a295ZmxPQTZaVWRZNGo4Z2IyUVpQcWtGc0ZqNUFIOWlfZ09rQnljWENuRHZRdG5uSk5uQTLSAb4CQVVfeXFMT0ZfSTJhTVFFa3g4LVlNNzNIeVY3S1dkTjBfRXhPa05HQ3ltZUluM2VESXhqVTFmVExEWmVGbnNHVEhaQlRYUzhKV1pXNDY2TXN3Zm82NXE4cnFERFJ1MTBSdXAwaDFVVEVmOTNzMEQ4aXZiU1dxYk5Bcl9oRXZBeG5HZThfMDdSeDg0aDJwQmtJLW1kS0R2dXNkd2I2ZzJJY1p4TnhoaU0tNWk3azU0dWRiY0tuSDdqVlFRemJOZXl1WTVWRi11ODY5R0ZnTmhqNWVtMDFkamF1NTJJMzlhNDI5akhwZ1ZNM2FITzBWZERRQkZNTjNmaTkwd1FyNzBCY3ZDWjJpd3pMU09PX2FLNlVobWNldGxWY3lkOUwxYnpEc2NYalc5aFQzQlV2anRwaEhzTnpudWpGTmFqVFpR?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan's 'King' poster draws comparisons with 'Dhurandhar 2' on social media: 'Every masterpiece - The Times of India",
+      "source_type": "BLOCKED_OR_FAILED",
+      "published_at": "Wed, 28 Oct 2026 06:05:00 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.430084+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "FAILED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 1,
+      "errors": [
+        {
+          "type": "PUBLISHER_UNRESOLVED",
+          "detail": "",
+          "at": "2026-10-28T08:54:54.621232+00:00",
+          "query_id": "hv_q_008",
+          "http_status": null
+        }
+      ],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_20efc5a1434e187e7254",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWWFoWG5vR3VKUkVqazhyZnNUOEhLa1dETElWSjhHVTQ2Q2hYZTY2UjRBMFE3QS04WndhbXp4QzBmOFlpZV9KZ000ejV2OG1UMmo1eTlLcTdrVl80QzdSdklONGx6ZnMwY3dKMGppbVFZckhyd0tmaXRqcDVqZmF1LURCWmlHLV9reEpvRDBlLVh3cmVnQWFNcFV2SGZBS2dJWk1reUxUYmJWeXloUUl3?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWWFoWG5vR3VKUkVqazhyZnNUOEhLa1dETElWSjhHVTQ2Q2hYZTY2UjRBMFE3QS04WndhbXp4QzBmOFlpZV9KZ000ejV2OG1UMmo1eTlLcTdrVl80QzdSdklONGx6ZnMwY3dKMGppbVFZckhyd0tmaXRqcDVqZmF1LURCWmlHLV9reEpvRDBlLVh3cmVnQWFNcFV2SGZBS2dJWk1reUxUYmJWeXloUUl3?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMirwFBVV95cUxNWWFoWG5vR3VKUkVqazhyZnNUOEhLa1dETElWSjhHVTQ2Q2hYZTY2UjRBMFE3QS04WndhbXp4QzBmOFlpZV9KZ000ejV2OG1UMmo1eTlLcTdrVl80QzdSdklONGx6ZnMwY3dKMGppbVFZckhyd0tmaXRqcDVqZmF1LURCWmlHLV9reEpvRDBlLVh3cmVnQWFNcFV2SGZBS2dJWk1reUxUYmJWeXloUUl3?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan leads TV ad visibility as celebrity ad volumes fall 17% - afaqs!",
+      "source_type": "BLOCKED_OR_FAILED",
+      "published_at": "Fri, 23 Oct 2026 11:34:41 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.430373+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "FAILED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 1,
+      "errors": [
+        {
+          "type": "PUBLISHER_UNRESOLVED",
+          "detail": "",
+          "at": "2026-10-28T08:54:54.634784+00:00",
+          "query_id": "hv_q_008",
+          "http_status": null
+        }
+      ],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_8a5e8bbe57424bbc47b0",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQZjJyQ0dJc3pudjZmNmprYjQ4a2VIR3JSSmVtQlVPMjFXa0dXQXh2VEVERXl4RG1XSGR0UEJQZXludmJ0eGFsaUZsZWh2eVRDUEdDUnlaZ1VVUjJYcEg5aGs4Uzd6SkYtckNIWWh5aWJLM1BhTjVCeDdZNmlQVHRKQTBtbVgyTlRjdURVVzNBYzRadVRqNWtrcnBfYWNoV2J2MXNITWgwVjZnMGhLMTlSb0ljbktXR19GRUY1UDdYY1JmYTMxbXBZdEtfSWV2eWZoWmRQdjRGWUlmaVVBQUQ3RkVIcDBDLTliYmJZWk1GT3ZKQkpJMmRsZXNOM0zSAfwBQVVfeXFMUGYyckNHSXN6bnY2ZjZqa2I0OGtlSEdyUkplbUJVTzIxV2tHV0F4dlRFREV5eERtV0hkdFBCUGV5bnZidHhhbGlGbGVodnlUQ1BHQ1J5WmdVVVIyWHBIOWhrOFM3ekpGLXJDSFloeWliSzNQYU41Qng3WTZpUFR0SkEwbW1YMk5UY3VEVVczQWM0WnVUajVra3JwX2FjaFdidjFzSE1oMFY2ZzBoSzE5Um9JY25LV0dfRkVGNVA3WGNSZmEzMW1wWXRLX0lldnlmaFpkUHY0RllJZmlVQUFEN0ZFSHAwQy05YmJiWVpNRk92SkJKSTJkbGVzTjNM?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQZjJyQ0dJc3pudjZmNmprYjQ4a2VIR3JSSmVtQlVPMjFXa0dXQXh2VEVERXl4RG1XSGR0UEJQZXludmJ0eGFsaUZsZWh2eVRDUEdDUnlaZ1VVUjJYcEg5aGs4Uzd6SkYtckNIWWh5aWJLM1BhTjVCeDdZNmlQVHRKQTBtbVgyTlRjdURVVzNBYzRadVRqNWtrcnBfYWNoV2J2MXNITWgwVjZnMGhLMTlSb0ljbktXR19GRUY1UDdYY1JmYTMxbXBZdEtfSWV2eWZoWmRQdjRGWUlmaVVBQUQ3RkVIcDBDLTliYmJZWk1GT3ZKQkpJMmRsZXNOM0zSAfwBQVVfeXFMUGYyckNHSXN6bnY2ZjZqa2I0OGtlSEdyUkplbUJVTzIxV2tHV0F4dlRFREV5eERtV0hkdFBCUGV5bnZidHhhbGlGbGVodnlUQ1BHQ1J5WmdVVVIyWHBIOWhrOFM3ekpGLXJDSFloeWliSzNQYU41Qng3WTZpUFR0SkEwbW1YMk5UY3VEVVczQWM0WnVUajVra3JwX2FjaFdidjFzSE1oMFY2ZzBoSzE5Um9JY25LV0dfRkVGNVA3WGNSZmEzMW1wWXRLX0lldnlmaFpkUHY0RllJZmlVQUFEN0ZFSHAwQy05YmJiWVpNRk92SkJKSTJkbGVzTjNM?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQZjJyQ0dJc3pudjZmNmprYjQ4a2VIR3JSSmVtQlVPMjFXa0dXQXh2VEVERXl4RG1XSGR0UEJQZXludmJ0eGFsaUZsZWh2eVRDUEdDUnlaZ1VVUjJYcEg5aGs4Uzd6SkYtckNIWWh5aWJLM1BhTjVCeDdZNmlQVHRKQTBtbVgyTlRjdURVVzNBYzRadVRqNWtrcnBfYWNoV2J2MXNITWgwVjZnMGhLMTlSb0ljbktXR19GRUY1UDdYY1JmYTMxbXBZdEtfSWV2eWZoWmRQdjRGWUlmaVVBQUQ3RkVIcDBDLTliYmJZWk1GT3ZKQkpJMmRsZXNOM0zSAfwBQVVfeXFMUGYyckNHSXN6bnY2ZjZqa2I0OGtlSEdyUkplbUJVTzIxV2tHV0F4dlRFREV5eERtV0hkdFBCUGV5bnZidHhhbGlGbGVodnlUQ1BHQ1J5WmdVVVIyWHBIOWhrOFM3ekpGLXJDSFloeWliSzNQYU41Qng3WTZpUFR0SkEwbW1YMk5UY3VEVVczQWM0WnVUajVra3JwX2FjaFdidjFzSE1oMFY2ZzBoSzE5Um9JY25LV0dfRkVGNVA3WGNSZmEzMW1wWXRLX0lldnlmaFpkUHY0RllJZmlVQUFEN0ZFSHAwQy05YmJiWVpNRk92SkJKSTJkbGVzTjNM?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "15 Years of Ra.One: Anubhav Sinha recalls Shah Rukh Khan's sci-fi film, says '2011 wasn't ready for it' - Moneycontrol.com",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Mon, 26 Oct 2026 16:19:58 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.430678+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_54bff5b2930455ff74a9",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMitwJBVV95cUxOeWNlZnUxaWRHNkpyaDUyMHpOUkFuZVp2N2Etc3AxbF82Mk85OTRpa0VPZW84LXJjc3VSS3Fvb2xKd09XOVQ3MmwxSDRaQURodXBtUG1scVhjbHZraWQyQ2dnTjdOTWNnLUFER1VXdFNoc2RmZmEtV1RBdGxTYmdMcFFzdmw1UE5yb1pfOFhmNi1PazAzbmhOQzRVWkxkRkN3QVVNcjFJS21sZl81NHp6UzdpMDdXOVBUYmdic0dqSHdHaDlTYzdab29KTGhoeWV3VWlQN2s1cVNYTXR5ay16VS1yay16WkR3ck5yanY2VWllNFdzWmpqREtiX1ZyYTN3ZGJOLW43dTQxTlVYV0c2dXRwTGRCeU9RQjNLMVdDM095RkZrSWlhMmpDVzJlSE9HWlYxRnBnRdIBvAJBVV95cUxOelVoT19fUkpZT0Z5bEZYU2gyWmJ0V2xzZnJfWllSNkZXUFhuazhWLVNEY0FmcGh3bUhzcUNQanNwcDRyR3ZJTWpob2lISXZSb3RYSW9GRmllQ2Vrbmh1YVAzdGh5OFVCU0ZrU2h2Uk9uVk5GdS1tZnBEeHNvd2RVUldPakJTM0wyZXpWY0NXNUoweEVoMHhjVFhtaHd3VnF4WXQ1Tk12VmhLQ2VpV1NqOFhVbWpZMkg3dEpBdjNtblNDejR6d3lOOFRnR2JqRllSbFhncEdVS3J3ODZud2FCRFdzYm14M1Btb29KV1kxWE16TTBkVHNRejE2UnJLa2FGNnlWY2NPVjBRU25BRzI1bG1jVHgzMnFfVGJIV0dZb3Myb19DcDYzSGQxSUFPSmgwdnd2bmlUYUJZWWJy?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMitwJBVV95cUxOeWNlZnUxaWRHNkpyaDUyMHpOUkFuZVp2N2Etc3AxbF82Mk85OTRpa0VPZW84LXJjc3VSS3Fvb2xKd09XOVQ3MmwxSDRaQURodXBtUG1scVhjbHZraWQyQ2dnTjdOTWNnLUFER1VXdFNoc2RmZmEtV1RBdGxTYmdMcFFzdmw1UE5yb1pfOFhmNi1PazAzbmhOQzRVWkxkRkN3QVVNcjFJS21sZl81NHp6UzdpMDdXOVBUYmdic0dqSHdHaDlTYzdab29KTGhoeWV3VWlQN2s1cVNYTXR5ay16VS1yay16WkR3ck5yanY2VWllNFdzWmpqREtiX1ZyYTN3ZGJOLW43dTQxTlVYV0c2dXRwTGRCeU9RQjNLMVdDM095RkZrSWlhMmpDVzJlSE9HWlYxRnBnRdIBvAJBVV95cUxOelVoT19fUkpZT0Z5bEZYU2gyWmJ0V2xzZnJfWllSNkZXUFhuazhWLVNEY0FmcGh3bUhzcUNQanNwcDRyR3ZJTWpob2lISXZSb3RYSW9GRmllQ2Vrbmh1YVAzdGh5OFVCU0ZrU2h2Uk9uVk5GdS1tZnBEeHNvd2RVUldPakJTM0wyZXpWY0NXNUoweEVoMHhjVFhtaHd3VnF4WXQ1Tk12VmhLQ2VpV1NqOFhVbWpZMkg3dEpBdjNtblNDejR6d3lOOFRnR2JqRllSbFhncEdVS3J3ODZud2FCRFdzYm14M1Btb29KV1kxWE16TTBkVHNRejE2UnJLa2FGNnlWY2NPVjBRU25BRzI1bG1jVHgzMnFfVGJIV0dZb3Myb19DcDYzSGQxSUFPSmgwdnd2bmlUYUJZWWJy?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMitwJBVV95cUxOeWNlZnUxaWRHNkpyaDUyMHpOUkFuZVp2N2Etc3AxbF82Mk85OTRpa0VPZW84LXJjc3VSS3Fvb2xKd09XOVQ3MmwxSDRaQURodXBtUG1scVhjbHZraWQyQ2dnTjdOTWNnLUFER1VXdFNoc2RmZmEtV1RBdGxTYmdMcFFzdmw1UE5yb1pfOFhmNi1PazAzbmhOQzRVWkxkRkN3QVVNcjFJS21sZl81NHp6UzdpMDdXOVBUYmdic0dqSHdHaDlTYzdab29KTGhoeWV3VWlQN2s1cVNYTXR5ay16VS1yay16WkR3ck5yanY2VWllNFdzWmpqREtiX1ZyYTN3ZGJOLW43dTQxTlVYV0c2dXRwTGRCeU9RQjNLMVdDM095RkZrSWlhMmpDVzJlSE9HWlYxRnBnRdIBvAJBVV95cUxOelVoT19fUkpZT0Z5bEZYU2gyWmJ0V2xzZnJfWllSNkZXUFhuazhWLVNEY0FmcGh3bUhzcUNQanNwcDRyR3ZJTWpob2lISXZSb3RYSW9GRmllQ2Vrbmh1YVAzdGh5OFVCU0ZrU2h2Uk9uVk5GdS1tZnBEeHNvd2RVUldPakJTM0wyZXpWY0NXNUoweEVoMHhjVFhtaHd3VnF4WXQ1Tk12VmhLQ2VpV1NqOFhVbWpZMkg3dEpBdjNtblNDejR6d3lOOFRnR2JqRllSbFhncEdVS3J3ODZud2FCRFdzYm14M1Btb29KV1kxWE16TTBkVHNRejE2UnJLa2FGNnlWY2NPVjBRU25BRzI1bG1jVHgzMnFfVGJIV0dZb3Myb19DcDYzSGQxSUFPSmgwdnd2bmlUYUJZWWJy?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "King new poster out: Shah Rukh Khan plays a \u2018lover\u2019 again at 60 | Bollywood - Hindustan Times",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 04:43:52 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.431001+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_e43c7f0195541ebfecc8",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQSWs4ZEhrYndWUFNBZ0stZVl5SWFKYlJvUXl2Ry1WSWc4RFRkekpPN3FsT2t4ZXBVNDhtZ0NMa3FkbEVyUTctV2hWTVo0cWNaUFhTb0ZKc2xmM3VoVWVFd0w5SVpvS3ZuVXFObnV2NmVaVUhiLWN0dVppR0E0WjhGRnhfZTBJVmNrY3pkYWNYUi1lMTFIZV9sQWVSNXQxU2xnZVdlc1dTMUZCVm45VzVYZ2tGejJubmZWRlY3VQ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQSWs4ZEhrYndWUFNBZ0stZVl5SWFKYlJvUXl2Ry1WSWc4RFRkekpPN3FsT2t4ZXBVNDhtZ0NMa3FkbEVyUTctV2hWTVo0cWNaUFhTb0ZKc2xmM3VoVWVFd0w5SVpvS3ZuVXFObnV2NmVaVUhiLWN0dVppR0E0WjhGRnhfZTBJVmNrY3pkYWNYUi1lMTFIZV9sQWVSNXQxU2xnZVdlc1dTMUZCVm45VzVYZ2tGejJubmZWRlY3VQ?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMivAFBVV95cUxQSWs4ZEhrYndWUFNBZ0stZVl5SWFKYlJvUXl2Ry1WSWc4RFRkekpPN3FsT2t4ZXBVNDhtZ0NMa3FkbEVyUTctV2hWTVo0cWNaUFhTb0ZKc2xmM3VoVWVFd0w5SVpvS3ZuVXFObnV2NmVaVUhiLWN0dVppR0E0WjhGRnhfZTBJVmNrY3pkYWNYUi1lMTFIZV9sQWVSNXQxU2xnZVdlc1dTMUZCVm45VzVYZ2tGejJubmZWRlY3VQ?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan to bring Arijit Singh, Karan Aujla, Sonu Nigam to UNIFYD in Abu Dhabi - Gulf Business",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Wed, 21 Oct 2026 20:08:06 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.431508+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_305d0714e51c1e49df0b",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOcTJsMTBLRlduTW1iQ1N6M0tMd09HTmJxNEtHZ0NnakJZZFZ5OWswR3BBNkdkUE9KZTlyQWVpY1pQNEJ6RDdLRjdNX2Nva1ctYWV4Q0FlVnJ2cGFiYllLMVFnckVJRUZvbnctMUJkNHJoSW91X3FEWGpaZC1MbzlwdXp4LW5uYTNSb2VsZlNpUkwyU1NOUG9OTWNZdXdQT0YyUWxUUUlFZVc1NVZmallvX0JSTHh3WTdFdHFKampzUnIzMEUybFo3Y0xsNHlNR2p3OXdibUNhWFZlTy03Rk9katIB4AFBVV95cUxOcTJsMTBLRlduTW1iQ1N6M0tMd09HTmJxNEtHZ0NnakJZZFZ5OWswR3BBNkdkUE9KZTlyQWVpY1pQNEJ6RDdLRjdNX2Nva1ctYWV4Q0FlVnJ2cGFiYllLMVFnckVJRUZvbnctMUJkNHJoSW91X3FEWGpaZC1MbzlwdXp4LW5uYTNSb2VsZlNpUkwyU1NOUG9OTWNZdXdQT0YyUWxUUUlFZVc1NVZmallvX0JSTHh3WTdFdHFKampzUnIzMEUybFo3Y0xsNHlNR2p3OXdibUNhWFZlTy03Rk9kag?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOcTJsMTBLRlduTW1iQ1N6M0tMd09HTmJxNEtHZ0NnakJZZFZ5OWswR3BBNkdkUE9KZTlyQWVpY1pQNEJ6RDdLRjdNX2Nva1ctYWV4Q0FlVnJ2cGFiYllLMVFnckVJRUZvbnctMUJkNHJoSW91X3FEWGpaZC1MbzlwdXp4LW5uYTNSb2VsZlNpUkwyU1NOUG9OTWNZdXdQT0YyUWxUUUlFZVc1NVZmallvX0JSTHh3WTdFdHFKampzUnIzMEUybFo3Y0xsNHlNR2p3OXdibUNhWFZlTy03Rk9katIB4AFBVV95cUxOcTJsMTBLRlduTW1iQ1N6M0tMd09HTmJxNEtHZ0NnakJZZFZ5OWswR3BBNkdkUE9KZTlyQWVpY1pQNEJ6RDdLRjdNX2Nva1ctYWV4Q0FlVnJ2cGFiYllLMVFnckVJRUZvbnctMUJkNHJoSW91X3FEWGpaZC1MbzlwdXp4LW5uYTNSb2VsZlNpUkwyU1NOUG9OTWNZdXdQT0YyUWxUUUlFZVc1NVZmallvX0JSTHh3WTdFdHFKampzUnIzMEUybFo3Y0xsNHlNR2p3OXdibUNhWFZlTy03Rk9kag?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOcTJsMTBLRlduTW1iQ1N6M0tMd09HTmJxNEtHZ0NnakJZZFZ5OWswR3BBNkdkUE9KZTlyQWVpY1pQNEJ6RDdLRjdNX2Nva1ctYWV4Q0FlVnJ2cGFiYllLMVFnckVJRUZvbnctMUJkNHJoSW91X3FEWGpaZC1MbzlwdXp4LW5uYTNSb2VsZlNpUkwyU1NOUG9OTWNZdXdQT0YyUWxUUUlFZVc1NVZmallvX0JSTHh3WTdFdHFKampzUnIzMEUybFo3Y0xsNHlNR2p3OXdibUNhWFZlTy03Rk9katIB4AFBVV95cUxOcTJsMTBLRlduTW1iQ1N6M0tMd09HTmJxNEtHZ0NnakJZZFZ5OWswR3BBNkdkUE9KZTlyQWVpY1pQNEJ6RDdLRjdNX2Nva1ctYWV4Q0FlVnJ2cGFiYllLMVFnckVJRUZvbnctMUJkNHJoSW91X3FEWGpaZC1MbzlwdXp4LW5uYTNSb2VsZlNpUkwyU1NOUG9OTWNZdXdQT0YyUWxUUUlFZVc1NVZmallvX0JSTHh3WTdFdHFKampzUnIzMEUybFo3Y0xsNHlNR2p3OXdibUNhWFZlTy03Rk9kag?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Karan Johar Calls Shah Rukh Khan \u2018The One and Only King\u2019 As He Cheers For His New Film - News18",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 13:48:43 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.431891+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_d5398145159ea4537906",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMi4gJBVV95cUxOaFBfX3Y5ZWRKNmdqVl9vOU02QmhBZ0RYWVppMGt3R1JQT09qQWhpUVJBNlBXVm93c2xMZkM3SnVzdWlqQVc2VWx1dUZLWHNZWThtWU5EX3k1TnRwTGZuNml2V3R3WXpDN1BfNWVua0FHOU9xSGswS2VtMk5CazZDbXE1cWgwVGpua0pGNENwR2FHeTJLVGFvUmlOeU5mUUoxMEJoRGU3WHdrVngxUndrMm1leHRyOTdZSkhxd0pwVS12YzYzMEhrd0VzVS1qMDIyQ2txTHZWcnVZMmFxRHRjUjdieFloY0tjRzJnMUdybEdiT0RXLWtHSl9PYzFyZ2tna3lOOUtObnlOcy1VRkoycTJzVnVzb05Od2lZSmx5YV94eGdXRVNteDBsYWxrSXRxd29YRkFsWkNuRHRpaUdwdlM4MncxMHZwbnVpNHB1WEhNZ2lxSEctdHlhRUpYeFN0QmfSAeICQVVfeXFMTmhQX192OWVkSjZnalZfbzlNNkJoQWdEWFlaaTBrd0dSUE9PakFoaVFSQTZQV1Zvd3NsTGZDN0p1c3VpakFXNlVsdXVGS1hzWVk4bVlORF95NU50cExmbjZpdld0d1l6QzdQXzVlbmtBRzlPcUhrMEtlbTJOQms2Q21xNXFoMFRqbmtKRjRDcEdhR3kyS1Rhb1JpTnlOZlFKMTBCaERlN1h3a1Z4MVJ3azJtZXh0cjk3WUpIcXdKcFUtdmM2MzBIa3dFc1UtajAyMkNrcUx2VnJ1WTJhcUR0Y1I3YnhZaGNLY0cyZzFHcmxHYk9EVy1rR0pfT2MxcmdrZ2t5TjlLTm55TnMtVUZKMnEyc1Z1c29OTndpWUpseWFfeHhnV0VTbXgwbGFsa0l0cXdvWEZBbFpDbkR0aWlHcHZTODJ3MTB2cG51aTRwdVhITWdpcUhHLXR5YUVKWHhTdEJn?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi4gJBVV95cUxOaFBfX3Y5ZWRKNmdqVl9vOU02QmhBZ0RYWVppMGt3R1JQT09qQWhpUVJBNlBXVm93c2xMZkM3SnVzdWlqQVc2VWx1dUZLWHNZWThtWU5EX3k1TnRwTGZuNml2V3R3WXpDN1BfNWVua0FHOU9xSGswS2VtMk5CazZDbXE1cWgwVGpua0pGNENwR2FHeTJLVGFvUmlOeU5mUUoxMEJoRGU3WHdrVngxUndrMm1leHRyOTdZSkhxd0pwVS12YzYzMEhrd0VzVS1qMDIyQ2txTHZWcnVZMmFxRHRjUjdieFloY0tjRzJnMUdybEdiT0RXLWtHSl9PYzFyZ2tna3lOOUtObnlOcy1VRkoycTJzVnVzb05Od2lZSmx5YV94eGdXRVNteDBsYWxrSXRxd29YRkFsWkNuRHRpaUdwdlM4MncxMHZwbnVpNHB1WEhNZ2lxSEctdHlhRUpYeFN0QmfSAeICQVVfeXFMTmhQX192OWVkSjZnalZfbzlNNkJoQWdEWFlaaTBrd0dSUE9PakFoaVFSQTZQV1Zvd3NsTGZDN0p1c3VpakFXNlVsdXVGS1hzWVk4bVlORF95NU50cExmbjZpdld0d1l6QzdQXzVlbmtBRzlPcUhrMEtlbTJOQms2Q21xNXFoMFRqbmtKRjRDcEdhR3kyS1Rhb1JpTnlOZlFKMTBCaERlN1h3a1Z4MVJ3azJtZXh0cjk3WUpIcXdKcFUtdmM2MzBIa3dFc1UtajAyMkNrcUx2VnJ1WTJhcUR0Y1I3YnhZaGNLY0cyZzFHcmxHYk9EVy1rR0pfT2MxcmdrZ2t5TjlLTm55TnMtVUZKMnEyc1Z1c29OTndpWUpseWFfeHhnV0VTbXgwbGFsa0l0cXdvWEZBbFpDbkR0aWlHcHZTODJ3MTB2cG51aTRwdVhITWdpcUhHLXR5YUVKWHhTdEJn?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMi4gJBVV95cUxOaFBfX3Y5ZWRKNmdqVl9vOU02QmhBZ0RYWVppMGt3R1JQT09qQWhpUVJBNlBXVm93c2xMZkM3SnVzdWlqQVc2VWx1dUZLWHNZWThtWU5EX3k1TnRwTGZuNml2V3R3WXpDN1BfNWVua0FHOU9xSGswS2VtMk5CazZDbXE1cWgwVGpua0pGNENwR2FHeTJLVGFvUmlOeU5mUUoxMEJoRGU3WHdrVngxUndrMm1leHRyOTdZSkhxd0pwVS12YzYzMEhrd0VzVS1qMDIyQ2txTHZWcnVZMmFxRHRjUjdieFloY0tjRzJnMUdybEdiT0RXLWtHSl9PYzFyZ2tna3lOOUtObnlOcy1VRkoycTJzVnVzb05Od2lZSmx5YV94eGdXRVNteDBsYWxrSXRxd29YRkFsWkNuRHRpaUdwdlM4MncxMHZwbnVpNHB1WEhNZ2lxSEctdHlhRUpYeFN0QmfSAeICQVVfeXFMTmhQX192OWVkSjZnalZfbzlNNkJoQWdEWFlaaTBrd0dSUE9PakFoaVFSQTZQV1Zvd3NsTGZDN0p1c3VpakFXNlVsdXVGS1hzWVk4bVlORF95NU50cExmbjZpdld0d1l6QzdQXzVlbmtBRzlPcUhrMEtlbTJOQms2Q21xNXFoMFRqbmtKRjRDcEdhR3kyS1Rhb1JpTnlOZlFKMTBCaERlN1h3a1Z4MVJ3azJtZXh0cjk3WUpIcXdKcFUtdmM2MzBIa3dFc1UtajAyMkNrcUx2VnJ1WTJhcUR0Y1I3YnhZaGNLY0cyZzFHcmxHYk9EVy1rR0pfT2MxcmdrZ2t5TjlLTm55TnMtVUZKMnEyc1Z1c29OTndpWUpseWFfeHhnV0VTbXgwbGFsa0l0cXdvWEZBbFpDbkR0aWlHcHZTODJ3MTB2cG51aTRwdVhITWdpcUhHLXR5YUVKWHhTdEJn?oc=5"
+      ],
+      "query_id": "hv_q_008",
+      "query_ids": [
+        "hv_q_008"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "'Shah Rukh Khan hasta tha, phir wapas retake lena padta and I I used to gulp water...', When Satish Shah... - Moneycontrol.com",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Mon, 26 Oct 2026 10:30:45 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.432275+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_2880b12dd232c56b9a69",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1aUHVSQnNtY0I4d3Zrd2ozUmRWbThnekloN3FGU2JfU1hYclplOVM0RWNnVU1Wc3NuVjBHb2Z6RUV2M1ZpNWJsMHhGM213R1ZGQm9lWGpNNFV1WEdzbzBkMg?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1aUHVSQnNtY0I4d3Zrd2ozUmRWbThnekloN3FGU2JfU1hYclplOVM0RWNnVU1Wc3NuVjBHb2Z6RUV2M1ZpNWJsMHhGM213R1ZGQm9lWGpNNFV1WEdzbzBkMg?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1aUHVSQnNtY0I4d3Zrd2ozUmRWbThnekloN3FGU2JfU1hYclplOVM0RWNnVU1Wc3NuVjBHb2Z6RUV2M1ZpNWJsMHhGM213R1ZGQm9lWGpNNFV1WEdzbzBkMg?oc=5"
+      ],
+      "query_id": "hv_q_011",
+      "query_ids": [
+        "hv_q_011"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "New intense Intriguing Look! Shah Rukh Khan\u2019s King - IMDb",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 19:14:38 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.432709+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_a88cd2b7a0d1989d71b3",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxNZzNrcmxIeElJVUxuUlM5NG5YLXkyNmlCYTUxWTlaUWoxanBvZUJnNUFmNXAzR19MaFJoYjNxNEIyZElnY0pWQWUzNTJZSkpVTU9EaUx3N3QwakQxZjFFUXZmRDFNSzlBYmU4VEpIM3B3cmlTLXFzMzk0SjNDTDBHRXdMS20tU0Z0Q25zM3Vjdm9JT3NodHZ5WmswVXh5bDZ2d01VZFlYM2hUNVU1bndwUGZlLUJycTNVQzhpYWxEQ3dQWVJ0czk2NmVNRzFRNTNXU00xZDhNSFkxYVUwNWdEY3RZd2tBWG1YRmc3YXVicTRTNFBhckxPT0xHV1ctNHp6OGxpSGRIVmVBUdIBjwJBVV95cUxQd1NmQjBMZFZlNEJBeldHSC1iOXFCbEhaQkRMZ1FoNHd4TXRqX19WQVZBZnpNdThlekpYYWU1YjNCamNGUnVWUzB6Z05OZkhITWtSN2N4LUdIWXlENWg5WHBTM2RMWnNKeFdxUnNILWp3UktJV1pJdllPaWtObUIyRGJucG95Zlc3Nnc2RUR5VHoyMEd2Y1QzbS1hZlZpTXNxcG9Xajc5eW1QcnhzcW93UTJrRC05OG9XWTc5c2Izb1NvVXRKREpjOURaR0o0LTE0SUVwNFpULVVjVklrWkJZeXhMcjA3eTktaGJOX2thbXNkdXhmRU9uMVdUYlpJSFJYbVZ5UmpBQUdETUJTYjNV?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxNZzNrcmxIeElJVUxuUlM5NG5YLXkyNmlCYTUxWTlaUWoxanBvZUJnNUFmNXAzR19MaFJoYjNxNEIyZElnY0pWQWUzNTJZSkpVTU9EaUx3N3QwakQxZjFFUXZmRDFNSzlBYmU4VEpIM3B3cmlTLXFzMzk0SjNDTDBHRXdMS20tU0Z0Q25zM3Vjdm9JT3NodHZ5WmswVXh5bDZ2d01VZFlYM2hUNVU1bndwUGZlLUJycTNVQzhpYWxEQ3dQWVJ0czk2NmVNRzFRNTNXU00xZDhNSFkxYVUwNWdEY3RZd2tBWG1YRmc3YXVicTRTNFBhckxPT0xHV1ctNHp6OGxpSGRIVmVBUdIBjwJBVV95cUxQd1NmQjBMZFZlNEJBeldHSC1iOXFCbEhaQkRMZ1FoNHd4TXRqX19WQVZBZnpNdThlekpYYWU1YjNCamNGUnVWUzB6Z05OZkhITWtSN2N4LUdIWXlENWg5WHBTM2RMWnNKeFdxUnNILWp3UktJV1pJdllPaWtObUIyRGJucG95Zlc3Nnc2RUR5VHoyMEd2Y1QzbS1hZlZpTXNxcG9Xajc5eW1QcnhzcW93UTJrRC05OG9XWTc5c2Izb1NvVXRKREpjOURaR0o0LTE0SUVwNFpULVVjVklrWkJZeXhMcjA3eTktaGJOX2thbXNkdXhmRU9uMVdUYlpJSFJYbVZ5UmpBQUdETUJTYjNV?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMiigJBVV95cUxNZzNrcmxIeElJVUxuUlM5NG5YLXkyNmlCYTUxWTlaUWoxanBvZUJnNUFmNXAzR19MaFJoYjNxNEIyZElnY0pWQWUzNTJZSkpVTU9EaUx3N3QwakQxZjFFUXZmRDFNSzlBYmU4VEpIM3B3cmlTLXFzMzk0SjNDTDBHRXdMS20tU0Z0Q25zM3Vjdm9JT3NodHZ5WmswVXh5bDZ2d01VZFlYM2hUNVU1bndwUGZlLUJycTNVQzhpYWxEQ3dQWVJ0czk2NmVNRzFRNTNXU00xZDhNSFkxYVUwNWdEY3RZd2tBWG1YRmc3YXVicTRTNFBhckxPT0xHV1ctNHp6OGxpSGRIVmVBUdIBjwJBVV95cUxQd1NmQjBMZFZlNEJBeldHSC1iOXFCbEhaQkRMZ1FoNHd4TXRqX19WQVZBZnpNdThlekpYYWU1YjNCamNGUnVWUzB6Z05OZkhITWtSN2N4LUdIWXlENWg5WHBTM2RMWnNKeFdxUnNILWp3UktJV1pJdllPaWtObUIyRGJucG95Zlc3Nnc2RUR5VHoyMEd2Y1QzbS1hZlZpTXNxcG9Xajc5eW1QcnhzcW93UTJrRC05OG9XWTc5c2Izb1NvVXRKREpjOURaR0o0LTE0SUVwNFpULVVjVklrWkJZeXhMcjA3eTktaGJOX2thbXNkdXhmRU9uMVdUYlpJSFJYbVZ5UmpBQUdETUJTYjNV?oc=5"
+      ],
+      "query_id": "hv_q_011",
+      "query_ids": [
+        "hv_q_011"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan goes bloodied and brutal in NEW 'King' teaser; 'Picture abhi baaki hai!' - The Times of India",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Sat, 24 Oct 2026 13:08:00 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.433144+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_cb4409c2b7519559e0db",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxNTXljeUNJU2sxTWl5WDFxeW4tWmJQUTBycEt3a01halNfUlR3ZXJIdDVGTmRreEtFN2NBOU14X2NHY3psS0VlcFFWT25NZFRpLVZFQ0xVREJ2UmFEMzhxWF9CaVZ1UnNEXzdjSkVVcGRzZ0lWbkhLbWluaWprbEh3ZS1CTnh6cFN1OUdxNnI3Y2d4MzlWU1dKYXhpLXNlaTNIcDNLU0dXN25GSVB0RGFWNWZXUDZfM1k0RWdaTjBJV2hLQkJ0enV4NzNFZi1PbkRrM0RueXlsR2w5RXZpYkU5Q29tVmRZYXJLRGpBSnFZeUVMNWtL0gH6AUFVX3lxTFBoMDMwVDRwTTk5NEtMQkNiWDBUaTR4dm1Xcm05MlJCSEtRWWRBWlV6MDE3N2t5cGhRUzBEQ3hhaHB5OWtfM2tpT0lqZEQwZE1rOGNzWGxiTU9fakhJNlFrZ1FScnhlUUFtMG9MeENDRVNvZ3J1dVQxY0hqVDdmdHhXY0FZb3kxWHZJRXMzU0VOSFk0dUVHS1VXQ190d05ib2ZtaDc0eXpaVDRtYjVUS250MWVNOEprMTBOZm1LOUFGN0dwZ3kybk9UcVhra2dYS3VxWHJnam5pNV8xVzFzSlEycTFEeVk4M0Q4aWJ5WUZaMHk4b053WXNGSVE?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxNTXljeUNJU2sxTWl5WDFxeW4tWmJQUTBycEt3a01halNfUlR3ZXJIdDVGTmRreEtFN2NBOU14X2NHY3psS0VlcFFWT25NZFRpLVZFQ0xVREJ2UmFEMzhxWF9CaVZ1UnNEXzdjSkVVcGRzZ0lWbkhLbWluaWprbEh3ZS1CTnh6cFN1OUdxNnI3Y2d4MzlWU1dKYXhpLXNlaTNIcDNLU0dXN25GSVB0RGFWNWZXUDZfM1k0RWdaTjBJV2hLQkJ0enV4NzNFZi1PbkRrM0RueXlsR2w5RXZpYkU5Q29tVmRZYXJLRGpBSnFZeUVMNWtL0gH6AUFVX3lxTFBoMDMwVDRwTTk5NEtMQkNiWDBUaTR4dm1Xcm05MlJCSEtRWWRBWlV6MDE3N2t5cGhRUzBEQ3hhaHB5OWtfM2tpT0lqZEQwZE1rOGNzWGxiTU9fakhJNlFrZ1FScnhlUUFtMG9MeENDRVNvZ3J1dVQxY0hqVDdmdHhXY0FZb3kxWHZJRXMzU0VOSFk0dUVHS1VXQ190d05ib2ZtaDc0eXpaVDRtYjVUS250MWVNOEprMTBOZm1LOUFGN0dwZ3kybk9UcVhra2dYS3VxWHJnam5pNV8xVzFzSlEycTFEeVk4M0Q4aWJ5WUZaMHk4b053WXNGSVE?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMi9AFBVV95cUxNTXljeUNJU2sxTWl5WDFxeW4tWmJQUTBycEt3a01halNfUlR3ZXJIdDVGTmRreEtFN2NBOU14X2NHY3psS0VlcFFWT25NZFRpLVZFQ0xVREJ2UmFEMzhxWF9CaVZ1UnNEXzdjSkVVcGRzZ0lWbkhLbWluaWprbEh3ZS1CTnh6cFN1OUdxNnI3Y2d4MzlWU1dKYXhpLXNlaTNIcDNLU0dXN25GSVB0RGFWNWZXUDZfM1k0RWdaTjBJV2hLQkJ0enV4NzNFZi1PbkRrM0RueXlsR2w5RXZpYkU5Q29tVmRZYXJLRGpBSnFZeUVMNWtL0gH6AUFVX3lxTFBoMDMwVDRwTTk5NEtMQkNiWDBUaTR4dm1Xcm05MlJCSEtRWWRBWlV6MDE3N2t5cGhRUzBEQ3hhaHB5OWtfM2tpT0lqZEQwZE1rOGNzWGxiTU9fakhJNlFrZ1FScnhlUUFtMG9MeENDRVNvZ3J1dVQxY0hqVDdmdHhXY0FZb3kxWHZJRXMzU0VOSFk0dUVHS1VXQ190d05ib2ZtaDc0eXpaVDRtYjVUS250MWVNOEprMTBOZm1LOUFGN0dwZ3kybk9UcVhra2dYS3VxWHJnam5pNV8xVzFzSlEycTFEeVk4M0Q4aWJ5WUZaMHk4b053WXNGSVE?oc=5"
+      ],
+      "query_id": "hv_q_011",
+      "query_ids": [
+        "hv_q_011"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan unveils new KING poster with a rose between his lips and bloodied face; says, \u201cQaatil Nahi.. Aashiq Hoon\u2026\u201d - Bollywood Hungama",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 04:54:40 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.433577+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_3bdff65f437bdfc2adea",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPS2lDS0NlUGxLVnZoY1BRZkxOZC1VeUJMVjNYUFpRNTkwRlZSVC1QRUdaM3ZzRnlncG1sYzA0dTBOS1NjakxvcGl0VHJJV1FObktvZExKT3FYN1FwdEN0cG9KOFlrLXkwaGdHQ1Rja3RNQ2Y5NlZPN3dEZ2o1RnVmUXB4WmZDX3FOdXRvQng1VlUzOVcweXo2MDU5ZXlTaEFRMVBmTW1yazJrYmxtaE1YRkVJWS05UDBMZW1Belo1bi1NYXZCRWZock4tWjEtYTI5b2lKQVBTeEJLM0xqVHhZ0gHfAUFVX3lxTE9LaUNLQ2VQbEtWdmhjUFFmTE5kLVV5QkxWM1hQWlE1OTBGVlJULVBFR1ozdnNGeWdwbWxjMDR1ME5LU2NqTG9waXRUcklXUU5uS29kTEpPcVg3UXB0Q3Rwb0o4WWsteTBoZ0dDVGNrdE1DZjk2Vk83d0RnajVGdWZRcHhaZkNfcU51dG9CeDVWVTM5VzB5ejYwNTlleVNoQVExUGZNbXJrMmtibG1oTVhGRUlZLTlQMExlbUF6WjVuLU1hdkJFZmhyTi1aMS1hMjlvaUpBUFN4QkszTGpUeFk?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPS2lDS0NlUGxLVnZoY1BRZkxOZC1VeUJMVjNYUFpRNTkwRlZSVC1QRUdaM3ZzRnlncG1sYzA0dTBOS1NjakxvcGl0VHJJV1FObktvZExKT3FYN1FwdEN0cG9KOFlrLXkwaGdHQ1Rja3RNQ2Y5NlZPN3dEZ2o1RnVmUXB4WmZDX3FOdXRvQng1VlUzOVcweXo2MDU5ZXlTaEFRMVBmTW1yazJrYmxtaE1YRkVJWS05UDBMZW1Belo1bi1NYXZCRWZock4tWjEtYTI5b2lKQVBTeEJLM0xqVHhZ0gHfAUFVX3lxTE9LaUNLQ2VQbEtWdmhjUFFmTE5kLVV5QkxWM1hQWlE1OTBGVlJULVBFR1ozdnNGeWdwbWxjMDR1ME5LU2NqTG9waXRUcklXUU5uS29kTEpPcVg3UXB0Q3Rwb0o4WWsteTBoZ0dDVGNrdE1DZjk2Vk83d0RnajVGdWZRcHhaZkNfcU51dG9CeDVWVTM5VzB5ejYwNTlleVNoQVExUGZNbXJrMmtibG1oTVhGRUlZLTlQMExlbUF6WjVuLU1hdkJFZmhyTi1aMS1hMjlvaUpBUFN4QkszTGpUeFk?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPS2lDS0NlUGxLVnZoY1BRZkxOZC1VeUJMVjNYUFpRNTkwRlZSVC1QRUdaM3ZzRnlncG1sYzA0dTBOS1NjakxvcGl0VHJJV1FObktvZExKT3FYN1FwdEN0cG9KOFlrLXkwaGdHQ1Rja3RNQ2Y5NlZPN3dEZ2o1RnVmUXB4WmZDX3FOdXRvQng1VlUzOVcweXo2MDU5ZXlTaEFRMVBmTW1yazJrYmxtaE1YRkVJWS05UDBMZW1Belo1bi1NYXZCRWZock4tWjEtYTI5b2lKQVBTeEJLM0xqVHhZ0gHfAUFVX3lxTE9LaUNLQ2VQbEtWdmhjUFFmTE5kLVV5QkxWM1hQWlE1OTBGVlJULVBFR1ozdnNGeWdwbWxjMDR1ME5LU2NqTG9waXRUcklXUU5uS29kTEpPcVg3UXB0Q3Rwb0o4WWsteTBoZ0dDVGNrdE1DZjk2Vk83d0RnajVGdWZRcHhaZkNfcU51dG9CeDVWVTM5VzB5ejYwNTlleVNoQVExUGZNbXJrMmtibG1oTVhGRUlZLTlQMExlbUF6WjVuLU1hdkJFZmhyTi1aMS1hMjlvaUpBUFN4QkszTGpUeFk?oc=5"
+      ],
+      "query_id": "hv_q_011",
+      "query_ids": [
+        "hv_q_011"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "King new poster: Shah Rukh Khan to play a dreaded lover in Siddharth Anand's film - WION",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 05:08:00 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.434015+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_a37ffe2135ac38af08fe",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9fUk0tVTM4LWhudkpPWURKUG9sU2w5SE0zRE1DS0h3a1YzMk5ta2xLdmRDenlybWNlbEtZemtOYmc5ZE9nWEM0UldhTDhpbnRLLThta3Z3dXhGdVBHLXgteFd4TXpVMDA?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9fUk0tVTM4LWhudkpPWURKUG9sU2w5SE0zRE1DS0h3a1YzMk5ta2xLdmRDenlybWNlbEtZemtOYmc5ZE9nWEM0UldhTDhpbnRLLThta3Z3dXhGdVBHLXgteFd4TXpVMDA?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9fUk0tVTM4LWhudkpPWURKUG9sU2w5SE0zRE1DS0h3a1YzMk5ta2xLdmRDenlybWNlbEtZemtOYmc5ZE9nWEM0UldhTDhpbnRLLThta3Z3dXhGdVBHLXgteFd4TXpVMDA?oc=5"
+      ],
+      "query_id": "hv_q_011",
+      "query_ids": [
+        "hv_q_011"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan\u2019s King Poster Hits Fan Frenzy: How A 1999 Baadshah Line Came Full Circle Ahead Of Christmas 2026! - IMDb",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 16:06:11 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.434471+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_779b19191482876c13e3",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxORWlkdXV2QnNiLTdZYnlLdUJQYlVDOENua05WTzZGaDYwREJHUFI0QVNHSWlXcFUtUk1YU01zNVRiNlVsM0FCV0hUdFRJekpGejFlaVpraXRjZERSMXN6MnFKTDdQZVdLcWZoX0VrSUE2YVhVVl9ZQWRfaEFMSC1HNDlvUQ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxORWlkdXV2QnNiLTdZYnlLdUJQYlVDOENua05WTzZGaDYwREJHUFI0QVNHSWlXcFUtUk1YU01zNVRiNlVsM0FCV0hUdFRJekpGejFlaVpraXRjZERSMXN6MnFKTDdQZVdLcWZoX0VrSUE2YVhVVl9ZQWRfaEFMSC1HNDlvUQ?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMigwFBVV95cUxORWlkdXV2QnNiLTdZYnlLdUJQYlVDOENua05WTzZGaDYwREJHUFI0QVNHSWlXcFUtUk1YU01zNVRiNlVsM0FCV0hUdFRJekpGejFlaVpraXRjZERSMXN6MnFKTDdQZVdLcWZoX0VrSUE2YVhVVl9ZQWRfaEFMSC1HNDlvUQ?oc=5"
+      ],
+      "query_id": "hv_q_011",
+      "query_ids": [
+        "hv_q_011"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Hyundai Delivers 1100th IONIQ 5 to Shah Rukh Khan - ACKO Drive",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Mon, 26 Oct 2026 22:29:17 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.434978+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_d6d3f7123a3d53b960fa",
+      "aliases": [],
+      "source_url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNR3VnaHQ3ai1tZDdDX2ZmeUhqS1QzZ3B6UjRmVXVJUWlJaW16U2xWSkVWZnNxRkVRWU1GMUlXN1BVYVR2aGxobXhTaXU0eWh2UC1xYW8zN3UtYUJOQkJuUlNndG1YNmVDRDdIVjFwZDZrT1QzUE1WU1BZOVMxWGVhaUctaFpMNXRLaEpSRzI5SkxoR0dCeEtxakh2QnZZTGJCak1jcHNR?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNR3VnaHQ3ai1tZDdDX2ZmeUhqS1QzZ3B6UjRmVXVJUWlJaW16U2xWSkVWZnNxRkVRWU1GMUlXN1BVYVR2aGxobXhTaXU0eWh2UC1xYW8zN3UtYUJOQkJuUlNndG1YNmVDRDdIVjFwZDZrT1QzUE1WU1BZOVMxWGVhaUctaFpMNXRLaEpSRzI5SkxoR0dCeEtxakh2QnZZTGJCak1jcHNR?oc=5",
+      "source_urls": [
+        "https://news.google.com/rss/articles/CBMipgFBVV95cUxNR3VnaHQ3ai1tZDdDX2ZmeUhqS1QzZ3B6UjRmVXVJUWlJaW16U2xWSkVWZnNxRkVRWU1GMUlXN1BVYVR2aGxobXhTaXU0eWh2UC1xYW8zN3UtYUJOQkJuUlNndG1YNmVDRDdIVjFwZDZrT1QzUE1WU1BZOVMxWGVhaUctaFpMNXRLaEpSRzI5SkxoR0dCeEtxakh2QnZZTGJCak1jcHNR?oc=5"
+      ],
+      "query_id": "hv_q_011",
+      "query_ids": [
+        "hv_q_011"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "news.google.com",
+      "title": "Shah Rukh Khan\u2019s new \u2018King\u2019 poster harks back to \u2018Baadshah\u2019 - The Financial Express",
+      "source_type": "FEED_ENTRY",
+      "published_at": "Tue, 27 Oct 2026 06:44:33 GMT",
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.435499+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_4cc2e3823ef231e596bb",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+      "canonical_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+      "source_urls": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Shah Rukh Khan And Suhana Khan\u2019s King Eyes Christmas 2026 Release? Here\u2019s What We Know",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-01-19T11:29:11+05:30",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.458649+00:00",
+      "discovered_at": "2026-10-28T08:54:54.436452+00:00",
+      "raw_content_hash": "c575feb642524bdc640e51d736f94d2eefc8f6955a2f0d6ac738b958189d1970",
+      "word_count": 731,
+      "utf8_bytes": 4463,
+      "char_count": 4409,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 6770.9h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_017",
+          "acquired_at": "2026-10-28T08:54:54.458649+00:00",
+          "source_id": "ev_hv_4cc2e3823ef231e596bb",
+          "raw_content_hash": "c575feb642524bdc640e51d736f94d2eefc8f6955a2f0d6ac738b958189d1970",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "f6450d030e1f11941ee72dcc8ab392aa7b3a88bf6dada1dcee40f4bb5fe619f2",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+        "requested_endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+        "redirect_chain": [
+          "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 122394,
+        "decoded_body_bytes": 593448,
+        "network_latency_ms": 4335,
+        "raw_body_sha256": "a12ca3220f4e8f23c93a7668cfe9ec75dc9b5b1d096e0daa32b92d7728a25b49",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html",
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-and-suhana-khans-king-eyes-christmas-2026-release-heres-what-we-know-ws-l-9841184.html"
+      ]
+    },
+    {
+      "source_id": "ev_hv_9e1c0828e3ecd4bc816e",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+      "canonical_url": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+      "source_urls": [
+        "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "\u2018Proud To Be Indian\u2019: Shah Rukh Khan Extends Heartfelt Wishes On 77th Republic Day",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-01-26T15:38:28+05:30",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.461334+00:00",
+      "discovered_at": "2026-10-28T08:54:54.437493+00:00",
+      "raw_content_hash": "6481eea46101e6bdd6041bdc75fa0f2804622882e28d16b94e2083c7d8042180",
+      "word_count": 726,
+      "utf8_bytes": 4647,
+      "char_count": 4378,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 6598.8h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_017",
+          "acquired_at": "2026-10-28T08:54:54.461334+00:00",
+          "source_id": "ev_hv_9e1c0828e3ecd4bc816e",
+          "raw_content_hash": "6481eea46101e6bdd6041bdc75fa0f2804622882e28d16b94e2083c7d8042180",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "c2044e6289ed6b4069a7b2f635207c844fc437946c6918f2c034c9d8c205184a",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+        "requested_endpoint": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+        "redirect_chain": [
+          "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 122699,
+        "decoded_body_bytes": 590421,
+        "network_latency_ms": 3469,
+        "raw_body_sha256": "a4c5788273bc63b0038549375021bf88a3304281f72ade1e73d9078c7fecb71c",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html",
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/proud-to-be-indian-shah-rukh-khan-extends-heartfelt-wishes-on-77th-republic-day-ws-l-9857018.html"
+      ]
+    },
+    {
+      "source_id": "ev_hv_a8b830efa52093d1185e",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "canonical_url": "https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html",
+      "source_urls": [
+        "https://www.news18.com/movies/bollywood/king-release-date-announced-aryan-khan-gushes-over-dad-shah-rukh-khans-fierce-look-baap-ws-l-9854291.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "King Release Date Announced; Aryan Khan Gushes Over Dad Shah Rukh Khan\u2019s Fierce Look: \u2018Baap\u2019",
+      "source_type": "BLOCKED_OR_FAILED",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.438033+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "FAILED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 1,
+      "errors": [
+        {
+          "type": "BUDGET_EXHAUSTED",
+          "detail": "",
+          "at": "2026-10-28T08:54:54.643656+00:00",
+          "query_id": "hv_q_017",
+          "http_status": null
+        }
+      ],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_c580be680463d7883f2b",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+      "canonical_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+      "source_urls": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Shah Rukh Khan Announces King Release Date; Sapna Choudhary Opens Up On Joining The 50",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-01-24T21:54:58+05:30",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.511153+00:00",
+      "discovered_at": "2026-10-28T08:54:54.439186+00:00",
+      "raw_content_hash": "6301607eb75ec31c72914411f840e3294716d7e4d02b0710aa6d68d6e1b39685",
+      "word_count": 916,
+      "utf8_bytes": 5482,
+      "char_count": 5432,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 6640.5h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_017",
+          "acquired_at": "2026-10-28T08:54:54.511153+00:00",
+          "source_id": "ev_hv_c580be680463d7883f2b",
+          "raw_content_hash": "6301607eb75ec31c72914411f840e3294716d7e4d02b0710aa6d68d6e1b39685",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "97a412ce49e5cc4ba376ea5e13e67f81dc7f0cb2c544cbdda3c06cf55dd16e76",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+        "requested_endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+        "redirect_chain": [
+          "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 125135,
+        "decoded_body_bytes": 600612,
+        "network_latency_ms": 5108,
+        "raw_body_sha256": "7e632d01e551e0014a3eb6910d54d6a751031c1fa78a3cbfe07368fa776b2bf3",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html",
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-announces-king-release-date-sapna-choudhary-opens-up-on-joining-the-50-ws-l-9854644.html"
+      ]
+    },
+    {
+      "source_id": "ev_hv_7a4ab0c878c791fd5a9d",
+      "aliases": [],
+      "source_url": "https://www.news18.com/topics/shah-rukh-khan/",
+      "canonical_url": "https://www.news18.com/topics/shah-rukh-khan/",
+      "source_urls": [
+        "https://www.news18.com/topics/shah-rukh-khan/"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Shah Rukh Khan\u2019s",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.439692+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_e21641feb6fb2e6a3b29",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+      "canonical_url": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+      "source_urls": [
+        "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Shah Rukh Khan To Play THIS Role In Rajinikanth Starrer Jailer 2: Report",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-02-01T10:13:07+05:30",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.533742+00:00",
+      "discovered_at": "2026-10-28T08:54:54.440680+00:00",
+      "raw_content_hash": "5c45061c4dae7ec239c9be99d909952d8a3c3bda6fb02646335eb15d07793cd8",
+      "word_count": 763,
+      "utf8_bytes": 4805,
+      "char_count": 4785,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 6460.2h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_017",
+          "acquired_at": "2026-10-28T08:54:54.533742+00:00",
+          "source_id": "ev_hv_e21641feb6fb2e6a3b29",
+          "raw_content_hash": "5c45061c4dae7ec239c9be99d909952d8a3c3bda6fb02646335eb15d07793cd8",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "14b34d25e33f2a2d3df4898a8da3252bd0eb9b711673e371d27f891573868388",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+        "requested_endpoint": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+        "redirect_chain": [
+          "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 123091,
+        "decoded_body_bytes": 592558,
+        "network_latency_ms": 3754,
+        "raw_body_sha256": "d402f1ae1c54a908927c60f0e40d08bfff38df5add442f7e1a9ba9dff9acf44e",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html",
+      "redirect_chain": [
+        "https://www.news18.com/movies/tamil-cinema/shah-rukh-khan-to-play-this-role-in-rajinikanth-starrer-jailer-2-report-ws-l-9871278.html"
+      ]
+    },
+    {
+      "source_id": "ev_hv_58a8d13e3f57a698ced4",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+      "canonical_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+      "source_urls": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Shah Rukh Khan Calmly Removes Sunglasses During Mumbai Airport Security Check; Video Goes Viral",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-01-29T14:44:23+05:30",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.481424+00:00",
+      "discovered_at": "2026-10-28T08:54:54.441591+00:00",
+      "raw_content_hash": "1f57b7d4fcb765431148d802e5b97f7c9144558b79b9018e456f08f56e812e77",
+      "word_count": 638,
+      "utf8_bytes": 4099,
+      "char_count": 4061,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 6527.7h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_017",
+          "acquired_at": "2026-10-28T08:54:54.481424+00:00",
+          "source_id": "ev_hv_58a8d13e3f57a698ced4",
+          "raw_content_hash": "1f57b7d4fcb765431148d802e5b97f7c9144558b79b9018e456f08f56e812e77",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "1a21513b83e248413a94b48a0b1f487e40d6aa0a1e467ec6d1c1e147b11919cc",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+        "requested_endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+        "redirect_chain": [
+          "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 122619,
+        "decoded_body_bytes": 591852,
+        "network_latency_ms": 3662,
+        "raw_body_sha256": "94223ac46761c14ebacbe5e7149b806f14bd6a0604f160bfe7eafee6fc1de18d",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html",
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-calmly-removes-sunglasses-during-mumbai-airport-security-check-video-goes-viral-ws-kl-9863717.html"
+      ]
+    },
+    {
+      "source_id": "ev_hv_f6cd4be7bbfa259b3384",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+      "canonical_url": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+      "source_urls": [
+        "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Abhay Varma On Working With Shah Rukh Khan In King: \u2018I Just Wanted Him To Know My Name\u2019",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-01-30T10:34:14+05:30",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.556889+00:00",
+      "discovered_at": "2026-10-28T08:54:54.442532+00:00",
+      "raw_content_hash": "6b58fbc2355a27786868f4c54fca9538ab2342bfcdbe058239f56941c0936821",
+      "word_count": 691,
+      "utf8_bytes": 4014,
+      "char_count": 3970,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 6507.8h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_017",
+          "acquired_at": "2026-10-28T08:54:54.556889+00:00",
+          "source_id": "ev_hv_f6cd4be7bbfa259b3384",
+          "raw_content_hash": "6b58fbc2355a27786868f4c54fca9538ab2342bfcdbe058239f56941c0936821",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "b507ed62dad152ceb84eab809795b147c90ebc5fed0c1065fdad4f6cef4415b7",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+        "requested_endpoint": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+        "redirect_chain": [
+          "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 122150,
+        "decoded_body_bytes": 590924,
+        "network_latency_ms": 4398,
+        "raw_body_sha256": "81a70b43cda5706084405c5432c0c362e7fb612f5ec3ad9969854c781bdbc213",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html",
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/abhay-varma-on-working-with-shah-rukh-khan-in-king-i-just-wanted-him-to-know-my-name-ws-l-9866379.html"
+      ]
+    },
+    {
+      "source_id": "ev_hv_cf7bfe42f8f44e97112f",
+      "aliases": [],
+      "source_url": "https://timesofindia.indiatimes.com",
+      "canonical_url": "https://timesofindia.indiatimes.com/",
+      "source_urls": [
+        "https://timesofindia.indiatimes.com"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "timesofindia.indiatimes.com",
+      "title": "US News: US News, Top News in India, US election news, Business news, Sports & International News | Times of India",
+      "source_type": "PUBLISHER_HOMEPAGE",
+      "published_at": null,
+      "publication_time_basis": "CAPTURED_PUBLICATION_NOT_OBSERVED",
+      "acquired_at": "2026-10-28T08:54:54.594546+00:00",
+      "discovered_at": "2026-10-28T08:54:54.443072+00:00",
+      "raw_content_hash": "26ab8bf832339640804fc7f204ca124e542f580b5f090b26e24eb951cf2e97bc",
+      "word_count": 1029,
+      "utf8_bytes": 20116,
+      "char_count": 20000,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "Insufficient multi-token topic match"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "direct_api",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.594546+00:00",
+          "source_id": "ev_hv_cf7bfe42f8f44e97112f",
+          "raw_content_hash": "26ab8bf832339640804fc7f204ca124e542f580b5f090b26e24eb951cf2e97bc",
+          "method": "direct_api"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "d83030bdadfc4195ebdcf9b35f5191710fa0861fbb0d563bf801df57ed6bec53",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": true,
+      "transport": {
+        "endpoint": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+        "requested_endpoint": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+        "redirect_chain": [
+          "https://r.jina.ai/https://timesofindia.indiatimes.com"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 230525,
+        "attempts": 1,
+        "network_latency_ms": 4926,
+        "raw_body_sha256": "10ed21c8d341dbfcd9463df7864809d4ab7d10d477ca9613be2ed335864b25b3",
+        "content_type": "text/plain; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://r.jina.ai/https://timesofindia.indiatimes.com",
+      "redirect_chain": [
+        "https://r.jina.ai/https://timesofindia.indiatimes.com"
+      ]
+    },
+    {
+      "source_id": "ev_hv_0a050053a09d4026ff0c",
+      "aliases": [],
+      "source_url": "https://www.afaqs.com",
+      "canonical_url": "https://www.afaqs.com/",
+      "source_urls": [
+        "https://www.afaqs.com"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "www.afaqs.com",
+      "title": "Advertising, Media, Marketing, Digital & Agencies - afaqs!",
+      "source_type": "PUBLISHER_HOMEPAGE",
+      "published_at": null,
+      "publication_time_basis": "CAPTURED_PUBLICATION_NOT_OBSERVED",
+      "acquired_at": "2026-10-28T08:54:54.484973+00:00",
+      "discovered_at": "2026-10-28T08:54:54.443606+00:00",
+      "raw_content_hash": "fb8387455836ebfae7c4ef783957817f34dda860da8cbd234ec31e1814bc4c45",
+      "word_count": 1016,
+      "utf8_bytes": 5959,
+      "char_count": 5951,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "Insufficient multi-token topic match"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.484973+00:00",
+          "source_id": "ev_hv_0a050053a09d4026ff0c",
+          "raw_content_hash": "fb8387455836ebfae7c4ef783957817f34dda860da8cbd234ec31e1814bc4c45",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "4faf590390ddea10d1fb968f9795d8186e40e94a2d66f1d166325d0d465f48b9",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.afaqs.com",
+        "requested_endpoint": "https://www.afaqs.com",
+        "redirect_chain": [
+          "https://www.afaqs.com"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 54245,
+        "decoded_body_bytes": 285927,
+        "network_latency_ms": 2636,
+        "raw_body_sha256": "095385b8dc2dc986c4770b82a0b86ef013a23c78973b74620df3709abde7b903",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.afaqs.com",
+      "redirect_chain": [
+        "https://www.afaqs.com"
+      ]
+    },
+    {
+      "source_id": "ev_hv_bbb20010e909421aa065",
+      "aliases": [],
+      "source_url": "https://www.afaqs.com/rss",
+      "canonical_url": "https://www.afaqs.com/rss",
+      "source_urls": [
+        "https://www.afaqs.com/rss"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "www.afaqs.com",
+      "title": "afaqs! : Latest Posts",
+      "source_type": "SOURCE_INDEX",
+      "published_at": "Wed, 28 Oct 2026 08:54:12 GMT",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.488381+00:00",
+      "discovered_at": "2026-10-28T08:54:54.444141+00:00",
+      "raw_content_hash": "5060a66af131cad54e0ffa94a547a8a317bb4a6eb72865a2c34b3657bdd76673",
+      "word_count": 450,
+      "utf8_bytes": 18521,
+      "char_count": 18521,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "Insufficient multi-token topic match"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "direct_api",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.488381+00:00",
+          "source_id": "ev_hv_bbb20010e909421aa065",
+          "raw_content_hash": "5060a66af131cad54e0ffa94a547a8a317bb4a6eb72865a2c34b3657bdd76673",
+          "method": "direct_api"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "4e79f68fa41d5b27aae324fb6f51380238c67912ab85cffb895f01dc661a7218",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://r.jina.ai/https://www.afaqs.com/rss",
+        "requested_endpoint": "https://www.afaqs.com/rss",
+        "redirect_chain": [
+          "https://r.jina.ai/https://www.afaqs.com/rss"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 18656,
+        "decoded_body_bytes": 18656,
+        "network_latency_ms": 3775,
+        "raw_body_sha256": "0e6df32cc2876b32e8a7a3502238ad171c2e67351821eb7549e65300749db8e8",
+        "content_type": "text/plain; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://r.jina.ai/https://www.afaqs.com/rss",
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.afaqs.com/rss"
+      ]
+    },
+    {
+      "source_id": "ev_hv_4c8c62c3c396b54a919d",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/5n5qg2p254",
+      "canonical_url": "https://bdnews24.com/entertainment/5n5qg2p254",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/5n5qg2p254"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Shah Rukh Khan set to skip birthday fan meet for \u2018King\u2019 shoot",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-10-28T06:47:22+00:00",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.500068+00:00",
+      "discovered_at": "2026-10-28T08:54:54.445086+00:00",
+      "raw_content_hash": "2e51eb3b12b52c067c4ee9219edfff808a46bd5b6d46ce653085f47e47ee0620",
+      "word_count": 524,
+      "utf8_bytes": 3189,
+      "char_count": 3155,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "QUALIFIED",
+      "qualification_reasons": [],
+      "useful_words": 46,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.500068+00:00",
+          "source_id": "ev_hv_4c8c62c3c396b54a919d",
+          "raw_content_hash": "2e51eb3b12b52c067c4ee9219edfff808a46bd5b6d46ce653085f47e47ee0620",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "0a4c0452c6fe9785b06683be79c5c810b89c2620a10d5fba68f3716e1b780917",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com/entertainment/5n5qg2p254",
+        "requested_endpoint": "https://bdnews24.com/entertainment/5n5qg2p254",
+        "redirect_chain": [
+          "https://bdnews24.com/entertainment/5n5qg2p254"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 29745,
+        "decoded_body_bytes": 207108,
+        "network_latency_ms": 2641,
+        "raw_body_sha256": "604e0ef53d9d2b45d2e35347ad77aee734efab216400220ba7b263ba4d0b5e2a",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com/entertainment/5n5qg2p254",
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/5n5qg2p254"
+      ]
+    },
+    {
+      "source_id": "ev_hv_ec030a2dd631d7972b81",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+      "canonical_url": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+      "source_urls": [
+        "https://bdnews24.com/archive?q=Shah+Rukh+Khan"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Archives | bdnews24.com",
+      "source_type": "SOURCE_INDEX",
+      "published_at": null,
+      "publication_time_basis": "CAPTURED_PUBLICATION_NOT_OBSERVED",
+      "acquired_at": "2026-10-28T08:54:54.579371+00:00",
+      "discovered_at": "2026-10-28T08:54:54.445670+00:00",
+      "raw_content_hash": "1100aa02879cd42356e818e9c70ea585c95d57ae3e166235ce0783025b0002ab",
+      "word_count": 223,
+      "utf8_bytes": 1388,
+      "char_count": 1360,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.579371+00:00",
+          "source_id": "ev_hv_ec030a2dd631d7972b81",
+          "raw_content_hash": "1100aa02879cd42356e818e9c70ea585c95d57ae3e166235ce0783025b0002ab",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "088a6aeb39307ee96ee498fb040d55bd8d0a406d4ce54b51b98a6454c24db981",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+        "requested_endpoint": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+        "redirect_chain": [
+          "https://bdnews24.com/archive?q=Shah+Rukh+Khan"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 23557,
+        "decoded_body_bytes": 191827,
+        "network_latency_ms": 2658,
+        "raw_body_sha256": "edbd1a1cdd51fe1e0effe8abb10a94ad9b476fb9428f2075b346222bd8338de4",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com/archive?q=Shah+Rukh+Khan",
+      "redirect_chain": [
+        "https://bdnews24.com/archive?q=Shah+Rukh+Khan"
+      ]
+    },
+    {
+      "source_id": "ev_hv_8411aeede774db704908",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/topic/shah-rukh-khan",
+      "canonical_url": "https://bdnews24.com/topic/shah-rukh-khan",
+      "source_urls": [
+        "https://bdnews24.com/topic/shah-rukh-khan"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Shah Rukh Khan | bdnews24.com",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": "CAPTURED_PUBLICATION_NOT_OBSERVED",
+      "acquired_at": "2026-10-28T08:54:54.505063+00:00",
+      "discovered_at": "2026-10-28T08:54:54.446502+00:00",
+      "raw_content_hash": "baaba14cdb51f9fd4b4cc80f62ef9d7af2992295fb165a22bfdfbe4238228a0a",
+      "word_count": 104,
+      "utf8_bytes": 704,
+      "char_count": 668,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.505063+00:00",
+          "source_id": "ev_hv_8411aeede774db704908",
+          "raw_content_hash": "baaba14cdb51f9fd4b4cc80f62ef9d7af2992295fb165a22bfdfbe4238228a0a",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "4bc6e130d07dcde7812c72659e9ca869a1aa5e06109d43415f0f0353bbc39e1f",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com/topic/shah-rukh-khan",
+        "requested_endpoint": "https://bdnews24.com/topic/shah-rukh-khan",
+        "redirect_chain": [
+          "https://bdnews24.com/topic/shah-rukh-khan"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 21376,
+        "decoded_body_bytes": 153053,
+        "network_latency_ms": 1656,
+        "raw_body_sha256": "33d7af3ec0519afc390954e3f93678d01cb5ebfca62fa40526f939d85ae9bcba",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com/topic/shah-rukh-khan",
+      "redirect_chain": [
+        "https://bdnews24.com/topic/shah-rukh-khan"
+      ]
+    },
+    {
+      "source_id": "ev_hv_b9d203a2cf08442b599b",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/lerpec5rkf",
+      "canonical_url": "https://bdnews24.com/entertainment/lerpec5rkf",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/lerpec5rkf"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Shah Rukh Khan\u2019s new \u2018King\u2019 poster harks back to \u2018Baadshah\u2019",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-10-27T06:35:26+00:00",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.544355+00:00",
+      "discovered_at": "2026-10-28T08:54:54.447484+00:00",
+      "raw_content_hash": "f65ea40790c4b462e7e1c3c10b37fe2dac687ec5968244badc341cfaf2cb9eaa",
+      "word_count": 510,
+      "utf8_bytes": 3255,
+      "char_count": 3147,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "QUALIFIED",
+      "qualification_reasons": [],
+      "useful_words": 27,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.544355+00:00",
+          "source_id": "ev_hv_b9d203a2cf08442b599b",
+          "raw_content_hash": "f65ea40790c4b462e7e1c3c10b37fe2dac687ec5968244badc341cfaf2cb9eaa",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "1fe33be1a93e52815b0498d9675279c3d8ba967b395543fa49de87b7bcb2588f",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com/entertainment/lerpec5rkf",
+        "requested_endpoint": "https://bdnews24.com/entertainment/lerpec5rkf",
+        "redirect_chain": [
+          "https://bdnews24.com/entertainment/lerpec5rkf"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 27606,
+        "decoded_body_bytes": 199729,
+        "network_latency_ms": 2182,
+        "raw_body_sha256": "6e2ac7200900e3186a95f6101cb96dcc4ca2d247dadeff2e126448553f04b6f8",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com/entertainment/lerpec5rkf",
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/lerpec5rkf"
+      ]
+    },
+    {
+      "source_id": "ev_hv_11ae7cba7926ea7e8e46",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/eqp2ob77t1",
+      "canonical_url": "https://bdnews24.com/entertainment/eqp2ob77t1",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/eqp2ob77t1"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Why Shah Rukh Khan turned to films despite disliking Bollywood",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-10-14T06:11:50+00:00",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.523195+00:00",
+      "discovered_at": "2026-10-28T08:54:54.448512+00:00",
+      "raw_content_hash": "56286d11f94ef0a4cb60e3001027edc5f2d459c66b6339de25e5c06172385cf5",
+      "word_count": 569,
+      "utf8_bytes": 3322,
+      "char_count": 3298,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 338.7h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.523195+00:00",
+          "source_id": "ev_hv_11ae7cba7926ea7e8e46",
+          "raw_content_hash": "56286d11f94ef0a4cb60e3001027edc5f2d459c66b6339de25e5c06172385cf5",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "1a8056f0f19d54fe76ccdf6fd4e3647cd2142675a5a7b2d6ca93792b82a446a1",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com/entertainment/eqp2ob77t1",
+        "requested_endpoint": "https://bdnews24.com/entertainment/eqp2ob77t1",
+        "redirect_chain": [
+          "https://bdnews24.com/entertainment/eqp2ob77t1"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 27651,
+        "decoded_body_bytes": 199613,
+        "network_latency_ms": 3149,
+        "raw_body_sha256": "25a284f0ff4217f30c114a95800393da21ad399e8455010a108f5b7e1a2bcb90",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com/entertainment/eqp2ob77t1",
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/eqp2ob77t1"
+      ]
+    },
+    {
+      "source_id": "ev_hv_dd207df88ac52b628ebb",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/rnotd7lxnj",
+      "canonical_url": "https://bdnews24.com/entertainment/rnotd7lxnj",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/rnotd7lxnj"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Shah Rukh Khan remains India\u2019s richest actor despite wealth drop",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-09-24T09:25:30+00:00",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.564335+00:00",
+      "discovered_at": "2026-10-28T08:54:54.449548+00:00",
+      "raw_content_hash": "24b60ce9fa8eeb0058e778fe941962c93a9d7dcaf925b6a9063d56cc4f47595b",
+      "word_count": 600,
+      "utf8_bytes": 3728,
+      "char_count": 3684,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 815.5h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.564335+00:00",
+          "source_id": "ev_hv_dd207df88ac52b628ebb",
+          "raw_content_hash": "24b60ce9fa8eeb0058e778fe941962c93a9d7dcaf925b6a9063d56cc4f47595b",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "0878f5fcacbd5f20ec3dc9105ecc898dabcdf6845e94bb1aeab012439154467d",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com/entertainment/rnotd7lxnj",
+        "requested_endpoint": "https://bdnews24.com/entertainment/rnotd7lxnj",
+        "redirect_chain": [
+          "https://bdnews24.com/entertainment/rnotd7lxnj"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 27701,
+        "decoded_body_bytes": 200193,
+        "network_latency_ms": 4789,
+        "raw_body_sha256": "9e9d77481187fcefd2001cd1b523434d2bfb1df8af5cfe58914409897fbe881f",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com/entertainment/rnotd7lxnj",
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/rnotd7lxnj"
+      ]
+    },
+    {
+      "source_id": "ev_hv_4418ddc6b6f93cd8d5d5",
+      "aliases": [],
+      "source_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+      "canonical_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+      "source_urls": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html"
+      ],
+      "query_id": "hv_q_017",
+      "query_ids": [
+        "hv_q_017"
+      ],
+      "publisher": "PR Wire / RSS",
+      "publisher_host": "www.news18.com",
+      "title": "Shah Rukh Khan Calls Rani Mukerji 'Feisty And Compassionate' As Mardaani 3 Hits Theatres",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-01-30T20:07:10+05:30",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.572174+00:00",
+      "discovered_at": "2026-10-28T08:54:54.450577+00:00",
+      "raw_content_hash": "d12c72a3f385b03b5ea449988eff570a43ddb1d2172c8ff954069d69d54be016",
+      "word_count": 656,
+      "utf8_bytes": 4098,
+      "char_count": 4066,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 6498.3h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_017",
+          "acquired_at": "2026-10-28T08:54:54.572174+00:00",
+          "source_id": "ev_hv_4418ddc6b6f93cd8d5d5",
+          "raw_content_hash": "d12c72a3f385b03b5ea449988eff570a43ddb1d2172c8ff954069d69d54be016",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "0ddcab98dac90e4a493e1d81ac53773821f93ee2d08fe8ce474b41207e28c211",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+        "requested_endpoint": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+        "redirect_chain": [
+          "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 120899,
+        "decoded_body_bytes": 583654,
+        "network_latency_ms": 4166,
+        "raw_body_sha256": "1d4178297c25d80d2624c09cf29d0dd36b716e7e8627290ab9ddb7646f6432e5",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html",
+      "redirect_chain": [
+        "https://www.news18.com/movies/bollywood/shah-rukh-khan-calls-rani-mukerji-feisty-and-compassionate-as-mardaani-3-hits-theatres-ws-kl-9868583.html"
+      ]
+    },
+    {
+      "source_id": "ev_hv_24c372f93d8bfaabb2f6",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/cb8f3d5169f1",
+      "canonical_url": "https://bdnews24.com/entertainment/cb8f3d5169f1",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/cb8f3d5169f1"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Entertainment \u2018Teachers loved him\u2019: Euphoria's Palash Sen recalls Shah Rukh Khan\u2019s school days Published :\n                                11 Sep 2026, 06:24 PM",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.451237+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_01f8e4bb1a1f8fea31a1",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/28a429fa505b",
+      "canonical_url": "https://bdnews24.com/entertainment/28a429fa505b",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/28a429fa505b"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "8-foot snake rescued from Shah Rukh Khan\u2019s home, another escapes",
+      "source_type": "ARTICLE_BODY",
+      "published_at": "2026-08-19T12:51:53+00:00",
+      "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+      "acquired_at": "2026-10-28T08:54:54.586773+00:00",
+      "discovered_at": "2026-10-28T08:54:54.452144+00:00",
+      "raw_content_hash": "2a14c9147453d34ebec84938bb930ade4873d13cebc0014b0394cc1854a9c006",
+      "word_count": 358,
+      "utf8_bytes": 2385,
+      "char_count": 2363,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 1676.1h ago exceeds Trending freshness window (168.0h)"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "DOM_SEMANTIC_TEXT",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "",
+          "acquired_at": "2026-10-28T08:54:54.586773+00:00",
+          "source_id": "ev_hv_01f8e4bb1a1f8fea31a1",
+          "raw_content_hash": "2a14c9147453d34ebec84938bb930ade4873d13cebc0014b0394cc1854a9c006",
+          "method": "DOM_SEMANTIC_TEXT"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "b45607b0af955d18605751eb92c18e96ab1638dd8834b03908218c962dc574a6",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://bdnews24.com/entertainment/28a429fa505b",
+        "requested_endpoint": "https://bdnews24.com/entertainment/28a429fa505b",
+        "redirect_chain": [
+          "https://bdnews24.com/entertainment/28a429fa505b"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 27034,
+        "decoded_body_bytes": 200087,
+        "network_latency_ms": 1798,
+        "raw_body_sha256": "4328b11cbd3423285020a0454b1ffe7bdc5c8b46905b7b99e8532bdee701883c",
+        "content_type": "text/html; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://bdnews24.com/entertainment/28a429fa505b",
+      "redirect_chain": [
+        "https://bdnews24.com/entertainment/28a429fa505b"
+      ]
+    },
+    {
+      "source_id": "ev_hv_aa5239528ba6c79a13e0",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/bc0ec0629902",
+      "canonical_url": "https://bdnews24.com/entertainment/bc0ec0629902",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/bc0ec0629902"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Entertainment A royal gift for fans as Shah Rukh Khan celebrates 60 with \u2018King\u2019 teaser Published :\n                                03 Nov 2025, 12:02 AM",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.452805+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_e34615ca482997304f7b",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/6cbf9b37e5ec",
+      "canonical_url": "https://bdnews24.com/entertainment/6cbf9b37e5ec",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/6cbf9b37e5ec"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Entertainment Shah Rukh Khan joins billionaire elite, tops Bollywood rich list Published :\n                                03 Oct 2025, 02:27 AM",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.453479+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_fcbb530ec07d1923eb6a",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/film/f12b81d3e610",
+      "canonical_url": "https://bdnews24.com/film/f12b81d3e610",
+      "source_urls": [
+        "https://bdnews24.com/film/f12b81d3e610"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Film 'Our forever King': Shah Rukh Khan\u2019s first National Award sparks wave of tributes Published :\n                                24 Sep 2025, 05:28 PM",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.454155+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_0d9dadfc41277d810272",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/entertainment/95b156b554f0",
+      "canonical_url": "https://bdnews24.com/entertainment/95b156b554f0",
+      "source_urls": [
+        "https://bdnews24.com/entertainment/95b156b554f0"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Entertainment Shah Rukh Khan and his family are moving out of Mannat. Here's why Published :\n                                28 Feb 2025, 11:57 PM",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.454865+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_8d0e17f9c191f36cfa8d",
+      "aliases": [],
+      "source_url": "https://bdnews24.com/film/75b71cef8f65",
+      "canonical_url": "https://bdnews24.com/film/75b71cef8f65",
+      "source_urls": [
+        "https://bdnews24.com/film/75b71cef8f65"
+      ],
+      "query_id": "",
+      "query_ids": [],
+      "publisher": "",
+      "publisher_host": "bdnews24.com",
+      "title": "Film Shah Rukh Khan's 'Dunki' may return as US deportations spark renewed interest Published :\n                                18 Feb 2025, 05:49 PM",
+      "source_type": "DISCOVERY_LEAD",
+      "published_at": null,
+      "publication_time_basis": null,
+      "acquired_at": null,
+      "discovered_at": "2026-10-28T08:54:54.455569+00:00",
+      "raw_content_hash": null,
+      "word_count": 0,
+      "utf8_bytes": 0,
+      "char_count": 0,
+      "extraction_status": "NOT_ATTEMPTED",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "",
+      "content_depth": "",
+      "read_attempts": 0,
+      "errors": [],
+      "observations": [],
+      "duplicate_of": null,
+      "duplicate_reason": null
+    },
+    {
+      "source_id": "ev_hv_503cdc11de55512f6378",
+      "aliases": [],
+      "source_url": "https://www.idiva.com",
+      "canonical_url": "https://www.idiva.com/",
+      "source_urls": [
+        "https://www.idiva.com"
+      ],
+      "query_id": "hv_q_004",
+      "query_ids": [
+        "hv_q_004"
+      ],
+      "publisher": "",
+      "publisher_host": "www.idiva.com",
+      "title": "The request could not be satisfied",
+      "source_type": "PUBLISHER_HOMEPAGE",
+      "published_at": null,
+      "publication_time_basis": "CAPTURED_PUBLICATION_NOT_OBSERVED",
+      "acquired_at": "2026-10-28T08:54:54.603426+00:00",
+      "discovered_at": "2026-10-28T08:54:54.456254+00:00",
+      "raw_content_hash": "ecf519432d46d04bedd40ab0edfbdd04ad04a23f4d339de59cfc303139de79bf",
+      "word_count": 76,
+      "utf8_bytes": 502,
+      "char_count": 502,
+      "extraction_status": "SUCCESS",
+      "qualification_status": "REJECTED",
+      "qualification_reasons": [
+        "Insufficient multi-token topic match"
+      ],
+      "useful_words": 0,
+      "acquisition_method": "direct_api",
+      "content_depth": "PARTIAL_CONTENT",
+      "read_attempts": 1,
+      "errors": [],
+      "observations": [
+        {
+          "query_id": "hv_q_004",
+          "acquired_at": "2026-10-28T08:54:54.603426+00:00",
+          "source_id": "ev_hv_503cdc11de55512f6378",
+          "raw_content_hash": "ecf519432d46d04bedd40ab0edfbdd04ad04a23f4d339de59cfc303139de79bf",
+          "method": "direct_api"
+        }
+      ],
+      "duplicate_of": null,
+      "duplicate_reason": null,
+      "raw_capture_sha256": "b01a08458f893a300a82a9c7ca076444fcc7cd838fd2de576528fc7871fc3658",
+      "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+      "read_status": "SUCCESS",
+      "acquisition_objective": null,
+      "http_status": 200,
+      "provider_truncated": false,
+      "transport": {
+        "endpoint": "https://r.jina.ai/https://www.idiva.com",
+        "requested_endpoint": "https://www.idiva.com",
+        "redirect_chain": [
+          "https://r.jina.ai/https://www.idiva.com"
+        ],
+        "http_status": 200,
+        "raw_body_bytes": 651,
+        "decoded_body_bytes": 651,
+        "network_latency_ms": 7912,
+        "raw_body_sha256": "db96ea03f3aacbf115127b21629c65b943089b63b573020a1fc2c481dc15f296",
+        "content_type": "text/plain; charset=utf-8",
+        "cache_status": "UNKNOWN",
+        "network_observed_this_attempt": true
+      },
+      "actual_final_url": "https://r.jina.ai/https://www.idiva.com",
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.idiva.com"
+      ]
+    }
+  ]
+}

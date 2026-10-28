@@ -19,7 +19,7 @@ from backend.services.agent_reach.channels import FetchedDocument
 
 
 HOSTS = {
-    "wikipedia": ("wikipedia.org", "wikimedia.org"), "wikidata_exec": ("wikidata.org",),
+    "wikipedia": ("en.wikipedia.org",), "wikidata_exec": ("wikidata.org",),
     "sec_edgar": ("sec.gov",), "sec_filings_full": ("sec.gov",), "arxiv": ("arxiv.org",),
     "substack": ("substack.com",), "yahoo_finance": ("finance.yahoo.com",),
     "trustpilot": ("trustpilot.com", "sitejabber.com", "complaintsboard.com", "bbb.org"),

@@ -1,5 +1,43 @@
 # Coding-agent handoffs
 
+## Source expansion deployment - 2026-10-28
+
+- [Deployment authorization, release candidate and observed rollout](2026-10-28_SOURCE_EXPANSION_DEPLOYMENT.md). Exact hosted CI and public attestation required; research acceptance remains unmet.
+
+
+## Source expansion and reference fallback - 2026-10-28
+
+- [Bounded source probes, social access gates and separate background](2026-10-28_SOURCE_EXPANSION_AND_REFERENCE_FALLBACK.md):
+  13 probe admissions, three once-only live cases; Infosys 1,775 cited words,
+  Dyson/Mary no task evidence. Late fallback/attribution repair yields 77 genuine
+  background words offline while keeping insufficiency. Full/fast checks pass;
+  no commit or deployment. Two-new-task-family acceptance remains unmet.
+
+
+## Sixteen-prompt website yield and desktop audit — 2026-10-28
+
+- [Website accounting, real source yield and desktop sufficiency](2026-10-28_SIXTEEN_PROMPT_WEBSITE_YIELD.md):
+  sixteen once-only investigations; 65 known article captures, with explicit lost
+  observations and remaining task-quality gaps. Scoped duplicate/claim/window/
+  role/routing/UI repairs; 64 final browser states; full/fast 2,867/2,659 pass.
+  AI enabled within the shared ledger. No push or deployment; not an all-agent
+  research-quality PASS.
+
+## Release reconciliation and recovered benchmark audit — 2026-10-28
+
+- [Code lineage, security corrections and actual 20-case evidence](2026-10-28_RELEASE_RECONCILIATION.md):
+  one complete aggregate recovered; earlier engine sequences lack runner/body proof.
+  Root denial bypass excluded; legacy RSS transport/cache hardened. Identical Tim
+  control retains 547 words, native statements 0 → 15. Full/fast 2,844/2,636 pass;
+  ten browser states. No fresh live investigations, push or deployment.
+
+## Personal discovery and transcript repair — 2026-10-28
+
+- [Local selection, speaker attribution and measured limits](2026-10-28_PERSONAL_SELECTION_AND_TRANSCRIPTS.md):
+  four bounded live requests; same Fei captures now publish 5,773 exact speaker-turn
+  words in offline native/browser replay. Mary yields 99 statement/context words; Trending retains
+  338 older words. Explicit caps and source restrictions preserved; no new deployment.
+
 ## Acquisition deployment and four-agent yield — 2026-10-28
 
 - [Isolated release candidate, publication and production measurements](2026-10-28_ACQUISITION_DEPLOYMENT_AND_YIELD.md):

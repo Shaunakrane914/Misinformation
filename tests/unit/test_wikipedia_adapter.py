@@ -15,7 +15,7 @@ from backend.services.agent_reach.channels import (
 def test_wikipedia_adapter_can_handle():
     adapter = WikipediaAdapter()
     assert adapter.can_handle(CandidateSource(url="https://en.wikipedia.org/wiki/Nvidia")) is True
-    assert adapter.can_handle(CandidateSource(url="https://commons.wikimedia.org/wiki/File:Test.jpg")) is True
+    assert adapter.can_handle(CandidateSource(url="https://commons.wikimedia.org/wiki/File:Test.jpg")) is False
     assert adapter.can_handle(CandidateSource(url="https://example.com/other", platform="wikipedia")) is False
     assert adapter.can_handle(CandidateSource(url="https://example.com/other")) is False
 

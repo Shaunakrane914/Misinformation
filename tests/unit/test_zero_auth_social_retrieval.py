@@ -55,6 +55,9 @@ def router(monkeypatch, public_dns):
     # Mirror behavior is tested only under explicit, policy-approved access.
     # Separate acquisition policy tests verify the default denial.
     monkeypatch.setenv("REDDIT_APPROVED_ACCESS", "true")
+    # These cases mock Arctic Shift, not RSS. A failed/denied RSS request must
+    # not be used to reach the mirror; RSS has separate security regressions.
+    monkeypatch.setenv("AEGIS_REDDIT_RSS_ENABLED", "false")
     return NativeRouter()
 
 

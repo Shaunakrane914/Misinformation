@@ -1,0 +1,48 @@
+{
+  "checks": {
+    "sixteen_unique_cases": true,
+    "all_admissions_reconcile": true,
+    "bounds": true,
+    "missing_not_zero": true,
+    "offline_corrections": true,
+    "known_bodies": true,
+    "cross_case_not_case_sum": true,
+    "capture_hashes_unchanged": true,
+    "relative_links_resolve": true,
+    "no_configured_secret_values_in_deliverables": true,
+    "protected_paths_unchanged": true,
+    "tracked_whitespace": true,
+    "focused-final": true,
+    "fatal-lint-final": true,
+    "link_failures": []
+  },
+  "commands": [
+    {
+      "check": "focused-final",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "pytest",
+        "tests/unit/test_website_yield_audit.py",
+        "-q"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "fatal-lint-final",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "flake8",
+        "backend",
+        "tests",
+        "scripts",
+        "--count",
+        "--select=E9,F63,F7,F82",
+        "--show-source",
+        "--statistics"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

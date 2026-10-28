@@ -1,0 +1,12 @@
+{
+  "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+  "subject": "Fei-Fei Li",
+  "input_sha256": "9379c4250a826a8f7e121614641793485f91eecf5d9d15678b29b509d4fd5c7b",
+  "new_network_calls": 0,
+  "model_calls": 0,
+  "unchanged_source_id_url_title_body_hash": true,
+  "unchanged_source_id_url_title_date_body_hash": true,
+  "publication_changes": [],
+  "temporal_reference": "2026-10-28T04:19:55.236716+00:00",
+  "original_raw_sources": 25
+}

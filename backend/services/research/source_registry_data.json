@@ -4678,6 +4678,148 @@
       "note": "Official sports ministry records and statements; not a player quote unless actually attributed. Third-party media/content excluded.",
       "licence_url": "https://yas.gov.in/en/copyright-policy",
       "required_jurisdiction": "IN"
+    },
+    {
+      "id": "wikipedia",
+      "name": "Wikipedia",
+      "hosts": [
+        "en.wikipedia.org"
+      ],
+      "reference": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use/en",
+      "topics": [
+        "general_background"
+      ],
+      "agents": [
+        "scout",
+        "brandshield",
+        "personal_watch",
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "scout": [
+          "GENERAL_BACKGROUND"
+        ],
+        "brandshield": [
+          "GENERAL_BACKGROUND"
+        ],
+        "personal_watch": [
+          "GENERAL_BACKGROUND"
+        ],
+        "trending": [
+          "GENERAL_BACKGROUND"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false,
+        "entrypoints": [],
+        "automatic_selection": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "ATTRIBUTED_REFERENCE_TEXT_ONLY",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "OFFICIAL_REUSE_POLICY_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_CURRENT_TASK_EVIDENCE",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Explicit reference fallback only; no truth, identity authentication, current figures, threats or virality claims. English-only bounded pilot; attribution retained.",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+      "id": "wikidata",
+      "name": "Wikidata",
+      "hosts": [
+        "www.wikidata.org"
+      ],
+      "reference": "https://www.wikidata.org/wiki/Wikidata:Licensing",
+      "topics": [
+        "general_background"
+      ],
+      "agents": [
+        "scout",
+        "brandshield",
+        "personal_watch",
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "scout": [
+          "GENERAL_BACKGROUND"
+        ],
+        "brandshield": [
+          "GENERAL_BACKGROUND"
+        ],
+        "personal_watch": [
+          "GENERAL_BACKGROUND"
+        ],
+        "trending": [
+          "GENERAL_BACKGROUND"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false,
+        "entrypoints": [],
+        "automatic_selection": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "ATTRIBUTED_REFERENCE_TEXT_ONLY",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "OFFICIAL_REUSE_POLICY_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_CURRENT_TASK_EVIDENCE",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Explicit reference fallback only; no truth, identity authentication, current figures, threats or virality claims. English-only bounded pilot; attribution retained.",
+      "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/"
     }
   ]
 }

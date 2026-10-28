@@ -196,7 +196,8 @@ class PassageAnalysisStage:
             reconcile_captured_context(item)
             if request.domain == "trending":
                 # Recheck the acquired page, not its provisional snippet.
-                result = relevance_gate.evaluate_item(item, request.target, domain="trending", intent=request.intent)
+                result = relevance_gate.evaluate_item(item, request.target, domain="trending", intent=request.intent,
+                    window_hours=request.extra_params.get("trending_window_hours"))
                 item.metadata["temporal_eligible"] = result.is_accepted
                 item.metadata["post_read_qualification_reason"] = result.rejection_reason
         read.investigated = passage_extractor.extract_passages(
@@ -245,7 +246,8 @@ class GroundedSynthesisStage:
             # Entity scans without a claim retain explicitly unverified observations.
             from backend.services.research.claim_intelligence import claim_intelligence_engine
             claims = claim_intelligence_engine.decompose_claims(exact_claim)[:6]
-            findings = []
+            if claims:
+                findings = []
             for index, claim in enumerate(claims, 1):
                 if request.domain != "fact_check":
                     claim.entity = re.sub(r"\([^)]*\)", "", request.target).strip()

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "S1",
+    "agent": "scout",
+    "input": "NVDA",
+    "query": "Research NVIDIA's most recent reported quarterly revenue and data-center performance. Compare the actual reporting period with NVIDIA's official investor disclosures and relevant independent financial reporting. Clearly distinguish actual figures from forecasts."
+  },
+  {
+    "id": "S2",
+    "agent": "scout",
+    "input": "Tata Motors",
+    "query": "Investigate Tata Motors' latest reported financial performance and major automotive or EV business developments. Prioritize official company and exchange information, then compare claims in independent reporting."
+  },
+  {
+    "id": "S3",
+    "agent": "scout",
+    "input": "AAPL",
+    "query": "Analyze Apple's latest official quarterly financial developments, including Services and iPhone revenue where reported. Identify the correct fiscal periods, primary disclosures and independent interpretations."
+  },
+  {
+    "id": "S4",
+    "agent": "scout",
+    "input": "Infosys",
+    "query": "Research Infosys' most recent financial results and revenue guidance. Separate actual results from management forecasts, preserve the currency and fiscal year, and compare official disclosures with reporting."
+  },
+  {
+    "id": "B1",
+    "agent": "brandshield",
+    "input": "Nike",
+    "query": "Investigate publicly documented Nike counterfeit-product campaigns, fake stores and impersonation-related warnings. Separate historical cases from currently observed incidents."
+  },
+  {
+    "id": "B2",
+    "agent": "brandshield",
+    "input": "Dyson",
+    "query": "Investigate reported Dyson counterfeit products, phishing promotions and official consumer warnings. Identify actual documented incidents, relevant dates and source authority."
+  },
+  {
+    "id": "B3",
+    "agent": "brandshield",
+    "input": "Pfizer",
+    "query": "Investigate publicly documented Pfizer product-counterfeiting, impersonation or product-safety incidents. Prioritize precise manufacturer and regulator notices over generic safety advice."
+  },
+  {
+    "id": "B4",
+    "agent": "brandshield",
+    "input": "Apple",
+    "query": "Investigate reported fake Apple customer-support services, phishing and Apple-brand impersonation. Distinguish specific observed campaigns from general fraud-prevention guidance."
+  },
+  {
+    "id": "T1",
+    "agent": "trending",
+    "input": "battery recycling",
+    "query": "Find developments in battery recycling from the last 48 hours. Include research, manufacturing, policy and recycling technology. If current sources are unavailable, report that honestly and present eligible older information separately.",
+    "category": "technology"
+  },
+  {
+    "id": "T2",
+    "agent": "trending",
+    "input": "Shah Rukh Khan",
+    "query": "Investigate recent developments involving Shah Rukh Khan over the last seven days, using relevant entertainment reporting and original production or interview sources where available.",
+    "category": "entertainment"
+  },
+  {
+    "id": "T3",
+    "agent": "trending",
+    "input": "India semiconductor manufacturing",
+    "query": "Investigate developments in India's semiconductor manufacturing industry over the last seven days, including plant announcements, policy decisions and manufacturing milestones.",
+    "category": "technology"
+  },
+  {
+    "id": "T4",
+    "agent": "trending",
+    "input": "Virat Kohli",
+    "query": "Investigate recent public developments involving Virat Kohli over the last seven days, using relevant sports reporting and official cricket sources when available.",
+    "category": "general"
+  },
+  {
+    "id": "P1",
+    "agent": "personal_watch",
+    "input": "Tim Cook",
+    "query": "Find Tim Cook's most recent publicly attributable statements or interviews about Apple, AI or company strategy. Preserve the original speaker, event, date and quotation context."
+  },
+  {
+    "id": "P2",
+    "agent": "personal_watch",
+    "input": "Sam Altman",
+    "query": "Investigate publicly reported impersonation, fabricated endorsements or misattributed statements involving Sam Altman. Distinguish confirmed incidents from unverified allegations."
+  },
+  {
+    "id": "P3",
+    "agent": "personal_watch",
+    "input": "Mary Barra",
+    "query": "Find attributable public statements by Mary Barra about General Motors and the automotive industry. Clearly distinguish historical statements from recent coverage and unrelated executive speculation."
+  },
+  {
+    "id": "P4",
+    "agent": "personal_watch",
+    "input": "Shah Rukh Khan",
+    "query": "Investigate publicly reported fake endorsements, impersonation or misattributed quotations involving Shah Rukh Khan. Use relevant entertainment reporting, original statements and fact-checks where available."
+  }
+]

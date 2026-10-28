@@ -1,0 +1,205 @@
+[
+  {
+    "gate": "full",
+    "command": [
+      "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-m",
+      "pytest",
+      "tests/",
+      "-q"
+    ],
+    "exit_code": 0,
+    "seconds": 141.17
+  },
+  {
+    "gate": "fast",
+    "command": [
+      "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-m",
+      "pytest",
+      "tests/unit",
+      "tests/chaos",
+      "tests/security",
+      "-q"
+    ],
+    "exit_code": 0,
+    "seconds": 123.35
+  },
+  {
+    "gate": "fatal-lint",
+    "command": [
+      "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-m",
+      "flake8",
+      "backend",
+      "tests",
+      "scripts",
+      "--count",
+      "--select=E9,F63,F7,F82",
+      "--show-source",
+      "--statistics"
+    ],
+    "exit_code": 0,
+    "seconds": 10.08
+  },
+  {
+    "gate": "frozen",
+    "command": [
+      "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "scripts/validation/verify_frozen_benchmarks.py"
+    ],
+    "exit_code": 0,
+    "seconds": 0.15
+  },
+  {
+    "gate": "smoke",
+    "command": [
+      "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "scripts/validate_release_candidate_smoke.py",
+      "--output",
+      "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-16prompt-20261028-wycljnqk\\gates-first\\smoke.json"
+    ],
+    "exit_code": 0,
+    "seconds": 11.54
+  },
+  {
+    "gate": "rollback",
+    "command": [
+      "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "scripts/validate_rollback_compatibility.py",
+      "--output",
+      "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-16prompt-20261028-wycljnqk\\gates-first\\rollback.json"
+    ],
+    "exit_code": 0,
+    "seconds": 13.8
+  },
+  {
+    "gate": "frontend-test_agent_research_client",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_agent_research_client.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.38
+  },
+  {
+    "gate": "frontend-test_agent_ui_truth",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_agent_ui_truth.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.21
+  },
+  {
+    "gate": "frontend-test_claim_ui_truth",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_claim_ui_truth.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.22
+  },
+  {
+    "gate": "frontend-test_cloudflare_api_routing",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_cloudflare_api_routing.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.09
+  },
+  {
+    "gate": "frontend-test_desktop_evidence_audit",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_desktop_evidence_audit.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.09
+  },
+  {
+    "gate": "frontend-test_evidence_workbench",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_evidence_workbench.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.09
+  },
+  {
+    "gate": "frontend-test_forensic_explorer_truth",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_forensic_explorer_truth.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.09
+  },
+  {
+    "gate": "frontend-test_operation_health",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_operation_health.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.24
+  },
+  {
+    "gate": "frontend-test_phase8e_frontend_intelligence",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_phase8e_frontend_intelligence.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.16
+  },
+  {
+    "gate": "frontend-test_security_and_health_regressions",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_security_and_health_regressions.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.37
+  },
+  {
+    "gate": "frontend-test_unified_report_renderer",
+    "command": [
+      "node",
+      "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\.scratch\\deployment-20261028\\tests\\frontend\\test_unified_report_renderer.js"
+    ],
+    "exit_code": 0,
+    "seconds": 0.17
+  },
+  {
+    "gate": "protected",
+    "command": [
+      "git",
+      "diff",
+      "--exit-code",
+      "HEAD",
+      "--",
+      "tests/retrieval_benchmark/candidates.jsonl",
+      "tests/retrieval_benchmark/labels.jsonl",
+      "tests/retrieval_benchmark/scenarios.jsonl",
+      "backend/data/dossiers",
+      "research",
+      "artifacts"
+    ],
+    "exit_code": 0,
+    "seconds": 0.13
+  },
+  {
+    "gate": "whitespace",
+    "command": [
+      "git",
+      "-c",
+      "core.whitespace=blank-at-eol",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.19
+  }
+]

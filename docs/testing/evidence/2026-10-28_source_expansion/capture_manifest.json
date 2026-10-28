@@ -1,0 +1,227 @@
+{
+  "private_temp_basename": "aegis-source-expansion-20261028-_i_3mukq",
+  "original_16_capture_manifest": "../2026-10-28_16prompt_yield/capture-manifest.json",
+  "private_files": [
+    {
+      "path": "live/01-scout-events.json",
+      "sha256": "d5ae0f0db4cad10ffaf2951480f35041f9de48534ddc35a6cb2472fda4216a27",
+      "bytes": 5277716
+    },
+    {
+      "path": "live/01-scout-http.json",
+      "sha256": "6fff040a8d69b1f4c1f32edb95417758ffdcfd9166ca8097d538e9ba87478f6d",
+      "bytes": 55643
+    },
+    {
+      "path": "live/01-scout-observed-pools.json",
+      "sha256": "5e47b8db493ec15e9983f3eefb62efe530275020cebede6a823deb1f0bbb3c9a",
+      "bytes": 250145
+    },
+    {
+      "path": "live/01-scout-pipeline.json",
+      "sha256": "ee0d3551a062a3cc9080cd5a302525618d9b30ade3622029c477d4b7433d96f0",
+      "bytes": 2849724
+    },
+    {
+      "path": "live/01-scout-response.sse",
+      "sha256": "1a139f412708708a1bc6135423fb043e36bc0b3adcd837300d5fc651446d31c3",
+      "bytes": 3527304
+    },
+    {
+      "path": "live/01-scout.json",
+      "sha256": "f36ae677201799288e3bf718b7d9abecbec23bc48319a5d818a9a2791cdc4c96",
+      "bytes": 4728823
+    },
+    {
+      "path": "live/02-brandshield-events.json",
+      "sha256": "802734e1b3c4b82dd9c02d366e8796921996da3be97bb08c5050fe1e44d41719",
+      "bytes": 2189340
+    },
+    {
+      "path": "live/02-brandshield-http.json",
+      "sha256": "9eff58f124ce62806d887f6c6f2f72a4ab1f2895fa961677042ef4e20d93df21",
+      "bytes": 74754
+    },
+    {
+      "path": "live/02-brandshield-observed-pools.json",
+      "sha256": "e771997eb1e81e95c8c20d2e7daf2496d3c937d5a9d34726b5d351cbb2908372",
+      "bytes": 107913
+    },
+    {
+      "path": "live/02-brandshield-pipeline.json",
+      "sha256": "13c5e2c0c9cc05fe15d5ce4a1a6ab4db4ecf6bd80f200c15d18cce531393c88b",
+      "bytes": 670336
+    },
+    {
+      "path": "live/02-brandshield-response.sse",
+      "sha256": "58b7499c5d55495f0031ce0a00f53cac667a81cfbfc37f006f8ed1e37d059a16",
+      "bytes": 1401182
+    },
+    {
+      "path": "live/02-brandshield.json",
+      "sha256": "5be323b90c9b58bb8448b69b6fbbddbd4b2a21b7d751a8c89fa962fa5ba417d4",
+      "bytes": 1946370
+    },
+    {
+      "path": "live/03-personal_watch-events.json",
+      "sha256": "2cccbeb7dc4add32290cb995838bed533f953d8886a0358d6389b1a4e495037f",
+      "bytes": 4985915
+    },
+    {
+      "path": "live/03-personal_watch-http.json",
+      "sha256": "895379a6424e95a29d13fcb6d93378659ca583f973d80a7fe9d71a2139488931",
+      "bytes": 73056
+    },
+    {
+      "path": "live/03-personal_watch-observed-pools.json",
+      "sha256": "619f8744123e599aec884729af344709fe2ab199128ed6a99909557c0341a291",
+      "bytes": 360040
+    },
+    {
+      "path": "live/03-personal_watch-pipeline.json",
+      "sha256": "3dfef298dc467ab99c84543dbe994bce433bce19ff88fd304926bcccd2178b7e",
+      "bytes": 1899420
+    },
+    {
+      "path": "live/03-personal_watch-response.sse",
+      "sha256": "33717fedc479091d63128f612a0856be4edd9f0d71e286449f5deb15214bd9ee",
+      "bytes": 3290118
+    },
+    {
+      "path": "live/03-personal_watch.json",
+      "sha256": "3172b56f2e3980a18c6325ee67f9266cd66f12867f9196f4182796a23abcb10c",
+      "bytes": 4458275
+    },
+    {
+      "path": "live/aegis.db",
+      "sha256": "f8d7c92003166bfa74ebf162496bad89c778b017e4ae4b19c7881f64ac0d46ae",
+      "bytes": 32768
+    },
+    {
+      "path": "live/backend.log",
+      "sha256": "876a25227f946030ea7c53bb7cef1d4048efe9ff6f076083e7e23cc154278ac3",
+      "bytes": 8867
+    },
+    {
+      "path": "live/summary.json",
+      "sha256": "80220b90c16542033b7438bf9aa19776ac08f54fdf5e9a930015dc5f624dc743",
+      "bytes": 10237
+    },
+    {
+      "path": "live/dossiers/R-2026-000EED2BB158450A9A4B3DA00938105F.json",
+      "sha256": "7890abb0eb78694fb8966bfb7dbe5e1dbddf1fd4ce9eb59ee1e51591e96d5fcf",
+      "bytes": 96679
+    },
+    {
+      "path": "live/dossiers/R-2026-0E640332A04D443FA38AE7B83D7016C6.json",
+      "sha256": "529ea6af8c04f78ed392e9cd6d9cf87c427a2e8d2f8b0b2dcec351a796abb6af",
+      "bytes": 101844
+    },
+    {
+      "path": "live/dossiers/R-2026-D8575DC8DA2048BC9EDB0DF4AFC93FD6.json",
+      "sha256": "604276e5ba88c576176688a13d42e898bea51a2308b1a725769b5dca0795b551",
+      "bytes": 87291
+    },
+    {
+      "path": "probes/cpsc_recalls-2.bin",
+      "sha256": "62e802cd85e20cb652e332b0016792b6cf231c9efb75c542e07db4633f273c98",
+      "bytes": 2903
+    },
+    {
+      "path": "probes/cpsc_recalls-fragments.json",
+      "sha256": "78d71e28b32c7e1a1ec11f5d028514c58f7bf891e146ce635b4bc69daedb8623",
+      "bytes": 7366
+    },
+    {
+      "path": "probes/govuk-1.bin",
+      "sha256": "1093ecc65507b71f487ea442398266902f026d458df3c646536ecc9717602851",
+      "bytes": 1449
+    },
+    {
+      "path": "probes/hackernews-1.bin",
+      "sha256": "3ac33423563133e46ed626a90766f3a6584c6c4f31fd9823d6598acbdc191086",
+      "bytes": 4501
+    },
+    {
+      "path": "probes/hackernews-2.bin",
+      "sha256": "d89dfd7cdfb3a04cf2af526f0672cbd72294865ce4e5226fa238e37a341bb996",
+      "bytes": 582
+    },
+    {
+      "path": "probes/openfda-1.bin",
+      "sha256": "c4271947a8ac0fecf89490ce51024fb14b25b081b5af106125f4cfc9227f5037",
+      "bytes": 1840
+    },
+    {
+      "path": "probes/results.json",
+      "sha256": "b153c1ecf20a5fc1d18c039bae2361176bb6267f649f8d8558380730ed3c4df0",
+      "bytes": 16250
+    },
+    {
+      "path": "probes/source_family_probe_results.csv",
+      "sha256": "98b07d9a24ae555f8630eb6709a2b452906159b01d547bfe3f2cadeabf7005ed",
+      "bytes": 1274
+    },
+    {
+      "path": "probes/stackexchange-1.bin",
+      "sha256": "e57a2844752271d1857e37a756e871f1c16071775d0a1b0c2816a25800237a14",
+      "bytes": 3012
+    },
+    {
+      "path": "probes/wikidata_exec-1.bin",
+      "sha256": "ead093da707ab6cf78167989a4b88cacc2bda4c917fd44594498117ec4f35e47",
+      "bytes": 1464
+    },
+    {
+      "path": "probes/wikidata_exec-2.bin",
+      "sha256": "c6efebd0eb6addc84b98122b6869d63a93986dcca819f240684fbf6c24e726c1",
+      "bytes": 50521
+    },
+    {
+      "path": "probes/wikidata_exec-fragments.json",
+      "sha256": "2790bf167e593a01e9f3cfa3cb7447e2f2c2fcad6349dd180c4976b5f4db5cec",
+      "bytes": 2024
+    },
+    {
+      "path": "probes/wikipedia-1.bin",
+      "sha256": "f51693ee0dd57e2b582012853f9a2df3cc9830f0615e6ec9be09cabb480fd216",
+      "bytes": 1269
+    },
+    {
+      "path": "probes/wikipedia-2.bin",
+      "sha256": "ae8f9fcb100090c1fbf4610f12c0c3978600cec52a791d834c4b50beef3da6b9",
+      "bytes": 5483
+    },
+    {
+      "path": "probes/wikipedia-fragments.json",
+      "sha256": "0d1d6411288f72275ee84b0367b4ed28f9cc6951a500480f7311803271d16c31",
+      "bytes": 6844
+    },
+    {
+      "path": "mary-reference-final-after/02-personal_watch-events.json",
+      "sha256": "f5b75f0f39bfbb22ccde594ad032a18e60b9b63c128731b08eb0ab120efff312",
+      "bytes": 3703279
+    },
+    {
+      "path": "mary-reference-final-after/02-personal_watch.json",
+      "sha256": "cffe80a9d6b989a4f0d0060e5a2e9ca6fae2dcab9ba47755ee0524848fb06de1",
+      "bytes": 3341017
+    },
+    {
+      "path": "mary-reference-final-after/manifest.json",
+      "sha256": "9ccbea5b2443ed637ed9dbe283845d9343fbdc515a95b0060d28f00513c0aeb0",
+      "bytes": 2056
+    },
+    {
+      "path": "mary-reference-final-after/runtime/aegis.db",
+      "sha256": "f8d7c92003166bfa74ebf162496bad89c778b017e4ae4b19c7881f64ac0d46ae",
+      "bytes": 32768
+    },
+    {
+      "path": "mary-reference-final-after/runtime/dossiers/R-2026-02CBA55D5BF74D5EB73E0C6F6467CAAE.json",
+      "sha256": "00ee835956c99cb24bf93e651d581525fe437f31b17ae0e314a56b9bb3d66801",
+      "bytes": 101836
+    }
+  ],
+  "scope": "No full publisher article body copied into this durable package; attributed licensed reference excerpt is visible in screenshots."
+}

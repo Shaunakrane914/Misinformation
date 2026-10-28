@@ -1,0 +1,203 @@
+{
+  "commands": [
+    {
+      "name": "full",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "pytest",
+        "tests/",
+        "-q"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 114.33,
+      "result_excerpt": "tests\\unit\\test_zero_auth_source_discovery.py ........................   [100%]\n\n====================== 2879 passed in 109.52s (0:01:49) ======================="
+    },
+    {
+      "name": "fast",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "pytest",
+        "tests/unit",
+        "tests/chaos",
+        "tests/security",
+        "-q"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 70.43,
+      "result_excerpt": "tests\\security\\test_security_ssrf_xss.py .............                   [100%]\n\n======================= 2671 passed in 66.01s (0:01:06) ======================="
+    },
+    {
+      "name": "fatal-lint",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "flake8",
+        "backend",
+        "tests",
+        "scripts",
+        "--count",
+        "--select=E9,F63,F7,F82",
+        "--show-source",
+        "--statistics"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 3.72,
+      "result_excerpt": "0"
+    },
+    {
+      "name": "frozen",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validation/verify_frozen_benchmarks.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.07,
+      "result_excerpt": "Frozen benchmark content hashes verified"
+    },
+    {
+      "name": "smoke",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_release_candidate_smoke.py",
+        "--output",
+        "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-source-expansion-20261028-_i_3mukq\\gates-closeout\\smoke.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 3.89,
+      "result_excerpt": "    \"Does not verify live scraping, deployed credentials, or production readiness.\"\n  ]\n}"
+    },
+    {
+      "name": "persistence",
+      "command": [
+        "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_rollback_compatibility.py",
+        "--output",
+        "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-source-expansion-20261028-_i_3mukq\\gates-closeout\\persistence.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 5.53,
+      "result_excerpt": "  },\n  \"verdict\": \"OFFLINE_PERSISTENCE_PASS\"\n}"
+    },
+    {
+      "name": "test_agent_research_client",
+      "command": [
+        "node",
+        "tests\\frontend\\test_agent_research_client.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.11,
+      "result_excerpt": "  elapsed_seconds: undefined\n}\nAGENT RESEARCH CLIENT CONTRACTS PASSED"
+    },
+    {
+      "name": "test_agent_ui_truth",
+      "command": [
+        "node",
+        "tests\\frontend\\test_agent_ui_truth.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.06,
+      "result_excerpt": "AGENT UI TRUTH CONTRACTS PASSED"
+    },
+    {
+      "name": "test_claim_ui_truth",
+      "command": [
+        "node",
+        "tests\\frontend\\test_claim_ui_truth.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.06,
+      "result_excerpt": "CLAIM UI TRUTH CONTRACTS PASSED"
+    },
+    {
+      "name": "test_cloudflare_api_routing",
+      "command": [
+        "node",
+        "tests\\frontend\\test_cloudflare_api_routing.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.04,
+      "result_excerpt": "CLOUDFLARE DIRECT API AND LEDGER EMPTY STATES PASSED"
+    },
+    {
+      "name": "test_desktop_evidence_audit",
+      "command": [
+        "node",
+        "tests\\frontend\\test_desktop_evidence_audit.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.04,
+      "result_excerpt": "DESKTOP EVIDENCE AUDIT PASSED"
+    },
+    {
+      "name": "test_evidence_workbench",
+      "command": [
+        "node",
+        "tests\\frontend\\test_evidence_workbench.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.04,
+      "result_excerpt": "EVIDENCE WORKBENCH PASSED"
+    },
+    {
+      "name": "test_forensic_explorer_truth",
+      "command": [
+        "node",
+        "tests\\frontend\\test_forensic_explorer_truth.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.04,
+      "result_excerpt": "FORENSIC EXPLORER TRUTH CONTRACTS PASSED"
+    },
+    {
+      "name": "test_operation_health",
+      "command": [
+        "node",
+        "tests\\frontend\\test_operation_health.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.17,
+      "result_excerpt": "\u2713 Page visibility revalidation verified\n\nALL FRONTEND OPERATION HEALTH TESTS PASSED (8/8)!"
+    },
+    {
+      "name": "test_phase8e_frontend_intelligence",
+      "command": [
+        "node",
+        "tests\\frontend\\test_phase8e_frontend_intelligence.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.05,
+      "result_excerpt": "\u2713 XSS sanitization verified across all Phase 8E modules\n\nALL PHASE 8E FRONTEND INTELLIGENCE TESTS PASSED!"
+    },
+    {
+      "name": "test_security_and_health_regressions",
+      "command": [
+        "node",
+        "tests\\frontend\\test_security_and_health_regressions.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.28,
+      "result_excerpt": "FRONTEND SECURITY AND HEALTH REGRESSIONS PASSED"
+    },
+    {
+      "name": "test_unified_report_renderer",
+      "command": [
+        "node",
+        "tests\\frontend\\test_unified_report_renderer.js"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.07,
+      "result_excerpt": "UNIFIED REPORT RENDERER PASSED"
+    }
+  ],
+  "source_scope": "Final application including late passage-based fallback and privacy selection.",
+  "browser_exit_scopes": [
+    "20 initial states",
+    "4 final privacy-limited exact-P3 reference states"
+  ],
+  "targeted_final_passes": 120,
+  "additional_reference_audit_subset": 34,
+  "protected_whitespace": "PASSED; existing line-ending warnings do not change protected contents",
+  "historical_archive": "Previously recorded 55 malformed dossiers remain untouched; isolated persistence is not historical recovery."
+}

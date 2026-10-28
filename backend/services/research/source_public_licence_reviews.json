@@ -115,6 +115,32 @@
         "External model processing allowed only for these scoped public-domain text fields; no general publisher AI grant."
       ],
       "scope_note": "Documented recall JSON fields only; no agency-wide webpage/media grant. Dataset catalogue search metadata declares public-domain terms; direct catalogue fetch returned 404."
+    },
+    "wikipedia": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt"
+      ],
+      "reviewed_at": "2026-10-28",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use/en",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "scope_note": "Explicit reference fallback only; no truth, identity authentication, current figures, threats or virality claims. English-only bounded pilot; attribution retained."
+    },
+    "wikidata": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt"
+      ],
+      "reviewed_at": "2026-10-28",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://www.wikidata.org/wiki/Wikidata:Licensing",
+      "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "scope_note": "Explicit reference fallback only; no truth, identity authentication, current figures, threats or virality claims. English-only bounded pilot; attribution retained."
     }
   }
 }

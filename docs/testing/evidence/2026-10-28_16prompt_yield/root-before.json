@@ -1,0 +1,24 @@
+{
+  "path": "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation",
+  "branch": "feat/phase8-real-acquisition-proof",
+  "sha": "222a4ad358b4b74ee2fcfd899209fea51b0d8c6d",
+  "status": [
+    " M backend/agents/personal_watch/monitoring.py",
+    " M backend/agents/scout/agent.py",
+    " M backend/agents/trending/agent.py",
+    " M backend/application/research/reading.py",
+    " M backend/infrastructure/acquisition/adapters/expanded_catalog.py",
+    " M backend/infrastructure/acquisition/adapters/news/wires_adapter.py",
+    " M backend/infrastructure/acquisition/adapters/social/reddit.py",
+    " M backend/infrastructure/acquisition/adapters/web/jina.py",
+    " M backend/infrastructure/acquisition/routing/router.py",
+    " M backend/infrastructure/acquisition/routing/standard_handlers.py",
+    " M backend/infrastructure/acquisition/security/url_validator.py",
+    " M backend/services/agent_reach/native/executor.py",
+    " M backend/services/agent_reach/native/normalizer.py",
+    " M backend/services/agent_reach/source_planner.py",
+    " M backend/services/research/relevance_gate.py",
+    "?? scripts/evaluation/quick_agent_check.py",
+    "?? scripts/evaluation/run_5_prompt_4_agent_test.py"
+  ]
+}

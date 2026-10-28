@@ -1,0 +1,12 @@
+{
+  "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+  "subject": "Mary Barra",
+  "input_sha256": "ee356fb10b4344a6a7d9328a25ad9fc4044e145b5a281af3594782de3b8cd0fa",
+  "new_network_calls": 0,
+  "model_calls": 0,
+  "unchanged_source_id_url_title_body_hash": true,
+  "unchanged_source_id_url_title_date_body_hash": true,
+  "publication_changes": [],
+  "temporal_reference": "2026-10-28T04:40:12.593497+00:00",
+  "original_raw_sources": 42
+}

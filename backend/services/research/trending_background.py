@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import hashlib
 
 
-def historical_background(captures, target, *, reference_time=None, gate=None):
+def historical_background(captures, target, *, reference_time=None, gate=None, window_hours=48.0):
     from backend.services.research.relevance_gate import relevance_gate
     from backend.services.research.temporal_guard import temporal_guard
     from backend.services.research.source_registry import source_registry
@@ -21,7 +21,7 @@ def historical_background(captures, target, *, reference_time=None, gate=None):
                     and node.get('datePublished')]
         if page.get('publication_metadata_conflict') or not (page.get('published') or declared and len(set(declared)) == 1):
             continue
-        temporal = temporal_guard.evaluate(original, reference_time=reference_time)
+        temporal = temporal_guard.evaluate(original, reference_time=reference_time, window_hours=window_hours)
         if temporal.status not in {'STALE', 'SYNDICATED_STALE', 'UPDATED_HISTORICAL_REJECTED'}:
             continue
         permission = source_registry.excerpt_decision(original.canonical_url, page)
@@ -29,7 +29,7 @@ def historical_background(captures, target, *, reference_time=None, gate=None):
             continue
         item = deepcopy(original)
         assessed = gate.evaluate_item(item, target, domain='trending', intent=target,
-                                     reference_time=reference_time, historical_context=True)
+                                     reference_time=reference_time, historical_context=True, window_hours=window_hours)
         if not assessed.is_accepted:
             continue
         # Only this detached background projection skips the current-event

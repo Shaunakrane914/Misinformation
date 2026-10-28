@@ -1,0 +1,167 @@
+{
+  "rows": [
+    {
+      "source_family": "wikipedia",
+      "subject": "Mary Barra",
+      "status": "BODY_ACQUISITION_VERIFIED",
+      "candidates": 3,
+      "body_words": 749,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "url": "https://en.wikipedia.org/wiki/Mary_Barra",
+      "content_scope": "REFERENCE_TEXT",
+      "http_attempts": 2,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "seconds": 1.891,
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION",
+      "article_body_words": 0
+    },
+    {
+      "source_family": "wikidata_exec",
+      "subject": "Mary Barra",
+      "status": "BODY_ACQUISITION_VERIFIED",
+      "candidates": 3,
+      "body_words": 33,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "url": "http://www.wikidata.org/entity/Q6779013",
+      "content_scope": "PROFILE_METADATA",
+      "http_attempts": 2,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "seconds": 2.179,
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION",
+      "article_body_words": 0
+    },
+    {
+      "source_family": "govuk",
+      "subject": "artificial intelligence",
+      "status": "POST_FETCH_PARSER_ERROR",
+      "candidates": 0,
+      "body_words": null,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "http_attempts": 2,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "seconds": 0.751,
+      "continuation": {
+        "basis": "One additional acquisition using the observed URL in saved search; no repeated discovery",
+        "http_attempts": 1,
+        "http_status": 200,
+        "native_response_saved": false,
+        "body_words": null,
+        "status": "POST_FETCH_PARSER_ERROR",
+        "failure": "re.PatternError caused by shell Unicode substitution of copyright symbol; corrected offline. No retry allowed within two-attempt family cap."
+      },
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION",
+      "article_body_words": null
+    },
+    {
+      "source_family": "cpsc_recalls",
+      "subject": "Dyson",
+      "status": "STRUCTURED_EVIDENCE_VERIFIED",
+      "candidates": 1,
+      "body_words": 164,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "url": "https://www.cpsc.gov/Recalls/2014/Dyson-Recalls-Bladeless-Portable-Electric-Heaters",
+      "content_scope": "STRUCTURED_EVIDENCE",
+      "http_attempts": 2,
+      "http_statuses": [
+        200
+      ],
+      "seconds": 1.195,
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION",
+      "article_body_words": 0
+    },
+    {
+      "source_family": "bluesky",
+      "subject": "semiconductor",
+      "status": "BODY_EMPTY",
+      "candidates": 0,
+      "body_words": 0,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "http_attempts": 1,
+      "http_statuses": [],
+      "seconds": 1.828,
+      "failure_provenance": "Adapter returned no candidates; inspect saved transport for actual failure. Not proof of an empty public platform.",
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION",
+      "article_body_words": 0
+    },
+    {
+      "source_family": "openfda",
+      "subject": "",
+      "status": "STRUCTURED_EVIDENCE_VERIFIED",
+      "candidates": 1,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "content_scope": "STRUCTURED_API_RECORD_NOT_ARTICLE",
+      "http_attempts": 1,
+      "http_statuses": [
+        200
+      ],
+      "seconds": 1.224,
+      "raw_json_words": 124,
+      "article_body_words": 0,
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION"
+    },
+    {
+      "source_family": "hackernews",
+      "subject": "",
+      "status": "DISCOVERY_ONLY",
+      "candidates": 1,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "content_scope": "STRUCTURED_API_RECORD_NOT_ARTICLE",
+      "http_attempts": 2,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "seconds": 2.86,
+      "raw_json_words": 65,
+      "article_body_words": 0,
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION"
+    },
+    {
+      "source_family": "stackexchange",
+      "subject": "",
+      "status": "STRUCTURED_EVIDENCE_VERIFIED",
+      "candidates": 1,
+      "task_qualified_words": null,
+      "permission": "APPROVED_FOR_BOUNDED_TEST",
+      "production_enabled": false,
+      "content_scope": "STRUCTURED_API_RECORD_NOT_ARTICLE",
+      "http_attempts": 1,
+      "http_statuses": [
+        200
+      ],
+      "seconds": 0.831,
+      "raw_json_words": 276,
+      "article_body_words": 0,
+      "qualification_scope": "SOURCE_ACCESS_DIAGNOSTIC_NO_AGENT_TASK_QUALIFICATION"
+    }
+  ],
+  "initial_native_admissions": 12,
+  "continuation_native_admissions": 1,
+  "total_native_admissions": 13,
+  "total_cap": 100,
+  "maximum_attempts_per_family": 2,
+  "provider_quota_receipts": "NOT_INFERRED_FROM_ADMISSIONS"
+}

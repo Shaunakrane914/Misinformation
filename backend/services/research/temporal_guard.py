@@ -51,6 +51,23 @@ DEFAULT_RECENCY_HALF_LIFE_HOURS = float(os.getenv("AEGIS_RECENCY_HALF_LIFE_HOURS
 MAX_FUTURE_SKEW_TOLERANCE_HOURS = 1.0
 
 
+def requested_trending_window(text):
+    """Explicit last/past hours/days only; bounded to a week, otherwise 48h.
+
+    This selects the caller's research scope, never repairs missing dates or
+    changes the publication/update/rediscovery provenance rules.
+    """
+    numbers = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7}
+    matches = re.findall(r"\b(?:last|past)\s+(\d+|one|two|three|four|five|six|seven)\s+(hours?|days?)\b", text or "", re.I)
+    windows = set()
+    for value, unit in matches:
+        count = int(value) if value.isdigit() else numbers[value.lower()]
+        hours = count * (24 if unit.lower().startswith("day") else 1)
+        if 1 <= hours <= 168:
+            windows.add(hours)
+    return float(next(iter(windows))) if len(windows) == 1 else 48.0
+
+
 @dataclass
 class TemporalAssessment:
     """

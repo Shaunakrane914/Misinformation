@@ -1,0 +1,460 @@
+[
+  {
+    "id": "S1",
+    "agent": "scout",
+    "input": "NVDA",
+    "query": "Research NVIDIA's most recent reported quarterly revenue and data-center performance. Compare the actual reporting period with NVIDIA's official investor disclosures and relevant independent financial reporting. Clearly distinguish actual figures from forecasts.",
+    "seconds": 86.39,
+    "application_sha256": "ee16620e1175ed1f7f03b3d11549368061cc74a5911b9d451e9c370bed0c1f1d",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave1/01-scout.json",
+        "sha256": "1a46529eeab2d82ef305acc20aeee63a7476a652756ab313db923eb1a6c22ce9",
+        "bytes": 7595493
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave1/01-scout-http.json",
+        "sha256": "66169c9d5fb4135891d7b26c09506d8fe7242ab9f2bb09162a1e1c212e417631",
+        "bytes": 71477
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave1/01-scout-events.json",
+        "sha256": "eb77fd95ce2d0ccb232e1f48a39371c9dae6ddae802af1f70db978320e5843cc",
+        "bytes": 8373588
+      },
+      "projection_native_path": {
+        "relative_to_private_capture_root": "final-replay-S1/01-scout.json",
+        "sha256": "488b1c1ab4da3817d7eb6fa1d2361837a9d77509f66ff044271553d1e3549ee4",
+        "bytes": 5990292
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "S2",
+    "agent": "scout",
+    "input": "Tata Motors",
+    "query": "Investigate Tata Motors' latest reported financial performance and major automotive or EV business developments. Prioritize official company and exchange information, then compare claims in independent reporting.",
+    "seconds": 117.82,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave2/01-scout.json",
+        "sha256": "75d88bdc53f0758d5818af73f38ee31735c2ddf9820d23c7a800f04f863285a5",
+        "bytes": 2412828
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave2/01-scout-http.json",
+        "sha256": "74f851db3c7de2f484a0057a9d1cc132a00da7abcdbafed8468c5da376b2d108",
+        "bytes": 70054
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave2/01-scout-events.json",
+        "sha256": "5c268691607e0e597b6fecf7206aee72259b203b9118901824f86cf3dfc620ad",
+        "bytes": 2728519
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "S3",
+    "agent": "scout",
+    "input": "AAPL",
+    "query": "Analyze Apple's latest official quarterly financial developments, including Services and iPhone revenue where reported. Identify the correct fiscal periods, primary disclosures and independent interpretations.",
+    "seconds": 102.94,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave3/01-scout.json",
+        "sha256": "d1fd55f42e35383b5a1bfc54b2849bd903415cd9a7ada6a27a897132ac2af880",
+        "bytes": 6107025
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave3/01-scout-http.json",
+        "sha256": "0a5d066008bb7b831d8b08c3748645bdd4e2faf1326a9df5669f242f446ec35b",
+        "bytes": 75064
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave3/01-scout-events.json",
+        "sha256": "f500e3ed46884df74fffec215cf7e70844a7e0da91a96b552d167d35c5acbd29",
+        "bytes": 6704996
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "S4",
+    "agent": "scout",
+    "input": "Infosys",
+    "query": "Research Infosys' most recent financial results and revenue guidance. Separate actual results from management forecasts, preserve the currency and fiscal year, and compare official disclosures with reporting.",
+    "seconds": 105.53,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave4/01-scout.json",
+        "sha256": "dfbd420aed3c94eaf36a77c45ef9ae072d59a902312cc0238fae464ea37daddc",
+        "bytes": 3230450
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave4/01-scout-http.json",
+        "sha256": "dfde0dc7bdcca47a27eb0340eb0f5ddce793d0e5f21cc7de0d88dd82cc648149",
+        "bytes": 62792
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave4/01-scout-events.json",
+        "sha256": "20024f8f03f2ba6f56cd3c53f38e6ebffa3448347e4b9cfe3ea3490638acb932",
+        "bytes": 3645766
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "B1",
+    "agent": "brandshield",
+    "input": "Nike",
+    "query": "Investigate publicly documented Nike counterfeit-product campaigns, fake stores and impersonation-related warnings. Separate historical cases from currently observed incidents.",
+    "seconds": 116.77,
+    "application_sha256": "ee16620e1175ed1f7f03b3d11549368061cc74a5911b9d451e9c370bed0c1f1d",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave1/02-brandshield.json",
+        "sha256": "b0bd014994092075b184aa11fb8821eaa2a9cd60575cb1ad224bef05c1b27cf6",
+        "bytes": 3846246
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave1/02-brandshield-http.json",
+        "sha256": "f203d326eb2adab5726c6af8719e502789ba6662310eb27bc96d6344799339a3",
+        "bytes": 71492
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave1/02-brandshield-events.json",
+        "sha256": "45638d0926950ea6573cdd6a652dcb7fb7166cd9eb0b03c59ccfbb2a59300702",
+        "bytes": 4276801
+      },
+      "projection_native_path": {
+        "relative_to_private_capture_root": "final-replay-B1/03-brandshield.json",
+        "sha256": "ae6978f59c9802ff55064a99a9b0701376c6568068d3892c710a5e148c91203b",
+        "bytes": 2768055
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "B2",
+    "agent": "brandshield",
+    "input": "Dyson",
+    "query": "Investigate reported Dyson counterfeit products, phishing promotions and official consumer warnings. Identify actual documented incidents, relevant dates and source authority.",
+    "seconds": 100.9,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave2/02-brandshield.json",
+        "sha256": "691157a316332f34c1b43c92abae79d96106cf5d85962931d8db9875e0577cb5",
+        "bytes": 1387543
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave2/02-brandshield-http.json",
+        "sha256": "aec6a5c4c197f19d2151c4f16761548bf5f3df2dc366bf2957f14247622bf333",
+        "bytes": 64698
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave2/02-brandshield-events.json",
+        "sha256": "744482b6027692b83187771cb1f062933ffce8e9f1b837ac7e03863111a24412",
+        "bytes": 1576766
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "B3",
+    "agent": "brandshield",
+    "input": "Pfizer",
+    "query": "Investigate publicly documented Pfizer product-counterfeiting, impersonation or product-safety incidents. Prioritize precise manufacturer and regulator notices over generic safety advice.",
+    "seconds": 134.35,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave3/02-brandshield.json",
+        "sha256": "7bd1c3b259d6c54bdb72a9fe41cc2c24ead96a6a6eb1fe8a256869249f6024ff",
+        "bytes": 3223190
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave3/02-brandshield-http.json",
+        "sha256": "217a8a8140adb792bee750f0fdaf98ae1d548b456ee6d58a0fb91acc6bdb4247",
+        "bytes": 81996
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave3/02-brandshield-events.json",
+        "sha256": "f4f1185359f9d4806debc709ad72f3d5d85f95ceaca54321ce99be613f13eb91",
+        "bytes": 3617439
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "B4",
+    "agent": "brandshield",
+    "input": "Apple",
+    "query": "Investigate reported fake Apple customer-support services, phishing and Apple-brand impersonation. Distinguish specific observed campaigns from general fraud-prevention guidance.",
+    "seconds": 184.26,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave4/02-brandshield.json",
+        "sha256": "f50fa7ac20abd23eb6cd7b696876f6a1c899f5c7c26116d5dbd7c9038c250aec",
+        "bytes": 3633119
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave4/02-brandshield-http.json",
+        "sha256": "63be045f607bb7e2bba518f22ac433ae5eda495fdd32dd0a68e25b85156ed756",
+        "bytes": 72156
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave4/02-brandshield-events.json",
+        "sha256": "ac7db745e233a66de4ded9776d45356409f6f1b20f6d33b4ffa4e14eaac4bdfc",
+        "bytes": 4077235
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "T1",
+    "agent": "trending",
+    "input": "battery recycling",
+    "query": "Find developments in battery recycling from the last 48 hours. Include research, manufacturing, policy and recycling technology. If current sources are unavailable, report that honestly and present eligible older information separately.",
+    "category": "technology",
+    "seconds": 149.82,
+    "application_sha256": "ee16620e1175ed1f7f03b3d11549368061cc74a5911b9d451e9c370bed0c1f1d",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave1/03-trending.json",
+        "sha256": "fd5f033d7052dc5e5e408b79a91c55e7b72127bdd2676a0af8743bdca5d3f0af",
+        "bytes": 6820
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave1/03-trending-http.json",
+        "sha256": "1b8002d157cc4d3c18c7abcf4e409c957dcf2a193d766ffee501babc02112e01",
+        "bytes": 95979
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave1/03-trending-events.json",
+        "sha256": "c0074aab5d07171423ccf760927147595b14f98837b1d10e0311bd3e313ddb3f",
+        "bytes": 27340
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "T2",
+    "agent": "trending",
+    "input": "Shah Rukh Khan",
+    "query": "Investigate recent developments involving Shah Rukh Khan over the last seven days, using relevant entertainment reporting and original production or interview sources where available.",
+    "category": "entertainment",
+    "dossier_verified_read_attempts": 23,
+    "seconds": 167.71,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "mode": "LIVE_CAPTURE_POOL_RECOVERY_NO_ORIGINAL_NATIVE_PROJECTION",
+    "latency_basis": "APP_SSE_LOG_ELAPSED_NOT_RUNNER",
+    "files": {
+      "raw_pool_path": {
+        "relative_to_private_capture_root": "wave2/03-trending-observed-pools.json",
+        "sha256": "a1a62832a9646dc58fb6a7763d820cf15ecc34a1ee9acafe3ced6799f13d34cc",
+        "bytes": 539260
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave2/03-trending-http.json",
+        "sha256": "ccf4bc6bfb53295f24064c15406191379ef3773abe6948b292878b207c421e30",
+        "bytes": 83326
+      },
+      "projection_native_path": {
+        "relative_to_private_capture_root": "T2-pool-only-replay/04-trending.json",
+        "sha256": "ce50f570cfb06fd0074e91971556c483a5228a492dd01b6a16466ab7194968e5",
+        "bytes": 2133755
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "T3",
+    "agent": "trending",
+    "input": "India semiconductor manufacturing",
+    "query": "Investigate developments in India's semiconductor manufacturing industry over the last seven days, including plant announcements, policy decisions and manufacturing milestones.",
+    "category": "technology",
+    "seconds": 125.65,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave3/03-trending.json",
+        "sha256": "5088ba412a8f271837a65fcd4f5f5c11e51c2333d5db060bc17e142233041493",
+        "bytes": 3273124
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave3/03-trending-http.json",
+        "sha256": "48f936e4046d0146e8756124d447d8b37e6d6fdad5b818acc0bed6f34961753b",
+        "bytes": 75204
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave3/03-trending-events.json",
+        "sha256": "7a8ae5a0cc040677183ef491e9f6fcc7ca53942c5463db4d9f3b216824c47e5f",
+        "bytes": 3661936
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "T4",
+    "agent": "trending",
+    "input": "Virat Kohli",
+    "query": "Investigate recent public developments involving Virat Kohli over the last seven days, using relevant sports reporting and official cricket sources when available.",
+    "category": "general",
+    "seconds": 114.31,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave4/03-trending.json",
+        "sha256": "5621c646b1d4e427bcbfda4f1097276534dcc82018e48fcc9e724ef7d30f7819",
+        "bytes": 3835066
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave4/03-trending-http.json",
+        "sha256": "6adc94ff75f05a5ece72a8c2d88c1414ccc66684b0ed47c7e07dd33812cdbfaa",
+        "bytes": 80935
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave4/03-trending-events.json",
+        "sha256": "e684533388eb356073523085ffb11e1910fc00cc07fc2c2613cf213bd34485e9",
+        "bytes": 4293552
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "P1",
+    "agent": "personal_watch",
+    "input": "Tim Cook",
+    "query": "Find Tim Cook's most recent publicly attributable statements or interviews about Apple, AI or company strategy. Preserve the original speaker, event, date and quotation context.",
+    "seconds": 99.75,
+    "application_sha256": "ee16620e1175ed1f7f03b3d11549368061cc74a5911b9d451e9c370bed0c1f1d",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave1/04-personal_watch.json",
+        "sha256": "0c8abda32c01ff34446c79cb2ba277ea6a578272e896bab617b5ee4e8f8a9c5b",
+        "bytes": 4423947
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave1/04-personal_watch-http.json",
+        "sha256": "5af47e774044ec7835bfac070d307e51e8444e43dcab74124844e149c79f0f2b",
+        "bytes": 65750
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave1/04-personal_watch-events.json",
+        "sha256": "8ed38ee6dadb02eea3b6bc3b477f647f4f2b18f4594f18eff41a203c80edf878",
+        "bytes": 4939493
+      },
+      "projection_native_path": {
+        "relative_to_private_capture_root": "final-replay-P1/02-personal_watch.json",
+        "sha256": "2524ef42b82d6e35366d28320cfca09e6a4c1556fb9de6f8075ae7852262428d",
+        "bytes": 3504656
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "P2",
+    "agent": "personal_watch",
+    "input": "Sam Altman",
+    "query": "Investigate publicly reported impersonation, fabricated endorsements or misattributed statements involving Sam Altman. Distinguish confirmed incidents from unverified allegations.",
+    "seconds": 123.26,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave2tail/01-personal_watch.json",
+        "sha256": "1654b4a1f49318510b1711076fb0a6908ce37f3fbd66c3d50ef811cdbadbc303",
+        "bytes": 6956133
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave2tail/01-personal_watch-http.json",
+        "sha256": "b78152b9caf0d0228eb0d4d455b24301b2df782c35f4c7e7cc85cc0c3275f7a8",
+        "bytes": 88392
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave2tail/01-personal_watch-events.json",
+        "sha256": "93958c2d8125fbb528c257b8d43b6751ec047db293d1d2ad6e9c4e8a3a662ab6",
+        "bytes": 7723337
+      },
+      "projection_native_path": {
+        "relative_to_private_capture_root": "final-replay-P2/02-personal_watch.json",
+        "sha256": "1b09a5662c8ece481d813fb5363b5108d07b909610bd9ab7b95d2df61b36ca19",
+        "bytes": 5144094
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "P3",
+    "agent": "personal_watch",
+    "input": "Mary Barra",
+    "query": "Find attributable public statements by Mary Barra about General Motors and the automotive industry. Clearly distinguish historical statements from recent coverage and unrelated executive speculation.",
+    "seconds": 124.63,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave3/04-personal_watch.json",
+        "sha256": "c0eb9a81ec88310dec061e25c76ed3b5cf162f5b3f96c8075c4938045c8957b0",
+        "bytes": 3890293
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave3/04-personal_watch-http.json",
+        "sha256": "33ed3cf875408daa654162f20b66218cf162594c5b0be8d964524decadf5f64f",
+        "bytes": 64719
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave3/04-personal_watch-events.json",
+        "sha256": "61c6d5559dc8e228db14409d2b1743549512c467ee1a26c13fa35cd5bfd137fb",
+        "bytes": 4348568
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  },
+  {
+    "id": "P4",
+    "agent": "personal_watch",
+    "input": "Shah Rukh Khan",
+    "query": "Investigate publicly reported fake endorsements, impersonation or misattributed quotations involving Shah Rukh Khan. Use relevant entertainment reporting, original statements and fact-checks where available.",
+    "seconds": 197.0,
+    "application_sha256": "22ae91c59257336e8a37db01f51520a1871aa8c412f83a3ef99105e82545b89b",
+    "latency_basis": "RUNNER_MONOTONIC_WALL",
+    "files": {
+      "native_path": {
+        "relative_to_private_capture_root": "wave4/04-personal_watch.json",
+        "sha256": "0e31e857c94a9d591260ee5b75cb1b521b16c5a523d67cf22fa31ec8669711a4",
+        "bytes": 4719637
+      },
+      "http_path": {
+        "relative_to_private_capture_root": "wave4/04-personal_watch-http.json",
+        "sha256": "08f5b6a65d459d2c6aab045fe7584f6e5645eaa642de485aab96f4136eca6c3a",
+        "bytes": 76373
+      },
+      "events_path": {
+        "relative_to_private_capture_root": "wave4/04-personal_watch-events.json",
+        "sha256": "c6fce49ccd9de03fd5ff4db7e0537934b82be1018c4655c7d305a71fd3842e97",
+        "bytes": 5253174
+      }
+    },
+    "capture_root_basename": "aegis-16prompt-20261028-wycljnqk"
+  }
+]

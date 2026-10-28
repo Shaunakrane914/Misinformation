@@ -1,0 +1,1539 @@
+[
+  {
+    "platform": "expanded_sources",
+    "registered_operations": [
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "expanded_sources",
+        "operation": "search",
+        "declared": false,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SEARCH_INDEX_DISCOVERY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "news",
+    "registered_operations": [
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "news",
+        "operation": "search",
+        "declared": false,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SYNDICATED_SUMMARY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "web",
+    "registered_operations": [
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "web",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "web",
+        "operation": "search",
+        "declared": false,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SEARCH_INDEX_DISCOVERY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "web_search",
+    "registered_operations": [
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "web_search",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SEARCH_INDEX_DISCOVERY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "jina_reader",
+    "registered_operations": [
+      "read"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "jina_reader",
+        "operation": "read",
+        "declared": false,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "rss",
+    "registered_operations": [
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "rss",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SYNDICATED_SUMMARY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "rss",
+        "operation": "search",
+        "declared": false,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SYNDICATED_SUMMARY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "github",
+    "registered_operations": [
+      "commits",
+      "issues",
+      "prs",
+      "read",
+      "releases",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "github",
+        "operation": "commits",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "github",
+        "operation": "issues",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "github",
+        "operation": "prs",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "github",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "github",
+        "operation": "releases",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "github",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "youtube",
+    "registered_operations": [
+      "comments",
+      "read",
+      "search",
+      "transcript"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "youtube",
+        "operation": "comments",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "youtube",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "youtube",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "youtube",
+        "operation": "transcript",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "v2ex",
+    "registered_operations": [
+      "hot",
+      "latest",
+      "replies",
+      "search",
+      "topic"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "v2ex",
+        "operation": "hot",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "v2ex",
+        "operation": "latest",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "v2ex",
+        "operation": "replies",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "v2ex",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "v2ex",
+        "operation": "topic",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "bilibili",
+    "registered_operations": [
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "bilibili",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "reddit",
+    "registered_operations": [
+      "comments",
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "reddit",
+        "operation": "comments",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": false,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "POLICY_BLOCKED: approved Reddit access is not configured",
+        "runtime_health": "BLOCKED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "reddit",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": false,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "POLICY_BLOCKED: approved Reddit access is not configured",
+        "runtime_health": "BLOCKED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "reddit",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": false,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "SEARCH_INDEX_DISCOVERY",
+          "SYNDICATED_SUMMARY"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "POLICY_BLOCKED: approved Reddit access is not configured",
+        "runtime_health": "BLOCKED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "twitter",
+    "registered_operations": [
+      "profile",
+      "read",
+      "search",
+      "status"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "twitter",
+        "operation": "profile",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "twitter",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "twitter",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SEARCH_INDEX_DISCOVERY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "twitter",
+        "operation": "status",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "linkedin",
+    "registered_operations": [
+      "jobs"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "linkedin",
+        "operation": "jobs",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "xueqiu",
+    "registered_operations": [
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "xueqiu",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": "XUEQIU_COOKIE",
+        "credential_present": false,
+        "policy_eligible": true,
+        "supported_depths": [
+          "PARTIAL_OR_UNCLASSIFIED"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "AUTH_REQUIRED: XUEQIU_COOKIE is not configured",
+        "runtime_health": "AUTH_REQUIRED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "xiaohongshu",
+    "registered_operations": [
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "xiaohongshu",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": "XIAOHONGSHU_COOKIE",
+        "credential_present": false,
+        "policy_eligible": true,
+        "supported_depths": [
+          "PARTIAL_OR_UNCLASSIFIED"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "AUTH_REQUIRED: XIAOHONGSHU_COOKIE is not configured",
+        "runtime_health": "AUTH_REQUIRED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "instagram",
+    "registered_operations": [
+      "oembed",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "instagram",
+        "operation": "oembed",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "PARTIAL_OR_UNCLASSIFIED"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "instagram",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": "INSTAGRAM_COOKIE",
+        "credential_present": false,
+        "policy_eligible": true,
+        "supported_depths": [
+          "PARTIAL_OR_UNCLASSIFIED"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured",
+        "runtime_health": "AUTH_REQUIRED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "facebook",
+    "registered_operations": [
+      "oembed",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "facebook",
+        "operation": "oembed",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "PARTIAL_OR_UNCLASSIFIED"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "facebook",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": "FACEBOOK_COOKIE",
+        "credential_present": false,
+        "policy_eligible": true,
+        "supported_depths": [
+          "PARTIAL_OR_UNCLASSIFIED"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "AUTH_REQUIRED: FACEBOOK_COOKIE is not configured",
+        "runtime_health": "AUTH_REQUIRED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "boss",
+    "registered_operations": [
+      "search_jobs"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "boss",
+        "operation": "search_jobs",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": "BOSS_CDP_PORT",
+        "credential_present": false,
+        "policy_eligible": true,
+        "supported_depths": [
+          "PARTIAL_OR_UNCLASSIFIED"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "AUTH_REQUIRED: BOSS_CDP_PORT is not configured",
+        "runtime_health": "AUTH_REQUIRED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "xiaoyuzhou",
+    "registered_operations": [
+      "episodes",
+      "podcast",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "xiaoyuzhou",
+        "operation": "episodes",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "xiaoyuzhou",
+        "operation": "podcast",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "xiaoyuzhou",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "SEARCH_INDEX_DISCOVERY"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "sec_edgar",
+    "registered_operations": [
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "sec_edgar",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "sec_edgar",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "nist_cve",
+    "registered_operations": [
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "nist_cve",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "nist_cve",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "arxiv",
+    "registered_operations": [
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "arxiv",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_ABSTRACT"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "arxiv",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_ABSTRACT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "fact_check",
+    "registered_operations": [
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "fact_check",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": "GOOGLE_FACTCHECK_API_KEY",
+        "credential_present": false,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "EXCLUDE",
+        "reason": "AUTH_REQUIRED: GOOGLE_FACTCHECK_API_KEY is not configured",
+        "runtime_health": "AUTH_REQUIRED",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "hackernews",
+    "registered_operations": [
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "hackernews",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "hackernews",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  },
+  {
+    "platform": "stackexchange",
+    "registered_operations": [
+      "read",
+      "search"
+    ],
+    "runtime_assessments": [
+      {
+        "channel": "stackexchange",
+        "operation": "read",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      },
+      {
+        "channel": "stackexchange",
+        "operation": "search",
+        "declared": true,
+        "handler_available": true,
+        "auth_environment": null,
+        "credential_present": true,
+        "policy_eligible": true,
+        "supported_depths": [
+          "DIRECT_CONTENT",
+          "DIRECT_METADATA"
+        ],
+        "required_depth": null,
+        "decision": "ELIGIBLE_UNVERIFIED",
+        "reason": "No fresh runtime observation; bounded probing is allowed",
+        "runtime_health": "UNKNOWN",
+        "temporary": false,
+        "last_outcome": null,
+        "last_observed_at": null,
+        "observation_age_seconds": null,
+        "observation_fresh": false,
+        "network_observed": false,
+        "cache_only": false,
+        "retry_after_seconds": null
+      }
+    ],
+    "observation": "OFFLINE_INVENTORY_NOT_A_LIVE_PROVIDER_PROBE"
+  }
+]

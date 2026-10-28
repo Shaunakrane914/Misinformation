@@ -213,8 +213,9 @@
       return `
         <div class="fe-findings-grid">
           ${findings.slice(0, 5).map((f, idx) => {
-            const typeStr = (f.type || f.sentiment_stance || f.stance || 'FINDING').toUpperCase();
-            const badgeClass = (typeStr.includes('FACT') || typeStr.includes('SUPPORT') || typeStr.includes('CONFIRM'))
+            // Finding type FACT is a schema category, not a verified verdict.
+            const typeStr = String(f.epistemic_state || 'UNVERIFIED').toUpperCase();
+            const badgeClass = (typeStr === 'KNOWN_FACT' || typeStr === 'SUPPORTED')
               ? 'fe-badge-green'
               : ((typeStr.includes('CONTRADICT') || typeStr.includes('REFUT')) ? 'fe-badge-red' : 'fe-badge-cyan');
             const confRaw = typeof f.confidence === 'string' ? f.confidence : (f.confidence_score !== undefined ? `${Math.round(f.confidence_score * 100)}%` : (f.confidence !== undefined ? `${Math.round(f.confidence * 100)}%` : null));

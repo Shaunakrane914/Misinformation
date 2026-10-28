@@ -1,0 +1,1512 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "443d87b73bac4e2d927bf25ca78c0637",
+      "requested_url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?interval=1d&range=5d",
+      "started_at": "2026-10-28T09:00:33.911842+00:00",
+      "http_status": 200,
+      "final_url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?interval=1d&range=5d",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1713,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?interval=1d&range=5d"
+      ],
+      "duration_ms": 1444.96
+    },
+    {
+      "operation_id": "6d0fe604776943bdad84442e9a4a1d0c",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings&format=rss",
+      "started_at": "2026-10-28T09:00:35.886787+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9739,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings&format=rss"
+      ],
+      "duration_ms": 3979.103
+    },
+    {
+      "operation_id": "3da6c9901f1741f3980927531fa7dc81",
+      "requested_url": "https://www.bing.com/search?q=Apple+%28AAPL%29+quarterly+earnings&first=1",
+      "started_at": "2026-10-28T09:00:35.557449+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.374
+    },
+    {
+      "operation_id": "93d9a9c1c310419b8f6d314976647543",
+      "requested_url": "https://search.yahoo.com/search?p=Apple+%28AAPL%29+quarterly+earnings",
+      "started_at": "2026-10-28T09:00:40.563210+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4019.203
+    },
+    {
+      "operation_id": "1f900def203e4ecdbcdab744e54c4460",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:00:44.584726+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 44418,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+%28AAPL%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2363.348
+    },
+    {
+      "operation_id": "9320cd19c79848a19aa047594564f75d",
+      "requested_url": "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&format=rss",
+      "started_at": "2026-10-28T09:00:46.980433+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2079,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&format=rss"
+      ],
+      "duration_ms": 3144.441
+    },
+    {
+      "operation_id": "8d03475f4004456da5ac07e5bef81f3b",
+      "requested_url": "https://investor.apple.com/investor-relations/default.aspx",
+      "started_at": "2026-10-28T09:00:48.020037+00:00",
+      "http_status": 200,
+      "final_url": "https://investor.apple.com/investor-relations/default.aspx",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 53455,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://investor.apple.com/investor-relations/default.aspx"
+      ],
+      "duration_ms": 2521.868
+    },
+    {
+      "operation_id": "f16ce026cf1648a98ae2a5c3166025ab",
+      "requested_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:00:50.127163+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4194,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1820.626
+    },
+    {
+      "operation_id": "3b4702b6de734545b4b9c47c0b03ff34",
+      "requested_url": "https://finance.yahoo.com/markets/stocks/articles/apple-aapl-vs-msft-googl-145956028.html",
+      "started_at": "2026-10-28T09:00:47.947159+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5011.835
+    },
+    {
+      "operation_id": "dc470409ec8442c5abf83560afa5df06",
+      "requested_url": "https://uk.finance.yahoo.com/news/apple-aapl-longer-iphone-ownership-133815255.html",
+      "started_at": "2026-10-28T09:00:47.948161+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5011.083
+    },
+    {
+      "operation_id": "83efd336127545dd9321eb869747a584",
+      "requested_url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx",
+      "started_at": "2026-10-28T09:00:50.706674+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5010.584
+    },
+    {
+      "operation_id": "c604c1f519b84e2484ac4da0137f24ef",
+      "requested_url": "https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I",
+      "started_at": "2026-10-28T09:00:54.097696+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15395,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I"
+      ],
+      "duration_ms": 2996.744
+    },
+    {
+      "operation_id": "5447b0aed9b44e6cbdd69bb59b9b980c",
+      "requested_url": "https://uk.finance.yahoo.com/news/apple-aapl-earnings-expected-grow-130010952.html",
+      "started_at": "2026-10-28T09:00:52.973045+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5012.169
+    },
+    {
+      "operation_id": "759c3118f1c247fc80c0da33cde3de82",
+      "requested_url": "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&format=rss",
+      "started_at": "2026-10-28T09:00:58.236903+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2054,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&format=rss"
+      ],
+      "duration_ms": 2833.814
+    },
+    {
+      "operation_id": "0596ba1790214ae793e78d77789a8a31",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I",
+      "started_at": "2026-10-28T09:00:57.119264+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.494
+    },
+    {
+      "operation_id": "e2ab9f640c89493199cc4161661cb72a",
+      "requested_url": "https://finance.yahoo.com/markets/stocks/articles/why-buying-apple-stock-q4-153558027.html",
+      "started_at": "2026-10-28T09:00:57.997502+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5013.558
+    },
+    {
+      "operation_id": "a50c90a8d78b48b2bc6e680bc99d54a5",
+      "requested_url": "https://www.bing.com/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com&first=1",
+      "started_at": "2026-10-28T09:00:58.237289+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5017.281
+    },
+    {
+      "operation_id": "a869aad849ec4955aea9a1620810ac43",
+      "requested_url": "https://www.fool.com/investing/2026/10/10/tim-cooks-final-apple-earnings-call-showed-the-com/",
+      "started_at": "2026-10-28T09:01:03.329669+00:00",
+      "http_status": 200,
+      "final_url": "https://www.fool.com/investing/2026/10/10/tim-cooks-final-apple-earnings-call-showed-the-com/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 62653,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.fool.com/investing/2026/10/10/tim-cooks-final-apple-earnings-call-showed-the-com/"
+      ],
+      "duration_ms": 2232.096
+    },
+    {
+      "operation_id": "a85c523c11b9411987b0ead459ae854a",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I",
+      "started_at": "2026-10-28T09:01:02.124219+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.631
+    },
+    {
+      "operation_id": "4b6486e43307443587d48b1eea78ac93",
+      "requested_url": "https://search.yahoo.com/search?p=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com",
+      "started_at": "2026-10-28T09:01:03.254824+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3882.425
+    },
+    {
+      "operation_id": "1df95befda374a14bfa242577ec5f080",
+      "requested_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:01.072864+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4184,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 6449.806
+    },
+    {
+      "operation_id": "d930c20cf8ef44a2b508fc0d323ada82",
+      "requested_url": "https://www.tipranks.com/news/apple-stock-falls-today-as-bearish-analyst-comments-raise-concerns-ahead-of-next-weeks-earnings",
+      "started_at": "2026-10-28T09:01:07.244896+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1124.681
+    },
+    {
+      "operation_id": "571a305233f342948445b2c694817b55",
+      "requested_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:07.137545+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4180,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3346.019
+    },
+    {
+      "operation_id": "be220390401e41f39d2c55932d1d8896",
+      "requested_url": "https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4",
+      "started_at": "2026-10-28T09:01:08.377106+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15545,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4"
+      ],
+      "duration_ms": 2613.718
+    },
+    {
+      "operation_id": "d5b911ca1cfe46d1951f71b0e8c1d6b5",
+      "requested_url": "https://www.aol.com/articles/apple-5-trillion-dilemma-3-134224000.html",
+      "started_at": "2026-10-28T09:01:05.994208+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5013.735
+    },
+    {
+      "operation_id": "7eb522d5905e40449443fdc2a4c77d89",
+      "requested_url": "https://investor.apple.com/investor-relations/default.aspx",
+      "started_at": "2026-10-28T09:01:11.144003+00:00",
+      "http_status": 200,
+      "final_url": "https://investor.apple.com/investor-relations/default.aspx",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 53455,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://investor.apple.com/investor-relations/default.aspx"
+      ],
+      "duration_ms": 1072.92
+    },
+    {
+      "operation_id": "04d0284d5d11480aa7bc205ac8c54d65",
+      "requested_url": "https://www.bing.com/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&first=1",
+      "started_at": "2026-10-28T09:01:11.738209+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 137706,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&first=1"
+      ],
+      "duration_ms": 2250.577
+    },
+    {
+      "operation_id": "3d726c90c79f47389fa491bff156c38c",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4",
+      "started_at": "2026-10-28T09:01:11.007761+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.784
+    },
+    {
+      "operation_id": "eb6fb40a7f29473ebe4923420b395bb4",
+      "requested_url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx",
+      "started_at": "2026-10-28T09:01:12.397324+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 26931,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx"
+      ],
+      "duration_ms": 4049.469
+    },
+    {
+      "operation_id": "35ebb906ae8945309ba9d35f9d6c7b23",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&first=1",
+      "started_at": "2026-10-28T09:01:16.471857+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 136441,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&first=1"
+      ],
+      "duration_ms": 1579.607
+    },
+    {
+      "operation_id": "6f6f13b1ceac4d608d3e70c924f29d88",
+      "requested_url": "https://search.yahoo.com/search?p=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov",
+      "started_at": "2026-10-28T09:01:14.014328+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4448.647
+    },
+    {
+      "operation_id": "f3d758dd304b4dc28c721b995ec212ae",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4",
+      "started_at": "2026-10-28T09:01:16.022960+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.724
+    },
+    {
+      "operation_id": "3b9d8ce211ec4b7294d70dae1f7e1d2d",
+      "requested_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:18.463258+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4176,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3189.17
+    },
+    {
+      "operation_id": "f16ecba67b4a40b69717035665ad1cec",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth",
+      "started_at": "2026-10-28T09:01:18.077780+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5011.624
+    },
+    {
+      "operation_id": "91ca8776d86f4a35a255e4ca695f15d1",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:01:22.405782+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4918,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2928.663
+    },
+    {
+      "operation_id": "2a7795826e6341e68c003a6063ce5a42",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure&format=rss",
+      "started_at": "2026-10-28T09:01:22.406066+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 7619,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure&format=rss"
+      ],
+      "duration_ms": 3123.27
+    },
+    {
+      "operation_id": "ea5250518b824b70ae78d819fed7fbac",
+      "requested_url": "https://investor.apple.com/investor-relations/default.aspx (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+      "started_at": "2026-10-28T09:01:25.557307+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 127.285
+    },
+    {
+      "operation_id": "2477fd0079db41a9b64b41c6aac51b51",
+      "requested_url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+      "started_at": "2026-10-28T09:01:25.684721+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 107.918
+    },
+    {
+      "operation_id": "eb84abb838ea43008a5b247da518fa33",
+      "requested_url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+      "started_at": "2026-10-28T09:01:25.792780+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 215.465
+    },
+    {
+      "operation_id": "70f0c098e6f34e53a60b1ab902ecd79b",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:23.089699+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3100,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3154.81
+    },
+    {
+      "operation_id": "15ea5a39595e498cb86d45031f54b3ce",
+      "requested_url": "https://seekingalpha.com/article/4709458-apple-inc-aapl-q3-2024-earnings-call-transcript",
+      "started_at": "2026-10-28T09:01:25.791922+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 2196.757
+    },
+    {
+      "operation_id": "33449e25b9744596a87a4af1fe7ad3c9",
+      "requested_url": "https://www.bing.com/search?q=Apple+%28AAPL%29+investor+disclosure&first=1",
+      "started_at": "2026-10-28T09:01:26.008677+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.98
+    },
+    {
+      "operation_id": "c62a9ea02fba456884d95f3aeda78e3b",
+      "requested_url": "https://www.stocktitan.net/sec-filings/AAPL/10-q-apple-inc-quarterly-earnings-report-8c3913d3d431.html",
+      "started_at": "2026-10-28T09:01:26.966597+00:00",
+      "http_status": 200,
+      "final_url": "https://www.stocktitan.net/sec-filings/AAPL/10-q-apple-inc-quarterly-earnings-report-8c3913d3d431.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 101344,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.stocktitan.net/sec-filings/AAPL/10-q-apple-inc-quarterly-earnings-report-8c3913d3d431.html"
+      ],
+      "duration_ms": 4434.897
+    },
+    {
+      "operation_id": "5d6f2b9aefee4e99a42e8364539ee60e",
+      "requested_url": "https://beinsure.com/news/apple-stock-forecast-wall-street-analysts-split-on-aapls-upside/",
+      "started_at": "2026-10-28T09:01:28.095766+00:00",
+      "http_status": 200,
+      "final_url": "https://beinsure.com/news/apple-stock-forecast-wall-street-analysts-split-on-aapls-upside/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 42655,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://beinsure.com/news/apple-stock-forecast-wall-street-analysts-split-on-aapls-upside/"
+      ],
+      "duration_ms": 3305.861
+    },
+    {
+      "operation_id": "36ae04edb7454a76b5254ab2722aaaf3",
+      "requested_url": "https://search.yahoo.com/search?p=Apple+%28AAPL%29+investor+disclosure",
+      "started_at": "2026-10-28T09:01:31.016900+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.908
+    },
+    {
+      "operation_id": "8b85470becc4409a9eee089c0b09ad91",
+      "requested_url": "https://www.insidermonkey.com/news/apple-has-outperformed-the-sp-500-but-is-aapls-35x-valuation-getting-ahead-of-its-growth-1854093/",
+      "started_at": "2026-10-28T09:01:32.220143+00:00",
+      "http_status": 200,
+      "final_url": "https://www.insidermonkey.com/news/apple-has-outperformed-the-sp-500-but-is-aapls-35x-valuation-getting-ahead-of-its-growth-1854093/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 105033,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.insidermonkey.com/news/apple-has-outperformed-the-sp-500-but-is-aapls-35x-valuation-getting-ahead-of-its-growth-1854093/"
+      ],
+      "duration_ms": 3907.036
+    },
+    {
+      "operation_id": "af8db6447e28466db76048834f168c08",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:36.032129+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 40801,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2018.802
+    },
+    {
+      "operation_id": "07329ebe75e3419e99eb2265be517213",
+      "requested_url": "https://finance.yahoo.com/markets/stocks/articles/apple-aapl-stock-falls-amid-204503686.html",
+      "started_at": "2026-10-28T09:01:33.971332+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5001.495
+    },
+    {
+      "operation_id": "61c332ac3dd14f958fb3e2b95d878712",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:01:38.108642+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1370,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1449.444
+    },
+    {
+      "operation_id": "d9251ba03d294e2a9a2838d24c77a8ac",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss",
+      "started_at": "2026-10-28T09:01:38.109142+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1083,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss"
+      ],
+      "duration_ms": 1449.929
+    },
+    {
+      "operation_id": "631b7e7ba5fe419b946b089f21d805df",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:39.571018+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.104
+    },
+    {
+      "operation_id": "2c4eb35e55da4ff892877ad5e85bb8bc",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:39.571279+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.088
+    },
+    {
+      "operation_id": "71a1f31ea26641deaf2669cd1e236ec9",
+      "requested_url": "https://www.insidermonkey.com/news/apple-aapl-can-longer-iphone-ownership-still-produce-more-profit-per-customer-1854608/",
+      "started_at": "2026-10-28T09:01:36.887815+00:00",
+      "http_status": 200,
+      "final_url": "https://www.insidermonkey.com/news/apple-aapl-can-longer-iphone-ownership-still-produce-more-profit-per-customer-1854608/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 104932,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.insidermonkey.com/news/apple-aapl-can-longer-iphone-ownership-still-produce-more-profit-per-customer-1854608/"
+      ],
+      "duration_ms": 4042.512
+    },
+    {
+      "operation_id": "d65bce85a2c4423a90c1d6f2813e0611",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:39.568622+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13798,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1814.408
+    },
+    {
+      "operation_id": "cea793cae01e422897157882ed3dbfb5",
+      "requested_url": "https://uk.finance.yahoo.com/news/does-apple-aapl-24-7-161256116.html",
+      "started_at": "2026-10-28T09:01:38.985993+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5013.471
+    },
+    {
+      "operation_id": "f3b244c9bb624931bb42957a989acb77",
+      "requested_url": "https://www.insidermonkey.com/news/apple-aapl-helped-lead-the-mega-cap-tech-rebound-in-q3-2026-1852828/",
+      "started_at": "2026-10-28T09:01:41.458533+00:00",
+      "http_status": 200,
+      "final_url": "https://www.insidermonkey.com/news/apple-aapl-helped-lead-the-mega-cap-tech-rebound-in-q3-2026-1852828/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 90807,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.insidermonkey.com/news/apple-aapl-helped-lead-the-mega-cap-tech-rebound-in-q3-2026-1852828/"
+      ],
+      "duration_ms": 3018.346
+    },
+    {
+      "operation_id": "fcac254c9c224a42b3fb79544e8dc761",
+      "requested_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss",
+      "started_at": "2026-10-28T09:01:43.297985+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1083,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss"
+      ],
+      "duration_ms": 3857.687
+    },
+    {
+      "operation_id": "ea0dc8f8bab7485083cb6e5f2497830f",
+      "requested_url": "https://www.bing.com/search?q=Apple+%28AAPL%29+financial+statements&first=1",
+      "started_at": "2026-10-28T09:01:43.297578+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5003.617
+    },
+    {
+      "operation_id": "1bd66ce9dce049efbbbf3022196c6586",
+      "requested_url": "https://uk.finance.yahoo.com/news/apple-inc-aapl-attracting-investor-120002936.html",
+      "started_at": "2026-10-28T09:01:44.013031+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5011.808
+    },
+    {
+      "operation_id": "9660a058fbcd4792bb8afef441cd47bc",
+      "requested_url": "https://www.insidermonkey.com/news/nvidia-nvda-vs-apple-aapl-which-stock-wins-the-valuation-race-1849505/",
+      "started_at": "2026-10-28T09:01:44.707457+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.523
+    },
+    {
+      "operation_id": "14e3cd3fcc3844da99ef6bef07e67531",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:47.157984+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 105495,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3781.981
+    },
+    {
+      "operation_id": "2bf32645049440a1843236845e073f2d",
+      "requested_url": "https://search.yahoo.com/search?p=Apple+%28AAPL%29+financial+statements",
+      "started_at": "2026-10-28T09:01:48.301439+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.134
+    },
+    {
+      "operation_id": "821a5af050c74540a411713f5dcb537a",
+      "requested_url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+      "started_at": "2026-10-28T09:01:49.039002+00:00",
+      "http_status": 200,
+      "final_url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 68257,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/"
+      ],
+      "duration_ms": 4969.247
+    },
+    {
+      "operation_id": "361cfd644d264e4dab2685f854964dc8",
+      "requested_url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-vs-apple-aapl-which-stock-wins-the-valuation-race-1849505/",
+      "started_at": "2026-10-28T09:01:49.713322+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.356
+    },
+    {
+      "operation_id": "1673b195b73c44f3b384c229ce2f4fad",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:01:53.302908+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 105495,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2132.88
+    },
+    {
+      "operation_id": "eb2798a8e4bb486095dee937e0540e19",
+      "requested_url": "https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0",
+      "started_at": "2026-10-28T09:01:54.532899+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15374,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0"
+      ],
+      "duration_ms": 3040.798
+    },
+    {
+      "operation_id": "eea1411146f444999a5cdcaf009dbfdb",
+      "requested_url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-vs-apple-aapl-which-stock-wins-the-valuation-race-1849505/",
+      "started_at": "2026-10-28T09:01:54.725183+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4994.575
+    },
+    {
+      "operation_id": "c8a8c643792b43aa9b2f802e64585384",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0",
+      "started_at": "2026-10-28T09:01:57.597264+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5015.04
+    },
+    {
+      "operation_id": "79280e7492e34f7389321e2f374cd2d9",
+      "requested_url": "https://www.insidermonkey.com/news/apple-aapl-has-a-new-catalyst-that-could-drive-its-next-upgrade-cycle-1849529/",
+      "started_at": "2026-10-28T09:01:59.738593+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.234
+    },
+    {
+      "operation_id": "089e045b923442f685d936cdcde76e4a",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0",
+      "started_at": "2026-10-28T09:02:02.612716+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.56
+    },
+    {
+      "operation_id": "d9665be464754bd5a6cc9c0595c7d4e7",
+      "requested_url": "https://r.jina.ai/https://www.insidermonkey.com/news/apple-aapl-has-a-new-catalyst-that-could-drive-its-next-upgrade-cycle-1849529/",
+      "started_at": "2026-10-28T09:02:04.753155+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5019.554
+    },
+    {
+      "operation_id": "0a686c37a1374022baf9244094ef6808",
+      "requested_url": "https://r.jina.ai/https://www.insidermonkey.com/news/apple-aapl-has-a-new-catalyst-that-could-drive-its-next-upgrade-cycle-1849529/",
+      "started_at": "2026-10-28T09:02:09.773085+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4978.011
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "6d0fe604776943bdad84442e9a4a1d0c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Apple+%28AAPL%29+quarterly+earnings&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "3da6c9901f1741f3980927531fa7dc81",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+%28AAPL%29+quarterly+earnings",
+      "host": "search.yahoo.com",
+      "http_operation_id": "93d9a9c1c310419b8f6d314976647543",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DApple%2B%2528AAPL%2529%2Bquarterly%2Bearnings&_bvc=1.d88e203dba57e22b8402d0428859d116cccd01710f255cde07efd8605d5a2710",
+      "host": "search.yahoo.com",
+      "http_operation_id": "93d9a9c1c310419b8f6d314976647543",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+%28AAPL%29+quarterly+earnings",
+      "host": "search.yahoo.com",
+      "http_operation_id": "93d9a9c1c310419b8f6d314976647543",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+quarterly+earnings&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1f900def203e4ecdbcdab744e54c4460",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "9320cd19c79848a19aa047594564f75d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://finance.yahoo.com/markets/stocks/articles/apple-aapl-vs-msft-googl-145956028.html",
+      "host": "finance.yahoo.com",
+      "http_operation_id": "3b4702b6de734545b4b9c47c0b03ff34",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://uk.finance.yahoo.com/news/apple-aapl-longer-iphone-ownership-133815255.html",
+      "host": "uk.finance.yahoo.com",
+      "http_operation_id": "dc470409ec8442c5abf83560afa5df06",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://investor.apple.com/investor-relations/default.aspx",
+      "host": "investor.apple.com",
+      "http_operation_id": "8d03475f4004456da5ac07e5bef81f3b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+results+press+release&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f16ce026cf1648a98ae2a5c3166025ab",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx",
+      "host": "r.jina.ai",
+      "http_operation_id": "83efd336127545dd9321eb869747a584",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://uk.finance.yahoo.com/news/apple-aapl-earnings-expected-grow-130010952.html",
+      "host": "uk.finance.yahoo.com",
+      "http_operation_id": "5447b0aed9b44e6cbdd69bb59b9b980c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I",
+      "host": "www.msn.com",
+      "http_operation_id": "c604c1f519b84e2484ac4da0137f24ef",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I",
+      "host": "r.jina.ai",
+      "http_operation_id": "0596ba1790214ae793e78d77789a8a31",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-buying-apple-stock-q4-153558027.html",
+      "host": "finance.yahoo.com",
+      "http_operation_id": "e2ab9f640c89493199cc4161661cb72a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "759c3118f1c247fc80c0da33cde3de82",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "a50c90a8d78b48b2bc6e680bc99d54a5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+financial+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1df95befda374a14bfa242577ec5f080",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/money/other/will-apple-aapl-beat-estimates-again-in-its-next-earnings-report/ar-AA2gbE7I",
+      "host": "r.jina.ai",
+      "http_operation_id": "a85c523c11b9411987b0ead459ae854a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "4b6486e43307443587d48b1eea78ac93",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.fool.com/investing/2026/10/10/tim-cooks-final-apple-earnings-call-showed-the-com/",
+      "host": "www.fool.com",
+      "http_operation_id": "a869aad849ec4955aea9a1620810ac43",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "4b6486e43307443587d48b1eea78ac93",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DAnalyze%2BApple%2527s%2Blatest%2Bofficial%2Bquarterly%2Bfinancial%2Bdevelopments%252C%2Bincluding%2BServices%2Band%2BiPhone%2Brevenue%2Bwhere%2Breported.%2BIdentify%2Bthe%2Bcorrect%2Bfiscal%2Bperiods%252C%2Bprimary%2Bdisclosures%2Band%2Bindependent%2Binterpretations.%2Bsite%253Aapple.com&_bvc=1.144f4d94143c241107fa8c813f7d27c2def0b648abb92ad5772ff262fb3da801",
+      "host": "search.yahoo.com",
+      "http_operation_id": "4b6486e43307443587d48b1eea78ac93",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.aol.com/articles/apple-5-trillion-dilemma-3-134224000.html",
+      "host": "www.aol.com",
+      "http_operation_id": "d5b911ca1cfe46d1951f71b0e8c1d6b5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Aapple.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "571a305233f342948445b2c694817b55",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.tipranks.com/news/apple-stock-falls-today-as-bearish-analyst-comments-raise-concerns-ahead-of-next-weeks-earnings",
+      "host": "www.tipranks.com",
+      "http_operation_id": "d930c20cf8ef44a2b508fc0d323ada82",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4",
+      "host": "www.msn.com",
+      "http_operation_id": "be220390401e41f39d2c55932d1d8896",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4",
+      "host": "r.jina.ai",
+      "http_operation_id": "3d726c90c79f47389fa491bff156c38c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://investor.apple.com/investor-relations/default.aspx",
+      "host": "investor.apple.com",
+      "http_operation_id": "7eb522d5905e40449443fdc2a4c77d89",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "04d0284d5d11480aa7bc205ac8c54d65",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx",
+      "host": "r.jina.ai",
+      "http_operation_id": "eb6fb40a7f29473ebe4923420b395bb4",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6f6f13b1ceac4d608d3e70c924f29d88",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DAnalyze%2BApple%2527s%2Blatest%2Bofficial%2Bquarterly%2Bfinancial%2Bdevelopments%252C%2Bincluding%2BServices%2Band%2BiPhone%2Brevenue%2Bwhere%2Breported.%2BIdentify%2Bthe%2Bcorrect%2Bfiscal%2Bperiods%252C%2Bprimary%2Bdisclosures%2Band%2Bindependent%2Binterpretations.%2Bsite%253Asec.gov&_bvc=1.8064dac75903fd7eb1e9d77adaf5d20d6a2b91e8155ef76c826b98dcdcd74124",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6f6f13b1ceac4d608d3e70c924f29d88",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DAnalyze%2BApple%2527s%2Blatest%2Bofficial%2Bquarterly%2Bfinancial%2Bdevelopments%252C%2Bincluding%2BServices%2Band%2BiPhone%2Brevenue%2Bwhere%2Breported.%2BIdentify%2Bthe%2Bcorrect%2Bfiscal%2Bperiods%252C%2Bprimary%2Bdisclosures%2Band%2Bindependent%2Binterpretations.%2Bsite%253Asec.gov&_bvc=2.5fb329d773369f41ca7484d59999c5b5a563db79415f31840dd77889b20f1b48",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6f6f13b1ceac4d608d3e70c924f29d88",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/technology/hardware-and-devices/apple-unveils-new-macbook-pro-ahead-of-november-launch-hsbc-sees-strong-iphone-demand-potential-ai-driven-upgrade-cycle/ar-AA2gbvP4",
+      "host": "r.jina.ai",
+      "http_operation_id": "f3d758dd304b4dc28c721b995ec212ae",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "35ebb906ae8945309ba9d35f9d6c7b23",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6f6f13b1ceac4d608d3e70c924f29d88",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DAnalyze%2BApple%2527s%2Blatest%2Bofficial%2Bquarterly%2Bfinancial%2Bdevelopments%252C%2Bincluding%2BServices%2Band%2BiPhone%2Brevenue%2Bwhere%2Breported.%2BIdentify%2Bthe%2Bcorrect%2Bfiscal%2Bperiods%252C%2Bprimary%2Bdisclosures%2Band%2Bindependent%2Binterpretations.%2Bsite%253Asec.gov&_bvc=1.8064dac75903fd7eb1e9d77adaf5d20d6a2b91e8155ef76c826b98dcdcd74124",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6f6f13b1ceac4d608d3e70c924f29d88",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f16ecba67b4a40b69717035665ad1cec",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Analyze+Apple%27s+latest+official+quarterly+financial+developments%2C+including+Services+and+iPhone+revenue+where+reported.+Identify+the+correct+fiscal+periods%2C+primary+disclosures+and+independent+interpretations.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "3b9d8ce211ec4b7294d70dae1f7e1d2d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f16ecba67b4a40b69717035665ad1cec",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.detroitnews.com%2BStockResearch%2BAI%2BInitiates%2BCoverage%2Bon%2BApple%2B%2528AAPL%2529%2BWith%2BNew%2BReport%2BExamining%2BValuation%252C%2BAI%2BStrategy%2Band%2BFuture%2BGrowth&_bvc=1.2cb269a3a92ad3edcc07edbaca938509ddfd787b771d0957eb13fe843b23e0e9",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f16ecba67b4a40b69717035665ad1cec",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.detroitnews.com%2BStockResearch%2BAI%2BInitiates%2BCoverage%2Bon%2BApple%2B%2528AAPL%2529%2BWith%2BNew%2BReport%2BExamining%2BValuation%252C%2BAI%2BStrategy%2Band%2BFuture%2BGrowth&_bvc=2.c08e342a4021963c6040b98a4d3ea71d88a27aa01c493534367a51028694d7ad",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f16ecba67b4a40b69717035665ad1cec",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "91ca8776d86f4a35a255e4ca695f15d1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "2a7795826e6341e68c003a6063ce5a42",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.detroitnews.com+StockResearch+AI+Initiates+Coverage+on+Apple+%28AAPL%29+With+New+Report+Examining+Valuation%2C+AI+Strategy+and+Future+Growth&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "70f0c098e6f34e53a60b1ab902ecd79b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://investor.apple.com/investor-relations/default.aspx (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+      "host": "investor.apple.com",
+      "http_operation_id": "ea5250518b824b70ae78d819fed7fbac",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+      "host": "r.jina.ai",
+      "http_operation_id": "2477fd0079db41a9b64b41c6aac51b51",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://seekingalpha.com/article/4709458-apple-inc-aapl-q3-2024-earnings-call-transcript",
+      "host": "seekingalpha.com",
+      "http_operation_id": "15ea5a39595e498cb86d45031f54b3ce",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://investor.apple.com/investor-relations/default.aspx (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+      "host": "r.jina.ai",
+      "http_operation_id": "eb84abb838ea43008a5b247da518fa33",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Apple+%28AAPL%29+investor+disclosure&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "33449e25b9744596a87a4af1fe7ad3c9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.stocktitan.net/sec-filings/AAPL/10-q-apple-inc-quarterly-earnings-report-8c3913d3d431.html",
+      "host": "www.stocktitan.net",
+      "http_operation_id": "c62a9ea02fba456884d95f3aeda78e3b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://beinsure.com/news/apple-stock-forecast-wall-street-analysts-split-on-aapls-upside/",
+      "host": "beinsure.com",
+      "http_operation_id": "5d6f2b9aefee4e99a42e8364539ee60e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+%28AAPL%29+investor+disclosure",
+      "host": "search.yahoo.com",
+      "http_operation_id": "36ae04edb7454a76b5254ab2722aaaf3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.insidermonkey.com/news/apple-has-outperformed-the-sp-500-but-is-aapls-35x-valuation-getting-ahead-of-its-growth-1854093/",
+      "host": "www.insidermonkey.com",
+      "http_operation_id": "8b85470becc4409a9eee089c0b09ad91",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://finance.yahoo.com/markets/stocks/articles/apple-aapl-stock-falls-amid-204503686.html",
+      "host": "finance.yahoo.com",
+      "http_operation_id": "07329ebe75e3419e99eb2265be517213",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "af8db6447e28466db76048834f168c08",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.insidermonkey.com/news/apple-aapl-can-longer-iphone-ownership-still-produce-more-profit-per-customer-1854608/",
+      "host": "www.insidermonkey.com",
+      "http_operation_id": "71a1f31ea26641deaf2669cd1e236ec9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "61c332ac3dd14f958fb3e2b95d878712",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "d9251ba03d294e2a9a2838d24c77a8ac",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://uk.finance.yahoo.com/news/does-apple-aapl-24-7-161256116.html",
+      "host": "uk.finance.yahoo.com",
+      "http_operation_id": "cea793cae01e422897157882ed3dbfb5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d65bce85a2c4423a90c1d6f2813e0611",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "631b7e7ba5fe419b946b089f21d805df",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "2c4eb35e55da4ff892877ad5e85bb8bc",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.insidermonkey.com/news/apple-aapl-helped-lead-the-mega-cap-tech-rebound-in-q3-2026-1852828/",
+      "host": "www.insidermonkey.com",
+      "http_operation_id": "f3b244c9bb624931bb42957a989acb77",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Apple+%28AAPL%29+financial+statements&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ea0dc8f8bab7485083cb6e5f2497830f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Apple+%28AAPL%29+financial+statements&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "fcac254c9c224a42b3fb79544e8dc761",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://uk.finance.yahoo.com/news/apple-inc-aapl-attracting-investor-120002936.html",
+      "host": "uk.finance.yahoo.com",
+      "http_operation_id": "1bd66ce9dce049efbbbf3022196c6586",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.insidermonkey.com/news/nvidia-nvda-vs-apple-aapl-which-stock-wins-the-valuation-race-1849505/",
+      "host": "www.insidermonkey.com",
+      "http_operation_id": "9660a058fbcd4792bb8afef441cd47bc",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "14e3cd3fcc3844da99ef6bef07e67531",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+%28AAPL%29+financial+statements",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2bf32645049440a1843236845e073f2d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+      "host": "www.fool.com",
+      "http_operation_id": "821a5af050c74540a411713f5dcb537a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-vs-apple-aapl-which-stock-wins-the-valuation-race-1849505/",
+      "host": "r.jina.ai",
+      "http_operation_id": "361cfd644d264e4dab2685f854964dc8",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+%28AAPL%29+financial+statements&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1673b195b73c44f3b384c229ce2f4fad",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0",
+      "host": "www.msn.com",
+      "http_operation_id": "eb2798a8e4bb486095dee937e0540e19",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.insidermonkey.com/news/nvidia-nvda-vs-apple-aapl-which-stock-wins-the-valuation-race-1849505/",
+      "host": "r.jina.ai",
+      "http_operation_id": "eea1411146f444999a5cdcaf009dbfdb",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0",
+      "host": "r.jina.ai",
+      "http_operation_id": "c8a8c643792b43aa9b2f802e64585384",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.insidermonkey.com/news/apple-aapl-has-a-new-catalyst-that-could-drive-its-next-upgrade-cycle-1849529/",
+      "host": "www.insidermonkey.com",
+      "http_operation_id": "79280e7492e34f7389321e2f374cd2d9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/money/top-stocks/large-unusual-volume-in-long-dated-apple-put-options-shows-investors-bullish-in-aapl/ar-AA2cmFS0",
+      "host": "r.jina.ai",
+      "http_operation_id": "089e045b923442f685d936cdcde76e4a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.insidermonkey.com/news/apple-aapl-has-a-new-catalyst-that-could-drive-its-next-upgrade-cycle-1849529/",
+      "host": "r.jina.ai",
+      "http_operation_id": "d9665be464754bd5a6cc9c0595c7d4e7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.insidermonkey.com/news/apple-aapl-has-a-new-catalyst-that-could-drive-its-next-upgrade-cycle-1849529/",
+      "host": "r.jina.ai",
+      "http_operation_id": "0a686c37a1374022baf9244094ef6808",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 80,
+  "admission_rejections": 2,
+  "pipeline_errors": []
+}

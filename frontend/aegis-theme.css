@@ -61,6 +61,11 @@
 .ur-workbench-passage { padding: 1rem; margin-block: .8rem; border: 1px solid var(--border-color, #64748b); border-radius: .5rem; overflow-wrap: anywhere; }
 .ur-workbench-passage blockquote { margin: .8rem 0; padding-inline-start: 1rem; border-inline-start: 2px solid var(--accent-cyan, #06b6d4); white-space: pre-wrap; }
 .ur-workbench-passage h4 { margin: 0; }
+.ur-evidence-navigation { display: flex; flex-wrap: wrap; gap: .6rem 1rem; padding: 1rem; margin-block: 1rem; border: 1px solid var(--border-color, #64748b); border-radius: .5rem; overflow-wrap: anywhere; }
+.ur-evidence-navigation span { color: var(--text-muted, #94a3b8); }
+.ur-capture-details { margin-block: .65rem; overflow-wrap: anywhere; }
+.ur-capture-details summary { cursor: pointer; color: var(--text-muted, #94a3b8); }
+#ur-evidence-workbench, #ur-agent-intel { scroll-margin-top: 90px; }
 .ur-workbench-pagination { display: flex; flex-wrap: wrap; gap: .75rem; }
 .ur-workbench-pagination button { min-height: 44px; padding: .6rem 1rem; color: inherit; background: var(--bg-card, #11151f); border: 1px solid var(--border-color, #64748b); border-radius: .4rem; cursor: pointer; }
 .ur-workbench-pagination button:disabled { opacity: .5; cursor: default; }

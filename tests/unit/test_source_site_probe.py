@@ -13,7 +13,7 @@ from scripts.audits.probe_source_families import (
 
 def test_inventory_distinguishes_configuration_gates_from_unmeasured_network():
     rows=inventory(SourceRegistry(reviews={}))
-    assert len(rows)==60
+    assert len(rows)==62
     assert any(r['probe_status']=='NOT_PROBED_PERMISSION_REQUIRED' for r in rows)
     assert any(r['probe_status']=='NOT_PROBED_UNVERIFIED' for r in rows)
     assert not any(r['probe_status']=='PENDING_EXPLICIT_SELECTION' for r in rows)

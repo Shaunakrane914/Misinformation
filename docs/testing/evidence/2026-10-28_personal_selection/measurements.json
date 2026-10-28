@@ -1,0 +1,401 @@
+{
+  "scope": "Four bounded local live requests plus two final offline native replays; no production writes",
+  "cases": [
+    {
+      "cohort": "initial_live",
+      "subject": "Mary Barra",
+      "input_sha256": "ecb8fa26f4f61e09ee2db16654cb89d6d34c802e76fe94dd65babea2df06df59",
+      "is_fresh_acquisition": true,
+      "queries_generated": 18,
+      "queries_submitted": 18,
+      "queries_succeeded": 17,
+      "candidate_urls": 37,
+      "selected_for_reading": 37,
+      "reads_attempted": 18,
+      "successful_captures": 6,
+      "article_bodies": 0,
+      "raw_article_words": 0,
+      "qualified_sources": 0,
+      "native_http_admissions": 92,
+      "read_failures": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "READER_NOT_SELECTED": 1,
+        "BUDGET_EXHAUSTED": 7,
+        "ACCESS_DENIED": 1
+      },
+      "candidate_rejections": {
+        "DUPLICATE_URL": 7
+      },
+      "post_read_rejections": {
+        "NOT_ACQUIRED_OR_NOT_USABLE": 31,
+        "Insufficient entity match confidence (0.0 < 0.35)": 3,
+        "NO_STRUCTURAL_BODY": 3
+      },
+      "published_words": 0,
+      "published_passages": 0,
+      "publication_roles": {},
+      "background_words": 0,
+      "identity_risk": "UNASSESSED",
+      "public_statements": 0,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "retained_sources": [],
+      "seconds": 119.35,
+      "application_sha256": "9c080cac9693a415f0d8917f3a6fb81dcbdfa90d7c509c375b6c3a7caf505053",
+      "stable_application": true
+    },
+    {
+      "cohort": "initial_live",
+      "subject": "Fei-Fei Li",
+      "input_sha256": "9379c4250a826a8f7e121614641793485f91eecf5d9d15678b29b509d4fd5c7b",
+      "is_fresh_acquisition": true,
+      "queries_generated": 18,
+      "queries_submitted": 17,
+      "queries_succeeded": 15,
+      "candidate_urls": 25,
+      "selected_for_reading": 25,
+      "reads_attempted": 20,
+      "successful_captures": 16,
+      "article_bodies": 9,
+      "raw_article_words": 17154,
+      "qualified_sources": 1,
+      "native_http_admissions": 89,
+      "read_failures": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "ACCESS_DENIED": 1
+      },
+      "candidate_rejections": {
+        "DUPLICATE_URL": 8
+      },
+      "post_read_rejections": {
+        "NOT_ACQUIRED_OR_NOT_USABLE": 9,
+        "Insufficient entity match confidence (0.0 < 0.35)": 4,
+        "NO_STRUCTURAL_BODY": 3,
+        "NO_RELEVANT_PASSAGE": 8
+      },
+      "published_words": 113,
+      "published_passages": 2,
+      "publication_roles": {
+        "ARTICLE_CONTENT": 2
+      },
+      "background_words": 0,
+      "identity_risk": "UNASSESSED",
+      "public_statements": 0,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "retained_sources": [
+        {
+          "source_id": "ev_hv_16ddc241ed779cfb2d8a",
+          "url": "https://singjupost.com/transcript-of-dr-fei-fei-li-interview-on-huberman-lab/",
+          "title": "Transcript of Dr. Fei-Fei Li Interview on Huberman Lab \u2013 The Singju Post",
+          "published_at": null,
+          "retained_words": 3380,
+          "raw_content_hash": "d04d323f1d0e3cfd68ab2a92a0c4471a53a84ff56ffb4e7d934fdbf8930499e0"
+        }
+      ],
+      "seconds": 67.17,
+      "application_sha256": "9c080cac9693a415f0d8917f3a6fb81dcbdfa90d7c509c375b6c3a7caf505053",
+      "stable_application": true
+    },
+    {
+      "cohort": "initial_live",
+      "subject": "battery recycling",
+      "input_sha256": "ccd4bd551bdcd2f779631da69cd4888bb6169ed8a764bdecf23ddc29b54dfaa8",
+      "is_fresh_acquisition": true,
+      "queries_generated": 18,
+      "queries_submitted": 18,
+      "queries_succeeded": 17,
+      "candidate_urls": 20,
+      "selected_for_reading": 20,
+      "reads_attempted": 7,
+      "successful_captures": 2,
+      "article_bodies": 2,
+      "raw_article_words": 2656,
+      "qualified_sources": 0,
+      "native_http_admissions": 71,
+      "read_failures": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "PROVIDER_FAILURE": 1,
+        "ACCESS_DENIED": 1
+      },
+      "candidate_rejections": {
+        "DUPLICATE_URL": 3
+      },
+      "post_read_rejections": {
+        "NOT_ACQUIRED_OR_NOT_USABLE": 18,
+        "TEMPORAL_STALE: Published 25556.0h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 9844.3h ago exceeds Trending freshness window (48.0h)": 1
+      },
+      "published_words": 0,
+      "published_passages": 0,
+      "publication_roles": {},
+      "background_words": 338,
+      "identity_risk": null,
+      "public_statements": 0,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "retained_sources": [],
+      "seconds": 53.59,
+      "application_sha256": "9c080cac9693a415f0d8917f3a6fb81dcbdfa90d7c509c375b6c3a7caf505053",
+      "stable_application": true
+    },
+    {
+      "cohort": "post_query_fix_live",
+      "subject": "Mary Barra",
+      "input_sha256": "ee356fb10b4344a6a7d9328a25ad9fc4044e145b5a281af3594782de3b8cd0fa",
+      "is_fresh_acquisition": true,
+      "queries_generated": 18,
+      "queries_submitted": 18,
+      "queries_succeeded": 16,
+      "candidate_urls": 42,
+      "selected_for_reading": 42,
+      "reads_attempted": 17,
+      "successful_captures": 11,
+      "article_bodies": 4,
+      "raw_article_words": 5309,
+      "qualified_sources": 1,
+      "native_http_admissions": 84,
+      "read_failures": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "ACCESS_DENIED": 3
+      },
+      "candidate_rejections": {
+        "DUPLICATE_URL": 2
+      },
+      "post_read_rejections": {
+        "NO_STRUCTURAL_BODY": 4,
+        "NOT_ACQUIRED_OR_NOT_USABLE": 31,
+        "Insufficient entity match confidence (0.0 < 0.35)": 3,
+        "NO_RELEVANT_PASSAGE": 3
+      },
+      "published_words": 62,
+      "published_passages": 1,
+      "publication_roles": {
+        "UNVERIFIED_ALLEGATION": 1
+      },
+      "background_words": 0,
+      "identity_risk": "UNVERIFIED_ALLEGATIONS",
+      "public_statements": 0,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "retained_sources": [
+        {
+          "source_id": "ev_hv_352c60f0b11d98a1245a",
+          "url": "https://www.deadlinedetroit.com/articles/35238/starkman_mary_barra_s_48m_payday_and_massive_stock_buybacks_ignite_bipartisan_backlash_from_el-sayed_and_rogers",
+          "title": "Starkman: Mary Barra\u2019s $48M Payday and Massive Stock Buybacks Ignite Bipartisan Backlash From El-Sayed and Rogers",
+          "published_at": null,
+          "retained_words": 1417,
+          "raw_content_hash": "3543c239afd960ef1b9e8a5f1d18c1704b266b03b191c2ef4b7ffa4724cc317a"
+        }
+      ],
+      "seconds": 94.01,
+      "application_sha256": "4f2a90527ebe135e49d416dfb4d96b3a43f6adcb3410acfac63c0240e0dadb15",
+      "stable_application": true
+    },
+    {
+      "cohort": "interim_offline_before_surname_fix",
+      "subject": "Fei-Fei Li",
+      "input_sha256": "767126e1be16aef84681ae764ed683a18cd34eb9b1591049c850619564fa5ffe",
+      "is_fresh_acquisition": false,
+      "queries_generated": null,
+      "queries_submitted": 17,
+      "queries_succeeded": 15,
+      "candidate_urls": 25,
+      "selected_for_reading": null,
+      "reads_attempted": 20,
+      "successful_captures": 16,
+      "article_bodies": 9,
+      "raw_article_words": 17154,
+      "qualified_sources": 3,
+      "native_http_admissions": 0,
+      "read_failures": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "ACCESS_DENIED": 1
+      },
+      "candidate_rejections": null,
+      "post_read_rejections": {
+        "NOT_ACQUIRED_OR_NOT_USABLE": 9,
+        "Insufficient entity match confidence (0.0 < 0.35)": 4,
+        "NO_STRUCTURAL_BODY": 3,
+        "NO_RELEVANT_PASSAGE": 6
+      },
+      "published_words": 5773,
+      "published_passages": 90,
+      "publication_roles": {
+        "PUBLIC_STATEMENT": 90
+      },
+      "background_words": 0,
+      "identity_risk": "UNASSESSED",
+      "public_statements": 16,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "retained_sources": [
+        {
+          "source_id": "ev_hv_1948a4f3650029126718",
+          "url": "https://singjupost.com/godmother-of-ai-fei-fei-li-speaks-with-stephen-kotkin-on-ai-transcript/",
+          "title": "Godmother of AI Fei-Fei Li Speaks with Stephen Kotkin on AI (Transcript) \u2013 The Singju Post",
+          "published_at": null,
+          "retained_words": 3384,
+          "raw_content_hash": "3038d736db1a5b278d1c37cb1d97db06951df1621f9d825b30fc90b2e8b66c2a"
+        },
+        {
+          "source_id": "ev_hv_16ddc241ed779cfb2d8a",
+          "url": "https://singjupost.com/transcript-of-dr-fei-fei-li-interview-on-huberman-lab/",
+          "title": "Transcript of Dr. Fei-Fei Li Interview on Huberman Lab \u2013 The Singju Post",
+          "published_at": null,
+          "retained_words": 3380,
+          "raw_content_hash": "d04d323f1d0e3cfd68ab2a92a0c4471a53a84ff56ffb4e7d934fdbf8930499e0"
+        },
+        {
+          "source_id": "ev_hv_8576aa52a0ab8239cca2",
+          "url": "https://singjupost.com/fei-fei-li-spatial-intelligence-is-the-next-frontier-in-ai-transcript/",
+          "title": "Fei-Fei Li: Spatial Intelligence is the Next Frontier in AI (Transcript) \u2013 The Singju Post",
+          "published_at": null,
+          "retained_words": 3569,
+          "raw_content_hash": "36f7499db3af47b1aea33e81b5fa06e021686e775a7d881d0531dfa0aaed6569"
+        }
+      ],
+      "replayed_acquisition_metrics_are_historical": true
+    },
+    {
+      "cohort": "interim_offline_before_surname_fix",
+      "subject": "Mary Barra",
+      "input_sha256": "33ec1123a9d3562e08a50c64bf4ffa5c840998b53c19b90186d8441e73241010",
+      "is_fresh_acquisition": false,
+      "queries_generated": null,
+      "queries_submitted": 18,
+      "queries_succeeded": 16,
+      "candidate_urls": 42,
+      "selected_for_reading": null,
+      "reads_attempted": 17,
+      "successful_captures": 11,
+      "article_bodies": 4,
+      "raw_article_words": 5309,
+      "qualified_sources": 1,
+      "native_http_admissions": 0,
+      "read_failures": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "ACCESS_DENIED": 3
+      },
+      "candidate_rejections": null,
+      "post_read_rejections": {
+        "NO_STRUCTURAL_BODY": 4,
+        "NOT_ACQUIRED_OR_NOT_USABLE": 31,
+        "Insufficient entity match confidence (0.0 < 0.35)": 3,
+        "NO_RELEVANT_PASSAGE": 3
+      },
+      "published_words": 62,
+      "published_passages": 1,
+      "publication_roles": {
+        "SOURCE_REPORTED_CONTEXT": 1
+      },
+      "background_words": 0,
+      "identity_risk": "UNASSESSED",
+      "public_statements": 0,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "retained_sources": [
+        {
+          "source_id": "ev_hv_352c60f0b11d98a1245a",
+          "url": "https://www.deadlinedetroit.com/articles/35238/starkman_mary_barra_s_48m_payday_and_massive_stock_buybacks_ignite_bipartisan_backlash_from_el-sayed_and_rogers",
+          "title": "Starkman: Mary Barra\u2019s $48M Payday and Massive Stock Buybacks Ignite Bipartisan Backlash From El-Sayed and Rogers",
+          "published_at": null,
+          "retained_words": 1417,
+          "raw_content_hash": "3543c239afd960ef1b9e8a5f1d18c1704b266b03b191c2ef4b7ffa4724cc317a"
+        }
+      ],
+      "replayed_acquisition_metrics_are_historical": true
+    },
+    {
+      "cohort": "final_offline_native_replay",
+      "subject": "Fei-Fei Li",
+      "is_fresh_acquisition": false,
+      "input_sha256": "1f191c906fdeae8c7edf89ceca50d6e856b1b549bbd121379346e4c5a37177aa",
+      "candidate_urls": 25,
+      "reads_attempted": 20,
+      "successful_captures": 16,
+      "article_bodies": 9,
+      "raw_article_words": 17154,
+      "qualified_sources": 3,
+      "published_words": 5773,
+      "published_passages": 90,
+      "publication_roles": {
+        "PUBLIC_STATEMENT": 90
+      },
+      "background_words": 0,
+      "identity_risk": "UNASSESSED",
+      "public_statements": 16,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "replayed_acquisition_metrics_are_historical": true,
+      "retained_sources": [
+        {
+          "source_id": "ev_hv_1948a4f3650029126718",
+          "url": "https://singjupost.com/godmother-of-ai-fei-fei-li-speaks-with-stephen-kotkin-on-ai-transcript/",
+          "title": "Godmother of AI Fei-Fei Li Speaks with Stephen Kotkin on AI (Transcript) \u2013 The Singju Post",
+          "published_at": null,
+          "retained_words": 3384,
+          "raw_content_hash": "3038d736db1a5b278d1c37cb1d97db06951df1621f9d825b30fc90b2e8b66c2a"
+        },
+        {
+          "source_id": "ev_hv_16ddc241ed779cfb2d8a",
+          "url": "https://singjupost.com/transcript-of-dr-fei-fei-li-interview-on-huberman-lab/",
+          "title": "Transcript of Dr. Fei-Fei Li Interview on Huberman Lab \u2013 The Singju Post",
+          "published_at": null,
+          "retained_words": 3380,
+          "raw_content_hash": "d04d323f1d0e3cfd68ab2a92a0c4471a53a84ff56ffb4e7d934fdbf8930499e0"
+        },
+        {
+          "source_id": "ev_hv_8576aa52a0ab8239cca2",
+          "url": "https://singjupost.com/fei-fei-li-spatial-intelligence-is-the-next-frontier-in-ai-transcript/",
+          "title": "Fei-Fei Li: Spatial Intelligence is the Next Frontier in AI (Transcript) \u2013 The Singju Post",
+          "published_at": null,
+          "retained_words": 3569,
+          "raw_content_hash": "36f7499db3af47b1aea33e81b5fa06e021686e775a7d881d0531dfa0aaed6569"
+        }
+      ]
+    },
+    {
+      "cohort": "final_offline_native_replay",
+      "subject": "Mary Barra",
+      "is_fresh_acquisition": false,
+      "input_sha256": "afaab6911fcfb5b198135d3153b88043e872980b230eeafc34f660f1d911b924",
+      "candidate_urls": 42,
+      "reads_attempted": 17,
+      "successful_captures": 11,
+      "article_bodies": 4,
+      "raw_article_words": 5309,
+      "qualified_sources": 2,
+      "published_words": 99,
+      "published_passages": 2,
+      "publication_roles": {
+        "SOURCE_REPORTED_CONTEXT": 1,
+        "PUBLIC_STATEMENT": 1
+      },
+      "background_words": 0,
+      "identity_risk": "UNASSESSED",
+      "public_statements": 1,
+      "all_published_spans_and_body_hashes_match": true,
+      "independence_verified": false,
+      "replayed_acquisition_metrics_are_historical": true,
+      "retained_sources": [
+        {
+          "source_id": "ev_hv_352c60f0b11d98a1245a",
+          "url": "https://www.deadlinedetroit.com/articles/35238/starkman_mary_barra_s_48m_payday_and_massive_stock_buybacks_ignite_bipartisan_backlash_from_el-sayed_and_rogers",
+          "title": "Starkman: Mary Barra\u2019s $48M Payday and Massive Stock Buybacks Ignite Bipartisan Backlash From El-Sayed and Rogers",
+          "published_at": null,
+          "retained_words": 1417,
+          "raw_content_hash": "3543c239afd960ef1b9e8a5f1d18c1704b266b03b191c2ef4b7ffa4724cc317a"
+        },
+        {
+          "source_id": "ev_hv_674b5e49b5218a957919",
+          "url": "https://www.deadlinedetroit.com/articles/35127/starkman_gm_ceo_mary_barra_s_betting_on_america_begins_with_next-gen_pickups_built_in_mexico",
+          "title": "Starkman: GM CEO Mary Barra\u2019s \u2018Betting on America\u2019 Begins with Next-Gen Pickups Built in Mexico",
+          "published_at": null,
+          "retained_words": 787,
+          "raw_content_hash": "a867fbb9350b3e70ba636a472af17ed3148213dc5aef4771b5c8576bff8b2732"
+        }
+      ]
+    }
+  ]
+}

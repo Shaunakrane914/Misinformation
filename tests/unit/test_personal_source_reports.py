@@ -8,6 +8,21 @@ import pytest
 from backend.agents.personal_watch.assessment import synthesize_personal_threats
 
 
+@pytest.mark.parametrize('text,threat', [
+    ('CEO Aria Vale received a compensation increase. Critics call the stock buyback a scam that benefits shareholders.', False),
+    ('A phishing scam targeted Aria Vale through a fake account that solicited money from victims.', True),
+    ('A publisher reported that Aria Vale was charged with investment fraud involving victims.', True),
+])
+def test_rhetorical_scam_criticism_is_context_but_reported_incidents_remain(text, threat):
+    record = {'evidence_id':'context_control', 'title':'Aria Vale report',
+        'url':'https://publisher.test/observed-report', 'content_depth':'PARTIAL_CONTENT', 'content':text,
+        'metadata':{'read_success':True,'page_metadata':{'body_kind':'ARTICLE_BODY'}}}
+    result = synthesize_personal_threats({'canonical_name':'Aria Vale'}, [record])
+    assert bool(result['threats']) is threat
+    assert result['identity_risk'] == ('UNVERIFIED_ALLEGATIONS' if threat else 'UNASSESSED')
+    assert not result['public_statements']
+
+
 @pytest.fixture
 def wion_report():
     path = Path(__file__).parent / "fixtures" / "wion_personal_report_20261022.json"

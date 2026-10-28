@@ -67,15 +67,19 @@ def test_native_reader_preserves_captured_permission_and_language_observations(m
     assert not registry.excerpt_decision(URL, dict(page, licence_urls=[]))['eligible']
 
 
-def test_native_reader_keeps_removed_footer_rights_exception_for_gate(monkeypatch):
-    result = read(monkeypatch, article(footer='All rights reserved').encode('utf-8'))
+@pytest.mark.parametrize('footer,blocked', [('All rights reserved', False), ('Third-party content: All rights reserved', True)])
+def test_native_reader_preserves_notice_scope_and_explicit_exception(monkeypatch, footer, blocked):
+    result = read(monkeypatch, article(footer=footer).encode('utf-8'))
     assert 'All rights reserved' not in result['content']
     assert 'All rights reserved' in result['raw_capture']['text']
     page = result['page_metadata']
-    assert page['rights_exception_observed'] is True
+    assert page['rights_notice_observed'] is True
+    assert bool(page.get('rights_exception_observed')) is blocked
     registry = SourceRegistry(clock=lambda: datetime(2026, 10, 26, tzinfo=timezone.utc))
     decision = registry.excerpt_decision(URL, page)
-    assert not decision['eligible'] and decision['reason'] == 'ARTICLE_RIGHTS_EXCEPTION_REVIEW_REQUIRED'
+    assert decision['eligible'] is not blocked
+    if blocked:
+        assert decision['reason'] == 'ARTICLE_RIGHTS_EXCEPTION_REVIEW_REQUIRED'
 
 
 @pytest.mark.parametrize('body,content_type', [

@@ -35,9 +35,15 @@ def _captured_surname_unambiguous(body, target):
         given = prefix.split()
         last_lower = max((i for i, part in enumerate(given) if not part[0].isupper()), default=-1)
         given = given[last_lower + 1:]
-        last_role = max((i for i, part in enumerate(given) if part.casefold() in roles), default=-1)
+        last_role = max((i for i, part in enumerate(given) if part.casefold().rstrip('.') in roles), default=-1)
         given = given[last_role + 1:]
         if not given:
+            continue
+        # Sentence-leading connective/adverb words are not competing given
+        # names. Keep actual alternative names (e.g. Jessica Rivera) ambiguous.
+        if len(given) == 1 and given[0].casefold() in {
+                'and', 'but', 'however', 'perhaps', 'despite', 'although', 'while',
+                'when', 'then', 'meanwhile', 'instead', 'nevertheless', 'yet'}:
             continue
         named += 1
         exact = [part.casefold() for part in given] == expected
@@ -48,24 +54,40 @@ def _captured_surname_unambiguous(body, target):
     return named > 0
 
 
-def _transcript_speaker_section(body, offset, target):
+def _transcript_speaker_section(body, offset, target, end=None):
     """Explicit transcript boundary plus an observed speaker label, not a roster.
 
     The last speaker owns only the following section. This never authenticates
     identity or treats a page's title/intro as words spoken by its subject.
     """
-    markers = list(re.finditer(r"(?mi)^\s*(?:full |interview )?transcript\s*:\s*$", body[:offset]))
-    if not markers:
-        return None
-    line_end = body.find("\n", offset)
-    section = body[markers[-1].end():line_end if line_end >= 0 else len(body)]
+    markers = list(re.finditer(r"(?mi)^\s*(?:full |interview )?transcript\s*:\s*$", body))
     label = re.compile(r"(?m)^([A-Z][\w.'-]+(?:[ \t]+[A-Z][\w.'-]+){1,4})[ \t]*"
                        r"(?:[–—-][ \t]*(?:CEO|CFO|CTO|SVP|VP|Director|Manager|President|Founder|Engineer|Host|Moderator|Interviewer)\b[^\n]*|:[^\n]*)$")
-    labels = list(label.finditer(section))
+    labels = list(label.finditer(body))
     if not labels:
         return None
-    normalize = lambda value: re.sub(r"[^\w]+", " ", value.casefold()).strip()
-    return ("OBSERVED_TRANSCRIPT_SPEAKER_SECTION" if normalize(labels[-1].group(1)) == normalize(target)
+    def normalize(value):
+        value = re.sub(r"^(?:dr|prof|mr|mrs|ms)\.?\s+", "", value, flags=re.I)
+        return re.sub(r"[^\w]+", " ", value.casefold()).strip()
+    prior_markers = [marker for marker in markers if marker.start() <= offset]
+    if prior_markers:
+        labels = [row for row in labels if row.start() >= prior_markers[-1].end()]
+    else:
+        # Some acquired transcripts use a title rather than a standalone
+        # TRANSCRIPT: delimiter. Require a transcript heading AND repeated
+        # explicit turns by multiple full-name speakers, not a speaker roster.
+        heading = re.search(r"(?mi)^\s*[^\n]{0,100}\btranscript\b[^\n]{0,120}$", body)
+        turns = [row for row in labels if heading and row.start() > heading.end()
+                 and ":" in row.group(0)]
+        if not heading or len(turns) < 3 or len({normalize(row.group(1)) for row in turns}) < 2:
+            return None
+        labels = turns
+    owners = [row for row in labels if row.start() <= offset]
+    # Editorial introductions and spans crossing a turn boundary cannot be
+    # attributed to the following speaker. Original captured text is untouched.
+    if not owners or (end is not None and any(offset < row.start() < end for row in labels)):
+        return "OTHER_OBSERVED_TRANSCRIPT_SPEAKER"
+    return ("OBSERVED_TRANSCRIPT_SPEAKER_SECTION" if normalize(owners[-1].group(1)) == normalize(target)
             else "OTHER_OBSERVED_TRANSCRIPT_SPEAKER")
 
 
@@ -109,13 +131,26 @@ def public_statement_attribution(record, paragraph, target):
         body = get("content", "") or ""
         if paragraph not in body:
             return None
-        return "REPORTED_QUOTATION" if (_reported_quote_has_speaker(paragraph, re.escape(target))
-            and (len(target.split()) < 2 or _captured_surname_unambiguous(body, target))) else None
+        # The planner's search angle cannot erase an explicit speaker turn in
+        # an actually acquired transcript. Incidental transcript discovery uses
+        # the same full-name/boundary checks, never a feed-author shortcut.
+        offset = body.find(paragraph)
+        speaker_section = _transcript_speaker_section(body, offset, target, offset + len(paragraph))
+        if speaker_section:
+            return speaker_section if speaker_section == "OBSERVED_TRANSCRIPT_SPEAKER_SECTION" else None
+        unambiguous = len(target.split()) < 2 or _captured_surname_unambiguous(body, target)
+        if unambiguous and _reported_quote_has_speaker(paragraph, re.escape(target)):
+            return "REPORTED_QUOTATION"
+        names = target.split()
+        if (len(names) >= 2 and len(names[-1]) >= 3 and unambiguous
+                and _reported_quote_has_speaker(paragraph, re.escape(names[-1]))):
+            return "REPORTED_QUOTATION_SURNAME_IN_CAPTURE"
+        return None
     body = get("content", "") or ""
     offset = body.find(paragraph)
     if offset < 0:
         return None
-    transcript_speaker = _transcript_speaker_section(body, offset, target)
+    transcript_speaker = _transcript_speaker_section(body, offset, target, offset + len(paragraph))
     if transcript_speaker == "OTHER_OBSERVED_TRANSCRIPT_SPEAKER":
         return None
     if transcript_speaker:
@@ -168,6 +203,15 @@ def classify_passage(text, *, domain=""):
         return "CUSTOMER_COMPLAINT"
     if domain == "brand" and re.search(r"counterfeit|phishing|impersonat|scam|fraud", text, re.I) and re.search(r"\b(?:seized|arrested|charged|convicted|court|police|customs|CBP)\b", text, re.I):
         return "REPORTED_ENFORCEMENT"
+    if domain == "personal" and re.search(r"\b(?:scams?|frauds?)\b", text, re.I):
+        # Political/financial criticism can call a policy or buyback a "scam".
+        # Preserve the publisher's exact assertion as context, but require a
+        # described abuse mechanism/incident before reporting an identity threat.
+        incident = re.search(r"phishing|fake giveaway|crypto fraud|send btc|investment scheme|impersonat|deepfake"
+            r"|fake (?:account|profile|handle)|identity theft|victims?|scammers?|scammed|defraud|fraudulent"
+            r"|solicit|endorse|promot|charged|arrest|convict|doxx|leaked|targeted.{0,50}scam"
+            r"|contribution address|(?:send|double).{0,80}(?:money|amount|crypto)", text, re.I)
+        return "UNVERIFIED_ALLEGATION" if incident else "SOURCE_REPORTED_CONTEXT"
     if domain in {"brand", "personal"} and matches_objective(text, domain):
         if re.search(r"scam|counterfeit|impersonat|deepfake|fake |phishing|fraud|" + LOCAL_BRAND_ABUSE, text, re.I):
             return "UNVERIFIED_ALLEGATION"
@@ -230,6 +274,8 @@ def captured_passages(record, domain="", target=""):
             continue
         if domain == "personal":
             text = without_related_link_tail(text)
+            if _transcript_speaker_section(body, match.start(), target, match.start() + len(text)) == "OTHER_OBSERVED_TRANSCRIPT_SPEAKER":
+                continue
         if len(text) < 25:
             continue
         role = classify_passage(text, domain=domain)

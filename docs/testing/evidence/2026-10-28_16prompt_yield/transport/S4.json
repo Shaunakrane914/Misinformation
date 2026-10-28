@@ -1,0 +1,1268 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "48beae6a7ec24b18982d7948ee841fb5",
+      "requested_url": "https://query1.finance.yahoo.com/v8/finance/chart/INFY.NS?interval=1d&range=5d",
+      "started_at": "2026-10-28T09:08:47.088308+00:00",
+      "http_status": 200,
+      "final_url": "https://query1.finance.yahoo.com/v8/finance/chart/INFY.NS?interval=1d&range=5d",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1600,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://query1.finance.yahoo.com/v8/finance/chart/INFY.NS?interval=1d&range=5d"
+      ],
+      "duration_ms": 2764.783
+    },
+    {
+      "operation_id": "8541db32b48d42479497765156bbc718",
+      "requested_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&format=rss",
+      "started_at": "2026-10-28T09:08:50.165115+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9741,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&format=rss"
+      ],
+      "duration_ms": 2262.248
+    },
+    {
+      "operation_id": "906e09d435454384aa324d5ca28a1271",
+      "requested_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&first=1",
+      "started_at": "2026-10-28T09:08:50.084488+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128941,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&first=1"
+      ],
+      "duration_ms": 3981.266
+    },
+    {
+      "operation_id": "a6698b2923df4aaebcbfb451a830b292",
+      "requested_url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+quarterly+earnings",
+      "started_at": "2026-10-28T09:08:54.093930+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.798
+    },
+    {
+      "operation_id": "7e6144803a254c3a887272303323c9f9",
+      "requested_url": "https://www.zeebiz.com/market-news/news-infosys-q4fy26-results-guidance-deal-wins-ai-focus-ceo-salil-parekh-commentary-corporate-action-key-takeaways-from-infy-earnings-394177",
+      "started_at": "2026-10-28T09:09:00.029648+00:00",
+      "http_status": 200,
+      "final_url": "https://www.zeebiz.com/market-news/news-infosys-q4fy26-results-guidance-deal-wins-ai-focus-ceo-salil-parekh-commentary-corporate-action-key-takeaways-from-infy-earnings-394177",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20812,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.zeebiz.com/market-news/news-infosys-q4fy26-results-guidance-deal-wins-ai-focus-ceo-salil-parekh-commentary-corporate-action-key-takeaways-from-infy-earnings-394177"
+      ],
+      "duration_ms": 1924.263
+    },
+    {
+      "operation_id": "1fb121cf66cb4877950c2b5bc09606af",
+      "requested_url": "https://www.infosys.com/investors/reports-filings.html",
+      "started_at": "2026-10-28T09:08:59.989103+00:00",
+      "http_status": 200,
+      "final_url": "https://www.infosys.com/investors/reports-filings.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 22482,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.infosys.com/investors/reports-filings.html"
+      ],
+      "duration_ms": 2450.43
+    },
+    {
+      "operation_id": "a1799e85df9c4fc5912bb16be9e1f459",
+      "requested_url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+      "started_at": "2026-10-28T09:08:59.803152+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 50662,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/"
+      ],
+      "duration_ms": 2958.584
+    },
+    {
+      "operation_id": "3af02a6afddd446dbae81efd0cc393f0",
+      "requested_url": "https://www.bing.com/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI&first=1",
+      "started_at": "2026-10-28T09:08:59.121882+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.803
+    },
+    {
+      "operation_id": "e3b3b076792741d8b2512b425faa9186",
+      "requested_url": "https://search.yahoo.com/search?p=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI",
+      "started_at": "2026-10-28T09:09:04.127043+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5011.733
+    },
+    {
+      "operation_id": "c973330c4e78417ba25086b855866f0e",
+      "requested_url": "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:09:09.139138+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5161,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3783.518
+    },
+    {
+      "operation_id": "3f987a5e60cc4e698116f841fff7d3ca",
+      "requested_url": "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+financial+report&format=rss",
+      "started_at": "2026-10-28T09:09:15.481807+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+financial+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 7533,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+financial+report&format=rss"
+      ],
+      "duration_ms": 3047.059
+    },
+    {
+      "operation_id": "e0d56e9583d24a4484406fc83693bddd",
+      "requested_url": "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+results+press+release&format=rss",
+      "started_at": "2026-10-28T09:09:15.480936+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+results+press+release&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 7600,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+results+press+release&format=rss"
+      ],
+      "duration_ms": 3059.15
+    },
+    {
+      "operation_id": "630d77f62f3349adb2b787de06a4221c",
+      "requested_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:09:18.558236+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2382,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2019.785
+    },
+    {
+      "operation_id": "87562db4804e407981d1d247d79f6ba3",
+      "requested_url": "https://www.bing.com/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&first=1",
+      "started_at": "2026-10-28T09:09:18.557567+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 139053,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&first=1"
+      ],
+      "duration_ms": 4174.708
+    },
+    {
+      "operation_id": "5aadc913451642dca86078a05a0b8440",
+      "requested_url": "https://search.yahoo.com/search?p=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov",
+      "started_at": "2026-10-28T09:09:22.758192+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.26
+    },
+    {
+      "operation_id": "23f9ea22bfed4fb091aaf18c458a09ff",
+      "requested_url": "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:09:27.766816+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5093,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2051.984
+    },
+    {
+      "operation_id": "0dda431a306f430ba7a4ddfe96fddb2f",
+      "requested_url": "https://www.infosys.com/investors/reports-filings.html (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "started_at": "2026-10-28T09:09:34.004302+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 290.984
+    },
+    {
+      "operation_id": "d86cf8fc70d64ce6b2370bedcd2c1bcb",
+      "requested_url": "https://r.jina.ai/https://www.infosys.com/investors/reports-filings.html (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "started_at": "2026-10-28T09:09:34.295459+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 553.98
+    },
+    {
+      "operation_id": "c414e51305e54cc194bfe9ffbd89221c",
+      "requested_url": "https://r.jina.ai/https://www.infosys.com/investors/reports-filings.html (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "started_at": "2026-10-28T09:09:34.852903+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "PROVIDER_FAILURE",
+      "network_observed": null,
+      "duration_ms": 152.247
+    },
+    {
+      "operation_id": "72ccd79950a04985bca414a093c357a1",
+      "requested_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure&format=rss",
+      "started_at": "2026-10-28T09:09:34.004914+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2403,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure&format=rss"
+      ],
+      "duration_ms": 1847.054
+    },
+    {
+      "operation_id": "01df958b275b4a02ab9440a9862bbcb0",
+      "requested_url": "https://uk.investing.com/equities/infosys-ltd-future-news/20",
+      "started_at": "2026-10-28T09:09:36.277583+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1318.281
+    },
+    {
+      "operation_id": "c7cee15a663f476eb4ecc1a7d00e738f",
+      "requested_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:09:35.862567+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1395,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1738.167
+    },
+    {
+      "operation_id": "b932d15f26374dcf812c870485956057",
+      "requested_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+investor+disclosure&first=1",
+      "started_at": "2026-10-28T09:09:35.862008+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.336
+    },
+    {
+      "operation_id": "9d5afb24f63849b4ba93dd5e0aafaa68",
+      "requested_url": "https://finance.yahoo.com/markets/stocks/articles/infosys-nsei-infy-stock-fair-220859737.html",
+      "started_at": "2026-10-28T09:09:36.278562+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5000.24
+    },
+    {
+      "operation_id": "3330b0574b4846a1836e668ef265435d",
+      "requested_url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+investor+disclosure",
+      "started_at": "2026-10-28T09:09:40.866647+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5010.757
+    },
+    {
+      "operation_id": "1b221786d3f94cee99b28ac5818e1dca",
+      "requested_url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:09:37.603071+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3022,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 9478.451
+    },
+    {
+      "operation_id": "5e8840c858ed4a558537a2a15e0e56f2",
+      "requested_url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:09:45.877712+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 12795,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2445.113
+    },
+    {
+      "operation_id": "cdea1d57a29c444e8b089d691f9c207c",
+      "requested_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss",
+      "started_at": "2026-10-28T09:09:48.348853+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4700,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss"
+      ],
+      "duration_ms": 1321.26
+    },
+    {
+      "operation_id": "44ff622e30794648b858e8b60199bbcb",
+      "requested_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+financial+statements&first=1",
+      "started_at": "2026-10-28T09:09:48.349475+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+financial+statements&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128011,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+financial+statements&first=1"
+      ],
+      "duration_ms": 3673.7
+    },
+    {
+      "operation_id": "c8dbac1351d44c81835446a7eb58670c",
+      "requested_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts&first=1",
+      "started_at": "2026-10-28T09:09:48.658927+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 135368,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts&first=1"
+      ],
+      "duration_ms": 3748.924
+    },
+    {
+      "operation_id": "71cba1c1c8ee43e9913c42a03c0e6f7b",
+      "requested_url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+financial+statements",
+      "started_at": "2026-10-28T09:09:52.064780+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 4895.006
+    },
+    {
+      "operation_id": "6ded0fe75eef4000b88bd2521c40b058",
+      "requested_url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts",
+      "started_at": "2026-10-28T09:09:52.434395+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.369
+    },
+    {
+      "operation_id": "6fe41e06d9e64501bc4e621ce8beb7b6",
+      "requested_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss",
+      "started_at": "2026-10-28T09:09:56.971533+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4700,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss"
+      ],
+      "duration_ms": 1600.746
+    },
+    {
+      "operation_id": "b4490a01d37647d492c934da4a64f45e",
+      "requested_url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:09:57.436117+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1176.415
+    },
+    {
+      "operation_id": "1deb282e7d384835ae41fcbec9eda45b",
+      "requested_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+company+guidance&format=rss",
+      "started_at": "2026-10-28T09:09:56.971026+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+company+guidance&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 10504,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+company+guidance&format=rss"
+      ],
+      "duration_ms": 2815.462
+    },
+    {
+      "operation_id": "9d4dcaceb0a345bf98d4f4a3150d5583",
+      "requested_url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+      "started_at": "2026-10-28T09:09:58.046520+00:00",
+      "http_status": 200,
+      "final_url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 65884,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338"
+      ],
+      "duration_ms": 3502.127
+    },
+    {
+      "operation_id": "f37b2b59f2354239aabb96e1930b97da",
+      "requested_url": "https://www.financialexpress.com/india-news/fe-editorial-infy-needs-to-focus/1016187/",
+      "started_at": "2026-10-28T09:09:58.898985+00:00",
+      "http_status": 404,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 2790.791
+    },
+    {
+      "operation_id": "28c16df632b8421384d0fd0c4da91bf0",
+      "requested_url": "https://r.jina.ai/https://www.financialexpress.com/india-news/fe-editorial-infy-needs-to-focus/1016187/",
+      "started_at": "2026-10-28T09:10:01.690164+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.financialexpress.com/india-news/fe-editorial-infy-needs-to-focus/1016187/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 714,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.financialexpress.com/india-news/fe-editorial-infy-needs-to-focus/1016187/"
+      ],
+      "duration_ms": 2400.811
+    },
+    {
+      "operation_id": "1521616235f14f018793bd788eca0351",
+      "requested_url": "https://www.zeebiz.com/markets/stocks/news-infosys-share-price-bse-target-2023-nse-q2-results-profit-trims-fy24-revenue-guidance-heres-what-brokerages-say-259257",
+      "started_at": "2026-10-28T09:10:02.078945+00:00",
+      "http_status": 200,
+      "final_url": "https://www.zeebiz.com/markets/stocks/news-infosys-share-price-bse-target-2023-nse-q2-results-profit-trims-fy24-revenue-guidance-heres-what-brokerages-say-259257",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 18497,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.zeebiz.com/markets/stocks/news-infosys-share-price-bse-target-2023-nse-q2-results-profit-trims-fy24-revenue-guidance-heres-what-brokerages-say-259257"
+      ],
+      "duration_ms": 2528.938
+    },
+    {
+      "operation_id": "08f5684e43ff49a594a6a59a5d8212f0",
+      "requested_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+company+guidance&first=1",
+      "started_at": "2026-10-28T09:09:59.809007+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+company+guidance&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132093,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+company+guidance&first=1"
+      ],
+      "duration_ms": 4884.084
+    },
+    {
+      "operation_id": "8c67ae0ad0964c15b6b5b8d526e3e313",
+      "requested_url": "https://query2.finance.yahoo.com/v1/finance/search?q=Infosys+%28INFY.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false",
+      "started_at": "2026-10-28T09:10:01.045660+00:00",
+      "http_status": 200,
+      "final_url": "https://query2.finance.yahoo.com/v1/finance/search?q=Infosys+%28INFY.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 442,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://query2.finance.yahoo.com/v1/finance/search?q=Infosys+%28INFY.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false"
+      ],
+      "duration_ms": 3710.023
+    },
+    {
+      "operation_id": "3625190e61f14761a039fdc4c672e11d",
+      "requested_url": "https://www.financialexpress.com/market/infosys-stock-tanks-9-today-after-it-major-cuts-fy24-revenue-guidance-should-you-buy-sell-hold-infy-stock-3180664/",
+      "started_at": "2026-10-28T09:10:04.109006+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.546
+    },
+    {
+      "operation_id": "06b8bfb72a454b8ba6fd56d501d3cd3b",
+      "requested_url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+company+guidance",
+      "started_at": "2026-10-28T09:10:04.740902+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.489
+    },
+    {
+      "operation_id": "2bc4f160d46b463db047e1985521259c",
+      "requested_url": "https://timesofindia.indiatimes.com/city/bengaluru/infy-to-get-over-6k-cr-in-i-t-refund-for-11-years/articleshow/108926040.cms",
+      "started_at": "2026-10-28T09:10:05.758457+00:00",
+      "http_status": 200,
+      "final_url": "https://timesofindia.indiatimes.com/city/bengaluru/infy-to-get-over-6k-cr-in-i-t-refund-for-11-years/articleshow/108926040.cms",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 57410,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://timesofindia.indiatimes.com/city/bengaluru/infy-to-get-over-6k-cr-in-i-t-refund-for-11-years/articleshow/108926040.cms"
+      ],
+      "duration_ms": 4208.11
+    },
+    {
+      "operation_id": "7edd95a2ff364985a4a4c47deed39b21",
+      "requested_url": "https://r.jina.ai/https://www.financialexpress.com/market/infosys-stock-tanks-9-today-after-it-major-cuts-fy24-revenue-guidance-should-you-buy-sell-hold-infy-stock-3180664/",
+      "started_at": "2026-10-28T09:10:09.114912+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.financialexpress.com/market/infosys-stock-tanks-9-today-after-it-major-cuts-fy24-revenue-guidance-should-you-buy-sell-hold-infy-stock-3180664/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 783,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.financialexpress.com/market/infosys-stock-tanks-9-today-after-it-major-cuts-fy24-revenue-guidance-should-you-buy-sell-hold-infy-stock-3180664/"
+      ],
+      "duration_ms": 2455.977
+    },
+    {
+      "operation_id": "b4ff85cac04f420b9a98a2cae92f3e8f",
+      "requested_url": "https://www.ciol.com/News/News/News-Reports/Infosys-top-brass-under-fire-at-29th-AGM/137583/0/",
+      "started_at": "2026-10-28T09:10:10.630567+00:00",
+      "http_status": 404,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 1081.627
+    },
+    {
+      "operation_id": "ce7618847cb1465ca23fb9a3d0c5818a",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live&first=1",
+      "started_at": "2026-10-28T09:10:11.586816+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132464,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live&first=1"
+      ],
+      "duration_ms": 4517.404
+    },
+    {
+      "operation_id": "136c4fa87378413d8b69afb3102ec038",
+      "requested_url": "https://r.jina.ai/https://www.ciol.com/News/News/News-Reports/Infosys-top-brass-under-fire-at-29th-AGM/137583/0/",
+      "started_at": "2026-10-28T09:10:11.712578+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.738
+    },
+    {
+      "operation_id": "7aa8d7758c374645bd68a246b2096502",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live",
+      "started_at": "2026-10-28T09:10:16.134042+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.458
+    },
+    {
+      "operation_id": "f7a36b5798ac4901a03598f204ccd79e",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:21.143844+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "DNS_TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 457.915
+    },
+    {
+      "operation_id": "07ecd1b111d94ea3a0aee70fb44a26b0",
+      "requested_url": "https://www.bing.com/search?q=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics&first=1",
+      "started_at": "2026-10-28T09:10:21.617064+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.384
+    },
+    {
+      "operation_id": "b34c995d29924df2a187d463bea6a32d",
+      "requested_url": "https://www.investing.com",
+      "started_at": "2026-10-28T09:10:21.909254+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.237
+    },
+    {
+      "operation_id": "f2a7e066f9ae43dabd151e98fd486516",
+      "requested_url": "https://search.yahoo.com/search?p=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics",
+      "started_at": "2026-10-28T09:10:26.631810+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 1331.475
+    },
+    {
+      "operation_id": "0322ddc6bb7149d590b800784d049fb5",
+      "requested_url": "https://r.jina.ai/https://www.investing.com",
+      "started_at": "2026-10-28T09:10:26.921823+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1464.506
+    },
+    {
+      "operation_id": "8720cc95258c42e69d7d5bf89fd36f17",
+      "requested_url": "https://r.jina.ai/https://www.investing.com",
+      "started_at": "2026-10-28T09:10:28.386678+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1724.317
+    },
+    {
+      "operation_id": "4e920497e6df4ef7a981b6482d3b875b",
+      "requested_url": "https://news.google.com/rss/search?q=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:10:27.963541+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 6200,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2438.262
+    },
+    {
+      "operation_id": "672ce660dfc84a48b0e38ea955e380bb",
+      "requested_url": "https://in.investing.com",
+      "started_at": "2026-10-28T09:10:30.820462+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 919.067
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "8541db32b48d42479497765156bbc718",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+quarterly+earnings&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "906e09d435454384aa324d5ca28a1271",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+quarterly+earnings",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a6698b2923df4aaebcbfb451a830b292",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2Bquarterly%2Bearnings&_bvc=1.23196690edb76a34aade81ede3124369a4a4876abf0da664c8b0262a734e91b9",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a6698b2923df4aaebcbfb451a830b292",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2Bquarterly%2Bearnings&_bvc=2.6fbdcc6fd9b40141bb1c445b4b573c864afd8cfef9d1a2902d74230af2875dff",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a6698b2923df4aaebcbfb451a830b292",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "3af02a6afddd446dbae81efd0cc393f0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+      "host": "www.ciol.com",
+      "http_operation_id": "a1799e85df9c4fc5912bb16be9e1f459",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.infosys.com/investors/reports-filings.html",
+      "host": "www.infosys.com",
+      "http_operation_id": "1fb121cf66cb4877950c2b5bc09606af",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.zeebiz.com/market-news/news-infosys-q4fy26-results-guidance-deal-wins-ai-focus-ceo-salil-parekh-commentary-corporate-action-key-takeaways-from-infy-earnings-394177",
+      "host": "www.zeebiz.com",
+      "http_operation_id": "7e6144803a254c3a887272303323c9f9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e3b3b076792741d8b2512b425faa9186",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DResearch%2BInfosys%2527%2Bmost%2Brecent%2Bfinancial%2Bresults%2Band%2Brevenue%2Bguidance.%2BSeparate%2Bactual%2Bresults%2Bfrom%2Bmanagement%2Bforecasts%252C%2Bpreserve%2Bthe%2Bcurrency%2Band%2Bfiscal%2Byear%252C%2Band%2Bcompare%2Bofficial%2Bdisclosures%2Bwith%2Breporting.%2Bsite%253Ainfosys.com%2Bquarterly%2Bresults%2Bfiling%2BSEBI&_bvc=1.3cff63bda883960c7c41e83f3cb089bec7c2dbc31937e38ff5991a42559e6026",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e3b3b076792741d8b2512b425faa9186",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e3b3b076792741d8b2512b425faa9186",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Ainfosys.com+quarterly+results+filing+SEBI&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "c973330c4e78417ba25086b855866f0e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+results+press+release&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "e0d56e9583d24a4484406fc83693bddd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+financial+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3f987a5e60cc4e698116f841fff7d3ca",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "87562db4804e407981d1d247d79f6ba3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+quarterly+earnings+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "630d77f62f3349adb2b787de06a4221c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5aadc913451642dca86078a05a0b8440",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DResearch%2BInfosys%2527%2Bmost%2Brecent%2Bfinancial%2Bresults%2Band%2Brevenue%2Bguidance.%2BSeparate%2Bactual%2Bresults%2Bfrom%2Bmanagement%2Bforecasts%252C%2Bpreserve%2Bthe%2Bcurrency%2Band%2Bfiscal%2Byear%252C%2Band%2Bcompare%2Bofficial%2Bdisclosures%2Bwith%2Breporting.%2Bsite%253Asec.gov&_bvc=1.a6b2a20e4970c0f1a5cae455f9b255e166b38dd4005165374386e96c0631b938",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5aadc913451642dca86078a05a0b8440",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DResearch%2BInfosys%2527%2Bmost%2Brecent%2Bfinancial%2Bresults%2Band%2Brevenue%2Bguidance.%2BSeparate%2Bactual%2Bresults%2Bfrom%2Bmanagement%2Bforecasts%252C%2Bpreserve%2Bthe%2Bcurrency%2Band%2Bfiscal%2Byear%252C%2Band%2Bcompare%2Bofficial%2Bdisclosures%2Bwith%2Breporting.%2Bsite%253Asec.gov&_bvc=2.88e9dc1ad0d783dd0d89617aadf5604c28d74338070ae76d5c0f428d7e0d4e57",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5aadc913451642dca86078a05a0b8440",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Research+Infosys%27+most+recent+financial+results+and+revenue+guidance.+Separate+actual+results+from+management+forecasts%2C+preserve+the+currency+and+fiscal+year%2C+and+compare+official+disclosures+with+reporting.+site%3Asec.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "23f9ea22bfed4fb091aaf18c458a09ff",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.infosys.com/investors/reports-filings.html (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "host": "www.infosys.com",
+      "http_operation_id": "0dda431a306f430ba7a4ddfe96fddb2f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "72ccd79950a04985bca414a093c357a1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.infosys.com/investors/reports-filings.html (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "host": "r.jina.ai",
+      "http_operation_id": "d86cf8fc70d64ce6b2370bedcd2c1bcb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.infosys.com/investors/reports-filings.html (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+      "host": "r.jina.ai",
+      "http_operation_id": "c414e51305e54cc194bfe9ffbd89221c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+investor+disclosure&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "b932d15f26374dcf812c870485956057",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "c7cee15a663f476eb4ecc1a7d00e738f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://uk.investing.com/equities/infosys-ltd-future-news/20",
+      "host": "uk.investing.com",
+      "http_operation_id": "01df958b275b4a02ab9440a9862bbcb0",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://finance.yahoo.com/markets/stocks/articles/infosys-nsei-infy-stock-fair-220859737.html",
+      "host": "finance.yahoo.com",
+      "http_operation_id": "9d5afb24f63849b4ba93dd5e0aafaa68",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1b221786d3f94cee99b28ac5818e1dca",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+investor+disclosure",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3330b0574b4846a1836e668ef265435d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2Binvestor%2Bdisclosure&_bvc=1.0a7de1eac0c424efd50cf1ad5277255304fea0bdd861a5e32f707a39615b3886",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3330b0574b4846a1836e668ef265435d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2Binvestor%2Bdisclosure&_bvc=2.6d5bdb57e4ba33113349e07c8da49f9ae3cf91f4ffc0c0fa96b99131fdf9af77",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3330b0574b4846a1836e668ef265435d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+investor+disclosure&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5e8840c858ed4a558537a2a15e0e56f2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "cdea1d57a29c444e8b089d691f9c207c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+financial+statements&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "44ff622e30794648b858e8b60199bbcb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "c8dbac1351d44c81835446a7eb58670c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+financial+statements",
+      "host": "search.yahoo.com",
+      "http_operation_id": "71cba1c1c8ee43e9913c42a03c0e6f7b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6ded0fe75eef4000b88bd2521c40b058",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+financial+statements",
+      "host": "search.yahoo.com",
+      "http_operation_id": "71cba1c1c8ee43e9913c42a03c0e6f7b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2BStock%2BAnalysis%253A%2BFlat%2Bat%2B%25E2%2582%25B9997.00%252C%2BWhat%2527s%2BNext%2B2026-10-08%2B-%2BBreakout%2BStock%2BAlerts&_bvc=1.912585fbd185ab21388f61e96eb6d6b838245442adc980639a21eb8baeb797f4",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6ded0fe75eef4000b88bd2521c40b058",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2BStock%2BAnalysis%253A%2BFlat%2Bat%2B%25E2%2582%25B9997.00%252C%2BWhat%2527s%2BNext%2B2026-10-08%2B-%2BBreakout%2BStock%2BAlerts&_bvc=2.104801d11cc577043f883552a80cbbd182655571b49a0356128b697a6d62d929",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6ded0fe75eef4000b88bd2521c40b058",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2Bfinancial%2Bstatements&_bvc=1.e20b7ffd3167410927bcaab52d2f5d030c5cac2d00f7173b86db86e2246e63ec",
+      "host": "search.yahoo.com",
+      "http_operation_id": "71cba1c1c8ee43e9913c42a03c0e6f7b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2BStock%2BAnalysis%253A%2BFlat%2Bat%2B%25E2%2582%25B9997.00%252C%2BWhat%2527s%2BNext%2B2026-10-08%2B-%2BBreakout%2BStock%2BAlerts&_bvc=3.e194cdaa92a55df5c77fc918269651a9523f8328195ceb01673071b3cc818a32",
+      "host": "search.yahoo.com",
+      "http_operation_id": "6ded0fe75eef4000b88bd2521c40b058",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2Bfinancial%2Bstatements&_bvc=2.89d4abc0112c2680971af32c6634e8d734e5564ac68c11b94f14586caf923ca3",
+      "host": "search.yahoo.com",
+      "http_operation_id": "71cba1c1c8ee43e9913c42a03c0e6f7b",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+company+guidance&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "1deb282e7d384835ae41fcbec9eda45b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Infosys+%28INFY.NS%29+financial+statements&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "6fe41e06d9e64501bc4e621ce8beb7b6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Infosys+%28INFY.NS%29+Stock+Analysis%3A+Flat+at+%E2%82%B9997.00%2C+What%27s+Next+2026-10-08+-+Breakout+Stock+Alerts&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "b4490a01d37647d492c934da4a64f45e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+      "host": "www.indiatvnews.com",
+      "http_operation_id": "9d4dcaceb0a345bf98d4f4a3150d5583",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.financialexpress.com/india-news/fe-editorial-infy-needs-to-focus/1016187/",
+      "host": "www.financialexpress.com",
+      "http_operation_id": "f37b2b59f2354239aabb96e1930b97da",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Infosys+%28INFY.NS%29+company+guidance&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "08f5684e43ff49a594a6a59a5d8212f0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://query2.finance.yahoo.com/v1/finance/search?q=Infosys+%28INFY.NS%29&quotesCount=5&newsCount=3&enableFuzzyQuery=false",
+      "host": "query2.finance.yahoo.com",
+      "http_operation_id": "8c67ae0ad0964c15b6b5b8d526e3e313",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.financialexpress.com/india-news/fe-editorial-infy-needs-to-focus/1016187/",
+      "host": "r.jina.ai",
+      "http_operation_id": "28c16df632b8421384d0fd0c4da91bf0",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.zeebiz.com/markets/stocks/news-infosys-share-price-bse-target-2023-nse-q2-results-profit-trims-fy24-revenue-guidance-heres-what-brokerages-say-259257",
+      "host": "www.zeebiz.com",
+      "http_operation_id": "1521616235f14f018793bd788eca0351",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.financialexpress.com/market/infosys-stock-tanks-9-today-after-it-major-cuts-fy24-revenue-guidance-should-you-buy-sell-hold-infy-stock-3180664/",
+      "host": "www.financialexpress.com",
+      "http_operation_id": "3625190e61f14761a039fdc4c672e11d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Infosys+%28INFY.NS%29+company+guidance",
+      "host": "search.yahoo.com",
+      "http_operation_id": "06b8bfb72a454b8ba6fd56d501d3cd3b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com/city/bengaluru/infy-to-get-over-6k-cr-in-i-t-refund-for-11-years/articleshow/108926040.cms",
+      "host": "timesofindia.indiatimes.com",
+      "http_operation_id": "2bc4f160d46b463db047e1985521259c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInfosys%2B%2528INFY.NS%2529%2Bcompany%2Bguidance&_bvc=1.a5e41962bae17abfd751f5d0c5036ead065ae2fdd54a49f6530ebbd27dc3cb31",
+      "host": "search.yahoo.com",
+      "http_operation_id": "06b8bfb72a454b8ba6fd56d501d3cd3b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.financialexpress.com/market/infosys-stock-tanks-9-today-after-it-major-cuts-fy24-revenue-guidance-should-you-buy-sell-hold-infy-stock-3180664/",
+      "host": "r.jina.ai",
+      "http_operation_id": "7edd95a2ff364985a4a4c47deed39b21",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ciol.com/News/News/News-Reports/Infosys-top-brass-under-fire-at-29th-AGM/137583/0/",
+      "host": "www.ciol.com",
+      "http_operation_id": "b4ff85cac04f420b9a98a2cae92f3e8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ce7618847cb1465ca23fb9a3d0c5818a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.ciol.com/News/News/News-Reports/Infosys-top-brass-under-fire-at-29th-AGM/137583/0/",
+      "host": "r.jina.ai",
+      "http_operation_id": "136c4fa87378413d8b69afb3102ec038",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7aa8d7758c374645bd68a246b2096502",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.investing.com%2BInfosys%2BLtd%2BStock%2BPrice%2BToday%2B%257C%2BNSE%253A%2BINFY%2BLive&_bvc=1.b714f23704c3e27a1f288b79880effca4cc7c90599f4c01f145fbf123bd5d39f",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7aa8d7758c374645bd68a246b2096502",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.investing.com+Infosys+Ltd+Stock+Price+Today+%7C+NSE%3A+INFY+Live&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f7a36b5798ac4901a03598f204ccd79e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "07ecd1b111d94ea3a0aee70fb44a26b0",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.investing.com",
+      "host": "www.investing.com",
+      "http_operation_id": "b34c995d29924df2a187d463bea6a32d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f2a7e066f9ae43dabd151e98fd486516",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.investing.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "0322ddc6bb7149d590b800784d049fb5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f2a7e066f9ae43dabd151e98fd486516",
+      "phase": "reading",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Seeking+Clues+to+Infosys+%28INFY%29+Q4+Earnings%3F+A+Peek+Into+Wall+Street+Projections+for+Key+Metrics&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4e920497e6df4ef7a981b6482d3b875b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.investing.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "8720cc95258c42e69d7d5bf89fd36f17",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://in.investing.com",
+      "host": "in.investing.com",
+      "http_operation_id": "672ce660dfc84a48b0e38ea955e380bb",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 71,
+  "admission_rejections": 2,
+  "pipeline_errors": []
+}

@@ -41,6 +41,59 @@ def test_inline_next_speaker_label_cannot_borrow_preceding_speaker():
     assert public_statement_attribution(item,'Robin Lane: We will review the proposals separately.','Dana Vale') is None
 
 
+def test_titled_transcript_with_honorifics_times_and_editorial_intro():
+    intro = 'The following is the full transcript of Dana Vale interviewing another researcher.'
+    notes = 'EDITOR\u2019S NOTES: Dana Vale discusses the research in this interview.'
+    answer = 'DR. DANA VALE: (00:04:25 - 00:12:12): We have not established the result. Further research is necessary before drawing conclusions.'
+    host = 'ROBIN LANE: (00:12:13 - 00:12:40): Dana Vale, what are the research limitations?'
+    body = '\n\n'.join(['Transcript of Dr. Dana Vale Interview', intro, notes,
+        'ROBIN LANE: Welcome to the interview with Dana Vale.', answer, host])
+    item = record(body, author='Dana Vale')
+    assert public_statement_attribution(item, answer, 'Dana Vale') == 'OBSERVED_TRANSCRIPT_SPEAKER_SECTION'
+    for text in (intro, notes, host):
+        assert public_statement_attribution(item, text, 'Dana Vale') is None
+    PassageExtractor().extract_passages([item], 'Dana Vale', domain='personal')
+    assert item.relevant_excerpt == answer
+    assert [p['text'] for p in item.metadata['evidence_passages']] == [answer]
+    assert [p['text'] for p in captured_passages(item, 'personal', 'Dana Vale')] == [answer]
+    assert item.content == body
+
+
+def test_transcript_roster_without_repeated_colon_turns_is_not_speaker_evidence():
+    body = 'Transcript interview participants\n\nDana Vale - CEO\n\nRobin Lane - Host\n\nThis interview features Dana Vale.'
+    item = record(body)
+    assert public_statement_attribution(item, 'This interview features Dana Vale.', 'Dana Vale') is None
+
+
+def test_genuine_saved_honorific_transcript_found_by_threat_query():
+    source=json.loads((Path(__file__).parent/'fixtures/oct28_fei_transcript_turn_capture.json').read_text(encoding='utf-8'))
+    body=source['readable_text']
+    assert hashlib.sha256(body.encode()).hexdigest()==source['prefix_sha256']
+    item=record(body)
+    item.metadata['acquisition_objective']='IDENTITY_THREAT'
+    PassageExtractor().extract_passages([item], 'Fei-Fei Li', domain='personal')
+    assert item.extraction_status=='SUCCESS'
+    assert item.metadata['evidence_passages']
+    assert all(p['attribution']=='OBSERVED_TRANSCRIPT_SPEAKER_SECTION' for p in item.metadata['evidence_passages'])
+    assert all(body[p['start']:p['end']]==p['text'] for p in item.metadata['evidence_passages'])
+    assert not any('EDITOR' in p['text'] or p['text'].startswith('The following') for p in item.metadata['evidence_passages'])
+    assert item.content==body
+    from backend.agents.personal_watch.assessment import synthesize_personal_threats
+    native = {'evidence_id': item.id, 'title': item.title, 'url': item.canonical_url,
+              'content': body, 'content_depth': item.content_depth, 'metadata': item.metadata}
+    result = synthesize_personal_threats({'canonical_name':'Fei-Fei Li'}, [native])
+    assert result['public_statements'] and not result['threats']
+    assert all(not p['identity_authenticated'] for p in result['public_statements'])
+    item.metadata['page_metadata']['body_kind']='NEWS_INDEX'
+    assert public_statement_attribution(item,item.relevant_excerpt,'Fei-Fei Li') is None
+
+
+def test_merged_multi_speaker_paragraph_cannot_borrow_one_speakers_attribution():
+    paragraph = 'DR. DANA VALE: We have not confirmed the result.\nROBIN LANE: I believe the result is confirmed.'
+    body = 'Transcript of interview\n\nROBIN LANE: Welcome to this interview.\n\n' + paragraph
+    assert public_statement_attribution(record(body), paragraph, 'Dana Vale') is None
+
+
 def test_genuine_tim_cook_capture_selects_exact_spoken_paragraphs_not_intro():
     source=json.loads((Path(__file__).parent/'fixtures/oct25_tim_cook_transcript_capture.json').read_text(encoding='utf-8'))['source']
     body=source['readable_text'];assert hashlib.sha256(body.encode()).hexdigest()==source['raw_content_hash']

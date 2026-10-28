@@ -1,0 +1,228 @@
+{
+  "mode": "READ_ONLY_JSON_SYNTAX_INVENTORY_NOT_FULL_DOSSIER_INTEGRITY_OR_ROLLBACK_VERIFICATION",
+  "readable_json": 2543,
+  "unreadable_json": 55,
+  "failures": [
+    {
+      "file": "R-2026-02617B.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-02D05B.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-0F2A34.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-1022D7.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-110289.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-11B849.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-12C7D8.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-13ABA1.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-148B28.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-191397.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-1F6F4E.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-1FC51E.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-26A819.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-270F01.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-2F55C3.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-408CAE.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-416E3E.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-4538CF.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-45D787.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-4F9254.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-5461C1.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-63C584.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-646958.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-660571.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-6CBE8C.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-7098F5.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-70AD9B.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-755FE3.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-7D6F65.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-80E1A5.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-83FC2C.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-85BD21.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-87E9E8.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-8DBDDD.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-8DFF21.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-91539E.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-96AFD0.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-994D54.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-9FDCCF.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-AED3FD.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-AF0A9E.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-AFF55A.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-BB4BF1.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-BC5A36.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-C43E98.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-C862EB.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-D20022.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-D4A323.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-DAB116.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-E122B7.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-E8E9B3.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-EC74AC.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-F2E525.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-F63141.json",
+      "failure_type": "JSONDecodeError"
+    },
+    {
+      "file": "R-2026-FA5A4D.json",
+      "failure_type": "JSONDecodeError"
+    }
+  ],
+  "changed_files": 0
+}

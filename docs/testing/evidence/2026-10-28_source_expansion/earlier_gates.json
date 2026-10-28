@@ -1,0 +1,259 @@
+[
+  {
+    "scope": "gates/results.json",
+    "commands": [
+      {
+        "name": "full",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "pytest",
+          "tests/",
+          "-q"
+        ],
+        "exit_code": 1,
+        "wall_seconds": 121.89
+      },
+      {
+        "name": "fast",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "pytest",
+          "tests/unit",
+          "tests/chaos",
+          "tests/security",
+          "-q"
+        ],
+        "exit_code": 1,
+        "wall_seconds": 102.74
+      },
+      {
+        "name": "fatal-lint",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "flake8",
+          "backend",
+          "tests",
+          "scripts",
+          "--count",
+          "--select=E9,F63,F7,F82",
+          "--show-source",
+          "--statistics"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 3.69
+      },
+      {
+        "name": "frozen",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "scripts/validation/verify_frozen_benchmarks.py"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.07
+      },
+      {
+        "name": "smoke",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "scripts/validate_release_candidate_smoke.py",
+          "--output",
+          "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-source-expansion-20261028-_i_3mukq\\gates\\smoke.json"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 4.0
+      },
+      {
+        "name": "persistence",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "scripts/validate_rollback_compatibility.py",
+          "--output",
+          "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-source-expansion-20261028-_i_3mukq\\gates\\persistence.json"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 5.75
+      },
+      {
+        "name": "test_agent_research_client",
+        "command": [
+          "node",
+          "tests\\frontend\\test_agent_research_client.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.23
+      },
+      {
+        "name": "test_agent_ui_truth",
+        "command": [
+          "node",
+          "tests\\frontend\\test_agent_ui_truth.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.09
+      },
+      {
+        "name": "test_claim_ui_truth",
+        "command": [
+          "node",
+          "tests\\frontend\\test_claim_ui_truth.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.12
+      },
+      {
+        "name": "test_cloudflare_api_routing",
+        "command": [
+          "node",
+          "tests\\frontend\\test_cloudflare_api_routing.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.06
+      },
+      {
+        "name": "test_desktop_evidence_audit",
+        "command": [
+          "node",
+          "tests\\frontend\\test_desktop_evidence_audit.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.07
+      },
+      {
+        "name": "test_evidence_workbench",
+        "command": [
+          "node",
+          "tests\\frontend\\test_evidence_workbench.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.06
+      },
+      {
+        "name": "test_forensic_explorer_truth",
+        "command": [
+          "node",
+          "tests\\frontend\\test_forensic_explorer_truth.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.05
+      },
+      {
+        "name": "test_operation_health",
+        "command": [
+          "node",
+          "tests\\frontend\\test_operation_health.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.16
+      },
+      {
+        "name": "test_phase8e_frontend_intelligence",
+        "command": [
+          "node",
+          "tests\\frontend\\test_phase8e_frontend_intelligence.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.06
+      },
+      {
+        "name": "test_security_and_health_regressions",
+        "command": [
+          "node",
+          "tests\\frontend\\test_security_and_health_regressions.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.25
+      },
+      {
+        "name": "test_unified_report_renderer",
+        "command": [
+          "node",
+          "tests\\frontend\\test_unified_report_renderer.js"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.12
+      }
+    ]
+  },
+  {
+    "scope": "gates-final/results.json",
+    "commands": [
+      {
+        "name": "full",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "pytest",
+          "tests/",
+          "-q"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 114.79
+      },
+      {
+        "name": "fast",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "pytest",
+          "tests/unit",
+          "tests/chaos",
+          "tests/security",
+          "-q"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 106.98
+      },
+      {
+        "name": "fatal-lint",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "flake8",
+          "backend",
+          "tests",
+          "scripts",
+          "--count",
+          "--select=E9,F63,F7,F82",
+          "--show-source",
+          "--statistics"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 3.43
+      },
+      {
+        "name": "frozen",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "scripts/validation/verify_frozen_benchmarks.py"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 0.07
+      },
+      {
+        "name": "smoke",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "scripts/validate_release_candidate_smoke.py",
+          "--output",
+          "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-source-expansion-20261028-_i_3mukq\\gates-final\\smoke.json"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 4.1
+      },
+      {
+        "name": "persistence",
+        "command": [
+          "C:\\Users\\Shaunak Rane\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "scripts/validate_rollback_compatibility.py",
+          "--output",
+          "C:\\Users\\SHAUNA~1\\AppData\\Local\\Temp\\aegis-source-expansion-20261028-_i_3mukq\\gates-final\\persistence.json"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 5.74
+      }
+    ]
+  }
+]

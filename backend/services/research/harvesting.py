@@ -35,7 +35,7 @@ _OBJECTIVES = {
                   "company guidance", "financial analysis", "regulatory filing"),
     "brand": ("counterfeit enforcement", "impersonation phishing", "consumer complaints",
               "fraud warning", "unauthorized sellers", "complaints response"),
-    "personal": ("public statement", "impersonation allegation", "identity deepfake",
+    "personal": ("interview", "impersonation allegation", "identity deepfake",
                  "interview transcript", "official statement", "false quotation"),
     "trending": ("recent developments", "research update", "industry announcement",
                  "institution announcement", "latest news", "project deployment"),
@@ -60,7 +60,7 @@ _TASK_ANGLES = {
     "PHISHING": ("phishing incident report", "credential theft warning", "phishing allegation response"),
     "COMPLAINT": ("consumer complaint response", "refund complaint report", "consumer dispute investigation"),
     "PRODUCT_SAFETY": ("product safety recall notice", "recall company response", "product safety investigation"),
-    "PUBLIC_STATEMENT": ("original statement transcript", "interview quotation source", "public speech transcript"),
+    "PUBLIC_STATEMENT": ("interview", "speech transcript", "public statement"),
     "FALSE_QUOTE": ("quotation original transcript", "misattributed quote fact check", "quotation denial correction"),
     "IMPERSONATION": ("impersonation allegation report", "fake account warning", "impersonation company response"),
     "DEEPFAKE": ("deepfake allegation report", "synthetic media original source", "manipulated video verification"),
@@ -102,7 +102,7 @@ def _merge_task_lineage(destination, source):
         destination.pop("source_plan_action_ids", None)
 
 
-def diversified_queries(target, domain="general", intent="", aliases=(), reference_time=None, specialist_tasks=()):
+def diversified_queries(target, domain="general", intent="", aliases=(), reference_time=None, specialist_tasks=(), window_hours=48.0):
     """General subject/angle queries, no test-subject or publisher URL special cases."""
     target = re.sub(r"\s+", " ", str(target)).strip()[:180]
     if not target:
@@ -117,12 +117,15 @@ def diversified_queries(target, domain="general", intent="", aliases=(), referen
         angles = tuple(angle for angle, _ in task_angles)
     specs = []
     reference = reference_time or datetime.now(timezone.utc)
-    # Search hints improve provider recall only. The exact 48h boundary is
+    # Search hints improve provider recall only. The requested time boundary is
     # checked against captured publication declarations after acquisition.
-    recent_hint = (" when:2d after:" + (reference - timedelta(hours=48)).date().isoformat()
+    window_hours = window_hours if isinstance(window_hours, (int, float)) and 1 <= window_hours <= 168 else 48.0
+    recent_hint = (" when:" + str(max(1, math.ceil(window_hours / 24))) + "d after:" + (reference - timedelta(hours=window_hours)).date().isoformat()
                    + " before:" + (reference + timedelta(days=1)).date().isoformat())
     for index, angle in enumerate(angles):
         subject = names[index % len(names)]
+        if domain == 'personal' and len(subject.split()) >= 2 and '"' not in subject:
+            subject = '"' + subject + '"'
         # Multiple source categories, without sending every case to social media.
         for channel in ("news", "web", "rss"):
             text = f"{subject} {angle}"
@@ -462,7 +465,8 @@ class HarvestingEngine:
         discovery_publishers = Counter()
         discovery_capacity = max(1, profile.max_candidates - profile.max_reads)
         generated = diversified_queries(target, domain, intent, aliases,
-            specialist_tasks=specialist_tasks if specialist_task_explicit else ())
+            specialist_tasks=specialist_tasks if specialist_task_explicit else (),
+            window_hours=params.get("trending_window_hours", 48.0))
         registered = set(getattr(getattr(self.service, "registry", None), "channel_names", ()) or ())
         core_channels = {"web", "news", "rss"}
         extra_queries = []
@@ -535,6 +539,7 @@ class HarvestingEngine:
                     pass
 
         def add(item):
+            nonlocal raw_chars
             # Some legacy fragments strip query strings when building IDs. News
             # redirect endpoints then give unrelated articles the same ID.
             # Establish a canonical full-resource ID before any finding exists.
@@ -567,7 +572,8 @@ class HarvestingEngine:
                 source_registry.observe(item.canonical_url, body_acquired=raw_source_type(item) in {'ARTICLE_BODY', 'OFFICIAL_DOCUMENT'})
             if domain == "trending":
                 from backend.services.research.temporal_guard import temporal_guard
-                temporal = temporal_guard.evaluate(item, reference_time=reference_time)
+                temporal = temporal_guard.evaluate(item, reference_time=reference_time,
+                    window_hours=params.get("trending_window_hours", 48.0))
                 item.metadata["harvest_temporal_priority"] = (0 if temporal.is_eligible else
                     1 if temporal.status == "MISSING_TIMESTAMP" else 3 if temporal.status == "FUTURE_DATED" else 2)
                 item.metadata["discovery_temporal_observation"] = temporal.status
@@ -635,6 +641,36 @@ class HarvestingEngine:
                 if item.content_depth in {"PRIMARY_DOCUMENT", "REGULATORY_FILING", "OFFICIAL_STATEMENT"}:
                     item.content_depth = "INDEX_SNIPPET"
             known[key] = item
+            transport = item.metadata.get('transport') or {}
+            # Body-inclusive official community API responses were already read
+            # during discovery. Preserve those bytes, rather than re-reading a
+            # search card as an article or discarding it as social-only.
+            owned = ((item.channel == 'hackernews' and _host(item.canonical_url) == 'news.ycombinator.com'
+                      and item.native_backend_id == 'hn-firebase-api') or
+                     (item.channel == 'stackexchange' and _host(item.canonical_url) == 'stackoverflow.com'
+                      and item.native_backend_id == 'stackexchange-api'))
+            observed = transport.get('http_status') == 200 or transport.get('cache_status') == 'HIT'
+            if (owned and observed and item.content and item.content_depth in {'PARTIAL_CONTENT', 'COMMENT', 'SOCIAL_POST'}
+                    and raw_chars + len(item.content) <= profile.max_capture_chars):
+                item.content_depth = 'COMMENT' if item.content_depth == 'COMMENT' else 'SOCIAL_POST'
+                item.metadata.update(read_success=True, source_role='COMMUNITY',
+                    body_acquired_during_discovery=True, virality_measured=False)
+                item.acquired_id = 'capture_' + hashlib.sha256(item.content.encode()).hexdigest()[:20]
+                captured.add(key)
+                attempted.add(key)
+                raw_chars += len(item.content)
+                output.captures.append(item)
+            if (item.channel == 'expanded_sources' and item.native_backend_id == 'cpsc_recall_api'
+                    and item.content_depth == 'STRUCTURED_PUBLIC_DATA' and item.content
+                    and item.metadata.get('body_acquired_during_discovery') is True
+                    and _host(item.canonical_url) == 'www.cpsc.gov'
+                    and raw_chars + len(item.content) <= profile.max_capture_chars):
+                item.metadata.update(read_success=True, virality_measured=False)
+                item.acquired_id = 'capture_' + hashlib.sha256(item.content.encode()).hexdigest()[:20]
+                captured.add(key)
+                attempted.add(key)
+                raw_chars += len(item.content)
+                output.captures.append(item)
             item.metadata["raw_source_type"] = "FEED_ENTRY" if _is_wrapper(item) else "DISCOVERY_LEAD"
             reason = acquisition_reason(item, target, domain, aliases)
             item.metadata["harvest_acquisition_eligible"] = reason is None

@@ -1,0 +1,1686 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "0404e4348d0b46a69850288844a189ad",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report&format=rss",
+      "started_at": "2026-10-28T09:02:16.838527+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3426,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report&format=rss"
+      ],
+      "duration_ms": 2874.561
+    },
+    {
+      "operation_id": "0fb7889b167f4d62bd1389cc9ae1d768",
+      "requested_url": "https://www.bing.com/search?q=Pfizer+counterfeit+listing+report&first=1",
+      "started_at": "2026-10-28T09:02:16.838876+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Pfizer+counterfeit+listing+report&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129300,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Pfizer+counterfeit+listing+report&first=1"
+      ],
+      "duration_ms": 3993.376
+    },
+    {
+      "operation_id": "418892fd04c74933b6d3b5e0104283fc",
+      "requested_url": "https://search.yahoo.com/search?p=Pfizer+counterfeit+listing+report",
+      "started_at": "2026-10-28T09:02:21.013179+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5014.855
+    },
+    {
+      "operation_id": "51554bcba030467eab68cff555876f67",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:26.028334+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 39296,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2704.583
+    },
+    {
+      "operation_id": "c29793525e3744ff810346ca518920e2",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&format=rss",
+      "started_at": "2026-10-28T09:02:28.759935+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1992,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&format=rss"
+      ],
+      "duration_ms": 1897.729
+    },
+    {
+      "operation_id": "388b577243f140f68d9651c7f6e0ff4c",
+      "requested_url": "https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu",
+      "started_at": "2026-10-28T09:02:29.036279+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15485,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu"
+      ],
+      "duration_ms": 2465.81
+    },
+    {
+      "operation_id": "394a29e4b0314e3b9b95c562e9d27f8f",
+      "requested_url": "https://www.freepressjournal.in/india/karnataka-spurious-drug-racket-government-halts-business-with-pfizer-cancels-licences-of-16-firms-over-counterfeit-medicine-manufacturing",
+      "started_at": "2026-10-28T09:02:29.336977+00:00",
+      "http_status": 200,
+      "final_url": "https://www.freepressjournal.in/india/karnataka-spurious-drug-racket-government-halts-business-with-pfizer-cancels-licences-of-16-firms-over-counterfeit-medicine-manufacturing",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 23978,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.freepressjournal.in/india/karnataka-spurious-drug-racket-government-halts-business-with-pfizer-cancels-licences-of-16-firms-over-counterfeit-medicine-manufacturing"
+      ],
+      "duration_ms": 2300.431
+    },
+    {
+      "operation_id": "e204f9408d9b41f296cb90c2de6d63bc",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&first=1",
+      "started_at": "2026-10-28T09:02:28.759524+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 137146,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&first=1"
+      ],
+      "duration_ms": 2891.74
+    },
+    {
+      "operation_id": "19e9ccd981584d2d9cf7e42fb0e8ddcf",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:30.660861+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1527,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1839.539
+    },
+    {
+      "operation_id": "44121df671aa4b3384e8faa33d075ed7",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:32.503614+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1527,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 952.785
+    },
+    {
+      "operation_id": "453be5679dd04922accc7f8f3ec4b227",
+      "requested_url": "https://www.bing.com/search?q=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine&first=1",
+      "started_at": "2026-10-28T09:02:32.012723+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129168,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine&first=1"
+      ],
+      "duration_ms": 2443.995
+    },
+    {
+      "operation_id": "9705dc741fd64471a58d4bc9e6c512ad",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu",
+      "started_at": "2026-10-28T09:02:31.522000+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.738
+    },
+    {
+      "operation_id": "d8be0c33575c43d6bae24d7d72b5944b",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source",
+      "started_at": "2026-10-28T09:02:31.688208+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5005.826
+    },
+    {
+      "operation_id": "90d88c790150434daed0aea12fcc1f59",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:36.694377+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1501,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1892.947
+    },
+    {
+      "operation_id": "931323f682884d2e9993e3e11fc44f9c",
+      "requested_url": "https://search.yahoo.com/search?p=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine",
+      "started_at": "2026-10-28T09:02:34.492041+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5008.067
+    },
+    {
+      "operation_id": "b93dfd60b56d4cafbb786ea48f3350da",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu",
+      "started_at": "2026-10-28T09:02:36.536214+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.451
+    },
+    {
+      "operation_id": "8416a73396b74a33b099e0ab2851f1d9",
+      "requested_url": "https://news.google.com/rss/search?q=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:39.500391+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 2512.711
+    },
+    {
+      "operation_id": "0e08b10cf54a477a8c2b6d7550f605e4",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&first=1",
+      "started_at": "2026-10-28T09:02:40.203225+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 137355,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&first=1"
+      ],
+      "duration_ms": 2629.049
+    },
+    {
+      "operation_id": "ba8f2ce56f60432892c84e1e40123113",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&first=1",
+      "started_at": "2026-10-28T09:02:42.013782+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133226,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&first=1"
+      ],
+      "duration_ms": 3522.829
+    },
+    {
+      "operation_id": "1f45fb5e618c427f98339723ad6c4d73",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com",
+      "started_at": "2026-10-28T09:02:42.878254+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.321
+    },
+    {
+      "operation_id": "f4c510f7886b471a85afa44c21ba0798",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov",
+      "started_at": "2026-10-28T09:02:45.561762+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5007.057
+    },
+    {
+      "operation_id": "a0692082fe744398905e33b18a91f447",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:47.892979+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1537,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3668.592
+    },
+    {
+      "operation_id": "a12bc45b4bc4475bba6e2df85e254fab",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:50.569121+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1531,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1503.355
+    },
+    {
+      "operation_id": "0e161f53a23c4f1889727b4c3fecd7f0",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:02:55.795072+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1363,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2136.251
+    },
+    {
+      "operation_id": "a3e957ef3e3a454b85ad5072fe518860",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:02:57.939330+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 10589,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1522.001
+    },
+    {
+      "operation_id": "0e0dfd5a1cae43518a9e5e9f96aaa4f9",
+      "requested_url": "https://www.reddit.com/r/stocks/.rss",
+      "started_at": "2026-10-28T09:02:58.045645+00:00",
+      "http_status": 200,
+      "final_url": "https://www.reddit.com/r/stocks/.rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 87939,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.reddit.com/r/stocks/.rss"
+      ],
+      "duration_ms": 3164.863
+    },
+    {
+      "operation_id": "1de31ddcef774973946a22b54a36eeb6",
+      "requested_url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "started_at": "2026-10-28T09:03:01.312936+00:00",
+      "http_status": 429,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "RATE_LIMITED",
+      "network_observed": true,
+      "duration_ms": 1303.546
+    },
+    {
+      "operation_id": "fb5b82a430884be28648c62600280c2c",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement&format=rss",
+      "started_at": "2026-10-28T09:03:02.623075+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 8600,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement&format=rss"
+      ],
+      "duration_ms": 2952.214
+    },
+    {
+      "operation_id": "3c581846c52444bdb95d0ad31af52243",
+      "requested_url": "https://www.bing.com/search?q=Pfizer+counterfeit+enforcement&first=1",
+      "started_at": "2026-10-28T09:03:02.623394+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.867
+    },
+    {
+      "operation_id": "3f6bfde3dbc64478ad88a49c058183af",
+      "requested_url": "https://search.yahoo.com/search?p=Pfizer+counterfeit+enforcement",
+      "started_at": "2026-10-28T09:03:07.626469+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5000.866
+    },
+    {
+      "operation_id": "bc04f5e449ed437bb02645fa54caa34e",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:12.627532+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 75252,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1650.205
+    },
+    {
+      "operation_id": "6002ae3697ab4521ad949aa473e37f47",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation&format=rss",
+      "started_at": "2026-10-28T09:03:14.322357+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1091,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation&format=rss"
+      ],
+      "duration_ms": 1620.848
+    },
+    {
+      "operation_id": "a5d217bacd4a40d8a982551e6beef124",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:15.946444+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.089
+    },
+    {
+      "operation_id": "e9fc60f94e834e7ba7058d063504efb6",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:15.946677+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.074
+    },
+    {
+      "operation_id": "34b1da470b7b4aeda10fd257aa06ffdc",
+      "requested_url": "https://www.cnbctv18.com/business/karnataka-fake-drug-case-pfizer-issues-statement-after-fda-revokes-licenses-of-16-pharmacies-19996251.htm",
+      "started_at": "2026-10-28T09:03:14.797704+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cnbctv18.com/business/karnataka-fake-drug-case-pfizer-issues-statement-after-fda-revokes-licenses-of-16-pharmacies-19996251.htm",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 99064,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cnbctv18.com/business/karnataka-fake-drug-case-pfizer-issues-statement-after-fda-revokes-licenses-of-16-pharmacies-19996251.htm"
+      ],
+      "duration_ms": 1655.964
+    },
+    {
+      "operation_id": "60a0186a1d964ef98e8883a96c39292e",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:03:14.322001+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2739,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2532.143
+    },
+    {
+      "operation_id": "4c18ce4a210c4d8fb9ae1a05bfce355f",
+      "requested_url": "https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl",
+      "started_at": "2026-10-28T09:03:14.595762+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15507,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl"
+      ],
+      "duration_ms": 2258.731
+    },
+    {
+      "operation_id": "6ab268d264fc49b0b7213f6ee7f2c58f",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:03:17.073752+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1383,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2129.022
+    },
+    {
+      "operation_id": "1710804d7a2244c9a88e5097dc392295",
+      "requested_url": "https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2",
+      "started_at": "2026-10-28T09:03:17.448580+00:00",
+      "http_status": 200,
+      "final_url": "https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20527,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2"
+      ],
+      "duration_ms": 3212.834
+    },
+    {
+      "operation_id": "db4b124a72844273a6dbb250a635b9c4",
+      "requested_url": "https://www.bing.com/search?q=Pfizer+unauthorized+seller+allegation&first=1",
+      "started_at": "2026-10-28T09:03:17.073370+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Pfizer+unauthorized+seller+allegation&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128063,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Pfizer+unauthorized+seller+allegation&first=1"
+      ],
+      "duration_ms": 4279.458
+    },
+    {
+      "operation_id": "c6c887edefa64b6bb6d3227828cc6b32",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:19.205098+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3960,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2157.367
+    },
+    {
+      "operation_id": "77f23e45c3244e1da24e859f2143def6",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl",
+      "started_at": "2026-10-28T09:03:16.876137+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5026.996
+    },
+    {
+      "operation_id": "2582cbf565a2446ea80a7dda359fbaf0",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:21.535383+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3960,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1665.686
+    },
+    {
+      "operation_id": "fcf6e7732bb34da3ba026ad071088c0d",
+      "requested_url": "https://r.jina.ai/https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2",
+      "started_at": "2026-10-28T09:03:20.922181+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.507
+    },
+    {
+      "operation_id": "8567c177e60c49559906faec7cacc9ad",
+      "requested_url": "https://search.yahoo.com/search?p=Pfizer+unauthorized+seller+allegation",
+      "started_at": "2026-10-28T09:03:21.383825+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.087
+    },
+    {
+      "operation_id": "463cb7192f0a4eadb285e55a3d5599de",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl",
+      "started_at": "2026-10-28T09:03:21.903582+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.095
+    },
+    {
+      "operation_id": "8c382e2a8e8e401c8f0c513716bc35e7",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:26.388245+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5939,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2425.533
+    },
+    {
+      "operation_id": "bba9e0e9fa74499d9ae47ce072606c03",
+      "requested_url": "https://www.cnbctv18.com/tags/pfizer.htm",
+      "started_at": "2026-10-28T09:03:26.920039+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cnbctv18.com/tags/pfizer.htm",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 78979,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cnbctv18.com/tags/pfizer.htm"
+      ],
+      "duration_ms": 3939.756
+    },
+    {
+      "operation_id": "2a787ed9a9a04d9c9177b8852dd6d780",
+      "requested_url": "https://r.jina.ai/https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2",
+      "started_at": "2026-10-28T09:03:25.931303+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5038.721
+    },
+    {
+      "operation_id": "3a6c7a18b7e844019b4fafbf9b2c0031",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report&format=rss",
+      "started_at": "2026-10-28T09:03:31.308346+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1096,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report&format=rss"
+      ],
+      "duration_ms": 2553.231
+    },
+    {
+      "operation_id": "505548382cdf483db55cfe16b31a956d",
+      "requested_url": "https://www.bing.com/search?q=Pfizer+impersonation+allegation+report&first=1",
+      "started_at": "2026-10-28T09:03:31.308039+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Pfizer+impersonation+allegation+report&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129186,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Pfizer+impersonation+allegation+report&first=1"
+      ],
+      "duration_ms": 2757.537
+    },
+    {
+      "operation_id": "8750290c60c644748136b317d45a83be",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:33.865695+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1171,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1830.807
+    },
+    {
+      "operation_id": "c29ee1c2eba44b40bce43bb93257cc2a",
+      "requested_url": "https://r.jina.ai/https://www.cnbctv18.com/tags/pfizer.htm",
+      "started_at": "2026-10-28T09:03:31.166351+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.778
+    },
+    {
+      "operation_id": "1878015415e3404e8b59e80ee59334c0",
+      "requested_url": "https://search.yahoo.com/search?p=Pfizer+impersonation+allegation+report",
+      "started_at": "2026-10-28T09:03:34.093434+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5014.3
+    },
+    {
+      "operation_id": "a8db2b1632854d44b7d70e7d11b9882a",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:35.699048+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1171,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4183.131
+    },
+    {
+      "operation_id": "f3d2acfdef1b4b14a886f0fc1e299524",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:39.107953+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1171,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1197.101
+    },
+    {
+      "operation_id": "0e737ec3c91c436ab11c4a5b6d72fa6f",
+      "requested_url": "https://r.jina.ai/https://www.cnbctv18.com/tags/pfizer.htm",
+      "started_at": "2026-10-28T09:03:36.174618+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5000.651
+    },
+    {
+      "operation_id": "c5f57811bbca48bbb6dae3d9dd27826d",
+      "requested_url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "started_at": "2026-10-28T09:03:42.361060+00:00",
+      "http_status": 200,
+      "final_url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 16641,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://feeds.bbci.co.uk/news/world/rss.xml"
+      ],
+      "duration_ms": 783.882
+    },
+    {
+      "operation_id": "3e52b2c3794a4b28876e22d3e4417dbe",
+      "requested_url": "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:03:42.223147+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1388,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1661.183
+    },
+    {
+      "operation_id": "779b23b8eeaf4ce184248875958ac436",
+      "requested_url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+      "started_at": "2026-10-28T09:03:43.158178+00:00",
+      "http_status": 200,
+      "final_url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 28881,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://feeds.bbci.co.uk/news/business/rss.xml"
+      ],
+      "duration_ms": 1734.775
+    },
+    {
+      "operation_id": "6855ea102c254c13a13efaf1b4b0220e",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:43.886593+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1283,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2350.266
+    },
+    {
+      "operation_id": "c8ff1079a59145b187b693939c6d9258",
+      "requested_url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+      "started_at": "2026-10-28T09:03:44.937599+00:00",
+      "http_status": 200,
+      "final_url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 14654,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://feeds.bbci.co.uk/news/technology/rss.xml"
+      ],
+      "duration_ms": 1437.185
+    },
+    {
+      "operation_id": "aba64e10b1664b6096fcac2100f2e09a",
+      "requested_url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:46.239638+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 605.527
+    },
+    {
+      "operation_id": "eb63ccf3b655418890aa9cb1d2055faf",
+      "requested_url": "https://www.ftc.gov/robots.txt",
+      "started_at": "2026-10-28T09:03:47.011873+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/robots.txt",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3056,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/robots.txt"
+      ],
+      "duration_ms": 1772.288
+    },
+    {
+      "operation_id": "c8d5ef226f184f05ad62c8c59d65d42f",
+      "requested_url": "https://www.bing.com/search?q=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud&first=1",
+      "started_at": "2026-10-28T09:03:46.866187+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133135,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud&first=1"
+      ],
+      "duration_ms": 4088.277
+    },
+    {
+      "operation_id": "afa4f7f08817467eb2144c73bc239d50",
+      "requested_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "started_at": "2026-10-28T09:03:53.787373+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 11709,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/feeds/press-release.xml"
+      ],
+      "duration_ms": 2186.689
+    },
+    {
+      "operation_id": "40485c126eae4dbdb1c722e502cbf919",
+      "requested_url": "https://search.yahoo.com/search?p=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud",
+      "started_at": "2026-10-28T09:03:50.989803+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5014.776
+    },
+    {
+      "operation_id": "3e8ac16ad0a64a0280937c6088e61116",
+      "requested_url": "https://news.google.com/rss/search?q=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:03:56.004915+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 870.205
+    },
+    {
+      "operation_id": "d1de9342d483443696c41582bd0c8f13",
+      "requested_url": "https://www.bing.com/search?q=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India&first=1",
+      "started_at": "2026-10-28T09:03:56.901059+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131865,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India&first=1"
+      ],
+      "duration_ms": 4488.128
+    },
+    {
+      "operation_id": "daa348ee2dc54a5a8c7b4d94426f9285",
+      "requested_url": "https://search.yahoo.com/search?p=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India",
+      "started_at": "2026-10-28T09:04:01.423822+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.653
+    },
+    {
+      "operation_id": "836b54416c4f44e58126c20ddc101a09",
+      "requested_url": "https://news.google.com/rss/search?q=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:04:06.437826+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "DNS_TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 482.537
+    },
+    {
+      "operation_id": "1ef813f0b63143a482c0de039d444b87",
+      "requested_url": "https://science.feedback.org",
+      "started_at": "2026-10-28T09:04:07.460521+00:00",
+      "http_status": 200,
+      "final_url": "https://science.feedback.org",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 34486,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://science.feedback.org"
+      ],
+      "duration_ms": 4171.054
+    },
+    {
+      "operation_id": "b090de18633b4b14bd3ca69a51605a9d",
+      "requested_url": "https://www.businesswire.com",
+      "started_at": "2026-10-28T09:04:07.858176+00:00",
+      "http_status": 200,
+      "final_url": "https://www.businesswire.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 115046,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.businesswire.com"
+      ],
+      "duration_ms": 3799.686
+    },
+    {
+      "operation_id": "cd551e8ed828482ea654a3d34e56dc91",
+      "requested_url": "https://science.feedback.org/feed/",
+      "started_at": "2026-10-28T09:04:12.395384+00:00",
+      "http_status": 200,
+      "final_url": "https://science.feedback.org/feed/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3035,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://science.feedback.org/feed/"
+      ],
+      "duration_ms": 2908.072
+    },
+    {
+      "operation_id": "ad99862b088042eeada5d48d00ffabca",
+      "requested_url": "https://science.feedback.org/?s=Pfizer",
+      "started_at": "2026-10-28T09:04:15.325839+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5000.438
+    },
+    {
+      "operation_id": "d6c48b6524d14b3e9bdeaaace061355c",
+      "requested_url": "https://r.jina.ai/https://science.feedback.org/?s=Pfizer",
+      "started_at": "2026-10-28T09:04:20.326594+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.176
+    },
+    {
+      "operation_id": "57227f2f1252466aba32ebe42b0e8fef",
+      "requested_url": "https://r.jina.ai/https://science.feedback.org/?s=Pfizer",
+      "started_at": "2026-10-28T09:04:25.335156+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4994.076
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "0404e4348d0b46a69850288844a189ad",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Pfizer+counterfeit+listing+report&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "0fb7889b167f4d62bd1389cc9ae1d768",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Pfizer+counterfeit+listing+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "418892fd04c74933b6d3b5e0104283fc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DPfizer%2Bcounterfeit%2Blisting%2Breport&_bvc=1.e67b7a81a6f983007f88aa249cb8dddb7ee8fafdc71558de50795bc3c5996d98",
+      "host": "search.yahoo.com",
+      "http_operation_id": "418892fd04c74933b6d3b5e0104283fc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "51554bcba030467eab68cff555876f67",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "e204f9408d9b41f296cb90c2de6d63bc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "c29793525e3744ff810346ca518920e2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu",
+      "host": "www.msn.com",
+      "http_operation_id": "388b577243f140f68d9651c7f6e0ff4c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.freepressjournal.in/india/karnataka-spurious-drug-racket-government-halts-business-with-pfizer-cancels-licences-of-16-firms-over-counterfeit-medicine-manufacturing",
+      "host": "www.freepressjournal.in",
+      "http_operation_id": "394a29e4b0314e3b9b95c562e9d27f8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "19e9ccd981584d2d9cf7e42fb0e8ddcf",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu",
+      "host": "r.jina.ai",
+      "http_operation_id": "9705dc741fd64471a58d4bc9e6c512ad",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d8be0c33575c43d6bae24d7d72b5944b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "453be5679dd04922accc7f8f3ec4b227",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "44121df671aa4b3384e8faa33d075ed7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Bdocumented%2BPfizer%2Bproduct-counterfeiting%252C%2Bimpersonation%2Bor%2Bproduct-safety%2Bincidents.%2BPrioritize%2Bprecise%2Bmanufacturer%2Band%2Bregulator%2Bnotices%2Bover%2Bgeneric%2Bsafety%2Badvice.%2Bofficial%2Bsource&_bvc=1.89d270d2779b410b3012f06a9ed9599a4417cda57cf5fcfcb78b734d5bef0dda",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d8be0c33575c43d6bae24d7d72b5944b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine",
+      "host": "search.yahoo.com",
+      "http_operation_id": "931323f682884d2e9993e3e11fc44f9c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Bdocumented%2BPfizer%2Bproduct-counterfeiting%252C%2Bimpersonation%2Bor%2Bproduct-safety%2Bincidents.%2BPrioritize%2Bprecise%2Bmanufacturer%2Band%2Bregulator%2Bnotices%2Bover%2Bgeneric%2Bsafety%2Badvice.%2Bofficial%2Bsource&_bvc=2.21605b603cfaf26fe5bf5442aec8ba237885c2726a6a66522ff71c6620c5f63b",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d8be0c33575c43d6bae24d7d72b5944b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/karnataka-suspends-licences-of-pfizer-depot-other-pharma-distributors-as-fake-medicine-racket-unravels/ar-AA2cGzdu",
+      "host": "r.jina.ai",
+      "http_operation_id": "b93dfd60b56d4cafbb786ea48f3350da",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInside%2BPfizer%25E2%2580%2599s%2BFight%2BAgainst%2BCounterfeit%2BMedicine&_bvc=1.4d6b7f4f4f343236b088c56cc002121ccd49528b722352ff848af7988582b663",
+      "host": "search.yahoo.com",
+      "http_operation_id": "931323f682884d2e9993e3e11fc44f9c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "90d88c790150434daed0aea12fcc1f59",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Inside+Pfizer%E2%80%99s+Fight+Against+Counterfeit+Medicine&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8416a73396b74a33b099e0ab2851f1d9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "0e08b10cf54a477a8c2b6d7550f605e4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ba8f2ce56f60432892c84e1e40123113",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1f45fb5e618c427f98339723ad6c4d73",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Bdocumented%2BPfizer%2Bproduct-counterfeiting%252C%2Bimpersonation%2Bor%2Bproduct-safety%2Bincidents.%2BPrioritize%2Bprecise%2Bmanufacturer%2Band%2Bregulator%2Bnotices%2Bover%2Bgeneric%2Bsafety%2Badvice.%2Breported%2Bincident%2Bsite%253Areddit.com&_bvc=1.c1871c19240cbedb645a686b94ed4a33f2848dab7e519a4dd236efa525c38e7d",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1f45fb5e618c427f98339723ad6c4d73",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4c510f7886b471a85afa44c21ba0798",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Bdocumented%2BPfizer%2Bproduct-counterfeiting%252C%2Bimpersonation%2Bor%2Bproduct-safety%2Bincidents.%2BPrioritize%2Bprecise%2Bmanufacturer%2Band%2Bregulator%2Bnotices%2Bover%2Bgeneric%2Bsafety%2Badvice.%2Breported%2Bincident%2Bsite%253Areddit.com&_bvc=2.32cf81cdf2cbe3c55547aafd5e1f003586e0e1139ca4c4e78fb633b1e0c8aad3",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1f45fb5e618c427f98339723ad6c4d73",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4c510f7886b471a85afa44c21ba0798",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a0692082fe744398905e33b18a91f447",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Bdocumented%2BPfizer%2Bproduct-counterfeiting%252C%2Bimpersonation%2Bor%2Bproduct-safety%2Bincidents.%2BPrioritize%2Bprecise%2Bmanufacturer%2Band%2Bregulator%2Bnotices%2Bover%2Bgeneric%2Bsafety%2Badvice.%2Breported%2Bincident%2Bsite%253Aftc.gov&_bvc=1.7d8790594f3f10902a6cd2972173beca47c8e826d2c3b7b22cea55ec326ec00b",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4c510f7886b471a85afa44c21ba0798",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Pfizer+product-counterfeiting%2C+impersonation+or+product-safety+incidents.+Prioritize+precise+manufacturer+and+regulator+notices+over+generic+safety+advice.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a12bc45b4bc4475bba6e2df85e254fab",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "0e161f53a23c4f1889727b4c3fecd7f0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a3e957ef3e3a454b85ad5072fe518860",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/stocks/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "0e0dfd5a1cae43518a9e5e9f96aaa4f9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "1de31ddcef774973946a22b54a36eeb6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "fb5b82a430884be28648c62600280c2c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Pfizer+counterfeit+enforcement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "3c581846c52444bdb95d0ad31af52243",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Pfizer+counterfeit+enforcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3f6bfde3dbc64478ad88a49c058183af",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DPfizer%2Bcounterfeit%2Benforcement&_bvc=1.f35d85746bdc91c1b13a73794affbbcd4b40363b8b53becf8bcd6bc91bedea8e",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3f6bfde3dbc64478ad88a49c058183af",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DPfizer%2Bcounterfeit%2Benforcement&_bvc=2.8b0e45751b87dc0fe473ec599bb2621920d6c3856a4c158d8945c71a9166ea45",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3f6bfde3dbc64478ad88a49c058183af",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "bc04f5e449ed437bb02645fa54caa34e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "60a0186a1d964ef98e8883a96c39292e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "6002ae3697ab4521ad949aa473e37f47",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl",
+      "host": "www.msn.com",
+      "http_operation_id": "4c18ce4a210c4d8fb9ae1a05bfce355f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cnbctv18.com/business/karnataka-fake-drug-case-pfizer-issues-statement-after-fda-revokes-licenses-of-16-pharmacies-19996251.htm",
+      "host": "www.cnbctv18.com",
+      "http_operation_id": "34b1da470b7b4aeda10fd257aa06ffdc",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a5d217bacd4a40d8a982551e6beef124",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e9fc60f94e834e7ba7058d063504efb6",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl",
+      "host": "r.jina.ai",
+      "http_operation_id": "77f23e45c3244e1da24e859f2143def6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Pfizer+unauthorized+seller+allegation&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "db4b124a72844273a6dbb250a635b9c4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "6ab268d264fc49b0b7213f6ee7f2c58f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2",
+      "host": "pharmabiz.com",
+      "http_operation_id": "1710804d7a2244c9a88e5097dc392295",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "c6c887edefa64b6bb6d3227828cc6b32",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2",
+      "host": "r.jina.ai",
+      "http_operation_id": "fcf6e7732bb34da3ba026ad071088c0d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Pfizer+unauthorized+seller+allegation",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8567c177e60c49559906faec7cacc9ad",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "2582cbf565a2446ea80a7dda359fbaf0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-in/money/general/patient-safety-top-priority-working-with-authorities-on-counterfeit-medicine-probe-pfizer-india/ar-AA2cN6Gl",
+      "host": "r.jina.ai",
+      "http_operation_id": "463cb7192f0a4eadb285e55a3d5599de",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DPfizer%2Bunauthorized%2Bseller%2Ballegation&_bvc=1.442f424222a97760edfea9b0bc19cfc2431e3c8bce645012f4872706cee021d1",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8567c177e60c49559906faec7cacc9ad",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://pharmabiz.com/NewsDetails.aspx?aid=65330&sid=2",
+      "host": "r.jina.ai",
+      "http_operation_id": "2a787ed9a9a04d9c9177b8852dd6d780",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8c382e2a8e8e401c8f0c513716bc35e7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cnbctv18.com/tags/pfizer.htm",
+      "host": "www.cnbctv18.com",
+      "http_operation_id": "bba9e0e9fa74499d9ae47ce072606c03",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cnbctv18.com/tags/pfizer.htm",
+      "host": "r.jina.ai",
+      "http_operation_id": "c29ee1c2eba44b40bce43bb93257cc2a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Pfizer+impersonation+allegation+report&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "505548382cdf483db55cfe16b31a956d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3a6c7a18b7e844019b4fafbf9b2c0031",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8750290c60c644748136b317d45a83be",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Pfizer+impersonation+allegation+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1878015415e3404e8b59e80ee59334c0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a8db2b1632854d44b7d70e7d11b9882a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cnbctv18.com/tags/pfizer.htm",
+      "host": "r.jina.ai",
+      "http_operation_id": "0e737ec3c91c436ab11c4a5b6d72fa6f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DPfizer%2Bimpersonation%2Ballegation%2Breport&_bvc=1.39ddd36e4f44a503121797d5610263fc454854b4f6f56a1269c6ee6cca483be0",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1878015415e3404e8b59e80ee59334c0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DPfizer%2Bimpersonation%2Ballegation%2Breport&_bvc=2.7f7f8c9e4420db4f9f2e718ad4821d81b90a39a4f1f39d92e20c218771cf1de5",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1878015415e3404e8b59e80ee59334c0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f3d2acfdef1b4b14a886f0fc1e299524",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3e52b2c3794a4b28876e22d3e4417dbe",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "host": "feeds.bbci.co.uk",
+      "http_operation_id": "c5f57811bbca48bbb6dae3d9dd27826d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+      "host": "feeds.bbci.co.uk",
+      "http_operation_id": "779b23b8eeaf4ce184248875958ac436",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "6855ea102c254c13a13efaf1b4b0220e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+      "host": "feeds.bbci.co.uk",
+      "http_operation_id": "c8ff1079a59145b187b693939c6d9258",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Pfizer+impersonation+allegation+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "aba64e10b1664b6096fcac2100f2e09a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "c8d5ef226f184f05ad62c8c59d65d42f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/robots.txt",
+      "host": "www.ftc.gov",
+      "http_operation_id": "eb63ccf3b655418890aa9cb1d2055faf",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud",
+      "host": "search.yahoo.com",
+      "http_operation_id": "40485c126eae4dbdb1c722e502cbf919",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/feeds/press-release.xml",
+      "host": "www.ftc.gov",
+      "http_operation_id": "afa4f7f08817467eb2144c73bc239d50",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=HSI+partners+with+Pfizer%2C+3M%2C+Citi%2C+Alibaba%2C+Amazon%2C+Merck+to+protect+consumers+against+COVID-19-related+fraud&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "3e8ac16ad0a64a0280937c6088e61116",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "d1de9342d483443696c41582bd0c8f13",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India",
+      "host": "search.yahoo.com",
+      "http_operation_id": "daa348ee2dc54a5a8c7b4d94426f9285",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DPatient%2BSafety%2BTop%2BPriority%252C%2BWorking%2BWith%2BAuthorities%2BOn%2BCounterfeit%2BMedicine%2BProbe%253A%2BPfizer%2BIndia&_bvc=1.7535033e837b4e24e5d21513e98638cac7ba42c411be03208d61531334783479",
+      "host": "search.yahoo.com",
+      "http_operation_id": "daa348ee2dc54a5a8c7b4d94426f9285",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Patient+Safety+Top+Priority%2C+Working+With+Authorities+On+Counterfeit+Medicine+Probe%3A+Pfizer+India&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "836b54416c4f44e58126c20ddc101a09",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://science.feedback.org",
+      "host": "science.feedback.org",
+      "http_operation_id": "1ef813f0b63143a482c0de039d444b87",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.businesswire.com",
+      "host": "www.businesswire.com",
+      "http_operation_id": "b090de18633b4b14bd3ca69a51605a9d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://science.feedback.org/feed/",
+      "host": "science.feedback.org",
+      "http_operation_id": "cd551e8ed828482ea654a3d34e56dc91",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://science.feedback.org/?s=Pfizer",
+      "host": "science.feedback.org",
+      "http_operation_id": "ad99862b088042eeada5d48d00ffabca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://science.feedback.org/?s=Pfizer",
+      "host": "r.jina.ai",
+      "http_operation_id": "d6c48b6524d14b3e9bdeaaace061355c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://science.feedback.org/?s=Pfizer",
+      "host": "r.jina.ai",
+      "http_operation_id": "57227f2f1252466aba32ebe42b0e8fef",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 89,
+  "admission_rejections": 2,
+  "pipeline_errors": []
+}

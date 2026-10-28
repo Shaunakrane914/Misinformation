@@ -1,0 +1,90 @@
+[
+  {
+    "id": "S1",
+    "source_id_url_title_date_body_hash_preserved": true,
+    "network_calls": 0,
+    "model_calls": 0,
+    "mode": "SAVED_BODY_REPLAY_NOT_NEW_ACQUISITION",
+    "corrected_finding_count": 6,
+    "corrected_identity_risk": null,
+    "original_threat_count": 0,
+    "corrected_threat_count": 0,
+    "published_words": 5685,
+    "original_finding_count": 3,
+    "original_finding_text_sha256": [
+      "1fae3254675e784d9f80b78ba4ec1a5c410c8611fd379185e590b64b43a6d840",
+      "3514f16a233984ad6c0d87700ccce6816233d73222b2dd3d9f654202b65d0182",
+      "b6d893f10b0c543fce2616f1d209a0fc94f30254fccebc78f9779c521ede1717"
+    ]
+  },
+  {
+    "id": "B1",
+    "source_id_url_title_date_body_hash_preserved": true,
+    "network_calls": 0,
+    "model_calls": 0,
+    "mode": "SAVED_BODY_REPLAY_NOT_NEW_ACQUISITION",
+    "corrected_finding_count": 1,
+    "corrected_identity_risk": null,
+    "original_threat_count": 1,
+    "corrected_threat_count": 1,
+    "published_words": 79,
+    "original_finding_count": 3,
+    "original_finding_text_sha256": [
+      "8b507eea5e301aab3986732c5d9f2a5a68cf71ecf1df8e7afa05515785ab6277",
+      "d4f3104eba16d4188c3566de13189a48c3fa1530b65e5f10268462bf6cbb92ab",
+      "cf9a49c4fafdacdba943c948a53c48ea95bf2fedde76606fc21a39a496ead4e4"
+    ]
+  },
+  {
+    "id": "T2",
+    "source_id_url_title_date_body_hash_preserved": true,
+    "network_calls": 0,
+    "model_calls": 0,
+    "mode": "SAVED_BODY_REPLAY_NOT_NEW_ACQUISITION",
+    "corrected_finding_count": 2,
+    "corrected_identity_risk": null,
+    "original_threat_count": 0,
+    "corrected_threat_count": 2,
+    "published_words": 239,
+    "original_finding_count": 0,
+    "original_finding_text_sha256": []
+  },
+  {
+    "id": "P1",
+    "source_id_url_title_date_body_hash_preserved": true,
+    "network_calls": 0,
+    "model_calls": 0,
+    "mode": "SAVED_BODY_REPLAY_NOT_NEW_ACQUISITION",
+    "corrected_finding_count": 5,
+    "corrected_identity_risk": "UNASSESSED",
+    "original_threat_count": 0,
+    "corrected_threat_count": 0,
+    "published_words": 334,
+    "original_finding_count": 2,
+    "original_finding_text_sha256": [
+      "d4cf20a34ef272959a0200234ae38d266784e6896880001b6ba9bfd0139b3efe",
+      "9ffc31445d11e668b6df121f97a7e1535c7857a82b83bbdf6799c532f31b80ae"
+    ]
+  },
+  {
+    "id": "P2",
+    "source_id_url_title_date_body_hash_preserved": true,
+    "network_calls": 0,
+    "model_calls": 0,
+    "mode": "SAVED_BODY_REPLAY_NOT_NEW_ACQUISITION",
+    "corrected_finding_count": 6,
+    "corrected_identity_risk": "UNASSESSED",
+    "original_threat_count": 1,
+    "corrected_threat_count": 0,
+    "published_words": 1111,
+    "original_finding_count": 6,
+    "original_finding_text_sha256": [
+      "3c0b907cbf09d26f82d8c9eda35537b9f43cb5bd819d65b4ed303be9e9b9604b",
+      "06f2154985a3745292d36d1b0b2b1c45f505f2f8d0630bb5c880b64681a670f6",
+      "c83924eacdbd804c6bba532764d53c5dd8e008815b60e6291ab863f645bf1569",
+      "1faeafda9f119ad8572a0d8b97ff9a3716a2eaed79a3e116c56932792740db0a",
+      "cd9996b3db6066a101ead0809800be499a0fc04cf3b1c3a202814c63c379e09d",
+      "e414535705ee98c5d030946914917ad63746e734dbd1a6bfcf213d46756499da"
+    ]
+  }
+]

@@ -11,7 +11,7 @@ NON_EVENT_ROLES.add("BACKGROUND_REFERENCE")
 NON_EVENT_ROLES.update({"QUESTION_PROMPT", "INSTRUCTIONAL_PROMPT", "TRANSCRIPT_INTRODUCTION"})
 OBJECTIVE_TERMS = {
     "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator|appoint|chief.executive|\bCEO\b|executive.chair|leadership.transition|board.of.directors",
-    "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|\bclone\b|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
+    "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|\bclone\b|phishing|scam|fraud|complaint|\brecall(?:s|ed)?\b|\brecalling\s+(?:\d[\d,]*\s+)?(?:its\s+|the\s+)?(?:products?|units?|vehicles?|batches|batteries|devices?|medicines?|drugs?)\b|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
     "personal": r"impersonat|deepfake|fabricat|fake (?:account|video|profile|quote)|false (?:claim|quote)|identity (?:abuse|theft)|scam|denied|denies|authentic|transcript|(?<!financial\s)(?<!earnings\s)(?<!quarterly\s)\b(?:public statements?|official statements?|press statements?|statements?|speeches?|speech|interviews?|announced?|announcements?|remarks?|testimony|briefings?|address(?:ed)?|rebuttal|fact[- ]check)\b",
 }
 
@@ -41,7 +41,7 @@ def local_prose_predicate(text):
 
 def paragraph_role(text):
     lower = text.casefold().strip()
-    if re.match(r"^(?:here is|following is|below is|this is)\s+(?:the\s+)?full transcript\b", lower):
+    if re.match(r"^(?:here is|(?:the )?following is|below is|this is)\s+(?:the\s+)?full transcript\b", lower):
         return "TRANSCRIPT_INTRODUCTION"
     # An interrogative/quiz prompt is not an assertion, even when it contains a
     # target, financial numbers or words such as "declined". Do not reject a
@@ -81,7 +81,7 @@ def matches_objective(text, domain=""):
         # A promotional contest is not brand-abuse evidence merely because
         # scams can also use giveaways. Keep reported abuse, recalls, complaints
         # and observable credential/money solicitations investigable.
-        incident = re.search(r"counterfeit|impersonat|fake|replica|phishing|scam|fraud|complaint|recall|hazard|defect|trademark|lawsuit|unauthori[sz]ed|refund|stolen|credential|password|decept|victim", text, re.I)
+        incident = re.search(r"counterfeit|impersonat|fake|replica|phishing|scam|fraud|complaint|\brecall(?:s|ed)?\b|hazard|defect|trademark|lawsuit|unauthori[sz]ed|refund|stolen|credential|password|decept|victim", text, re.I)
         solicitation = re.search(r"\b(?:crypto(?:currency)?|bitcoin|ethereum|btc|eth|usdt|wallets?)\b|\b(?:send|deposit|transfer|pay)\b.{0,55}\b(?:receive|double|return|back|prize)\b", text, re.I)
         if not incident and not solicitation:
             return False

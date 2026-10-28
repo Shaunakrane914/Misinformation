@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 WIKIPEDIA_API_BASE = "https://en.wikipedia.org/w/api.php"
 DEFAULT_WIKI_HEADERS = {
-    "User-Agent": "AegisProtocol/1.0 (https://aegis-protocol.org; intelligence@aegis-protocol.org) ResearchBot/1.0",
+    "User-Agent": "AegisProtocol/1.0 (https://github.com/Shaunakrane914/Misinformation; bounded research)",
     "Accept": "application/json",
 }
 
@@ -129,12 +129,13 @@ class WikipediaAdapter(PlatformAdapter):
 
         params = {
             "action": "query",
-            "prop": "extracts|pageprops|info",
+            "prop": "extracts|pageprops|info|revisions",
             "explaintext": "1",
             "exsectionformat": "wiki",
             "titles": wiki_title,
             "format": "json",
             "inprop": "url",
+            "rvprop": "ids|timestamp",
             "utf8": "1",
         }
         api_url = f"{WIKIPEDIA_API_BASE}?{urllib.parse.urlencode(params)}"
@@ -165,6 +166,13 @@ class WikipediaAdapter(PlatformAdapter):
                 return FetchedDocument(url=url, status="EMPTY_CONTENT", backend_id=self.backend_id)
             title = page_data.get("title", wiki_title)
             pageprops = page_data.get("pageprops", {})
+            from backend.infrastructure.acquisition.adapters.expansion_safety import matches_host
+            if not matches_host(page_data.get("fullurl", url), ("en.wikipedia.org",)):
+                return FetchedDocument(url=url, status="IDENTITY_MISMATCH", backend_id=self.backend_id)
+            if title.casefold() != str(wiki_title).casefold():
+                return FetchedDocument(url=url, status="ENTITY_REDIRECT_REVIEW_REQUIRED", backend_id=self.backend_id)
+            if "disambiguation" in pageprops:
+                return FetchedDocument(url=url, status="AMBIGUOUS_ENTITY", backend_id=self.backend_id)
             description = pageprops.get("wikibase-shortdesc", "")
 
             # Formulate structured encyclopedic document
@@ -187,6 +195,7 @@ class WikipediaAdapter(PlatformAdapter):
                     "description": description,
                     "wordcount": len(capped_content.split()),
                     "canonical_url": page_data.get("fullurl", url),
+                    "revisions": page_data.get("revisions", [])[:1],
                 },
             )
         except Exception as exc:
@@ -241,6 +250,10 @@ class WikipediaAdapter(PlatformAdapter):
                 "char_count": char_len,
                 "word_count": word_count,
                 "description": document.raw_metadata.get("description", ""),
+                "source_permission": {"author": "Wikipedia contributors",
+                    "licence_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+                    "source_url": canonical_url, "adapted": False},
+                "reference_revision": document.raw_metadata.get("revisions", []),
             },
         )
         return [fragment]

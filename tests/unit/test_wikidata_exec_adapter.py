@@ -90,8 +90,10 @@ def test_wikidata_exec_adapter_acquire_and_normalize():
         doc = adapter.acquire(cand, RetrievalRequest())
         assert doc.status == "SUCCESS"
         assert "Jen-Hsun Huang" in doc.raw_content
-        assert "Occupation (P106)" in doc.raw_content
-        assert "Employer / Corporate Ties (P108)" in doc.raw_content
+        assert "Occupation (P106)" not in doc.raw_content
+        assert "Employer / Corporate Ties (P108)" not in doc.raw_content
+        assert "Date of Birth" not in doc.raw_content
+        assert "governance" not in doc.raw_content.lower()
 
         frags = adapter.normalize(doc, cand, RetrievalRequest())
         assert len(frags) == 1

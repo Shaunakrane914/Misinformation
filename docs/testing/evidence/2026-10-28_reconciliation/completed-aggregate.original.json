@@ -1,0 +1,482 @@
+{
+  "timestamp": "2026-10-28T07:43:29.246117+00:00",
+  "agent_summaries": {
+    "Scout": {
+      "total_prompts": 5,
+      "total_time_seconds": 238.03,
+      "avg_time_per_prompt": 47.61,
+      "total_records": 0,
+      "total_deep_reads": 0,
+      "total_words": 0,
+      "avg_words_per_prompt": 0.0
+    },
+    "BrandShield": {
+      "total_prompts": 5,
+      "total_time_seconds": 118.2,
+      "avg_time_per_prompt": 23.64,
+      "total_records": 10,
+      "total_deep_reads": 10,
+      "total_words": 10527,
+      "avg_words_per_prompt": 2105.4
+    },
+    "Trending": {
+      "total_prompts": 5,
+      "total_time_seconds": 235.36,
+      "avg_time_per_prompt": 47.07,
+      "total_records": 18,
+      "total_deep_reads": 0,
+      "total_words": 308,
+      "avg_words_per_prompt": 61.6
+    },
+    "PersonalWatch": {
+      "total_prompts": 5,
+      "total_time_seconds": 119.01,
+      "avg_time_per_prompt": 23.8,
+      "total_records": 3,
+      "total_deep_reads": 3,
+      "total_words": 1492,
+      "avg_words_per_prompt": 298.4
+    }
+  },
+  "test_cases": [
+    {
+      "agent": "Scout",
+      "prompt": "NVDA",
+      "elapsed_seconds": 39.49,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 6,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Scout",
+      "prompt": "AAPL",
+      "elapsed_seconds": 53.45,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 3,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Scout",
+      "prompt": "TSLA",
+      "elapsed_seconds": 41.92,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 4,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Scout",
+      "prompt": "MSFT",
+      "elapsed_seconds": 40.8,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 3,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Scout",
+      "prompt": "AMZN",
+      "elapsed_seconds": 62.37,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 3,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "BrandShield",
+      "prompt": "Nike",
+      "elapsed_seconds": 24.64,
+      "total_records": 1,
+      "body_records": 1,
+      "deep_reads": 1,
+      "total_words": 4069,
+      "unique_words": 1422,
+      "findings_count": 1,
+      "sample_sources": [
+        {
+          "source": "en.wikipedia.org",
+          "title": "Nike, Inc. -Wikipedia",
+          "depth": "FULL_ARTICLE",
+          "words": 4069
+        }
+      ],
+      "error": null,
+      "status": "EXCELLENT"
+    },
+    {
+      "agent": "BrandShield",
+      "prompt": "Rolex",
+      "elapsed_seconds": 22.95,
+      "total_records": 3,
+      "body_records": 3,
+      "deep_reads": 3,
+      "total_words": 2109,
+      "unique_words": 768,
+      "findings_count": 3,
+      "sample_sources": [
+        {
+          "source": "PR Wire / RSS",
+          "title": "Small-cap stock jumps 4% as board approves 1:10 stock split. Check det",
+          "depth": "FULL_ARTICLE",
+          "words": 1263
+        },
+        {
+          "source": "PR Wire / RSS",
+          "title": "Rolex Rings IPO Latest News: Know FINAL subscription status, where and",
+          "depth": "FULL_ARTICLE",
+          "words": 787
+        },
+        {
+          "source": "wikidata_exec",
+          "title": "Rolex [Q62288] \u2014 Wikidata Executive Profile",
+          "depth": "PARTIAL_CONTENT",
+          "words": 59
+        }
+      ],
+      "error": null,
+      "status": "EXCELLENT"
+    },
+    {
+      "agent": "BrandShield",
+      "prompt": "Pfizer",
+      "elapsed_seconds": 22.6,
+      "total_records": 2,
+      "body_records": 2,
+      "deep_reads": 2,
+      "total_words": 4047,
+      "unique_words": 1296,
+      "findings_count": 2,
+      "sample_sources": [
+        {
+          "source": "PR Wire / RSS",
+          "title": "Pfizer Vaccine",
+          "depth": "FULL_ARTICLE",
+          "words": 3980
+        },
+        {
+          "source": "wikidata_exec",
+          "title": "Pfizer Award in Enzyme Chemistry [Q2083899] \u2014 Wikidata Executive Profi",
+          "depth": "PARTIAL_CONTENT",
+          "words": 67
+        }
+      ],
+      "error": null,
+      "status": "EXCELLENT"
+    },
+    {
+      "agent": "BrandShield",
+      "prompt": "Gucci",
+      "elapsed_seconds": 22.46,
+      "total_records": 3,
+      "body_records": 3,
+      "deep_reads": 3,
+      "total_words": 237,
+      "unique_words": 140,
+      "findings_count": 3,
+      "sample_sources": [
+        {
+          "source": "www.darveys.com",
+          "title": "Buy Men's & Women Clothing, Bags & Accessories Online in India ...",
+          "depth": "PARTIAL_CONTENT",
+          "words": 22
+        },
+        {
+          "source": "www.gucci.com",
+          "title": "GUCCI\u00ae Official | Select Your Local Country",
+          "depth": "PARTIAL_CONTENT",
+          "words": 122
+        },
+        {
+          "source": "wikidata_exec",
+          "title": "Gucci Mane [Q206032] \u2014 Wikidata Executive Profile",
+          "depth": "PARTIAL_CONTENT",
+          "words": 93
+        }
+      ],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "BrandShield",
+      "prompt": "Sony",
+      "elapsed_seconds": 25.55,
+      "total_records": 1,
+      "body_records": 1,
+      "deep_reads": 1,
+      "total_words": 65,
+      "unique_words": 47,
+      "findings_count": 1,
+      "sample_sources": [
+        {
+          "source": "wikidata_exec",
+          "title": "PlayStation 3 [Q10683] \u2014 Wikidata Executive Profile",
+          "depth": "PARTIAL_CONTENT",
+          "words": 65
+        }
+      ],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Trending",
+      "prompt": "Russell Brand",
+      "elapsed_seconds": 57.93,
+      "total_records": 6,
+      "body_records": 6,
+      "deep_reads": 0,
+      "total_words": 123,
+      "unique_words": 67,
+      "findings_count": 1,
+      "sample_sources": [
+        {
+          "source": "The Hollywood Reporter",
+          "title": "Russell Brand Trial: Judge Reduces One Charge to Attempted Indecent As",
+          "depth": "SNIPPET",
+          "words": 24
+        },
+        {
+          "source": "Deadline",
+          "title": "Russell Brand Trial: Ex-Assistant Says He Was \"Never Happy After Sex\" ",
+          "depth": "SNIPPET",
+          "words": 13
+        },
+        {
+          "source": "NewsCord",
+          "title": "Russell Brand Trial: 21-Year-Old Accuser Says He Treated Her Like An A",
+          "depth": "SNIPPET",
+          "words": 17
+        },
+        {
+          "source": "ABC News - Breaking News, Latest News and Videos",
+          "title": "What to know as 6 women testify in Russell Brand rape and sexual assau",
+          "depth": "SNIPPET",
+          "words": 27
+        }
+      ],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Trending",
+      "prompt": "Taylor Swift",
+      "elapsed_seconds": 41.03,
+      "total_records": 6,
+      "body_records": 6,
+      "deep_reads": 0,
+      "total_words": 106,
+      "unique_words": 64,
+      "findings_count": 4,
+      "sample_sources": [
+        {
+          "source": "ABC News - Breaking News, Latest News and Videos",
+          "title": "Taylor Swift, Travis Kelce are married: All the details - ABC News - B",
+          "depth": "SNIPPET",
+          "words": 19
+        },
+        {
+          "source": "Bolavip US",
+          "title": "Is Taylor Swift attending the Chiefs game vs Seahawks today in 2026 NF",
+          "depth": "SNIPPET",
+          "words": 19
+        },
+        {
+          "source": "Yahoo",
+          "title": "Taylor Swift\u2019s \u2018Encore\u2019 Backlash Prompts a Sweet Fix by Travis Kelce \u2014",
+          "depth": "SNIPPET",
+          "words": 15
+        },
+        {
+          "source": "TODAY.com",
+          "title": "Travis Kelce Breaks Silence on Wedding With Taylor Swift: \u2018The Best Ni",
+          "depth": "SNIPPET",
+          "words": 17
+        }
+      ],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Trending",
+      "prompt": "OpenAI",
+      "elapsed_seconds": 45.27,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 0,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Trending",
+      "prompt": "Artificial Intelligence",
+      "elapsed_seconds": 39.07,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 0,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "Trending",
+      "prompt": "DeepSeek",
+      "elapsed_seconds": 52.06,
+      "total_records": 6,
+      "body_records": 6,
+      "deep_reads": 0,
+      "total_words": 79,
+      "unique_words": 56,
+      "findings_count": 3,
+      "sample_sources": [
+        {
+          "source": "https://tech-insider.org/",
+          "title": "DeepSeek Open Source: 671B Params Free vs US Caution [2026] - https://",
+          "depth": "SNIPPET",
+          "words": 12
+        },
+        {
+          "source": "AI Magazine",
+          "title": "DeepSeek: How the Firm has Disrupted Global Open Source AI - AI Magazi",
+          "depth": "SNIPPET",
+          "words": 13
+        },
+        {
+          "source": "The New York Times",
+          "title": "DeepSeek\u2019s Sequel - The New York Times",
+          "depth": "SNIPPET",
+          "words": 7
+        },
+        {
+          "source": "Fortune",
+          "title": "China's Moonshot, Z.AI, and DeepSeek are challenging U.S. AI labs\u2014and ",
+          "depth": "SNIPPET",
+          "words": 16
+        }
+      ],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "PersonalWatch",
+      "prompt": "Satya Nadella",
+      "elapsed_seconds": 22.22,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 1,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "PersonalWatch",
+      "prompt": "Tim Cook",
+      "elapsed_seconds": 22.08,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 1,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "PersonalWatch",
+      "prompt": "Sam Altman",
+      "elapsed_seconds": 25.77,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 3,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    },
+    {
+      "agent": "PersonalWatch",
+      "prompt": "Sundar Pichai",
+      "elapsed_seconds": 23.27,
+      "total_records": 3,
+      "body_records": 3,
+      "deep_reads": 3,
+      "total_words": 1492,
+      "unique_words": 636,
+      "findings_count": 2,
+      "sample_sources": [
+        {
+          "source": "PR Wire / RSS",
+          "title": "Sundar Pichai: AI agents are part of his daily routine",
+          "depth": "FULL_ARTICLE",
+          "words": 376
+        },
+        {
+          "source": "PR Wire / RSS",
+          "title": "When Trump wanted to rename the Atlantic Ocean \u2018Trump Ocean\u2019, but Pich",
+          "depth": "FULL_ARTICLE",
+          "words": 1043
+        },
+        {
+          "source": "wikidata_exec",
+          "title": "The Vergecast - Sundar Pichai on managing Google through the pandemic ",
+          "depth": "PARTIAL_CONTENT",
+          "words": 73
+        }
+      ],
+      "error": null,
+      "status": "GOOD"
+    },
+    {
+      "agent": "PersonalWatch",
+      "prompt": "Jensen Huang",
+      "elapsed_seconds": 25.67,
+      "total_records": 0,
+      "body_records": 0,
+      "deep_reads": 0,
+      "total_words": 0,
+      "unique_words": 0,
+      "findings_count": 2,
+      "sample_sources": [],
+      "error": null,
+      "status": "DEGRADED"
+    }
+  ]
+}

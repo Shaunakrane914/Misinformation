@@ -12,6 +12,7 @@ from backend.services.agent_reach.channels import CandidateSource, RetrievalRequ
 from backend.infrastructure.acquisition.adapters.expansion_safety import policy_status, safe_fetch, capture_adapter_fetches
 
 ADAPTERS = {
+    "govuk": ("authoritative.govuk_public", "GovukPublicAdapter"),
     "wikipedia": ("encyclopedia.wikipedia", "WikipediaAdapter"),
     "substack": ("news.substack", "SubstackAdapter"),
     "yahoo_finance": ("financial.yahoo_finance", "YahooFinanceAdapter"),
@@ -55,6 +56,20 @@ class ExpandedSourceChannel(Channel):
             from backend.infrastructure.acquisition.network.http import ProviderHTTPError
             raise ProviderHTTPError("Expanded discovery providers failed; no acquired evidence",
                 endpoint="", network_observed=any("http_status" in row for row in observations), attempts=len(observations))
+        if key == 'cpsc_recalls':
+            fragments = []
+            for candidate in candidates:
+                document = adapter.acquire(candidate, RetrievalRequest(task_type='READ'))
+                for fragment in adapter.normalize(document, candidate, RetrievalRequest(task_type='READ')):
+                    fragment.content_depth = 'STRUCTURED_PUBLIC_DATA'
+                    fragment.channel_name = 'expanded_sources'
+                    fragment.query_id = kwargs.get('query_id', '')
+                    fragment.query_text = query
+                    fragment.raw_metadata.update(body_acquired_during_discovery=True,
+                        adapter_fetch_observations=observations[:12], source_family='cpsc',
+                        source_role='PRIMARY', source_assertion_only=True)
+                    fragments.append(fragment)
+            return fragments
         return [EvidenceFragment(platform=key, channel_name=self.name, url=candidate.canonical_url or candidate.url,
             title=candidate.title, snippet=candidate.snippet, content="", content_depth="INDEX_SNIPPET",
             published=_publisher_observation(key, candidate.metadata).get('discovery_published_at', ''),
@@ -108,6 +123,10 @@ def expanded_query(request, research_context=None):
         # A generic newsletter adapter is not a default celebrity/sports source.
         return None
     key = DOMAIN_DISCOVERY.get(request.domain)
+    if request.domain == 'brand' and any(word in (getattr(request, 'intent', '') + ' ' + (getattr(request, 'extra_params', {}) or {}).get('claim_text', '')).lower()
+                                        for word in ('recall', 'safety', 'hazard')):
+        key = 'cpsc_recalls'
+    # GOV.UK API adapter remains explicit-pilot only pending retained body proof.
     if not key:
         return None
     return {"channel": "expanded_sources", "operation": "search", "query_id": "expanded_01",
@@ -122,7 +141,7 @@ def read_expanded_url(url, max_chars=20_000):
     recognized access failure is terminal here, never a reason to bypass it.
     """
     selected = next(((key, adapter) for key, adapter in get_expanded_adapters().items()
-                     if key != 'cpsc_recalls' and adapter.can_handle(CandidateSource(url=url))), None)
+                     if key not in {'cpsc_recalls', 'govuk'} and adapter.can_handle(CandidateSource(url=url))), None)
     if selected is None:
         return None
     key, adapter = selected
@@ -159,6 +178,9 @@ def read_expanded_url(url, max_chars=20_000):
             # not a search headline. Ordinary HTML still needs semantic spans.
             if len(content.split()) >= 40 and "<p" in html:
                 page["body_quality"] = {"body_kind": "ARTICLE_BODY", "basis": "CAPTURED_POST_BODY_HTML"}
+    if key == 'govuk':
+        page.update(published=document.raw_metadata.get('published'), author='GOV.UK issuing department',
+                    licence_urls=['https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'])
     if fragment.content_depth in {"REFERENCE_TEXT", "PROFILE_METADATA"}:
         page.update(content_scope="PROFILE" if key == "wikidata_exec" else "BACKGROUND_REFERENCE",
                     body_kind="UNCLASSIFIED_PAGE")

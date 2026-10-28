@@ -1,0 +1,1485 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "18bdc14c7f0e4c7d8b29c0440542651d",
+      "requested_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview&format=rss",
+      "started_at": "2026-10-28T09:06:36.835945+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1048,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview&format=rss"
+      ],
+      "duration_ms": 2169.592
+    },
+    {
+      "operation_id": "ba7908d92e2749168b9f8792a400dfee",
+      "requested_url": "https://www.bing.com/search?q=%22Mary+Barra%22+interview&first=1",
+      "started_at": "2026-10-28T09:06:36.836287+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Mary+Barra%22+interview&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129405,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Mary+Barra%22+interview&first=1"
+      ],
+      "duration_ms": 4497.809
+    },
+    {
+      "operation_id": "0f9f8940db9b455689bb64d0089d3dd3",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:06:39.007904+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 124027,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3659.029
+    },
+    {
+      "operation_id": "74c685de04b54805a695490e98b33080",
+      "requested_url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+interview",
+      "started_at": "2026-10-28T09:06:41.366298+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5017.898
+    },
+    {
+      "operation_id": "70c1ee0677d7405ea25829fd8afbd5b7",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:06:46.384428+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 124027,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4698.052
+    },
+    {
+      "operation_id": "b8716feb72544f289363e68d780cebee",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra&first=1",
+      "started_at": "2026-10-28T09:06:51.374681+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133097,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra&first=1"
+      ],
+      "duration_ms": 3833.353
+    },
+    {
+      "operation_id": "2ae15d5fc35046e88ebe5a9e5f83ab6c",
+      "requested_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+statement&format=rss",
+      "started_at": "2026-10-28T09:06:51.313863+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+statement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1048,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Mary+Barra%22+statement&format=rss"
+      ],
+      "duration_ms": 4160.862
+    },
+    {
+      "operation_id": "673b3a3e5267433ea90516d21a864290",
+      "requested_url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript&first=1",
+      "started_at": "2026-10-28T09:06:51.188611+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130851,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript&first=1"
+      ],
+      "duration_ms": 4821.073
+    },
+    {
+      "operation_id": "e78e54f56fee42899b04cf5ca99496e1",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:06:55.477245+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 82167,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3501.763
+    },
+    {
+      "operation_id": "b406a1db120f4789997cee621d6915a3",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra",
+      "started_at": "2026-10-28T09:06:55.240015+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.778
+    },
+    {
+      "operation_id": "bce17c19afda42568b380fa7bc57964d",
+      "requested_url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+statement+interview+transcript",
+      "started_at": "2026-10-28T09:06:56.035945+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5027.224
+    },
+    {
+      "operation_id": "ffe32566b3cf4566b5a918e643570207",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:00.245150+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 995.214
+    },
+    {
+      "operation_id": "84d3f3501f2a454db1fb1f25b6763857",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:01.063514+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 8204,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1507.158
+    },
+    {
+      "operation_id": "54dd7fb44a554faaaa0d5f6ea2131579",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra&first=1",
+      "started_at": "2026-10-28T09:07:01.251386+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133435,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra&first=1"
+      ],
+      "duration_ms": 4795.094
+    },
+    {
+      "operation_id": "73af5216ddb049b98cd2ecb61be55648",
+      "requested_url": "https://www.bing.com/news/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&format=rss",
+      "started_at": "2026-10-28T09:07:03.988882+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1901,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&format=rss"
+      ],
+      "duration_ms": 2343.131
+    },
+    {
+      "operation_id": "4de93104d08745ee8e9b16a5c3789d3e",
+      "requested_url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview&first=1",
+      "started_at": "2026-10-28T09:07:03.989247+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131248,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview&first=1"
+      ],
+      "duration_ms": 4372.935
+    },
+    {
+      "operation_id": "5dee67c0b7dd48309cabeee538911ac5",
+      "requested_url": "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:06.334469+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1493,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2054.233
+    },
+    {
+      "operation_id": "9d7a865b398a4c709676809ab9386fca",
+      "requested_url": "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:08.542617+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1493,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1367.687
+    },
+    {
+      "operation_id": "0f3f5e04ae924ab183d1e6f529477aca",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra",
+      "started_at": "2026-10-28T09:07:06.073565+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4749.072
+    },
+    {
+      "operation_id": "0ffd8c9d72814db6b8080d660995af97",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:10.822924+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 448.333
+    },
+    {
+      "operation_id": "21cd06a8b04646e0a7e23ca2e915209f",
+      "requested_url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+statement+interview",
+      "started_at": "2026-10-28T09:07:08.388253+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.912
+    },
+    {
+      "operation_id": "2cb60783e5c94ac2ba69cf8050b6ee93",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council&first=1",
+      "started_at": "2026-10-28T09:07:11.288390+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 131028,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council&first=1"
+      ],
+      "duration_ms": 3632.266
+    },
+    {
+      "operation_id": "8d223b124760493db546ba10638a554f",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:13.394491+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15164,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3904.273
+    },
+    {
+      "operation_id": "1f73953a47b54ac58206157774d99fa5",
+      "requested_url": "https://www.bing.com/search?q=%22Mary+Barra%22+speech+remarks+announcement&first=1",
+      "started_at": "2026-10-28T09:07:17.348550+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Mary+Barra%22+speech+remarks+announcement&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129205,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Mary+Barra%22+speech+remarks+announcement&first=1"
+      ],
+      "duration_ms": 2603.98
+    },
+    {
+      "operation_id": "f4691d71329b4b258d776a5670491d8f",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council",
+      "started_at": "2026-10-28T09:07:15.000978+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5062.408
+    },
+    {
+      "operation_id": "f3c408ba8cee43cda2f95eac1faf700f",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:20.063689+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1234.442
+    },
+    {
+      "operation_id": "11667e639d9449d589674d2027ea317a",
+      "requested_url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "started_at": "2026-10-28T09:07:21.298734+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 134661,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1"
+      ],
+      "duration_ms": 2232.205
+    },
+    {
+      "operation_id": "52564e54ea504b97852977698bfb3474",
+      "requested_url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+speech+remarks+announcement",
+      "started_at": "2026-10-28T09:07:19.981144+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5013.555
+    },
+    {
+      "operation_id": "7ad1d618b14e4997875795be700929f4",
+      "requested_url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "started_at": "2026-10-28T09:07:23.582038+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 1413.188
+    },
+    {
+      "operation_id": "4ddf1cef1e6243549063bdc9773d7bc6",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+remarks+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:24.994952+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+remarks+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 12876,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+remarks+announcement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1749.303
+    },
+    {
+      "operation_id": "3fc8f9c2c59f48abaae7137441d080ff",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:24.995425+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 17230,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1822.177
+    },
+    {
+      "operation_id": "77c815eb204645da821534ae0d95d1ec",
+      "requested_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:07:27.568094+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1340,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2418.95
+    },
+    {
+      "operation_id": "ffb3f719a5134afaba4951f14b7e8bae",
+      "requested_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript&format=rss",
+      "started_at": "2026-10-28T09:07:27.581340+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1088,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript&format=rss"
+      ],
+      "duration_ms": 2406.407
+    },
+    {
+      "operation_id": "5860187cd63c4c3186c8a7bfcdb6b3d1",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:30.153233+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20577,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2486.382
+    },
+    {
+      "operation_id": "034d7560389c4f388592caef27ee0185",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:29.990111+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13201,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3081.065
+    },
+    {
+      "operation_id": "3cd3c01303134c3b97bb5cbc373007ae",
+      "requested_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T09:07:33.095766+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1380,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 2637.957
+    },
+    {
+      "operation_id": "d79fc92532bd4152b00d794e5e132186",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:35.737692+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5144,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1671.709
+    },
+    {
+      "operation_id": "e21a003416b3406996b0fdd38ef1a584",
+      "requested_url": "https://www.bing.com/search?q=%22Mary+Barra%22+speech+transcript&first=1",
+      "started_at": "2026-10-28T09:07:33.095366+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Mary+Barra%22+speech+transcript&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128932,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Mary+Barra%22+speech+transcript&first=1"
+      ],
+      "duration_ms": 4775.306
+    },
+    {
+      "operation_id": "40a2599e772049f9bbf67c515da2d697",
+      "requested_url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+speech+transcript",
+      "started_at": "2026-10-28T09:07:37.934110+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.086
+    },
+    {
+      "operation_id": "ebd069cbf75e4fc3b3055426ade5d257",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:37.934397+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 20577,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1554.458
+    },
+    {
+      "operation_id": "f23be9a345354bdf91cecb33cd8727a6",
+      "requested_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss",
+      "started_at": "2026-10-28T09:07:39.539850+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1083,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss"
+      ],
+      "duration_ms": 2934.554
+    },
+    {
+      "operation_id": "54faa45937ef48bb9ac3f1dbc24d859b",
+      "requested_url": "https://www.bing.com/search?q=%22Mary+Barra%22+public+statement&first=1",
+      "started_at": "2026-10-28T09:07:39.540233+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Mary+Barra%22+public+statement&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132494,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Mary+Barra%22+public+statement&first=1"
+      ],
+      "duration_ms": 3993.653
+    },
+    {
+      "operation_id": "d391be752cf54a6f80de44debc7460ff",
+      "requested_url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+public+statement",
+      "started_at": "2026-10-28T09:07:43.565934+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.083
+    },
+    {
+      "operation_id": "195b635a31e6484ab2779f1fde0a24a9",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:42.476708+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 82885,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2876.509
+    },
+    {
+      "operation_id": "a3e15fdd97004d9e81d8d34d3c04d5e2",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:43.566186+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 82885,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2592.935
+    },
+    {
+      "operation_id": "fcb260625f46433fa2ab3880003e7d1e",
+      "requested_url": "https://thediff.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T09:07:46.767297+00:00",
+      "http_status": 200,
+      "final_url": "https://thediff.substack.com/api/v1/posts?limit=5&sort=top",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5000,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://thediff.substack.com/api/v1/posts?limit=5&sort=top"
+      ],
+      "duration_ms": 2372.776
+    },
+    {
+      "operation_id": "b60014ad6edf43f28650dc64d8bfe0dc",
+      "requested_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss",
+      "started_at": "2026-10-28T09:07:46.265086+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1083,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss"
+      ],
+      "duration_ms": 3696.939
+    },
+    {
+      "operation_id": "c3ead921aea5456f808eecf6f823a341",
+      "requested_url": "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T09:07:49.466662+00:00",
+      "http_status": 200,
+      "final_url": "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2315,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top"
+      ],
+      "duration_ms": 1300.878
+    },
+    {
+      "operation_id": "f6c4a49b9463415486fbf2b2086a2efa",
+      "requested_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T09:07:49.965074+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 82885,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4415.494
+    },
+    {
+      "operation_id": "6e360f0a659a4d04b96c386b6b35f55d",
+      "requested_url": "https://doomberg.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T09:07:51.272002+00:00",
+      "http_status": 301,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3110.278
+    },
+    {
+      "operation_id": "96fdd6b8756f4c21ae3acfa177105e0b",
+      "requested_url": "https://pragmaticengineer.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T09:07:54.852682+00:00",
+      "http_status": 301,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3083.391
+    },
+    {
+      "operation_id": "788ababfd7a84512a744642316d5f260",
+      "requested_url": "https://semianalysis.substack.com/api/v1/posts?limit=5&sort=top",
+      "started_at": "2026-10-28T09:07:58.480851+00:00",
+      "http_status": 301,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 1931.852
+    },
+    {
+      "operation_id": "8d5fbcbcd4c942c9ac465f727c7cb835",
+      "requested_url": "https://www.wxyz.com",
+      "started_at": "2026-10-28T09:08:01.958285+00:00",
+      "http_status": 200,
+      "final_url": "https://www.wxyz.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 35910,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.wxyz.com"
+      ],
+      "duration_ms": 3584.628
+    },
+    {
+      "operation_id": "7f57a4d7c737456ea4f67a12094a7efb",
+      "requested_url": "https://www.cbsnews.com",
+      "started_at": "2026-10-28T09:08:01.957108+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.478
+    },
+    {
+      "operation_id": "b94e825fa33e4796aa18b3e13e11f272",
+      "requested_url": "https://www.wxyz.com/index.rss",
+      "started_at": "2026-10-28T09:08:06.357978+00:00",
+      "http_status": 200,
+      "final_url": "https://www.wxyz.com/index.rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 5240,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.wxyz.com/index.rss"
+      ],
+      "duration_ms": 1953.001
+    },
+    {
+      "operation_id": "dabe7c2efef542478c0eded5bab60d1e",
+      "requested_url": "https://r.jina.ai/https://www.cbsnews.com",
+      "started_at": "2026-10-28T09:08:06.970899+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.549
+    },
+    {
+      "operation_id": "1033f849564f4dfab40afecc85eafed9",
+      "requested_url": "https://www.wxyz.com/search?q=Mary+Barra",
+      "started_at": "2026-10-28T09:08:08.346790+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.973
+    },
+    {
+      "operation_id": "da0262f150aa4a88b051f86baf7aacc7",
+      "requested_url": "https://r.jina.ai/https://www.cbsnews.com",
+      "started_at": "2026-10-28T09:08:11.980919+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.cbsnews.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 30548,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.cbsnews.com"
+      ],
+      "duration_ms": 2777.572
+    },
+    {
+      "operation_id": "47476ead6e8a46f9af60062432d71a1e",
+      "requested_url": "https://www.cbs.com",
+      "started_at": "2026-10-28T09:08:15.043082+00:00",
+      "http_status": 200,
+      "final_url": "https://www.cbs.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 42468,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.cbs.com"
+      ],
+      "duration_ms": 2077.252
+    },
+    {
+      "operation_id": "8c3d92f163744fb190a87533bc61cb5e",
+      "requested_url": "https://r.jina.ai/https://www.wxyz.com/search?q=Mary+Barra",
+      "started_at": "2026-10-28T09:08:13.360079+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.wxyz.com/search?q=Mary+Barra",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4434,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.wxyz.com/search?q=Mary+Barra"
+      ],
+      "duration_ms": 3785.426
+    },
+    {
+      "operation_id": "a94cbadfb16640189f818668ee2ae648",
+      "requested_url": "https://fortune.com",
+      "started_at": "2026-10-28T09:08:17.862632+00:00",
+      "http_status": 200,
+      "final_url": "https://fortune.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 99330,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://fortune.com"
+      ],
+      "duration_ms": 3409.393
+    },
+    {
+      "operation_id": "e181c2728eff40e5b76087323c8d3c8f",
+      "requested_url": "https://www.nbcnews.com",
+      "started_at": "2026-10-28T09:08:17.802014+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.421
+    },
+    {
+      "operation_id": "186831ef455e4930a6cf3146fe74ff70",
+      "requested_url": "https://r.jina.ai/https://www.nbcnews.com",
+      "started_at": "2026-10-28T09:08:22.814812+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.846
+    },
+    {
+      "operation_id": "ace14c43b5f64586a157790561929ddd",
+      "requested_url": "https://r.jina.ai/https://www.nbcnews.com",
+      "started_at": "2026-10-28T09:08:27.822086+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4989.984
+    },
+    {
+      "operation_id": "f1075ff9f1af495ab35d59d18458a511",
+      "requested_url": "https://www.cnbc.com",
+      "started_at": "2026-10-28T09:08:33.176738+00:00",
+      "http_status": 200,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 1754.231
+    },
+    {
+      "operation_id": "12f60a310fa54a3287a00272e210b5b2",
+      "requested_url": "https://r.jina.ai/https://www.cnbc.com",
+      "started_at": "2026-10-28T09:08:34.931341+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.45
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "18bdc14c7f0e4c7d8b29c0440542651d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Mary+Barra%22+interview&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "ba7908d92e2749168b9f8792a400dfee",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "0f9f8940db9b455689bb64d0089d3dd3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+interview",
+      "host": "search.yahoo.com",
+      "http_operation_id": "74c685de04b54805a695490e98b33080",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+interview",
+      "host": "search.yahoo.com",
+      "http_operation_id": "74c685de04b54805a695490e98b33080",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "70c1ee0677d7405ea25829fd8afbd5b7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "673b3a3e5267433ea90516d21a864290",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+statement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "2ae15d5fc35046e88ebe5a9e5f83ab6c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "b8716feb72544f289363e68d780cebee",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra",
+      "host": "search.yahoo.com",
+      "http_operation_id": "b406a1db120f4789997cee621d6915a3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e78e54f56fee42899b04cf5ca99496e1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+statement+interview+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bce17c19afda42568b380fa7bc57964d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.cbs.com%2BWatch%2BCBS%2BEvening%2BNews%253A%2BExtended%2Binterview%253A%2BGM%2BCEO%2BMary%2BBarra&_bvc=1.975b9a2e0eb2860dfc4af348328dd8d4bccc0fc4c25f31ebe1236bc12102f905",
+      "host": "search.yahoo.com",
+      "http_operation_id": "b406a1db120f4789997cee621d6915a3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Mary%2BBarra%2522%2Bstatement%2Binterview%2Btranscript&_bvc=1.4cf9b6a93dab87f0dd42d9a242049dff17da682075a46178f69cfaabdf5af44f",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bce17c19afda42568b380fa7bc57964d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.cbs.com%2BWatch%2BCBS%2BEvening%2BNews%253A%2BExtended%2Binterview%253A%2BGM%2BCEO%2BMary%2BBarra&_bvc=2.945df04b17a78b1a6f268ea34fcbd331b74d8faf0f553356114b6e99b0a8d670",
+      "host": "search.yahoo.com",
+      "http_operation_id": "b406a1db120f4789997cee621d6915a3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Mary%2BBarra%2522%2Bstatement%2Binterview%2Btranscript&_bvc=2.9645f3c2ba3e064464c0b458b10dccb1e28cd3e595026f79bfb9d0437db2d81b",
+      "host": "search.yahoo.com",
+      "http_operation_id": "bce17c19afda42568b380fa7bc57964d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.cbs.com+Watch+CBS+Evening+News%3A+Extended+interview%3A+GM+CEO+Mary+Barra&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ffe32566b3cf4566b5a918e643570207",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "84d3f3501f2a454db1fb1f25b6763857",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "54dd7fb44a554faaaa0d5f6ea2131579",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "73af5216ddb049b98cd2ecb61be55648",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4de93104d08745ee8e9b16a5c3789d3e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra",
+      "host": "search.yahoo.com",
+      "http_operation_id": "0f3f5e04ae924ab183d1e6f529477aca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5dee67c0b7dd48309cabeee538911ac5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+statement+interview",
+      "host": "search.yahoo.com",
+      "http_operation_id": "21cd06a8b04646e0a7e23ca2e915209f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+attributable+public+statements+by+Mary+Barra+about+General+Motors+and+the+automotive+industry.+Clearly+distinguish+historical+statements+from+recent+coverage+and+unrelated+executive+speculation.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "9d7a865b398a4c709676809ab9386fca",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra",
+      "host": "search.yahoo.com",
+      "http_operation_id": "0f3f5e04ae924ab183d1e6f529477aca",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Mary%2BBarra%2522%2Bstatement%2Binterview&_bvc=1.0376b6101413a79fba7bef7b3e5a40b00fcd77bad110390d47891ec270244b4f",
+      "host": "search.yahoo.com",
+      "http_operation_id": "21cd06a8b04646e0a7e23ca2e915209f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Mary%2BBarra%2522%2Bstatement%2Binterview&_bvc=2.a27afde26d1375cc53b65c75c4007b2b05a1afc9ac4b119f2079e8f34497e6af",
+      "host": "search.yahoo.com",
+      "http_operation_id": "21cd06a8b04646e0a7e23ca2e915209f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.cbsnews.com+Extended+interview%3A+General+Motors+CEO+Mary+Barra&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "0ffd8c9d72814db6b8080d660995af97",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "2cb60783e5c94ac2ba69cf8050b6ee93",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8d223b124760493db546ba10638a554f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4691d71329b4b258d776a5670491d8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.wxyz.com%2BGM%2BCEO%2BMary%2BBarra%2Bissues%2Bstatement%2Bafter%2BPresident%2BTrump%2Bdisbands%2Bcouncil&_bvc=1.6eedae235f7cca40d78fe52c68eeca4541f1ae6d9924497150256889c6d5c978",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4691d71329b4b258d776a5670491d8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Mary+Barra%22+speech+remarks+announcement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "1f73953a47b54ac58206157774d99fa5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.wxyz.com%2BGM%2BCEO%2BMary%2BBarra%2Bissues%2Bstatement%2Bafter%2BPresident%2BTrump%2Bdisbands%2Bcouncil&_bvc=2.39548a295c15b6bbd0d4a7a2c68e6f62f8b18d298f38d5b0e558fc38922faab1",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4691d71329b4b258d776a5670491d8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.wxyz.com%2BGM%2BCEO%2BMary%2BBarra%2Bissues%2Bstatement%2Bafter%2BPresident%2BTrump%2Bdisbands%2Bcouncil&_bvc=3.398a444ce1230ba6ffcd1031a68228a42c3687d73683d9ecd6ef39b78fab6de9",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4691d71329b4b258d776a5670491d8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+speech+remarks+announcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "52564e54ea504b97852977698bfb3474",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.wxyz.com%2BGM%2BCEO%2BMary%2BBarra%2Bissues%2Bstatement%2Bafter%2BPresident%2BTrump%2Bdisbands%2Bcouncil&_bvc=4.4aa18f48c2f601cebc04a26c4125d348761eccba8657bcafa721d1a77c83a369",
+      "host": "search.yahoo.com",
+      "http_operation_id": "f4691d71329b4b258d776a5670491d8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.wxyz.com+GM+CEO+Mary+Barra+issues+statement+after+President+Trump+disbands+council&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f3c408ba8cee43cda2f95eac1faf700f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+speech+remarks+announcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "52564e54ea504b97852977698bfb3474",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "11667e639d9449d589674d2027ea317a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Mary%2BBarra%2522%2Bspeech%2Bremarks%2Bannouncement&_bvc=1.bc1980ce4741d5cf6fc566ead96269bcebc4ba25f452d7874abd4fc46e9c3765",
+      "host": "search.yahoo.com",
+      "http_operation_id": "52564e54ea504b97852977698bfb3474",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7ad1d618b14e4997875795be700929f4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Mary%2BBarra%2522%2Bspeech%2Bremarks%2Bannouncement&_bvc=2.55ff2950d3b9096dc11ff1f5ba9708b8264575cfc0fa9ef648c57424ca1f8076",
+      "host": "search.yahoo.com",
+      "http_operation_id": "52564e54ea504b97852977698bfb3474",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Mary%2BBarra%2522%2Bspeech%2Bremarks%2Bannouncement&_bvc=3.d23c1432b5c64f75b53656d1909e09260a28b888457d4b5270a17eb11c25c9e5",
+      "host": "search.yahoo.com",
+      "http_operation_id": "52564e54ea504b97852977698bfb3474",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+remarks+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4ddf1cef1e6243549063bdc9773d7bc6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7ad1d618b14e4997875795be700929f4",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "3fc8f9c2c59f48abaae7137441d080ff",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "77c815eb204645da821534ae0d95d1ec",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ffb3f719a5134afaba4951f14b7e8bae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "034d7560389c4f388592caef27ee0185",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5860187cd63c4c3186c8a7bfcdb6b3d1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Mary+Barra%22+speech+transcript&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "e21a003416b3406996b0fdd38ef1a584",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "3cd3c01303134c3b97bb5cbc373007ae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d79fc92532bd4152b00d794e5e132186",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+speech+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "40a2599e772049f9bbf67c515da2d697",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ebd069cbf75e4fc3b3055426ade5d257",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "f23be9a345354bdf91cecb33cd8727a6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Mary+Barra%22+public+statement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "54faa45937ef48bb9ac3f1dbc24d859b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "195b635a31e6484ab2779f1fde0a24a9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Mary+Barra%22+public+statement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d391be752cf54a6f80de44debc7460ff",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a3e15fdd97004d9e81d8d34d3c04d5e2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Mary+Barra%22+public+statement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "b60014ad6edf43f28650dc64d8bfe0dc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://thediff.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "thediff.substack.com",
+      "http_operation_id": "fcb260625f46433fa2ab3880003e7d1e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://stratechery.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "stratechery.substack.com",
+      "http_operation_id": "c3ead921aea5456f808eecf6f823a341",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Mary+Barra%22+public+statement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "f6c4a49b9463415486fbf2b2086a2efa",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://doomberg.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "doomberg.substack.com",
+      "http_operation_id": "6e360f0a659a4d04b96c386b6b35f55d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://pragmaticengineer.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "pragmaticengineer.substack.com",
+      "http_operation_id": "96fdd6b8756f4c21ae3acfa177105e0b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://semianalysis.substack.com/api/v1/posts?limit=5&sort=top",
+      "host": "semianalysis.substack.com",
+      "http_operation_id": "788ababfd7a84512a744642316d5f260",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cbsnews.com",
+      "host": "www.cbsnews.com",
+      "http_operation_id": "7f57a4d7c737456ea4f67a12094a7efb",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.wxyz.com",
+      "host": "www.wxyz.com",
+      "http_operation_id": "8d5fbcbcd4c942c9ac465f727c7cb835",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.wxyz.com/index.rss",
+      "host": "www.wxyz.com",
+      "http_operation_id": "b94e825fa33e4796aa18b3e13e11f272",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cbsnews.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "dabe7c2efef542478c0eded5bab60d1e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.wxyz.com/search?q=Mary+Barra",
+      "host": "www.wxyz.com",
+      "http_operation_id": "1033f849564f4dfab40afecc85eafed9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cbsnews.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "da0262f150aa4a88b051f86baf7aacc7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.wxyz.com/search?q=Mary+Barra",
+      "host": "r.jina.ai",
+      "http_operation_id": "8c3d92f163744fb190a87533bc61cb5e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cbs.com",
+      "host": "www.cbs.com",
+      "http_operation_id": "47476ead6e8a46f9af60062432d71a1e",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.nbcnews.com",
+      "host": "www.nbcnews.com",
+      "http_operation_id": "e181c2728eff40e5b76087323c8d3c8f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://fortune.com",
+      "host": "fortune.com",
+      "http_operation_id": "a94cbadfb16640189f818668ee2ae648",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.nbcnews.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "186831ef455e4930a6cf3146fe74ff70",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.nbcnews.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "ace14c43b5f64586a157790561929ddd",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.cnbc.com",
+      "host": "www.cnbc.com",
+      "http_operation_id": "f1075ff9f1af495ab35d59d18458a511",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.cnbc.com",
+      "host": "r.jina.ai",
+      "http_operation_id": "12f60a310fa54a3287a00272e210b5b2",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 80,
+  "admission_rejections": 3,
+  "pipeline_errors": []
+}

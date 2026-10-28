@@ -1,0 +1,122 @@
+[
+  {
+    "path": "backend/agents/personal_watch/monitoring.py",
+    "root_current_sha256": "98ccafb87a2e3001864ac241dd00a7b0a14101b63a88512c5d41d9a6a117da0a",
+    "released_sha256": "fa92a7e40f6a8e6bb00d1fdb17dcc39b700aea0a2259449578d44cdedde8c6de",
+    "current_release_lineage_sha256": "b53a837aac412f21ce1dc0cad77aeb9623b7cc95b42b3d3e241e18f3467585f6",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/agents/scout/agent.py",
+    "root_current_sha256": "5242d3f4aafaa462dc2d5341c2d04b031c9ad8a85f80e66668ccd21b334d33dc",
+    "released_sha256": "97ec6b37b4e7a786992a1961217daa4e96fccbb09b15c52f3591f3f066c36850",
+    "current_release_lineage_sha256": "d446c97c893f0d3e5a8dd6d3400ca9c735d47c09d6fc9e80c03196d62f24175b",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/agents/trending/agent.py",
+    "root_current_sha256": "a7d710d547624dfb0cdd03cd5fe558997d3d9626c994c7d20300cc24fce9a1cb",
+    "released_sha256": "af7a6ef858874fd689b9f9b6af012ead6d26df288549d0ce83c140bfbcb85946",
+    "current_release_lineage_sha256": "6658687b9f91081c6c2707a2b7feb3e5086ef6437f29c4e786aa380ea82e49ad",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/application/research/reading.py",
+    "root_current_sha256": "00943176c00cd75db8d2140b5bf2e003f6a3731448198fc002f65e658a1c1bce",
+    "released_sha256": "23d19a98d067700cfa1d3436d8939a8bbe070fd0983df8c703479ff5806b73d6",
+    "current_release_lineage_sha256": "353cc42d4cac417cfb931a67f38c270c4c85506a9ba7ea18dce913f557273817",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/infrastructure/acquisition/adapters/expanded_catalog.py",
+    "root_current_sha256": "efacf8dcd327fd44d5a8b31944336e6d11d1213ab46be83f2a4b0f7c648be817",
+    "released_sha256": "26e93c76e20f8952cae5e55e50bc835a33628a1923a42c0b3aee31b2c56c2fca",
+    "current_release_lineage_sha256": "26e93c76e20f8952cae5e55e50bc835a33628a1923a42c0b3aee31b2c56c2fca",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/infrastructure/acquisition/adapters/news/wires_adapter.py",
+    "root_current_sha256": "947e8be257416aabd8a6949e55374f4e6bcc6092a7f76ae3decbaeff6b96d56e",
+    "released_sha256": "904b102d2eddc77a34ba27809e5490a1d481c2cd00eae5a1cba9cb71e7a92b1e",
+    "current_release_lineage_sha256": "904b102d2eddc77a34ba27809e5490a1d481c2cd00eae5a1cba9cb71e7a92b1e",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/infrastructure/acquisition/adapters/social/reddit.py",
+    "root_current_sha256": "9c5a9001be6da27bdb0f81271d874b7894afb70d4ff883ebaae6577b2684bc9e",
+    "released_sha256": "730492afc276cb8642527eecadf1ec4b7882262dfc46961c7865e955afa7d3fc",
+    "current_release_lineage_sha256": "3c8441ad995e0495850bbb8ecf2faf74d25655cfe9a78fc3c238836883000ad3",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/infrastructure/acquisition/adapters/web/jina.py",
+    "root_current_sha256": "c65c4fcffbd67e81d4f3f4878e070d4120ca8f8fa4d421984497076eb191fc37",
+    "released_sha256": "b62bde37aa2307a1aa536ee53eaf0eb098809b355997fabd5420495c847cd5b1",
+    "current_release_lineage_sha256": "72840af242ad6dc3735526c2230bcf3e8e9661e47cf73c8bf09e4319eef9cbd3",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/infrastructure/acquisition/routing/router.py",
+    "root_current_sha256": "d4f26885fc1ad14705204ff1ab8f23883be84f9a532dff5a3158e1e80fc9ecc2",
+    "released_sha256": "5fab783fa59bd7e4afee4b61df06cec7b64b400d4a179a63353e156312e0e941",
+    "current_release_lineage_sha256": "93dc0390adf887c36aac9d6bac591b7cf69cee5dc43bb26bb8ffbd6e9c37e423",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/infrastructure/acquisition/routing/standard_handlers.py",
+    "root_current_sha256": "30449787cb179d3f046582a749eefb90fa91f2989365686e511a86625175b1fb",
+    "released_sha256": "d913eeead1ade33acced04b45f235c6b42d7034c4be40a774b84b397f150ea65",
+    "current_release_lineage_sha256": "8e0ce5e3b261e1da6e98678d95d92ee72cd31b4ceb519520d772a4b8379bc06f",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/infrastructure/acquisition/security/url_validator.py",
+    "root_current_sha256": "02b9ee8f3ff6dbb5d2904d5c4b261ecf5181ca6965f28d3496ab2ab612cf72d3",
+    "released_sha256": "8c4d723bef4985eefc55335090582a1a8935fd1948b96a7f82dd9e526e8998cf",
+    "current_release_lineage_sha256": "86a5e155aaf8910b3e60f06b0385ed0b438841a61de2b12e9a373abe24843c6b",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/services/agent_reach/native/executor.py",
+    "root_current_sha256": "ecc9cfafe73bec8683ec66881e5da951c48a6af05674dfa5611aff7e507aba67",
+    "released_sha256": "cea25e9baf2017fa7774deebd7452c1ecded1d0cf640bba8eb4fe2416fceb88b",
+    "current_release_lineage_sha256": "de46fe0cddc7a1f836f67cf66916533b74f861d29445de2ed7623e538dea82c1",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/services/agent_reach/native/normalizer.py",
+    "root_current_sha256": "e621fcd88608e9d978905e17a58b5826dbc471d9062232bd08fba12fb89bdccb",
+    "released_sha256": "af2b4137f036ec0f4b80dbe958d55c2c34ec97da47bc28a1f862ed82822f4bbb",
+    "current_release_lineage_sha256": "e675be30811a8c4e27ceeee0f4bea061fd6cd5a84cd2a762b81bc2596ee116fb",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/services/agent_reach/source_planner.py",
+    "root_current_sha256": "98780380afac01235f349690902c998ce5c15be07b2ca8d97f3c399419d64206",
+    "released_sha256": "1d66bf3560e2b684ea8bca5f1bc8b555fd6516e6a6621d72dccb1f0decd0e8b7",
+    "current_release_lineage_sha256": "0ac12324c40e659506d0961c8f0a539473ab025cefea08b6de26e5435bbd79c3",
+    "root_matches_released": false,
+    "root_matches_current": false
+  },
+  {
+    "path": "backend/services/research/relevance_gate.py",
+    "root_current_sha256": "7839e76bc81e865089cda369e9c0644ee8d70f2dec53c0f9b9de948d20f9b2d2",
+    "released_sha256": "ba366068c93e1be3e88b3b10d538962282e8187796ee33f0c51ed09c68e8b02c",
+    "current_release_lineage_sha256": "2800a4eadbc9dbf3aee56886c7af6ff70cd5b50473c7f2d759e8ce3e7ef2ff87",
+    "root_matches_released": false,
+    "root_matches_current": false
+  }
+]

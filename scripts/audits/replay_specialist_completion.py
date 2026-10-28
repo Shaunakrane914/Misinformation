@@ -89,7 +89,7 @@ def saved_harvest(payload):
             "acquisition_attempts": attempts})
 
 
-def replay(payload, agent, subject, *, reference_time=None, category=None):
+def replay(payload, agent, subject, *, reference_time=None, category=None, query=None):
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
     from backend.api.agents import router
@@ -104,6 +104,10 @@ def replay(payload, agent, subject, *, reference_time=None, category=None):
         "brandshield": ("brandshield/scan", "brand_name"), "trending": ("trending/scan", "query")}[agent]
     path = "/api/" + endpoint + "/stream"
     request = {field: subject, "research_profile": "DEEP"}
+    if query:
+        request["query"] = query
+        if agent == "trending":
+            request["asset_name"] = subject
     if agent == "trending":
         request["category"] = category or "technology"
     # Existing quote bytes or honest absence are replayed; no new quote lookup.
@@ -143,6 +147,7 @@ def main(argv=None):
     parser.add_argument("--subject", required=True)
     parser.add_argument("--reference-time", help="Timezone-aware original observation time; defaults to saved pool created_at, never advances old source dates")
     parser.add_argument("--category", help="Trending category used by the original normal query; default technology")
+    parser.add_argument("--query", help="Original custom research prompt, preserved during offline processing")
     args = parser.parse_args(argv)
     if args.input.is_symlink() or not args.input.is_file() or args.input.stat().st_size > 80_000_000:
         raise ValueError("Supply a bounded regular native-response file")
@@ -168,7 +173,7 @@ def main(argv=None):
         raise ValueError("Reference time must include timezone")
     if args.agent == "trending" and reference is None:
         raise ValueError("Trending replay needs an original timezone-aware observation time")
-    result, events = replay(payload, args.agent, args.subject, reference_time=reference, category=args.category)
+    result, events = replay(payload, args.agent, args.subject, reference_time=reference, category=args.category, query=args.query)
     raw = result.get("research_corpus", {}).get("raw_acquisition_pool", {})
     originals = {source["source_id"]: source for source in original_pool["sources"]}
     unchanged = all(source["source_id"] in originals and all(source.get(key) == originals[source["source_id"]].get(key)

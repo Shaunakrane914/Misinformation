@@ -1,0 +1,1669 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "6eea05b65fde4570902fbdde6770ef6e",
+      "requested_url": "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:38:12.846254+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1324,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 874.086
+    },
+    {
+      "operation_id": "de692f4e85624f0680dc9de394ac9da2",
+      "requested_url": "https://www.bing.com/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:38:12.845931+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 157516,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 1477.174
+    },
+    {
+      "operation_id": "1faba74a7e7f4f71a46e548c621d2774",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:13.722314+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 34984,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2871.397
+    },
+    {
+      "operation_id": "8cec8b03f74845319c017e72a2b88c0d",
+      "requested_url": "https://search.yahoo.com/search?p=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:38:14.354034+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5002.724
+    },
+    {
+      "operation_id": "cc70c12508df459b8c4a302969e1e316",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:19.356983+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 34984,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 933.377
+    },
+    {
+      "operation_id": "6cacd04f536242a29d5a9cb106c718d7",
+      "requested_url": "https://www.bing.com/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&first=1",
+      "started_at": "2026-10-28T08:38:20.323611+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 141375,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&first=1"
+      ],
+      "duration_ms": 2082.12
+    },
+    {
+      "operation_id": "86fda94073a34fcebbb34eacf286f87d",
+      "requested_url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&first=1",
+      "started_at": "2026-10-28T08:38:20.323996+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 139984,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&first=1"
+      ],
+      "duration_ms": 2982.074
+    },
+    {
+      "operation_id": "83457364304e4ca0877e934aa5ab591c",
+      "requested_url": "https://search.yahoo.com/search?p=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.",
+      "started_at": "2026-10-28T08:38:22.436752+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.345
+    },
+    {
+      "operation_id": "9d6ae571fc3349a5be7143704e04bd7a",
+      "requested_url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source",
+      "started_at": "2026-10-28T08:38:23.332870+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.979
+    },
+    {
+      "operation_id": "5ab93c670a7e4c08a45cc7fcd3d1c941",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:27.439446+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2638,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3892.083
+    },
+    {
+      "operation_id": "ba8c858761af4080848d3034b8d7f687",
+      "requested_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:28.346060+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1599,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3701.823
+    },
+    {
+      "operation_id": "2c20ff1dc49a4be99655861e24c2d2bb",
+      "requested_url": "https://www.bing.com/news/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&format=rss",
+      "started_at": "2026-10-28T08:38:33.279990+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2249,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&format=rss"
+      ],
+      "duration_ms": 1535.744
+    },
+    {
+      "operation_id": "8b643dd2c49149ecaa5051a79bd15f5e",
+      "requested_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:34.818116+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1625,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1760.903
+    },
+    {
+      "operation_id": "23051584cafe48c2ac9bf9f16d3f5b92",
+      "requested_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:36.581363+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1625,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1533.554
+    },
+    {
+      "operation_id": "20d9653ec5bc48b6abe0d5392c67de0a",
+      "requested_url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "started_at": "2026-10-28T08:38:33.280305+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.622
+    },
+    {
+      "operation_id": "a203c05d6210401da5ae0b6fe86806f1",
+      "requested_url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29",
+      "started_at": "2026-10-28T08:38:38.286193+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5011.235
+    },
+    {
+      "operation_id": "38f87de17ced4d1abc1693e8835b42b5",
+      "requested_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:43.297690+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1733,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1522.592
+    },
+    {
+      "operation_id": "b56a406bb19e42a592d48e937a6ed5a2",
+      "requested_url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1",
+      "started_at": "2026-10-28T08:38:45.675825+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 142499,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1"
+      ],
+      "duration_ms": 2738.014
+    },
+    {
+      "operation_id": "6808c0a93e5f498faf8a893c32fe7ab2",
+      "requested_url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "started_at": "2026-10-28T08:38:45.675441+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 142576,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1"
+      ],
+      "duration_ms": 2941.371
+    },
+    {
+      "operation_id": "e149287a1ff64428893825be74e50afd",
+      "requested_url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29",
+      "started_at": "2026-10-28T08:38:48.454442+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.384
+    },
+    {
+      "operation_id": "b21ae2abc4c74ba99d3680d358c57306",
+      "requested_url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "started_at": "2026-10-28T08:38:48.639407+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5013.746
+    },
+    {
+      "operation_id": "951a8d2671b14f318bfde235583b1603",
+      "requested_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:53.457123+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1719,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2868.442
+    },
+    {
+      "operation_id": "a1e55d50a368443c9b0d8787fc0fd223",
+      "requested_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:53.653457+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1733,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4092.657
+    },
+    {
+      "operation_id": "54ecd06e36b04f7b9c4252c2c3fbc8fd",
+      "requested_url": "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:38:59.254861+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1304,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 657.095
+    },
+    {
+      "operation_id": "f191a3ba586445a28a9e0c13984a0eb9",
+      "requested_url": "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:38:59.254491+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1616,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1034.909
+    },
+    {
+      "operation_id": "e56299d604424ca6a4a763b5f9c33d80",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:00.291765+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.084
+    },
+    {
+      "operation_id": "7c41c228f40a4bc7bdf1ace5a2499bd5",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:00.291971+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.07
+    },
+    {
+      "operation_id": "7c6d398609e445f1b870e7b46d4053b9",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:38:59.914228+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 34409,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2771.969
+    },
+    {
+      "operation_id": "f4445886acb148de9b04142c85365540",
+      "requested_url": "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:39:02.717231+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1596,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1787.342
+    },
+    {
+      "operation_id": "4f2c4a6daeee4955bf984d9ca21c1890",
+      "requested_url": "https://www.bing.com/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:39:02.716746+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132445,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 3330.234
+    },
+    {
+      "operation_id": "40eed1656d2c4804b7cfa55272586d74",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:04.506700+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3789,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1678.537
+    },
+    {
+      "operation_id": "e87d76e1b50846458955dab7cfe7099f",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:06.212763+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3789,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 754.106
+    },
+    {
+      "operation_id": "ac7b6835e6e54cc384a3311b8aa7d7c5",
+      "requested_url": "https://search.yahoo.com/search?p=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:39:06.090806+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.015
+    },
+    {
+      "operation_id": "6cf06d42e9814b89a2f5f7d116acc26d",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:11.093093+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 34409,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 703.808
+    },
+    {
+      "operation_id": "17cfdfdbb91040bdbab7ac433663a715",
+      "requested_url": "https://www.bing.com/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:39:11.817306+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133611,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1"
+      ],
+      "duration_ms": 1976.624
+    },
+    {
+      "operation_id": "722f8f6e2a6540ee9ded2c9b28943df8",
+      "requested_url": "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:39:11.817633+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1334,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 2814.713
+    },
+    {
+      "operation_id": "04f5b7e69d704ec6b1d8a934d9ffc538",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:14.634326+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 40878,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1450.567
+    },
+    {
+      "operation_id": "8f32d1cc7a3142889c65300af077366b",
+      "requested_url": "https://search.yahoo.com/search?p=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:39:13.828042+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5002.444
+    },
+    {
+      "operation_id": "62cf37a7c3504a4dae9cf9f6fdf0d621",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:18.830670+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 40878,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3898.047
+    },
+    {
+      "operation_id": "1153d4c7275c4be88f4dba3cfe610a2e",
+      "requested_url": "https://www.bing.com/news/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:39:22.741819+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1349,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 3068.822
+    },
+    {
+      "operation_id": "282c6f33d53b42acaf62ecdd95171e41",
+      "requested_url": "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "started_at": "2026-10-28T08:39:22.741618+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1334,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss"
+      ],
+      "duration_ms": 3683.948
+    },
+    {
+      "operation_id": "d20950b4d97e4918a1bf148b5d2b33c1",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:26.427683+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 40878,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 595.671
+    },
+    {
+      "operation_id": "bc507266d0844c27aef5f979a7077325",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:25.812803+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2801,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2772.827
+    },
+    {
+      "operation_id": "ce3c8f0c8f4d4365acc3f3d8c2b7dde5",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:28.589088+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 2801,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2030.341
+    },
+    {
+      "operation_id": "f8d40625aac34803b256b1ed527e0f79",
+      "requested_url": "https://www.bing.com/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "started_at": "2026-10-28T08:39:32.380853+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.031
+    },
+    {
+      "operation_id": "2290435391f144b98a106c9613c11362",
+      "requested_url": "https://search.yahoo.com/search?p=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "started_at": "2026-10-28T08:39:37.385156+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5019.662
+    },
+    {
+      "operation_id": "5855ad5ebe8445a887649f12862a82a7",
+      "requested_url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:42.405077+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 446.915
+    },
+    {
+      "operation_id": "54f3a7feb4fe426ab1571529d7c56ee5",
+      "requested_url": "https://www.bing.com/search?q=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030&first=1",
+      "started_at": "2026-10-28T08:39:42.872375+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133816,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030&first=1"
+      ],
+      "duration_ms": 3642.778
+    },
+    {
+      "operation_id": "b199591827d247b99a43ce6bd7bf1e3c",
+      "requested_url": "https://uk.finance.yahoo.com/news/battery-recycling-equipment-market-global-081500108.html",
+      "started_at": "2026-10-28T08:39:42.909828+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5004.458
+    },
+    {
+      "operation_id": "2d5f75dcb31f4d0db3387a0012abe561",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030",
+      "started_at": "2026-10-28T08:39:46.730253+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.128
+    },
+    {
+      "operation_id": "b1a522bdf2ab4e6baa40028e008adf48",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:51.741731+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1140.15
+    },
+    {
+      "operation_id": "f87356469e074328bcaf76d71b416150",
+      "requested_url": "https://finance.yahoo.com/energy/articles/battery-recycling-equipment-market-global-081500108.html",
+      "started_at": "2026-10-28T08:39:47.926292+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5007.629
+    },
+    {
+      "operation_id": "a27fd50adf1947e88e12db106e6abd59",
+      "requested_url": "https://resource-recycling.com",
+      "started_at": "2026-10-28T08:39:53.140108+00:00",
+      "http_status": 200,
+      "final_url": "https://resource-recycling.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 40978,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://resource-recycling.com"
+      ],
+      "duration_ms": 2183.95
+    },
+    {
+      "operation_id": "889fdaeea6d047b49c9be2dcac1b0aa7",
+      "requested_url": "https://www.bing.com/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&first=1",
+      "started_at": "2026-10-28T08:39:52.888732+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 136774,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&first=1"
+      ],
+      "duration_ms": 4969.726
+    },
+    {
+      "operation_id": "d58dc7d7383641578ca64586fe002aad",
+      "requested_url": "https://search.yahoo.com/search?p=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling",
+      "started_at": "2026-10-28T08:39:57.882105+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 6.718
+    },
+    {
+      "operation_id": "f8de186f22544448a2b81099f1b4f8e6",
+      "requested_url": "https://resource-recycling.com/feed/",
+      "started_at": "2026-10-28T08:39:56.095812+00:00",
+      "http_status": 200,
+      "final_url": "https://resource-recycling.com/feed/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 22741,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://resource-recycling.com/feed/"
+      ],
+      "duration_ms": 2197.272
+    },
+    {
+      "operation_id": "85da6a471e1d4906921dda61a1ccb319",
+      "requested_url": "https://news.google.com/rss/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:39:57.889060+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 77551,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3164.909
+    },
+    {
+      "operation_id": "508b9055381c4da1b436464abcde2de2",
+      "requested_url": "https://resource-recycling.com/?s=Battery+Recycling",
+      "started_at": "2026-10-28T08:39:58.323909+00:00",
+      "http_status": 200,
+      "final_url": "https://resource-recycling.com/?s=Battery+Recycling",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 32465,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://resource-recycling.com/?s=Battery+Recycling"
+      ],
+      "duration_ms": 4890.079
+    },
+    {
+      "operation_id": "06f3b4fa7b7342898ddaf68befa45f81",
+      "requested_url": "https://autorecyclingworld.com",
+      "started_at": "2026-10-28T08:40:01.441838+00:00",
+      "http_status": 200,
+      "final_url": "https://autorecyclingworld.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 52417,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://autorecyclingworld.com"
+      ],
+      "duration_ms": 4017.291
+    },
+    {
+      "operation_id": "7385c85f5e584a1595200c1af59cc1c9",
+      "requested_url": "https://resource-recycling.com/e-scrap/2026/05/27/illinois-expands-battery-recycling-as-lithium-ion-fire-concerns-mount/",
+      "started_at": "2026-10-28T08:40:03.695652+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.403
+    },
+    {
+      "operation_id": "bb8944e80a564ddcaf6c03f9d79de162",
+      "requested_url": "https://autorecyclingworld.com/chinas-battery-recycling-future-opportunities-and-challenges/",
+      "started_at": "2026-10-28T08:40:05.767860+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5006.957
+    },
+    {
+      "operation_id": "9701a61efa6347c7aed25b7ecc4da8a6",
+      "requested_url": "https://r.jina.ai/https://resource-recycling.com/e-scrap/2026/05/27/illinois-expands-battery-recycling-as-lithium-ion-fire-concerns-mount/",
+      "started_at": "2026-10-28T08:40:08.707441+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://resource-recycling.com/e-scrap/2026/05/27/illinois-expands-battery-recycling-as-lithium-ion-fire-concerns-mount/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 6925,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://resource-recycling.com/e-scrap/2026/05/27/illinois-expands-battery-recycling-as-lithium-ion-fire-concerns-mount/"
+      ],
+      "duration_ms": 4499.632
+    },
+    {
+      "operation_id": "024ce2dedd8940b5bfeed32cbcfeb29a",
+      "requested_url": "https://autorecyclingworld.com/mobile-battery-processing-takes-recycling-onsite-for-uk-recyclers/",
+      "started_at": "2026-10-28T08:40:10.783558+00:00",
+      "http_status": 200,
+      "final_url": "https://autorecyclingworld.com/mobile-battery-processing-takes-recycling-onsite-for-uk-recyclers/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 49748,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://autorecyclingworld.com/mobile-battery-processing-takes-recycling-onsite-for-uk-recyclers/"
+      ],
+      "duration_ms": 3672.191
+    },
+    {
+      "operation_id": "ac5b4778b1df4866bf5238df88f700db",
+      "requested_url": "https://resource-recycling.com/policy-now/2026/06/12/colorado-and-california-bills-take-aim-at-battery-recycling-gaps/",
+      "started_at": "2026-10-28T08:40:13.229191+00:00",
+      "http_status": 200,
+      "final_url": "https://resource-recycling.com/policy-now/2026/06/12/colorado-and-california-bills-take-aim-at-battery-recycling-gaps/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 39314,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://resource-recycling.com/policy-now/2026/06/12/colorado-and-california-bills-take-aim-at-battery-recycling-gaps/"
+      ],
+      "duration_ms": 1944.257
+    },
+    {
+      "operation_id": "902238e7a34d4c4fb8c3f801307304e2",
+      "requested_url": "https://autorecyclingworld.com/blc-puts-battery-value-before-recycling/",
+      "started_at": "2026-10-28T08:40:14.720029+00:00",
+      "http_status": 200,
+      "final_url": "https://autorecyclingworld.com/blc-puts-battery-value-before-recycling/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 49673,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://autorecyclingworld.com/blc-puts-battery-value-before-recycling/"
+      ],
+      "duration_ms": 3182.599
+    },
+    {
+      "operation_id": "f7230dc6d18d4a87a0e5fd32cfbdeab7",
+      "requested_url": "https://resource-recycling.com/e-scrap/2026/01/26/blue-whale-scales-up-battery-recycling-in-ok/",
+      "started_at": "2026-10-28T08:40:15.627884+00:00",
+      "http_status": 200,
+      "final_url": "https://resource-recycling.com/e-scrap/2026/01/26/blue-whale-scales-up-battery-recycling-in-ok/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 38441,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://resource-recycling.com/e-scrap/2026/01/26/blue-whale-scales-up-battery-recycling-in-ok/"
+      ],
+      "duration_ms": 3013.499
+    },
+    {
+      "operation_id": "c9c1806605e54a3babdb31d33f86fa86",
+      "requested_url": "https://resource-recycling.com/search/Battery+Recycling/feed/rss2/",
+      "started_at": "2026-10-28T08:40:19.083065+00:00",
+      "http_status": 200,
+      "final_url": "https://resource-recycling.com/search/Battery+Recycling/feed/rss2/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 33498,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://resource-recycling.com/search/Battery+Recycling/feed/rss2/"
+      ],
+      "duration_ms": 3155.785
+    },
+    {
+      "operation_id": "0b9d2bc17767418284c47b2bc36e28d0",
+      "requested_url": "https://autorecyclingworld.com/feed/",
+      "started_at": "2026-10-28T08:40:18.159027+00:00",
+      "http_status": 200,
+      "final_url": "https://autorecyclingworld.com/feed/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 114583,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://autorecyclingworld.com/feed/"
+      ],
+      "duration_ms": 4582.671
+    },
+    {
+      "operation_id": "269d03959fc74952872c5e03f20f0d42",
+      "requested_url": "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/?utm_source=rss&utm_medium=rss&utm_campaign=botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling",
+      "started_at": "2026-10-28T08:40:22.786729+00:00",
+      "http_status": 200,
+      "final_url": "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/?utm_source=rss&utm_medium=rss&utm_campaign=botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 47698,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/?utm_source=rss&utm_medium=rss&utm_campaign=botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling"
+      ],
+      "duration_ms": 3563.401
+    },
+    {
+      "operation_id": "516c04e753614822b75b181cbeda6064",
+      "requested_url": "https://resource-recycling.com/e-scrap/2026/04/09/rice-researchers-use-lemon-juice-to-boost-battery-recycling/",
+      "started_at": "2026-10-28T08:40:22.285031+00:00",
+      "http_status": 200,
+      "final_url": "https://resource-recycling.com/e-scrap/2026/04/09/rice-researchers-use-lemon-juice-to-boost-battery-recycling/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 38075,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://resource-recycling.com/e-scrap/2026/04/09/rice-researchers-use-lemon-juice-to-boost-battery-recycling/"
+      ],
+      "duration_ms": 4502.325
+    },
+    {
+      "operation_id": "e08afbb227b3400ab96825d775f47220",
+      "requested_url": "https://www.einnews.com",
+      "started_at": "2026-10-28T08:40:27.300057+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 410.885
+    },
+    {
+      "operation_id": "045c68a2a1f24462bb1349733ba7a6d3",
+      "requested_url": "https://autorecyclingworld.com/huayou-cobalt-building-a-global-circular-economy-through-battery-recycling/",
+      "started_at": "2026-10-28T08:40:26.677812+00:00",
+      "http_status": 200,
+      "final_url": "https://autorecyclingworld.com/huayou-cobalt-building-a-global-circular-economy-through-battery-recycling/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 48732,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://autorecyclingworld.com/huayou-cobalt-building-a-global-circular-economy-through-battery-recycling/"
+      ],
+      "duration_ms": 3545.817
+    },
+    {
+      "operation_id": "c21f35e67582417d85ce356ca5cfeb94",
+      "requested_url": "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/",
+      "started_at": "2026-10-28T08:40:30.492439+00:00",
+      "http_status": 200,
+      "final_url": "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 47693,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/"
+      ],
+      "duration_ms": 4051.423
+    },
+    {
+      "operation_id": "7280e297c74c4d6195464a439754783b",
+      "requested_url": "https://www.innovationnewsnetwork.com",
+      "started_at": "2026-10-28T08:40:35.257168+00:00",
+      "http_status": 200,
+      "final_url": "https://www.innovationnewsnetwork.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 90800,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.innovationnewsnetwork.com"
+      ],
+      "duration_ms": 1843.183
+    },
+    {
+      "operation_id": "f60d4fd4140741d282fd6c8604de9dab",
+      "requested_url": "https://www.innovationnewsnetwork.com/battery-recycling/",
+      "started_at": "2026-10-28T08:40:38.287660+00:00",
+      "http_status": 200,
+      "final_url": "https://www.innovationnewsnetwork.com/battery-recycling/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 61377,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.innovationnewsnetwork.com/battery-recycling/"
+      ],
+      "duration_ms": 3097.058
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "de692f4e85624f0680dc9de394ac9da2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "6eea05b65fde4570902fbdde6770ef6e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "1faba74a7e7f4f71a46e548c621d2774",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8cec8b03f74845319c017e72a2b88c0d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8cec8b03f74845319c017e72a2b88c0d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DBattery%2BRecycling%2Brecent%2Bdevelopments%2Bwhen%253A2d%2Bafter%253A2026-10-26%2Bbefore%253A2026-10-29&_bvc=1.b0a9bd708d3cb23cfeea7a4296751fb49c1d1a61406e54966f12b4931e3d8970",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8cec8b03f74845319c017e72a2b88c0d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "cc70c12508df459b8c4a302969e1e316",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "6cacd04f536242a29d5a9cb106c718d7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "86fda94073a34fcebbb34eacf286f87d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.",
+      "host": "search.yahoo.com",
+      "http_operation_id": "83457364304e4ca0877e934aa5ab591c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "9d6ae571fc3349a5be7143704e04bd7a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DBattery%2BRecycling%2Bdebunked%2Bfalse%2Brumor%2BFind%2Bdevelopments%2Bin%2Bbattery%2Brecycling%2Bfrom%2Bthe%2Blast%2B48%2Bhours.%2BInclude%2Bresearch%252C%2Bmanufacturing%252C%2Bpolicy%2Band%2Brecycling%2Btechnology.%2BIf%2Bcurrent%2Bsources%2Bare%2Bunavailable%252C%2Breport%2Bthat%2Bhonestly%2Band%2Bpresent%2Beligible%2Bolder%2Binformation%2Bseparately.&_bvc=1.25f424de876ca06ee4498842b18059ca600bbc08bdd86de7c28bf03e0ca187fa",
+      "host": "search.yahoo.com",
+      "http_operation_id": "83457364304e4ca0877e934aa5ab591c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DBattery%2BRecycling%2Bdebunked%2Bfalse%2Brumor%2BFind%2Bdevelopments%2Bin%2Bbattery%2Brecycling%2Bfrom%2Bthe%2Blast%2B48%2Bhours.%2BInclude%2Bresearch%252C%2Bmanufacturing%252C%2Bpolicy%2Band%2Brecycling%2Btechnology.%2BIf%2Bcurrent%2Bsources%2Bare%2Bunavailable%252C%2Breport%2Bthat%2Bhonestly%2Band%2Bpresent%2Beligible%2Bolder%2Binformation%2Bseparately.&_bvc=2.e883462377f18fb6a0395e50baed26971d140eb6acaaf4f3ac8e616e7aab315a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "83457364304e4ca0877e934aa5ab591c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DFind%2Bdevelopments%2Bin%2Bbattery%2Brecycling%2Bfrom%2Bthe%2Blast%2B48%2Bhours.%2BInclude%2Bresearch%252C%2Bmanufacturing%252C%2Bpolicy%2Band%2Brecycling%2Btechnology.%2BIf%2Bcurrent%2Bsources%2Bare%2Bunavailable%252C%2Breport%2Bthat%2Bhonestly%2Band%2Bpresent%2Beligible%2Bolder%2Binformation%2Bseparately.%2Bofficial%2Bsource&_bvc=1.82c3f3a00803ffecf199eaf85608a53807fe35253da49ed7870d01555e9d98a3",
+      "host": "search.yahoo.com",
+      "http_operation_id": "9d6ae571fc3349a5be7143704e04bd7a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+debunked+false+rumor+Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5ab93c670a7e4c08a45cc7fcd3d1c941",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ba8c858761af4080848d3034b8d7f687",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "2c20ff1dc49a4be99655861e24c2d2bb",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "20d9653ec5bc48b6abe0d5392c67de0a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8b643dd2c49149ecaa5051a79bd15f5e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "23051584cafe48c2ac9bf9f16d3f5b92",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a203c05d6210401da5ae0b6fe86806f1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DFind%2Bdevelopments%2Bin%2Bbattery%2Brecycling%2Bfrom%2Bthe%2Blast%2B48%2Bhours.%2BInclude%2Bresearch%252C%2Bmanufacturing%252C%2Bpolicy%2Band%2Brecycling%2Btechnology.%2BIf%2Bcurrent%2Bsources%2Bare%2Bunavailable%252C%2Breport%2Bthat%2Bhonestly%2Band%2Bpresent%2Beligible%2Bolder%2Binformation%2Bseparately.%2Bofficial%2Bsource%2B%2528site%253Aarstechnica.com%2BOR%2Bsite%253Atechcrunch.com%2BOR%2Bsite%253Atheverge.com%2529&_bvc=1.7c2a696dd894ee5ed7cd54e9f5f009ff54fe1681e7cbaa8d34aff6629627d658",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a203c05d6210401da5ae0b6fe86806f1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "a203c05d6210401da5ae0b6fe86806f1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "38f87de17ced4d1abc1693e8835b42b5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "6808c0a93e5f498faf8a893c32fe7ab2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "b56a406bb19e42a592d48e937a6ed5a2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e149287a1ff64428893825be74e50afd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "b21ae2abc4c74ba99d3680d358c57306",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DFind%2Bdevelopments%2Bin%2Bbattery%2Brecycling%2Bfrom%2Bthe%2Blast%2B48%2Bhours.%2BInclude%2Bresearch%252C%2Bmanufacturing%252C%2Bpolicy%2Band%2Brecycling%2Btechnology.%2BIf%2Bcurrent%2Bsources%2Bare%2Bunavailable%252C%2Breport%2Bthat%2Bhonestly%2Band%2Bpresent%2Beligible%2Bolder%2Binformation%2Bseparately.%2Bofficial%2Bsource%2B%2528site%253Anature.com%2BOR%2Bsite%253Asciencedaily.com%2BOR%2Bsite%253Aphys.org%2529&_bvc=1.44bb038772196d850708f693d23cd5edf2748551fa4577f799bf2dd2cc5b645b",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e149287a1ff64428893825be74e50afd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DFind%2Bdevelopments%2Bin%2Bbattery%2Brecycling%2Bfrom%2Bthe%2Blast%2B48%2Bhours.%2BInclude%2Bresearch%252C%2Bmanufacturing%252C%2Bpolicy%2Band%2Brecycling%2Btechnology.%2BIf%2Bcurrent%2Bsources%2Bare%2Bunavailable%252C%2Breport%2Bthat%2Bhonestly%2Band%2Bpresent%2Beligible%2Bolder%2Binformation%2Bseparately.%2Bofficial%2Bsource%2B%2528site%253Anature.com%2BOR%2Bsite%253Asciencedaily.com%2BOR%2Bsite%253Aphys.org%2529&_bvc=2.30bace8135b29f8059daa9293901837c25f770f7623f5e063935ad2bc682a334",
+      "host": "search.yahoo.com",
+      "http_operation_id": "e149287a1ff64428893825be74e50afd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+official+source+%28site%3Anature.com+OR+site%3Asciencedaily.com+OR+site%3Aphys.org%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "951a8d2671b14f318bfde235583b1603",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+developments+in+battery+recycling+from+the+last+48+hours.+Include+research%2C+manufacturing%2C+policy+and+recycling+technology.+If+current+sources+are+unavailable%2C+report+that+honestly+and+present+eligible+older+information+separately.+latest+independent+reporting+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a1e55d50a368443c9b0d8787fc0fd223",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "f191a3ba586445a28a9e0c13984a0eb9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "54ecd06e36b04f7b9c4252c2c3fbc8fd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7c6d398609e445f1b870e7b46d4053b9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e56299d604424ca6a4a763b5f9c33d80",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+recent+developments+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7c41c228f40a4bc7bdf1ace5a2499bd5",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4f2c4a6daeee4955bf984d9ca21c1890",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "f4445886acb148de9b04142c85365540",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "40eed1656d2c4804b7cfa55272586d74",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ac7b6835e6e54cc384a3311b8aa7d7c5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e87d76e1b50846458955dab7cfe7099f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+research+update+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "6cf06d42e9814b89a2f5f7d116acc26d",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "17cfdfdbb91040bdbab7ac433663a715",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "722f8f6e2a6540ee9ded2c9b28943df8",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8f32d1cc7a3142889c65300af077366b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "04f5b7e69d704ec6b1d8a934d9ffc538",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "62cf37a7c3504a4dae9cf9f6fdf0d621",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "282c6f33d53b42acaf62ecdd95171e41",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "1153d4c7275c4be88f4dba3cfe610a2e",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "bc507266d0844c27aef5f979a7077325",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+industry+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d20950b4d97e4918a1bf148b5d2b33c1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "ce3c8f0c8f4d4365acc3f3d8c2b7dde5",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "f8d40625aac34803b256b1ed527e0f79",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2290435391f144b98a106c9613c11362",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DBattery%2BRecycling%2Binstitution%2Bannouncement%2Bwhen%253A2d%2Bafter%253A2026-10-26%2Bbefore%253A2026-10-29&_bvc=1.cf188e0b6bab36ace51e18683e4a74e9c241f7a05a00cafca971a40a01b2afb5",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2290435391f144b98a106c9613c11362",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DBattery%2BRecycling%2Binstitution%2Bannouncement%2Bwhen%253A2d%2Bafter%253A2026-10-26%2Bbefore%253A2026-10-29&_bvc=2.fd40361afa1f11b46b27d2b311b754407c0a8623f0703e4d8bcf27d7edd7475e",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2290435391f144b98a106c9613c11362",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Battery+Recycling+institution+announcement+when%3A2d+after%3A2026-10-26+before%3A2026-10-29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "5855ad5ebe8445a887649f12862a82a7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "54f3a7feb4fe426ab1571529d7c56ee5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://uk.finance.yahoo.com/news/battery-recycling-equipment-market-global-081500108.html",
+      "host": "uk.finance.yahoo.com",
+      "http_operation_id": "b199591827d247b99a43ce6bd7bf1e3c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2d5f75dcb31f4d0db3387a0012abe561",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://finance.yahoo.com/energy/articles/battery-recycling-equipment-market-global-081500108.html",
+      "host": "finance.yahoo.com",
+      "http_operation_id": "f87356469e074328bcaf76d71b416150",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.einnews.com%2BBattery%2BRecycling%2BMarket%2BGrowth%2BRate%2BExpected%2BTo%2BReach%2B12.3%2525%2BCAGR%2BBy%2B2030&_bvc=1.9a43d5263b0de07fe0ff1eb0b449d2a9541d3dc0300b862dca7289ae1756c9fc",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2d5f75dcb31f4d0db3387a0012abe561",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.einnews.com%2BBattery%2BRecycling%2BMarket%2BGrowth%2BRate%2BExpected%2BTo%2BReach%2B12.3%2525%2BCAGR%2BBy%2B2030&_bvc=2.e16d77bb8ddaf0565de65eab07280b6eec9fa98756e8e883c3951c766fade160",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2d5f75dcb31f4d0db3387a0012abe561",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3Dsite%253Awww.einnews.com%2BBattery%2BRecycling%2BMarket%2BGrowth%2BRate%2BExpected%2BTo%2BReach%2B12.3%2525%2BCAGR%2BBy%2B2030&_bvc=3.c3e8bf57dc44cd7e17be013a4d9540126d15026e546fe5b799784d7e4b6b46bb",
+      "host": "search.yahoo.com",
+      "http_operation_id": "2d5f75dcb31f4d0db3387a0012abe561",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Awww.einnews.com+Battery+Recycling+Market+Growth+Rate+Expected+To+Reach+12.3%25+CAGR+By+2030&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "b1a522bdf2ab4e6baa40028e008adf48",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com",
+      "host": "resource-recycling.com",
+      "http_operation_id": "a27fd50adf1947e88e12db106e6abd59",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "889fdaeea6d047b49c9be2dcac1b0aa7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com/feed/",
+      "host": "resource-recycling.com",
+      "http_operation_id": "f8de186f22544448a2b81099f1b4f8e6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d58dc7d7383641578ca64586fe002aad",
+      "phase": "reading",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=site%3Aautorecyclingworld.com+Botree+Sees+Strong+Growth+Ahead+For+Lithium-Ion+Battery+Recycling&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "85da6a471e1d4906921dda61a1ccb319",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com/?s=Battery+Recycling",
+      "host": "resource-recycling.com",
+      "http_operation_id": "508b9055381c4da1b436464abcde2de2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "06f3b4fa7b7342898ddaf68befa45f81",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com/e-scrap/2026/05/27/illinois-expands-battery-recycling-as-lithium-ion-fire-concerns-mount/",
+      "host": "resource-recycling.com",
+      "http_operation_id": "7385c85f5e584a1595200c1af59cc1c9",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com/chinas-battery-recycling-future-opportunities-and-challenges/",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "bb8944e80a564ddcaf6c03f9d79de162",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://resource-recycling.com/e-scrap/2026/05/27/illinois-expands-battery-recycling-as-lithium-ion-fire-concerns-mount/",
+      "host": "r.jina.ai",
+      "http_operation_id": "9701a61efa6347c7aed25b7ecc4da8a6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com/mobile-battery-processing-takes-recycling-onsite-for-uk-recyclers/",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "024ce2dedd8940b5bfeed32cbcfeb29a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com/policy-now/2026/06/12/colorado-and-california-bills-take-aim-at-battery-recycling-gaps/",
+      "host": "resource-recycling.com",
+      "http_operation_id": "ac5b4778b1df4866bf5238df88f700db",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com/blc-puts-battery-value-before-recycling/",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "902238e7a34d4c4fb8c3f801307304e2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com/e-scrap/2026/01/26/blue-whale-scales-up-battery-recycling-in-ok/",
+      "host": "resource-recycling.com",
+      "http_operation_id": "f7230dc6d18d4a87a0e5fd32cfbdeab7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com/feed/",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "0b9d2bc17767418284c47b2bc36e28d0",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com/search/Battery+Recycling/feed/rss2/",
+      "host": "resource-recycling.com",
+      "http_operation_id": "c9c1806605e54a3babdb31d33f86fa86",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://resource-recycling.com/e-scrap/2026/04/09/rice-researchers-use-lemon-juice-to-boost-battery-recycling/",
+      "host": "resource-recycling.com",
+      "http_operation_id": "516c04e753614822b75b181cbeda6064",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/?utm_source=rss&utm_medium=rss&utm_campaign=botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "269d03959fc74952872c5e03f20f0d42",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com/huayou-cobalt-building-a-global-circular-economy-through-battery-recycling/",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "045c68a2a1f24462bb1349733ba7a6d3",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.einnews.com",
+      "host": "www.einnews.com",
+      "http_operation_id": "e08afbb227b3400ab96825d775f47220",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://autorecyclingworld.com/botree-sees-strong-growth-ahead-for-lithium-ion-battery-recycling/",
+      "host": "autorecyclingworld.com",
+      "http_operation_id": "c21f35e67582417d85ce356ca5cfeb94",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.innovationnewsnetwork.com",
+      "host": "www.innovationnewsnetwork.com",
+      "http_operation_id": "7280e297c74c4d6195464a439754783b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.innovationnewsnetwork.com/battery-recycling/",
+      "host": "www.innovationnewsnetwork.com",
+      "http_operation_id": "f60d4fd4140741d282fd6c8604de9dab",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 86,
+  "admission_rejections": 3
+}

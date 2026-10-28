@@ -1,0 +1,1409 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "08580731afb440249ee110ab7aecd4ba",
+      "requested_url": "https://www.bing.com/search?q=Nike+counterfeit+listing+report&first=1",
+      "started_at": "2026-10-28T08:36:16.081077+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Nike+counterfeit+listing+report&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129524,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Nike+counterfeit+listing+report&first=1"
+      ],
+      "duration_ms": 2944.353
+    },
+    {
+      "operation_id": "5767093087cb402ca18fc637aebb93d9",
+      "requested_url": "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report&format=rss",
+      "started_at": "2026-10-28T08:36:16.079205+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1758,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report&format=rss"
+      ],
+      "duration_ms": 4299.396
+    },
+    {
+      "operation_id": "cef35daf2fb4433f8315d9fe58f89444",
+      "requested_url": "https://search.yahoo.com/search?p=Nike+counterfeit+listing+report",
+      "started_at": "2026-10-28T08:36:19.048668+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.551
+    },
+    {
+      "operation_id": "a0192adc438246c7b3f4f5d89c4a1ad1",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:36:24.053541+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5006.757
+    },
+    {
+      "operation_id": "157f163c63074509b44746e2aa6f7609",
+      "requested_url": "https://www.bing.com/news/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&format=rss",
+      "started_at": "2026-10-28T08:36:30.190072+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1937,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&format=rss"
+      ],
+      "duration_ms": 1636.429
+    },
+    {
+      "operation_id": "7a38d3e030b546a5a38efb1e87d9fbe7",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:36:31.828990+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1505,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1325.516
+    },
+    {
+      "operation_id": "b52071ae59514d0186fabb5fd5ff217a",
+      "requested_url": "https://timesofindia.indiatimes.com/life-style/fashion/style-guide/how-to-spot-fake-nike-air-force-1-sneakers/photostory/116689398.cms",
+      "started_at": "2026-10-28T08:36:30.630223+00:00",
+      "http_status": 200,
+      "final_url": "https://timesofindia.indiatimes.com/life-style/fashion/style-guide/how-to-spot-fake-nike-air-force-1-sneakers/photostory/116689398.cms",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 54392,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://timesofindia.indiatimes.com/life-style/fashion/style-guide/how-to-spot-fake-nike-air-force-1-sneakers/photostory/116689398.cms"
+      ],
+      "duration_ms": 3471.873
+    },
+    {
+      "operation_id": "8f40728a8fa84c44b79979594ed81ef2",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&first=1",
+      "started_at": "2026-10-28T08:36:30.190409+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 134658,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&first=1"
+      ],
+      "duration_ms": 4093.28
+    },
+    {
+      "operation_id": "8892170597824782859b91315d848d8a",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:36:33.157111+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1505,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1975.195
+    },
+    {
+      "operation_id": "c913b08c274f4d7d9d8c614bc2935e9b",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source",
+      "started_at": "2026-10-28T08:36:34.311587+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5015.118
+    },
+    {
+      "operation_id": "487d2c91e6d84c0a9a6511536b54a347",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:36:39.327008+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1479,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2641.282
+    },
+    {
+      "operation_id": "dafebc5f02694035a62d037d0eed1080",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&first=1",
+      "started_at": "2026-10-28T08:36:42.760230+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 136949,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&first=1"
+      ],
+      "duration_ms": 3679.91
+    },
+    {
+      "operation_id": "c28b93e8e78a4dd8a387413bb2dc7552",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&first=1",
+      "started_at": "2026-10-28T08:36:42.761055+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 139682,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&first=1"
+      ],
+      "duration_ms": 4027.439
+    },
+    {
+      "operation_id": "011683c66cce48fdaeb2e3d00f417056",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com",
+      "started_at": "2026-10-28T08:36:46.481323+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.259
+    },
+    {
+      "operation_id": "86055621b2c94cefa75ca97e8766d9f9",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov",
+      "started_at": "2026-10-28T08:36:46.815597+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.395
+    },
+    {
+      "operation_id": "085721725c484a558ee3aa3d7ca7d4bf",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:36:51.488888+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1515,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2565.658
+    },
+    {
+      "operation_id": "a3150fa8a11c4ce9a4da0a61ba85f321",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:36:51.820288+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1509,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2662.041
+    },
+    {
+      "operation_id": "37d37c8b9ad042b5b262a47f3e4c8051",
+      "requested_url": "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:36:58.645243+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1353,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1769.152
+    },
+    {
+      "operation_id": "cc997c834c1141fc8ba305067a3865e7",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:00.421237+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4417,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2017.334
+    },
+    {
+      "operation_id": "4a1694885e3d42899e36b34597858440",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:02.443268+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4417,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1258.417
+    },
+    {
+      "operation_id": "04bb6d78955a4b2f950863c2422a7dae",
+      "requested_url": "https://www.reddit.com/r/stocks/.rss",
+      "started_at": "2026-10-28T08:37:00.413910+00:00",
+      "http_status": 200,
+      "final_url": "https://www.reddit.com/r/stocks/.rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 87988,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.reddit.com/r/stocks/.rss"
+      ],
+      "duration_ms": 4578.883
+    },
+    {
+      "operation_id": "560093dfab2c498583e489ff659ea864",
+      "requested_url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "started_at": "2026-10-28T08:37:05.087127+00:00",
+      "http_status": 429,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "RATE_LIMITED",
+      "network_observed": true,
+      "duration_ms": 739.623
+    },
+    {
+      "operation_id": "ac642b3d6e474ab1bffc5371470cdbef",
+      "requested_url": "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement&format=rss",
+      "started_at": "2026-10-28T08:37:05.832481+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4726,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement&format=rss"
+      ],
+      "duration_ms": 1702.512
+    },
+    {
+      "operation_id": "699f610223e546028109dee1f226e965",
+      "requested_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&first=1",
+      "started_at": "2026-10-28T08:37:05.832187+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 139334,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&first=1"
+      ],
+      "duration_ms": 3167.976
+    },
+    {
+      "operation_id": "dccfe663f4e94c3b9051ea44312141ab",
+      "requested_url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29",
+      "started_at": "2026-10-28T08:37:09.041450+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5003.523
+    },
+    {
+      "operation_id": "cf59b1612d3243578f09110879fbbfb1",
+      "requested_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:14.045316+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1607,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2927.789
+    },
+    {
+      "operation_id": "4efe8e969a6a4b86a0bc33b36db72ad6",
+      "requested_url": "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:37:19.033243+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1338,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1556.987
+    },
+    {
+      "operation_id": "19ce8aa7f56f4dfaaa3f28d36895ae36",
+      "requested_url": "https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj",
+      "started_at": "2026-10-28T08:37:19.953736+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15376,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj"
+      ],
+      "duration_ms": 1509.202
+    },
+    {
+      "operation_id": "6ac2c506dee844c5919607109c824e99",
+      "requested_url": "https://www.bing.com/search?q=Nike+counterfeit+enforcement&first=1",
+      "started_at": "2026-10-28T08:37:19.032756+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.26
+    },
+    {
+      "operation_id": "55c558e678eb4600857790ad44ff1a21",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:20.592696+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9866,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3555.62
+    },
+    {
+      "operation_id": "31d3a04c3e374016b56cd0e96b9f5ded",
+      "requested_url": "https://wwd.com/sourcing-journal/industry-news/los-angeles-california-counterfeit-bust-nike-adidas-streetwear-1239180559/",
+      "started_at": "2026-10-28T08:37:19.756502+00:00",
+      "http_status": 200,
+      "final_url": "https://wwd.com/sourcing-journal/industry-news/los-angeles-california-counterfeit-bust-nike-adidas-streetwear-1239180559/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 138055,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://wwd.com/sourcing-journal/industry-news/los-angeles-california-counterfeit-bust-nike-adidas-streetwear-1239180559/"
+      ],
+      "duration_ms": 4675.38
+    },
+    {
+      "operation_id": "d8bcc24e174b444e9cc60c43fffad98f",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:24.159602+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9866,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1176.668
+    },
+    {
+      "operation_id": "aa1a7289e469405ab578b4cf3667eb9c",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj",
+      "started_at": "2026-10-28T08:37:21.480726+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5000.172
+    },
+    {
+      "operation_id": "5ce11020ba4242c58ffd6aae6bbdeff3",
+      "requested_url": "https://search.yahoo.com/search?p=Nike+counterfeit+enforcement",
+      "started_at": "2026-10-28T08:37:24.038221+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 3630.197
+    },
+    {
+      "operation_id": "d742e6e8c7774a28b91d17e0a7b254ec",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:27.668601+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.067
+    },
+    {
+      "operation_id": "228f48c0b0ff403ba5b523b46da97a4a",
+      "requested_url": "https://www.yahoo.com/news/us/articles/port-inspection-leads-10m-counterfeit-200025036.html",
+      "started_at": "2026-10-28T08:37:25.137150+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.913
+    },
+    {
+      "operation_id": "0922fe159c6c47418da97d94922be2ff",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj",
+      "started_at": "2026-10-28T08:37:26.481281+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5006.003
+    },
+    {
+      "operation_id": "15ee101dbe324314a17f8c95f0cf4d72",
+      "requested_url": "https://www.bing.com/search?q=Nike+brand+protection+official+trademark+acquisitions+litigation+news&first=1",
+      "started_at": "2026-10-28T08:37:30.023534+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Nike+brand+protection+official+trademark+acquisitions+litigation+news&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 155123,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Nike+brand+protection+official+trademark+acquisitions+litigation+news&first=1"
+      ],
+      "duration_ms": 1925.956
+    },
+    {
+      "operation_id": "aed5b43f1a874751882702de89f5be6a",
+      "requested_url": "https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ",
+      "started_at": "2026-10-28T08:37:31.494989+00:00",
+      "http_status": 200,
+      "final_url": "https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 15503,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ"
+      ],
+      "duration_ms": 1259.576
+    },
+    {
+      "operation_id": "14114e81571c4ed8870348d784defce1",
+      "requested_url": "https://r.jina.ai/https://www.yahoo.com/news/us/articles/port-inspection-leads-10m-counterfeit-200025036.html",
+      "started_at": "2026-10-28T08:37:30.142352+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5019.622
+    },
+    {
+      "operation_id": "b270f37313484a82bc29626f1add0c40",
+      "requested_url": "https://search.yahoo.com/search?p=Nike+brand+protection+official+trademark+acquisitions+litigation+news",
+      "started_at": "2026-10-28T08:37:31.981975+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4043.983
+    },
+    {
+      "operation_id": "706c1c17f138488092423e36923e3883",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ",
+      "started_at": "2026-10-28T08:37:32.771253+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5008.218
+    },
+    {
+      "operation_id": "02ebd4b93e4d4e14a1e8d21eae3aa787",
+      "requested_url": "https://www.bing.com/search?q=Nike+unauthorized+seller+allegation&first=1",
+      "started_at": "2026-10-28T08:37:36.033731+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Nike+unauthorized+seller+allegation&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130101,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Nike+unauthorized+seller+allegation&first=1"
+      ],
+      "duration_ms": 2443.749
+    },
+    {
+      "operation_id": "692c52e9f9d347b094d6097fc845fbdc",
+      "requested_url": "https://www.bing.com/news/search?q=Nike+unauthorized+seller+allegation&format=rss",
+      "started_at": "2026-10-28T08:37:36.033490+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Nike+unauthorized+seller+allegation&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1081,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Nike+unauthorized+seller+allegation&format=rss"
+      ],
+      "duration_ms": 2958.533
+    },
+    {
+      "operation_id": "6880a4b566d84a34b3cfe7f2a8c910a4",
+      "requested_url": "https://r.jina.ai/https://www.yahoo.com/news/us/articles/port-inspection-leads-10m-counterfeit-200025036.html",
+      "started_at": "2026-10-28T08:37:35.162275+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4977.463
+    },
+    {
+      "operation_id": "0d2c1994bdec480da47d3a63b2fb6e56",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:38.999385+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13835,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3472.38
+    },
+    {
+      "operation_id": "1eddf3936cbc4ebda23994b0aed26a6b",
+      "requested_url": "https://r.jina.ai/https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ",
+      "started_at": "2026-10-28T08:37:37.779800+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5001.126
+    },
+    {
+      "operation_id": "229e6100729d42cca8aaaae95d6eeb03",
+      "requested_url": "https://search.yahoo.com/search?p=Nike+unauthorized+seller+allegation",
+      "started_at": "2026-10-28T08:37:38.504204+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5013.342
+    },
+    {
+      "operation_id": "9f7056f91d7f47d594502805272829fa",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:42.482658+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13835,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1130.425
+    },
+    {
+      "operation_id": "fb2b1e4b682449088da3010f7d6b5fd7",
+      "requested_url": "https://wwd.com/sourcing-journal/industry-news/nike-artificial-intelligence-maturity-fashion-1239313075/",
+      "started_at": "2026-10-28T08:37:40.147169+00:00",
+      "http_status": 200,
+      "final_url": "https://wwd.com/sourcing-journal/industry-news/nike-artificial-intelligence-maturity-fashion-1239313075/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 141035,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://wwd.com/sourcing-journal/industry-news/nike-artificial-intelligence-maturity-fashion-1239313075/"
+      ],
+      "duration_ms": 4453.077
+    },
+    {
+      "operation_id": "3e7e0189cf644fbba637511b50e6b656",
+      "requested_url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:37:43.517727+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13835,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2340.54
+    },
+    {
+      "operation_id": "92d3a638b45442389079e2f8969b00da",
+      "requested_url": "https://www.bing.com/news/search?q=Nike+impersonation+allegation+report&format=rss",
+      "started_at": "2026-10-28T08:37:45.874261+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "DNS_TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 514.622
+    },
+    {
+      "operation_id": "9cfd751d1ec2454f85f09a2a56c0b332",
+      "requested_url": "https://www.bing.com/news/search?q=Nike+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:37:45.874560+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "DNS_TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 514.762
+    },
+    {
+      "operation_id": "b5a59b9cdac24d81b4c4071908720c84",
+      "requested_url": "https://about.nike.com/en/",
+      "started_at": "2026-10-28T08:37:42.896921+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.801
+    },
+    {
+      "operation_id": "05866552e91f4244864199f34c6a2c48",
+      "requested_url": "https://wwd.com/sourcing-journal/industry-news/nike-celect-acquistion-1238737756/",
+      "started_at": "2026-10-28T08:37:45.209186+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.909
+    },
+    {
+      "operation_id": "ee4e161140ca4e6e8de7b8efe258bf3c",
+      "requested_url": "https://r.jina.ai/https://about.nike.com/en/",
+      "started_at": "2026-10-28T08:37:47.906996+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://about.nike.com/en/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 12428,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://about.nike.com/en/"
+      ],
+      "duration_ms": 3682.942
+    },
+    {
+      "operation_id": "227f9119773f42c5a72a0102cd9317b7",
+      "requested_url": "https://r.jina.ai/https://wwd.com/sourcing-journal/industry-news/nike-celect-acquistion-1238737756/",
+      "started_at": "2026-10-28T08:37:50.215366+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1813.117
+    },
+    {
+      "operation_id": "5ef290c957e14c8aa9e3180d2a0b8566",
+      "requested_url": "https://www.ftc.gov/robots.txt",
+      "started_at": "2026-10-28T08:37:51.644443+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/robots.txt",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 3056,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/robots.txt"
+      ],
+      "duration_ms": 1580.351
+    },
+    {
+      "operation_id": "be97cffda19844ea82f8b93c2f1bc8a7",
+      "requested_url": "https://r.jina.ai/https://wwd.com/sourcing-journal/industry-news/nike-celect-acquistion-1238737756/",
+      "started_at": "2026-10-28T08:37:52.028809+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 1816.949
+    },
+    {
+      "operation_id": "bf5a5518cc114658afc54ba9ed4d5a00",
+      "requested_url": "https://wwd.com/footwear-news/sneaker-news/distressed-white-sneaker-trend-celine-reebok-coach-1239386092/",
+      "started_at": "2026-10-28T08:37:53.852803+00:00",
+      "http_status": 200,
+      "final_url": "https://wwd.com/footwear-news/sneaker-news/distressed-white-sneaker-trend-celine-reebok-coach-1239386092/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 122787,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://wwd.com/footwear-news/sneaker-news/distressed-white-sneaker-trend-celine-reebok-coach-1239386092/"
+      ],
+      "duration_ms": 2362.859
+    },
+    {
+      "operation_id": "709f978b0dad4720b50ecea6ebdd62c7",
+      "requested_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "started_at": "2026-10-28T08:37:58.226760+00:00",
+      "http_status": 200,
+      "final_url": "https://www.ftc.gov/feeds/press-release.xml",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 11879,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.ftc.gov/feeds/press-release.xml"
+      ],
+      "duration_ms": 857.839
+    },
+    {
+      "operation_id": "8dcdc850884e42ee814bac62bf7385b7",
+      "requested_url": "https://wwd.com/footwear-news/sneaker-news/nike-air-force-1-low-07-safari-release-date-ix4837-253-1239387588/",
+      "started_at": "2026-10-28T08:37:56.705029+00:00",
+      "http_status": 200,
+      "final_url": "https://wwd.com/footwear-news/sneaker-news/nike-air-force-1-low-07-safari-release-date-ix4837-253-1239387588/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 122942,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://wwd.com/footwear-news/sneaker-news/nike-air-force-1-low-07-safari-release-date-ix4837-253-1239387588/"
+      ],
+      "duration_ms": 3591.491
+    },
+    {
+      "operation_id": "f9722a22c7894fd9aed1612ba9b1a420",
+      "requested_url": "https://wwd.com/footwear-news/sneaker-news/nike-ovolo-2-sneaker-heel-release-date-1239387408/",
+      "started_at": "2026-10-28T08:38:00.764097+00:00",
+      "http_status": 200,
+      "final_url": "https://wwd.com/footwear-news/sneaker-news/nike-ovolo-2-sneaker-heel-release-date-1239387408/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 120401,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://wwd.com/footwear-news/sneaker-news/nike-ovolo-2-sneaker-heel-release-date-1239387408/"
+      ],
+      "duration_ms": 1698.562
+    },
+    {
+      "operation_id": "e3d77ce334d649dd91446363976648a5",
+      "requested_url": "https://wwd.com/footwear-news/shoe-trends/sneaker-heels-comeback-trend-2026-nike-converse-lacoste-1239387622/",
+      "started_at": "2026-10-28T08:38:02.915705+00:00",
+      "http_status": 200,
+      "final_url": "https://wwd.com/footwear-news/shoe-trends/sneaker-heels-comeback-trend-2026-nike-converse-lacoste-1239387622/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 123025,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://wwd.com/footwear-news/shoe-trends/sneaker-heels-comeback-trend-2026-nike-converse-lacoste-1239387622/"
+      ],
+      "duration_ms": 3747.145
+    },
+    {
+      "operation_id": "497a76345a734292adfaae3f98e50396",
+      "requested_url": "https://wwd.com/sourcing-journal/industry-news/nike-rfid-inventory-apparel-footwear-robotics-consumer-direct-acceleration-celect-1238758512/",
+      "started_at": "2026-10-28T08:38:07.136115+00:00",
+      "http_status": 200,
+      "final_url": "https://wwd.com/sourcing-journal/industry-news/nike-rfid-inventory-apparel-footwear-robotics-consumer-direct-acceleration-celect-1238758512/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 127389,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://wwd.com/sourcing-journal/industry-news/nike-rfid-inventory-apparel-footwear-robotics-consumer-direct-acceleration-celect-1238758512/"
+      ],
+      "duration_ms": 4143.994
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "5767093087cb402ca18fc637aebb93d9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nike+counterfeit+listing+report&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "08580731afb440249ee110ab7aecd4ba",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nike+counterfeit+listing+report",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cef35daf2fb4433f8315d9fe58f89444",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNike%2Bcounterfeit%2Blisting%2Breport&_bvc=1.6025526deb5c5b1d4b4e40eb745298548cbc64299291199755d37e4bc425d73b",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cef35daf2fb4433f8315d9fe58f89444",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNike%2Bcounterfeit%2Blisting%2Breport&_bvc=2.435af647ee37b4f44a661cfa1aae25f5657ed82d23b57581c5cdbbb42f50814d",
+      "host": "search.yahoo.com",
+      "http_operation_id": "cef35daf2fb4433f8315d9fe58f89444",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a0192adc438246c7b3f4f5d89c4a1ad1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "157f163c63074509b44746e2aa6f7609",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "8f40728a8fa84c44b79979594ed81ef2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com/life-style/fashion/style-guide/how-to-spot-fake-nike-air-force-1-sneakers/photostory/116689398.cms",
+      "host": "timesofindia.indiatimes.com",
+      "http_operation_id": "b52071ae59514d0186fabb5fd5ff217a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "7a38d3e030b546a5a38efb1e87d9fbe7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8892170597824782859b91315d848d8a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c913b08c274f4d7d9d8c614bc2935e9b",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+official+source&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "487d2c91e6d84c0a9a6511536b54a347",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "dafebc5f02694035a62d037d0eed1080",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "c28b93e8e78a4dd8a387413bb2dc7552",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com",
+      "host": "search.yahoo.com",
+      "http_operation_id": "011683c66cce48fdaeb2e3d00f417056",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov",
+      "host": "search.yahoo.com",
+      "http_operation_id": "86055621b2c94cefa75ca97e8766d9f9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Bdocumented%2BNike%2Bcounterfeit-product%2Bcampaigns%252C%2Bfake%2Bstores%2Band%2Bimpersonation-related%2Bwarnings.%2BSeparate%2Bhistorical%2Bcases%2Bfrom%2Bcurrently%2Bobserved%2Bincidents.%2Breported%2Bincident%2Bsite%253Areddit.com&_bvc=1.57655e85572fd8fa9a3aa5431f7bb09a3a737f3e0f3e82846b9e22a3876d4194",
+      "host": "search.yahoo.com",
+      "http_operation_id": "011683c66cce48fdaeb2e3d00f417056",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Areddit.com&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "085721725c484a558ee3aa3d7ca7d4bf",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+reported+incident+site%3Aftc.gov&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "a3150fa8a11c4ce9a4da0a61ba85f321",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "37d37c8b9ad042b5b262a47f3e4c8051",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "cc997c834c1141fc8ba305067a3865e7",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/stocks/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "04bb6d78955a4b2f950863c2422a7dae",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+counterfeit+listing+report+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "4a1694885e3d42899e36b34597858440",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.reddit.com/r/wallstreetbets/.rss",
+      "host": "www.reddit.com",
+      "http_operation_id": "560093dfab2c498583e489ff659ea864",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "699f610223e546028109dee1f226e965",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ac642b3d6e474ab1bffc5371470cdbef",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "dccfe663f4e94c3b9051ea44312141ab",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DInvestigate%2Bpublicly%2Bdocumented%2BNike%2Bcounterfeit-product%2Bcampaigns%252C%2Bfake%2Bstores%2Band%2Bimpersonation-related%2Bwarnings.%2BSeparate%2Bhistorical%2Bcases%2Bfrom%2Bcurrently%2Bobserved%2Bincidents.%2Blatest%2Bindependent%2Breporting%2B%2528site%253Acpsc.gov%2BOR%2Bsite%253Arecalls.gov%2BOR%2Bsite%253Agov.uk%2529&_bvc=1.602d9033015565c774cde4ead529d2666181f6342c039a55e0facb3ce19791d8",
+      "host": "search.yahoo.com",
+      "http_operation_id": "dccfe663f4e94c3b9051ea44312141ab",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Investigate+publicly+documented+Nike+counterfeit-product+campaigns%2C+fake+stores+and+impersonation-related+warnings.+Separate+historical+cases+from+currently+observed+incidents.+latest+independent+reporting+%28site%3Acpsc.gov+OR+site%3Arecalls.gov+OR+site%3Agov.uk%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "cf59b1612d3243578f09110879fbbfb1",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nike+counterfeit+enforcement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "6ac2c506dee844c5919607109c824e99",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "4efe8e969a6a4b86a0bc33b36db72ad6",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/sourcing-journal/industry-news/los-angeles-california-counterfeit-bust-nike-adidas-streetwear-1239180559/",
+      "host": "wwd.com",
+      "http_operation_id": "31d3a04c3e374016b56cd0e96b9f5ded",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj",
+      "host": "www.msn.com",
+      "http_operation_id": "19ce8aa7f56f4dfaaa3f28d36895ae36",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "55c558e678eb4600857790ad44ff1a21",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj",
+      "host": "r.jina.ai",
+      "http_operation_id": "aa1a7289e469405ab578b4cf3667eb9c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nike+counterfeit+enforcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5ce11020ba4242c58ffd6aae6bbdeff3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d8bcc24e174b444e9cc60c43fffad98f",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.yahoo.com/news/us/articles/port-inspection-leads-10m-counterfeit-200025036.html",
+      "host": "www.yahoo.com",
+      "http_operation_id": "228f48c0b0ff403ba5b523b46da97a4a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/crime/general/10-million-fake-nike-and-adidas-bust-in-california-nearly-26-000-items-seized-as-owner-remains-on-the-loose/ar-AA2bvZQj",
+      "host": "r.jina.ai",
+      "http_operation_id": "0922fe159c6c47418da97d94922be2ff",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNike%2Bcounterfeit%2Benforcement&_bvc=1.c426aba8e1a64e6284dd37b344b79673263fb1b44ae51ccdbd53221820aacc3c",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5ce11020ba4242c58ffd6aae6bbdeff3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNike%2Bcounterfeit%2Benforcement&_bvc=2.ab6d485a2deda646704a6ecc561e1f6d9c41804e0b11813ce3b41da51a5f0712",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5ce11020ba4242c58ffd6aae6bbdeff3",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nike+counterfeit+enforcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "5ce11020ba4242c58ffd6aae6bbdeff3",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+counterfeit+enforcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "d742e6e8c7774a28b91d17e0a7b254ec",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nike+brand+protection+official+trademark+acquisitions+litigation+news&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "15ee101dbe324314a17f8c95f0cf4d72",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.yahoo.com/news/us/articles/port-inspection-leads-10m-counterfeit-200025036.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "14114e81571c4ed8870348d784defce1",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ",
+      "host": "www.msn.com",
+      "http_operation_id": "aed5b43f1a874751882702de89f5be6a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nike+brand+protection+official+trademark+acquisitions+litigation+news",
+      "host": "search.yahoo.com",
+      "http_operation_id": "b270f37313484a82bc29626f1add0c40",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ",
+      "host": "r.jina.ai",
+      "http_operation_id": "706c1c17f138488092423e36923e3883",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNike%2Bbrand%2Bprotection%2Bofficial%2Btrademark%2Bacquisitions%2Blitigation%2Bnews&_bvc=1.12452e40e7de5ac0a22eee748cd18a6cc228a27bbd02759c90dccf61fa9f6ed2",
+      "host": "search.yahoo.com",
+      "http_operation_id": "b270f37313484a82bc29626f1add0c40",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.yahoo.com/news/us/articles/port-inspection-leads-10m-counterfeit-200025036.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "6880a4b566d84a34b3cfe7f2a8c910a4",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nike+unauthorized+seller+allegation&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "692c52e9f9d347b094d6097fc845fbdc",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Nike+unauthorized+seller+allegation&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "02ebd4b93e4d4e14a1e8d21eae3aa787",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.msn.com/en-us/news/other/customs-agents-at-iah-seize-3-7-million-in-counterfeit-goods-including-fake-mlb-nike-louis-vuitton-jaguar-products-cbp-says/ar-AA29C2wJ",
+      "host": "r.jina.ai",
+      "http_operation_id": "1eddf3936cbc4ebda23994b0aed26a6b",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Nike+unauthorized+seller+allegation",
+      "host": "search.yahoo.com",
+      "http_operation_id": "229e6100729d42cca8aaaae95d6eeb03",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "0d2c1994bdec480da47d3a63b2fb6e56",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNike%2Bunauthorized%2Bseller%2Ballegation&_bvc=1.0deeef905d8efa0df4969f5a3880235b749c3680506409cdcbf38e9f9f47c0b6",
+      "host": "search.yahoo.com",
+      "http_operation_id": "229e6100729d42cca8aaaae95d6eeb03",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/sourcing-journal/industry-news/nike-artificial-intelligence-maturity-fashion-1239313075/",
+      "host": "wwd.com",
+      "http_operation_id": "fb2b1e4b682449088da3010f7d6b5fd7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "9f7056f91d7f47d594502805272829fa",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://about.nike.com/en/",
+      "host": "about.nike.com",
+      "http_operation_id": "b5a59b9cdac24d81b4c4071908720c84",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DNike%2Bunauthorized%2Bseller%2Ballegation&_bvc=2.41590be7166457a0d92003a56769d25d6a2fe83e4b9190f7992d657a664fb542",
+      "host": "search.yahoo.com",
+      "http_operation_id": "229e6100729d42cca8aaaae95d6eeb03",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Nike+unauthorized+seller+allegation&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "3e7e0189cf644fbba637511b50e6b656",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/sourcing-journal/industry-news/nike-celect-acquistion-1238737756/",
+      "host": "wwd.com",
+      "http_operation_id": "05866552e91f4244864199f34c6a2c48",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nike+impersonation+allegation+report&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "92d3a638b45442389079e2f8969b00da",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Nike+unauthorized+seller+allegation+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "9cfd751d1ec2454f85f09a2a56c0b332",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://about.nike.com/en/",
+      "host": "r.jina.ai",
+      "http_operation_id": "ee4e161140ca4e6e8de7b8efe258bf3c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://wwd.com/sourcing-journal/industry-news/nike-celect-acquistion-1238737756/",
+      "host": "r.jina.ai",
+      "http_operation_id": "227f9119773f42c5a72a0102cd9317b7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://wwd.com/sourcing-journal/industry-news/nike-celect-acquistion-1238737756/",
+      "host": "r.jina.ai",
+      "http_operation_id": "be97cffda19844ea82f8b93c2f1bc8a7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/robots.txt",
+      "host": "www.ftc.gov",
+      "http_operation_id": "5ef290c957e14c8aa9e3180d2a0b8566",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/footwear-news/sneaker-news/distressed-white-sneaker-trend-celine-reebok-coach-1239386092/",
+      "host": "wwd.com",
+      "http_operation_id": "bf5a5518cc114658afc54ba9ed4d5a00",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/footwear-news/sneaker-news/nike-air-force-1-low-07-safari-release-date-ix4837-253-1239387588/",
+      "host": "wwd.com",
+      "http_operation_id": "8dcdc850884e42ee814bac62bf7385b7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.ftc.gov/feeds/press-release.xml",
+      "host": "www.ftc.gov",
+      "http_operation_id": "709f978b0dad4720b50ecea6ebdd62c7",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/footwear-news/sneaker-news/nike-ovolo-2-sneaker-heel-release-date-1239387408/",
+      "host": "wwd.com",
+      "http_operation_id": "f9722a22c7894fd9aed1612ba9b1a420",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/footwear-news/shoe-trends/sneaker-heels-comeback-trend-2026-nike-converse-lacoste-1239387622/",
+      "host": "wwd.com",
+      "http_operation_id": "e3d77ce334d649dd91446363976648a5",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wwd.com/sourcing-journal/industry-news/nike-rfid-inventory-apparel-footwear-robotics-consumer-direct-acceleration-celect-1238758512/",
+      "host": "wwd.com",
+      "http_operation_id": "497a76345a734292adfaae3f98e50396",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 72,
+  "admission_rejections": 3
+}

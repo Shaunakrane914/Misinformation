@@ -1,0 +1,32 @@
+{
+  "application_sha256": "4f2a90527ebe135e49d416dfb4d96b3a43f6adcb3410acfac63c0240e0dadb15",
+  "final_application_sha256": "4f2a90527ebe135e49d416dfb4d96b3a43f6adcb3410acfac63c0240e0dadb15",
+  "stable_application": true,
+  "live_ai_calls_reserved": 1,
+  "shared_ai_calls_reserved_before_batch": 2,
+  "shared_ai_calls_reserved_after_batch": 3,
+  "live_ai_observations": [
+    {
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "search_suggestion",
+      "http_status": 200,
+      "status": "GENERATED",
+      "latency_ms": 961.57,
+      "investigation_id": "99a1b481bfbf4d62ae26df165501166e",
+      "provider_model": "gemini-3.5-flash-lite",
+      "usage_source": "provider",
+      "prompt_tokens": 309,
+      "completion_tokens": 78,
+      "total_tokens": 387
+    }
+  ],
+  "advisory_model_check": {
+    "status": "ENABLED",
+    "model": "gemini-3.5-flash-lite",
+    "reason": "STRICT_DAILY_RUNTIME_SCOPE",
+    "capability_cached": false,
+    "capability_http_status": 200,
+    "calls_reserved": 2,
+    "daily_request_cap": 8
+  }
+}

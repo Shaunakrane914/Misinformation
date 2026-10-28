@@ -279,6 +279,8 @@ class TrendingAgent:
         """Execute full Trend Discovery & Intelligence Pipeline."""
         start_time = time.time()
         identifiers = identifiers or {}
+        from backend.services.research.temporal_guard import requested_trending_window
+        window_hours = requested_trending_window(identifiers.get("claim_text") or "")
         instagram_url = identifiers.get("instagram_url") or identifiers.get("instagram")
         hashtag = identifiers.get("hashtag")
         check_box_office = identifiers.get("box_office", False)
@@ -312,7 +314,7 @@ class TrendingAgent:
                 domain="trending",
                 agent_name="trending",
                 intent=f"discover emerging viral trends, public narratives, and cross-channel discourse for {target_query}",
-                extra_params={"claim_text": identifiers.get("claim_text") or ""},
+                extra_params={"claim_text": identifiers.get("claim_text") or "", "trending_window_hours": window_hours},
                 query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
                 deep_read_budget=15,
                 corroboration_budget=2,
@@ -403,7 +405,7 @@ class TrendingAgent:
         accepted_ev, _ = relevance_gate.filter_candidates(
             all_raw_evidence,
             target_entity=target_query,
-            domain="trending"
+            domain="trending", window_hours=window_hours
         )
         usable_evidence = accepted_ev
 
@@ -459,7 +461,7 @@ class TrendingAgent:
 
         limitations = []
         if not deduped_evidence:
-            limitations.append("No task-relevant acquired evidence with an eligible publication date was retained in the 48-hour window. This does not establish that no recent public information exists.")
+            limitations.append(f"No task-relevant acquired evidence with an eligible publication date was retained in the {window_hours:g}-hour window. This does not establish that no recent public information exists.")
         limitations.append("Reports describe observed recent developments, not measured popularity, audience reach or amplification. Source groups are heuristic; independence is not established.")
         def context_kind(evidence):
             return (evidence.metadata.get("trend_source_context") or {}).get("classification", "PRIMARY_TOPIC")

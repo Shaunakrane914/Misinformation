@@ -1,0 +1,8 @@
+{
+  "branch": "fix/personal-evidence-20261028",
+  "base_commit": "8b5a9a55a8df030ccb86ccbd1f99be959e6885d7",
+  "application_sha256": "0dcf81f064a4f011095506cae7ba14229af5d69b238bca23dbede23b2fb82cc2",
+  "deployed": false,
+  "committed": false,
+  "mode": "FINAL_LOCAL_AFTER_OFFLINE_SURNAME_CORRECTION"
+}

@@ -40,7 +40,7 @@ class ResearchPipeline:
         profile = request.research_profile or requested_research_profile.get() or self.budget.research_profile
         if profile:
             from backend.application.research.harvest_pipeline import run_harvest_pipeline
-            return run_harvest_pipeline(request, self.budget, profile)
+            return run_harvest_pipeline(request, self.budget.for_profile(profile), profile)
         start_ts = time.monotonic()
         effective_timeout = (
             request.timeout_seconds if getattr(request, "timeout_seconds", None) is not None

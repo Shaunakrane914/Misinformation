@@ -21,7 +21,9 @@ from backend.services.agent_reach.native.source_discovery import (
 
 
 @pytest.fixture
-def router():
+def router(monkeypatch):
+    # This module's acquisition fixtures cover indexed discovery/mirrors only.
+    monkeypatch.setenv("AEGIS_REDDIT_RSS_ENABLED", "false")
     return NativeRouter()
 
 

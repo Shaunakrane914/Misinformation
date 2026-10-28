@@ -15,8 +15,8 @@ from backend.services.agent_reach.native.operation_capabilities import EXECUTABL
 _CORE = frozenset({"web", "news", "rss"})
 _BASIS = "VALIDATED_SPECIALIST_SOURCE_PLAN"
 _PATTERNS = (
-    ("FALSE_QUOTE", r"\b(?:(?:false|fake|fabricated|misattributed)\s+(?:quote|quotation|statement)|"
-                    r"(?:quote|quotation)\s+(?:is\s+)?(?:false|fake|fabricated)|did\s+not\s+say)\b"),
+    ("FALSE_QUOTE", r"\b(?:(?:false|fake|fabricated|misattributed)\s+(?:quotes?|quotations?|statements?)|"
+                    r"(?:quotes?|quotations?)\s+(?:(?:is|are)\s+)?(?:false|fake|fabricated)|did\s+not\s+say)\b"),
     ("COUNTERFEIT", r"\b(?:counterfeit(?:s|ing)?|knockoffs?|fake\s+products?)\b"),
     ("PHISHING", r"\b(?:phishing|credential\s+(?:theft|harvesting))\b"),
     ("IMPERSONATION", r"\b(?:impersonat(?:ion|ions|e|es|ed|ing|or|ors)|fake\s+accounts?)\b"),

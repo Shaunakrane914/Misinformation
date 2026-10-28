@@ -1117,4 +1117,7 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
                 f"{metrics.get('article_bodies', 0)} article capture(s); qualification decisions: {reason_text}; "
                 f"{failed} failed read(s). Fresh-looking feed entries remain discovery leads, not current article evidence. "
                 "This does not measure popularity or establish an absence of new developments.")
+    reference = trace.get("reference_background")
+    if isinstance(reference, dict):
+        report.agent_intelligence["reference_background"] = deepcopy(reference)
     return report

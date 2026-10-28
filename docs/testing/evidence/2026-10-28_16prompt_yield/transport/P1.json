@@ -1,0 +1,1419 @@
+{
+  "scope": "SHARED_BOUNDED_HTTP_AND_NATIVE_ADMISSIONS_NOT_ALL_PROVIDER_QUOTAS",
+  "http_operations": [
+    {
+      "operation_id": "8f71982978694f5683e4b72a92bfc498",
+      "requested_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview&format=rss",
+      "started_at": "2026-10-28T08:40:42.678025+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 4675,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview&format=rss"
+      ],
+      "duration_ms": 1466.023
+    },
+    {
+      "operation_id": "e708fe169ba0471586f0837898a4cb49",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+interview&first=1",
+      "started_at": "2026-10-28T08:40:42.678328+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+interview&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129688,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+interview&first=1"
+      ],
+      "duration_ms": 4937.39
+    },
+    {
+      "operation_id": "ac975be1b3ef491daf79ed8f87bc45ea",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+interview",
+      "started_at": "2026-10-28T08:40:47.647686+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5010.282
+    },
+    {
+      "operation_id": "9cdf2a7fc75944a5a8935e0bcb0de029",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:40:52.658227+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5005.322
+    },
+    {
+      "operation_id": "6a6179c799064143bb1d4f377930f821",
+      "requested_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+statement&format=rss",
+      "started_at": "2026-10-28T08:40:57.900187+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+statement&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1771,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Tim+Cook%22+statement&format=rss"
+      ],
+      "duration_ms": 1291.385
+    },
+    {
+      "operation_id": "0748bc7579a54aa29f789633f97c9d1a",
+      "requested_url": "https://www.aol.co.uk/news/tim-cook-interview-apple-boss-124600461.html",
+      "started_at": "2026-10-28T08:40:57.899768+00:00",
+      "http_status": 404,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 2104.002
+    },
+    {
+      "operation_id": "f12ac58ff7764fce819c37e867f58c0d",
+      "requested_url": "https://www.digit.in/news/general/when-will-tim-cook-leave-apple-ceo-answers-in-a-new-interview.html",
+      "started_at": "2026-10-28T08:40:58.201077+00:00",
+      "http_status": 200,
+      "final_url": "https://www.digit.in/news/general/when-will-tim-cook-leave-apple-ceo-answers-in-a-new-interview.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 51996,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.digit.in/news/general/when-will-tim-cook-leave-apple-ceo-answers-in-a-new-interview.html"
+      ],
+      "duration_ms": 2451.286
+    },
+    {
+      "operation_id": "dd2deebdda0e44a294dbf46ee45a5f8a",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript&first=1",
+      "started_at": "2026-10-28T08:40:57.861906+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 129164,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript&first=1"
+      ],
+      "duration_ms": 2841.515
+    },
+    {
+      "operation_id": "b6e38d944a454ba09bd777b5c49ed6aa",
+      "requested_url": "https://wccftech.com/tim-cook-talks-about-apple-intelligence-and-openai-in-the-latest-interview/",
+      "started_at": "2026-10-28T08:41:01.420418+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "CONNECTION_FAILURE",
+      "network_observed": false,
+      "duration_ms": 1283.058
+    },
+    {
+      "operation_id": "7dab700849cc49b0b934a160e6127f73",
+      "requested_url": "https://r.jina.ai/https://wccftech.com/tim-cook-talks-about-apple-intelligence-and-openai-in-the-latest-interview/",
+      "started_at": "2026-10-28T08:41:02.703795+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 698.541
+    },
+    {
+      "operation_id": "c69e6788ee3d4552b9abb98ca528fe00",
+      "requested_url": "https://r.jina.ai/https://www.aol.co.uk/news/tim-cook-interview-apple-boss-124600461.html",
+      "started_at": "2026-10-28T08:41:00.004118+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5012.399
+    },
+    {
+      "operation_id": "c835b416e5c544b694aae41d9d86c987",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview+transcript",
+      "started_at": "2026-10-28T08:41:00.731371+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5014.595
+    },
+    {
+      "operation_id": "a2c8c3ed67494cfcb4c7b0f82c6ade53",
+      "requested_url": "https://www.digit.in/news/general/apple-ceo-tim-cook-uses-this-ai-tool-everyday-says-it-changed-his-life.html",
+      "started_at": "2026-10-28T08:41:05.020379+00:00",
+      "http_status": 200,
+      "final_url": "https://www.digit.in/news/general/apple-ceo-tim-cook-uses-this-ai-tool-everyday-says-it-changed-his-life.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 63064,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.digit.in/news/general/apple-ceo-tim-cook-uses-this-ai-tool-everyday-says-it-changed-his-life.html"
+      ],
+      "duration_ms": 2891.185
+    },
+    {
+      "operation_id": "67823dea676f43ab96e7d581a482ca1c",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:05.746237+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 13446,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 2286.24
+    },
+    {
+      "operation_id": "2c023c5ba62242ebab260d33afb02096",
+      "requested_url": "https://www.financialexpress.com/life/technology-dont-benchmark-that-apple-ceo-tim-cooks-surprising-interview-on-leadership-and-coffee-3646378/",
+      "started_at": "2026-10-28T08:41:03.479817+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5007.564
+    },
+    {
+      "operation_id": "cd64a930bd4b442dbb540fed950ac24f",
+      "requested_url": "https://r.jina.ai/https://www.financialexpress.com/life/technology-dont-benchmark-that-apple-ceo-tim-cooks-surprising-interview-on-leadership-and-coffee-3646378/",
+      "started_at": "2026-10-28T08:41:08.487689+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.financialexpress.com/life/technology-dont-benchmark-that-apple-ceo-tim-cooks-surprising-interview-on-leadership-and-coffee-3646378/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 772,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.financialexpress.com/life/technology-dont-benchmark-that-apple-ceo-tim-cooks-surprising-interview-on-leadership-and-coffee-3646378/"
+      ],
+      "duration_ms": 1877.38
+    },
+    {
+      "operation_id": "e1f9aef44321414d9fb717e66330f9f6",
+      "requested_url": "https://wccftech.com/tim-cook-statement-this-year-explains-why-macbook-neo-does-not-feature-a19-pro/",
+      "started_at": "2026-10-28T08:41:10.372100+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "CONNECTION_FAILURE",
+      "network_observed": false,
+      "duration_ms": 1125.939
+    },
+    {
+      "operation_id": "33fd78958730433297fd0f0cfd314b2c",
+      "requested_url": "https://www.digit.in/news/general/tim-cook-plans-to-increase-investment-in-china-what-it-means-for-apples-make-in-india-ambitions.html",
+      "started_at": "2026-10-28T08:41:08.157558+00:00",
+      "http_status": 200,
+      "final_url": "https://www.digit.in/news/general/tim-cook-plans-to-increase-investment-in-china-what-it-means-for-apples-make-in-india-ambitions.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 59320,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.digit.in/news/general/tim-cook-plans-to-increase-investment-in-china-what-it-means-for-apples-make-in-india-ambitions.html"
+      ],
+      "duration_ms": 4332.004
+    },
+    {
+      "operation_id": "2473d38cfbec4c3c8a577eafe6eaae02",
+      "requested_url": "https://www.bing.com/news/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&format=rss",
+      "started_at": "2026-10-28T08:41:10.873454+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1815,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&format=rss"
+      ],
+      "duration_ms": 1922.415
+    },
+    {
+      "operation_id": "4c064aae4a714ad5aba8ff43c7cf4937",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview&first=1",
+      "started_at": "2026-10-28T08:41:10.873105+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 128762,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview&first=1"
+      ],
+      "duration_ms": 2227.073
+    },
+    {
+      "operation_id": "87e06ce237394a6690f911ab0a5cd7c2",
+      "requested_url": "https://r.jina.ai/https://wccftech.com/tim-cook-statement-this-year-explains-why-macbook-neo-does-not-feature-a19-pro/",
+      "started_at": "2026-10-28T08:41:11.498330+00:00",
+      "http_status": 403,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "ACCESS_DENIED",
+      "network_observed": true,
+      "duration_ms": 2128.942
+    },
+    {
+      "operation_id": "8ff685f0b0804a08aaa75ec3ae076c19",
+      "requested_url": "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:12.875840+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1449,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1537.767
+    },
+    {
+      "operation_id": "1058380d1c9a4618bc63e9105662cdaf",
+      "requested_url": "https://www.businesstoday.in/visualstories/technology/tim-cook-exclusive-interview-with-bt-apples-big-plans-for-india-what-the-apple-ceo-said-on-ai-in-biggest-tech-interview-of-2023-31981-18-04-2023",
+      "started_at": "2026-10-28T08:41:13.949487+00:00",
+      "http_status": 200,
+      "final_url": "https://www.businesstoday.in/visualstories/technology/tim-cook-exclusive-interview-with-bt-apples-big-plans-for-india-what-the-apple-ceo-said-on-ai-in-biggest-tech-interview-of-2023-31981-18-04-2023",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 16657,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.businesstoday.in/visualstories/technology/tim-cook-exclusive-interview-with-bt-apples-big-plans-for-india-what-the-apple-ceo-said-on-ai-in-biggest-tech-interview-of-2023-31981-18-04-2023"
+      ],
+      "duration_ms": 977.662
+    },
+    {
+      "operation_id": "bf95599688134e6e8dfe0dc3f74bb9b3",
+      "requested_url": "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:14.416959+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1449,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 911.938
+    },
+    {
+      "operation_id": "d7f46da896214809854fb67a05777c56",
+      "requested_url": "https://www.bing.com/search?q=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China&first=1",
+      "started_at": "2026-10-28T08:41:12.876659+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132719,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China&first=1"
+      ],
+      "duration_ms": 3212.732
+    },
+    {
+      "operation_id": "042ffc41496c4675b9b396e3a4a4ed63",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview",
+      "started_at": "2026-10-28T08:41:13.123043+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 5003.924
+    },
+    {
+      "operation_id": "49738c7c87fa441d913ffbc109f49991",
+      "requested_url": "https://www.digit.in/news/general/this-is-tim-cooks-four-word-defence-for-apples-late-entry-into-the-ai-race.html",
+      "started_at": "2026-10-28T08:41:15.226145+00:00",
+      "http_status": 200,
+      "final_url": "https://www.digit.in/news/general/this-is-tim-cooks-four-word-defence-for-apples-late-entry-into-the-ai-race.html",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 63524,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.digit.in/news/general/this-is-tim-cooks-four-word-defence-for-apples-late-entry-into-the-ai-race.html"
+      ],
+      "duration_ms": 3817.969
+    },
+    {
+      "operation_id": "8946ebb8e5f1498ca698f94b62ebca07",
+      "requested_url": "https://search.yahoo.com/search?p=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China",
+      "started_at": "2026-10-28T08:41:16.112276+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 3029.182
+    },
+    {
+      "operation_id": "c802fe0904a448658ad7f96108187b06",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:18.127256+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 77500,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 4704.963
+    },
+    {
+      "operation_id": "8aaac92c032f497a928023fa9d03ba87",
+      "requested_url": "https://news.google.com/rss/search?q=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:19.141679+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 3749.377
+    },
+    {
+      "operation_id": "3aca726dce1e4ad8b49fc46990d97015",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "started_at": "2026-10-28T08:41:22.935109+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132804,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1"
+      ],
+      "duration_ms": 2236.106
+    },
+    {
+      "operation_id": "f6ff9975863e46bc8bcc4d0890c1f81a",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+speech+remarks+announcement&first=1",
+      "started_at": "2026-10-28T08:41:22.935467+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+speech+remarks+announcement&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130182,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+speech+remarks+announcement&first=1"
+      ],
+      "duration_ms": 2257.938
+    },
+    {
+      "operation_id": "8be4f82aeda14951b7aeecf3e3b83a92",
+      "requested_url": "https://www.financialexpress.com/business/news/tim-cook-is-stepping-back-heres-what-his-47-million-deal-tells-us-about-apples-plan/4331427/",
+      "started_at": "2026-10-28T08:41:22.894583+00:00",
+      "http_status": 200,
+      "final_url": "https://www.financialexpress.com/business/news/tim-cook-is-stepping-back-heres-what-his-47-million-deal-tells-us-about-apples-plan/4331427/",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 125004,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.financialexpress.com/business/news/tim-cook-is-stepping-back-heres-what-his-47-million-deal-tells-us-about-apples-plan/4331427/"
+      ],
+      "duration_ms": 4239.294
+    },
+    {
+      "operation_id": "7f1cbd810d30412db6024face8c0b1e9",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "started_at": "2026-10-28T08:41:25.223314+00:00",
+      "http_status": 500,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "HTTP_FAILURE",
+      "network_observed": true,
+      "duration_ms": 4795.775
+    },
+    {
+      "operation_id": "ed19e057d32e4e21adb8a2839803bbe3",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+speech+remarks+announcement",
+      "started_at": "2026-10-28T08:41:25.216408+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5003.597
+    },
+    {
+      "operation_id": "dbd61ece0b7141888e99862fa9fa18ea",
+      "requested_url": "https://www.financialexpress.com/life/technology-who-is-john-ternus-the-50-year-old-apple-engineer-tipped-to-succeed-tim-cook-as-ceo-4045213/?ref=articlehyperlinking",
+      "started_at": "2026-10-28T08:41:27.750775+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5004.252
+    },
+    {
+      "operation_id": "689196d5d74b4ceab5ae630bca1bfd79",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:30.019314+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 51621,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 3708.139
+    },
+    {
+      "operation_id": "82a0131f81494af295745ebcfc3e8a7c",
+      "requested_url": "https://r.jina.ai/https://www.financialexpress.com/life/technology-who-is-john-ternus-the-50-year-old-apple-engineer-tipped-to-succeed-tim-cook-as-ceo-4045213/?ref=articlehyperlinking",
+      "started_at": "2026-10-28T08:41:32.755423+00:00",
+      "http_status": 200,
+      "final_url": "https://r.jina.ai/https://www.financialexpress.com/life/technology-who-is-john-ternus-the-50-year-old-apple-engineer-tipped-to-succeed-tim-cook-as-ceo-4045213/?ref=articlehyperlinking",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 794,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://r.jina.ai/https://www.financialexpress.com/life/technology-who-is-john-ternus-the-50-year-old-apple-engineer-tipped-to-succeed-tim-cook-as-ceo-4045213/?ref=articlehyperlinking"
+      ],
+      "duration_ms": 2078.276
+    },
+    {
+      "operation_id": "e501ccb12fe04d11998806e230937057",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+remarks+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:30.220326+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 5011.714
+    },
+    {
+      "operation_id": "47f5e80a68fb4da3bbae0362d0de843d",
+      "requested_url": "https://www.bing.com/search?q=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript&first=1",
+      "started_at": "2026-10-28T08:41:33.758960+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130188,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript&first=1"
+      ],
+      "duration_ms": 4248.899
+    },
+    {
+      "operation_id": "09a1f553cb554a328df221d7fd715c4f",
+      "requested_url": "https://www.financialexpress.com/world-news/us-news/tim-cooks-last-day-as-apple-ceo-6-big-things-that-changed-under-his-leadership/4328647/?ref=articlehyperlinking",
+      "started_at": "2026-10-28T08:41:34.842814+00:00",
+      "http_status": 200,
+      "final_url": "https://www.financialexpress.com/world-news/us-news/tim-cooks-last-day-as-apple-ceo-6-big-things-that-changed-under-his-leadership/4328647/?ref=articlehyperlinking",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 124085,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.financialexpress.com/world-news/us-news/tim-cooks-last-day-as-apple-ceo-6-big-things-that-changed-under-his-leadership/4328647/?ref=articlehyperlinking"
+      ],
+      "duration_ms": 4702.266
+    },
+    {
+      "operation_id": "fded4b5bd6c74fd3b4ebac12c9b3e930",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "started_at": "2026-10-28T08:41:36.801913+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 133609,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1"
+      ],
+      "duration_ms": 3060.302
+    },
+    {
+      "operation_id": "3e535b6aed4b41e4b43bb196423cdc09",
+      "requested_url": "https://search.yahoo.com/search?p=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript",
+      "started_at": "2026-10-28T08:41:38.032747+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5011.211
+    },
+    {
+      "operation_id": "8273d0070e744a578285a9c58c756062",
+      "requested_url": "https://news.google.com/rss/search?q=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:43.044256+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": false,
+      "duration_ms": 174.341
+    },
+    {
+      "operation_id": "1c2586eed21b4a2591b7df98edd2fee0",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29",
+      "started_at": "2026-10-28T08:41:39.890472+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5009.932
+    },
+    {
+      "operation_id": "40f1a98c14944a9087b2d064c546999e",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:44.900704+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.088
+    },
+    {
+      "operation_id": "868784502ee34a94b07854e40201a84a",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1",
+      "started_at": "2026-10-28T08:41:43.219232+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 132339,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1"
+      ],
+      "duration_ms": 1937.256
+    },
+    {
+      "operation_id": "d4a165fb38a04df194338d10eded068b",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29",
+      "started_at": "2026-10-28T08:41:45.182471+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.069
+    },
+    {
+      "operation_id": "448a4f654ee647c9ab8fe2cacc31c044",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:45.182688+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": null,
+      "duration_ms": 0.069
+    },
+    {
+      "operation_id": "ebd809edbeff4d6f869337afe9cd8870",
+      "requested_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript&format=rss",
+      "started_at": "2026-10-28T08:41:46.017009+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1078,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript&format=rss"
+      ],
+      "duration_ms": 1161.108
+    },
+    {
+      "operation_id": "14171c986a7b40d0a86b359cf9d4b673",
+      "requested_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:41:46.016640+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1964,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 1162.012
+    },
+    {
+      "operation_id": "af5331f2f439445aaa31ea1546557b61",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:47.180551+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 12004.326
+    },
+    {
+      "operation_id": "db47645b1cc644e28d4de82653cf1e73",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:41:59.185075+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "TIMEOUT",
+      "network_observed": false,
+      "duration_ms": 1839.436
+    },
+    {
+      "operation_id": "4a8ad8deee694d00b8e734a09badcb71",
+      "requested_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "started_at": "2026-10-28T08:42:01.031936+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1370,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss"
+      ],
+      "duration_ms": 3391.931
+    },
+    {
+      "operation_id": "877b4ae8d1fd4a90a31beeb3855f96fd",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+speech+transcript&first=1",
+      "started_at": "2026-10-28T08:42:01.032216+00:00",
+      "http_status": 200,
+      "final_url": "https://www.bing.com/search?q=%22Tim+Cook%22+speech+transcript&first=1",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 130125,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.bing.com/search?q=%22Tim+Cook%22+speech+transcript&first=1"
+      ],
+      "duration_ms": 4204.14
+    },
+    {
+      "operation_id": "46406e872ad748f9ba88999a09c04807",
+      "requested_url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+speech+transcript",
+      "started_at": "2026-10-28T08:42:05.271616+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 0.068
+    },
+    {
+      "operation_id": "8027b50626f74ceead908c8155fcbca1",
+      "requested_url": "https://www.wired.com/video/watch/big-interview-tim-cook",
+      "started_at": "2026-10-28T08:42:01.573358+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5005.972
+    },
+    {
+      "operation_id": "065bb45254f641af962f442a807530d2",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:42:05.271833+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 55534,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 1721.119
+    },
+    {
+      "operation_id": "0d852c39d403496ba089b1071a72a7f4",
+      "requested_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "started_at": "2026-10-28T08:42:04.426413+00:00",
+      "http_status": 200,
+      "final_url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 9382,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen"
+      ],
+      "duration_ms": 6856.215
+    },
+    {
+      "operation_id": "b076c8de04514259b38711c3014982e4",
+      "requested_url": "https://r.jina.ai/https://www.wired.com/video/watch/big-interview-tim-cook",
+      "started_at": "2026-10-28T08:42:06.579610+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 5035.359
+    },
+    {
+      "operation_id": "53cb7404fd55470bbe3c30ef852dce87",
+      "requested_url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+public+statement&format=rss",
+      "started_at": "2026-10-28T08:42:11.303025+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 1383.548
+    },
+    {
+      "operation_id": "970f23cbe6344338810c928fbc18df3a",
+      "requested_url": "https://www.bing.com/search?q=%22Tim+Cook%22+public+statement&first=1",
+      "started_at": "2026-10-28T08:42:11.303338+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 1383.764
+    },
+    {
+      "operation_id": "d88da35284b7444ca932c253747c3701",
+      "requested_url": "https://r.jina.ai/https://www.wired.com/video/watch/big-interview-tim-cook",
+      "started_at": "2026-10-28T08:42:11.615294+00:00",
+      "http_status": null,
+      "final_url": null,
+      "outcome": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "network_observed": null,
+      "duration_ms": 4973.559
+    },
+    {
+      "operation_id": "cedb400706b8422ab678f2f8ee0a7be0",
+      "requested_url": "https://www.apple.com",
+      "started_at": "2026-10-28T08:42:17.431497+00:00",
+      "http_status": 200,
+      "final_url": "https://www.apple.com",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 42287,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.apple.com"
+      ],
+      "duration_ms": 1854.056
+    }
+  ],
+  "admissions": [
+    {
+      "url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "8f71982978694f5683e4b72a92bfc498",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+interview&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "e708fe169ba0471586f0837898a4cb49",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+interview",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ac975be1b3ef491daf79ed8f87bc45ea",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Binterview&_bvc=1.90950ce6090dd5c613eabfcd6cdce836995b747a319ad111972a019bddb9586d",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ac975be1b3ef491daf79ed8f87bc45ea",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Binterview&_bvc=2.fd06c152b28b9bec5b0e580ca664d55ef2f15f2bd597f5e4d6e7918284efcbba",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ac975be1b3ef491daf79ed8f87bc45ea",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Binterview&_bvc=3.688a992f5bdac44109b2e74ff49ee1b627e9ba0babf628c7eb90b06709d06fe5",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ac975be1b3ef491daf79ed8f87bc45ea",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "9cdf2a7fc75944a5a8935e0bcb0de029",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "dd2deebdda0e44a294dbf46ee45a5f8a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.aol.co.uk/news/tim-cook-interview-apple-boss-124600461.html",
+      "host": "www.aol.co.uk",
+      "http_operation_id": "0748bc7579a54aa29f789633f97c9d1a",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+statement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "6a6179c799064143bb1d4f377930f821",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.digit.in/news/general/when-will-tim-cook-leave-apple-ceo-answers-in-a-new-interview.html",
+      "host": "www.digit.in",
+      "http_operation_id": "f12ac58ff7764fce819c37e867f58c0d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.aol.co.uk/news/tim-cook-interview-apple-boss-124600461.html",
+      "host": "r.jina.ai",
+      "http_operation_id": "c69e6788ee3d4552b9abb98ca528fe00",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c835b416e5c544b694aae41d9d86c987",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://wccftech.com/tim-cook-talks-about-apple-intelligence-and-openai-in-the-latest-interview/",
+      "host": "wccftech.com",
+      "http_operation_id": "b6e38d944a454ba09bd777b5c49ed6aa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wccftech.com/tim-cook-talks-about-apple-intelligence-and-openai-in-the-latest-interview/",
+      "host": "wccftech.com",
+      "http_operation_id": "b6e38d944a454ba09bd777b5c49ed6aa",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://wccftech.com/tim-cook-talks-about-apple-intelligence-and-openai-in-the-latest-interview/",
+      "host": "r.jina.ai",
+      "http_operation_id": "7dab700849cc49b0b934a160e6127f73",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bstatement%2Binterview%2Btranscript&_bvc=1.2759d85f8ba16b53ee20a62d6108301b36b243513d87383de0627364cc0b53fe",
+      "host": "search.yahoo.com",
+      "http_operation_id": "c835b416e5c544b694aae41d9d86c987",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.financialexpress.com/life/technology-dont-benchmark-that-apple-ceo-tim-cooks-surprising-interview-on-leadership-and-coffee-3646378/",
+      "host": "www.financialexpress.com",
+      "http_operation_id": "2c023c5ba62242ebab260d33afb02096",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.digit.in/news/general/apple-ceo-tim-cook-uses-this-ai-tool-everyday-says-it-changed-his-life.html",
+      "host": "www.digit.in",
+      "http_operation_id": "a2c8c3ed67494cfcb4c7b0f82c6ade53",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "67823dea676f43ab96e7d581a482ca1c",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.digit.in/news/general/tim-cook-plans-to-increase-investment-in-china-what-it-means-for-apples-make-in-india-ambitions.html",
+      "host": "www.digit.in",
+      "http_operation_id": "33fd78958730433297fd0f0cfd314b2c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.financialexpress.com/life/technology-dont-benchmark-that-apple-ceo-tim-cooks-surprising-interview-on-leadership-and-coffee-3646378/",
+      "host": "r.jina.ai",
+      "http_operation_id": "cd64a930bd4b442dbb540fed950ac24f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wccftech.com/tim-cook-statement-this-year-explains-why-macbook-neo-does-not-feature-a19-pro/",
+      "host": "wccftech.com",
+      "http_operation_id": "e1f9aef44321414d9fb717e66330f9f6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://wccftech.com/tim-cook-statement-this-year-explains-why-macbook-neo-does-not-feature-a19-pro/",
+      "host": "wccftech.com",
+      "http_operation_id": "e1f9aef44321414d9fb717e66330f9f6",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "4c064aae4a714ad5aba8ff43c7cf4937",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "2473d38cfbec4c3c8a577eafe6eaae02",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://wccftech.com/tim-cook-statement-this-year-explains-why-macbook-neo-does-not-feature-a19-pro/",
+      "host": "r.jina.ai",
+      "http_operation_id": "87e06ce237394a6690f911ab0a5cd7c2",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8ff685f0b0804a08aaa75ec3ae076c19",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "d7f46da896214809854fb67a05777c56",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview",
+      "host": "search.yahoo.com",
+      "http_operation_id": "042ffc41496c4675b9b396e3a4a4ed63",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.businesstoday.in/visualstories/technology/tim-cook-exclusive-interview-with-bt-apples-big-plans-for-india-what-the-apple-ceo-said-on-ai-in-biggest-tech-interview-of-2023-31981-18-04-2023",
+      "host": "www.businesstoday.in",
+      "http_operation_id": "1058380d1c9a4618bc63e9105662cdaf",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bstatement%2Binterview&_bvc=1.f3b52879f2cea3f1537c0c1c2c54dce2f78dca22106ef21688c6ed7af40b7770",
+      "host": "search.yahoo.com",
+      "http_operation_id": "042ffc41496c4675b9b396e3a4a4ed63",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Find+Tim+Cook%27s+most+recent+publicly+attributable+statements+or+interviews+about+Apple%2C+AI+or+company+strategy.+Preserve+the+original+speaker%2C+event%2C+date+and+quotation+context.&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "bf95599688134e6e8dfe0dc3f74bb9b3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.digit.in/news/general/this-is-tim-cooks-four-word-defence-for-apples-late-entry-into-the-ai-race.html",
+      "host": "www.digit.in",
+      "http_operation_id": "49738c7c87fa441d913ffbc109f49991",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bstatement%2Binterview&_bvc=2.caaba66b12f3e8d25bd335d28dc6fea22d06101eb9934671e2ae45f76d5f312a",
+      "host": "search.yahoo.com",
+      "http_operation_id": "042ffc41496c4675b9b396e3a4a4ed63",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8946ebb8e5f1498ca698f94b62ebca07",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China",
+      "host": "search.yahoo.com",
+      "http_operation_id": "8946ebb8e5f1498ca698f94b62ebca07",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview",
+      "host": "search.yahoo.com",
+      "http_operation_id": "042ffc41496c4675b9b396e3a4a4ed63",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "c802fe0904a448658ad7f96108187b06",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Transcript+of+Adam+Lashinsky+Interviews+Tim+Cook+on+Apple%E2%80%99s+Future+In+China&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8aaac92c032f497a928023fa9d03ba87",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.financialexpress.com/business/news/tim-cook-is-stepping-back-heres-what-his-47-million-deal-tells-us-about-apples-plan/4331427/",
+      "host": "www.financialexpress.com",
+      "http_operation_id": "8be4f82aeda14951b7aeecf3e3b83a92",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "3aca726dce1e4ad8b49fc46990d97015",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+speech+remarks+announcement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "f6ff9975863e46bc8bcc4d0890c1f81a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+speech+remarks+announcement",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ed19e057d32e4e21adb8a2839803bbe3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f1cbd810d30412db6024face8c0b1e9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bspeech%2Bremarks%2Bannouncement&_bvc=1.89ecc5e5dff1429592bf7764c8cb1571ddbf485b871772540e80258c0f1c0777",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ed19e057d32e4e21adb8a2839803bbe3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.financialexpress.com/life/technology-who-is-john-ternus-the-50-year-old-apple-engineer-tipped-to-succeed-tim-cook-as-ceo-4045213/?ref=articlehyperlinking",
+      "host": "www.financialexpress.com",
+      "http_operation_id": "dbd61ece0b7141888e99862fa9fa18ea",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bstatement%2Binterview%2Btranscript%2B%2528site%253Areuters.com%2BOR%2Bsite%253Aapnews.com%2BOR%2Bsite%253Abbc.com%2529&_bvc=1.8803f9734ce3e615251dca413a71f045d273d9e4835a0bdc2cc7fb9cb99dcebb",
+      "host": "search.yahoo.com",
+      "http_operation_id": "7f1cbd810d30412db6024face8c0b1e9",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bspeech%2Bremarks%2Bannouncement&_bvc=2.21f9886976ecdac4b3cca5d1bbb8869c40bd38f832183d0766860d5ffd7084dc",
+      "host": "search.yahoo.com",
+      "http_operation_id": "ed19e057d32e4e21adb8a2839803bbe3",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+transcript+%28site%3Areuters.com+OR+site%3Aapnews.com+OR+site%3Abbc.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "689196d5d74b4ceab5ae630bca1bfd79",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+remarks+announcement&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "e501ccb12fe04d11998806e230937057",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.financialexpress.com/life/technology-who-is-john-ternus-the-50-year-old-apple-engineer-tipped-to-succeed-tim-cook-as-ceo-4045213/?ref=articlehyperlinking",
+      "host": "r.jina.ai",
+      "http_operation_id": "82a0131f81494af295745ebcfc3e8a7c",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "47f5e80a68fb4da3bbae0362d0de843d",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.financialexpress.com/world-news/us-news/tim-cooks-last-day-as-apple-ceo-6-big-things-that-changed-under-his-leadership/4328647/?ref=articlehyperlinking",
+      "host": "www.financialexpress.com",
+      "http_operation_id": "09a1f553cb554a328df221d7fd715c4f",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "fded4b5bd6c74fd3b4ebac12c9b3e930",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3e535b6aed4b41e4b43bb196423cdc09",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DApple%2BCEO%2BTim%2BCook%2Bon%2BFBI%252C%2BSecurity%252C%2BPrivacy%253A%2BTranscript&_bvc=1.525bc88321a6f01c46ae7099f36c6b79435a77f0326a3f19e43288cc35b08c12",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3e535b6aed4b41e4b43bb196423cdc09",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1c2586eed21b4a2591b7df98edd2fee0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DApple%2BCEO%2BTim%2BCook%2Bon%2BFBI%252C%2BSecurity%252C%2BPrivacy%253A%2BTranscript&_bvc=2.75992f35746a86ed017292443417a5488b34eb9ef95eb5a4b404fe2c19769648",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3e535b6aed4b41e4b43bb196423cdc09",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bstatement%2B%2528site%253Aarstechnica.com%2BOR%2Bsite%253Atechcrunch.com%2BOR%2Bsite%253Atheverge.com%2529&_bvc=1.83629f20779444ceb798fd4956af606be313c4ec7a1f372bb7ea7d499c12e8a4",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1c2586eed21b4a2591b7df98edd2fee0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3DApple%2BCEO%2BTim%2BCook%2Bon%2BFBI%252C%2BSecurity%252C%2BPrivacy%253A%2BTranscript&_bvc=3.2d5c1c1f40efa81b8f722aba9862be02976a71c8f51b28575e0a096022f8d172",
+      "host": "search.yahoo.com",
+      "http_operation_id": "3e535b6aed4b41e4b43bb196423cdc09",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=Apple+CEO+Tim+Cook+on+FBI%2C+Security%2C+Privacy%3A+Transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "8273d0070e744a578285a9c58c756062",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "868784502ee34a94b07854e40201a84a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/_bv/v.gif?orig=%2Fsearch%3Fp%3D%2522Tim%2BCook%2522%2Bstatement%2B%2528site%253Aarstechnica.com%2BOR%2Bsite%253Atechcrunch.com%2BOR%2Bsite%253Atheverge.com%2529&_bvc=2.9b67d83676d37fef1ecbf4263fb712da8251882dfa26fc4ab1ce15ca4a638f48",
+      "host": "search.yahoo.com",
+      "http_operation_id": "1c2586eed21b4a2591b7df98edd2fee0",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+%28site%3Aarstechnica.com+OR+site%3Atechcrunch.com+OR+site%3Atheverge.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "40f1a98c14944a9087b2d064c546999e",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29",
+      "host": "search.yahoo.com",
+      "http_operation_id": "d4a165fb38a04df194338d10eded068b",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+statement+interview+%28site%3Atheguardian.com+OR+site%3Adw.com+OR+site%3Aaljazeera.com%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "448a4f654ee647c9ab8fe2cacc31c044",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+interview+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "14171c986a7b40d0a86b359cf9d4b673",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "ebd809edbeff4d6f869337afe9cd8870",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "af5331f2f439445aaa31ea1546557b61",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "db47645b1cc644e28d4de82653cf1e73",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "4a8ad8deee694d00b8e734a09badcb71",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+speech+transcript&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "877b4ae8d1fd4a90a31beeb3855f96fd",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.wired.com/video/watch/big-interview-tim-cook",
+      "host": "www.wired.com",
+      "http_operation_id": "8027b50626f74ceead908c8155fcbca1",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript+%28press+release+OR+official+statement+OR+filing+OR+wire%29&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "0d852c39d403496ba089b1071a72a7f4",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://search.yahoo.com/search?p=%22Tim+Cook%22+speech+transcript",
+      "host": "search.yahoo.com",
+      "http_operation_id": "46406e872ad748f9ba88999a09c04807",
+      "phase": "discovery",
+      "admitted": false
+    },
+    {
+      "url": "https://news.google.com/rss/search?q=%22Tim+Cook%22+speech+transcript&hl=en-US&gl=US&ceid=US%3Aen",
+      "host": "news.google.com",
+      "http_operation_id": "065bb45254f641af962f442a807530d2",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.wired.com/video/watch/big-interview-tim-cook",
+      "host": "r.jina.ai",
+      "http_operation_id": "b076c8de04514259b38711c3014982e4",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/news/search?q=%22Tim+Cook%22+public+statement&format=rss",
+      "host": "www.bing.com",
+      "http_operation_id": "53cb7404fd55470bbe3c30ef852dce87",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://www.bing.com/search?q=%22Tim+Cook%22+public+statement&first=1",
+      "host": "www.bing.com",
+      "http_operation_id": "970f23cbe6344338810c928fbc18df3a",
+      "phase": "discovery",
+      "admitted": true
+    },
+    {
+      "url": "https://r.jina.ai/https://www.wired.com/video/watch/big-interview-tim-cook",
+      "host": "r.jina.ai",
+      "http_operation_id": "d88da35284b7444ca932c253747c3701",
+      "phase": "reading",
+      "admitted": true
+    },
+    {
+      "url": "https://www.apple.com",
+      "host": "www.apple.com",
+      "http_operation_id": "cedb400706b8422ab678f2f8ee0a7be0",
+      "phase": "reading",
+      "admitted": true
+    }
+  ],
+  "native_http_admissions": 78,
+  "admission_rejections": 4
+}

@@ -1,0 +1,17 @@
+{
+  "scope": "LOCAL_OFFLINE_VALIDATION_NOT_LIVE_PROVIDER_OR_REMOTE_CI",
+  "results": [
+    {
+      "gate": "full",
+      "exit_code": 0,
+      "seconds": 204.47,
+      "pytest_summary": "2830 passed in 195.74s (0:03:15)"
+    },
+    {
+      "gate": "fast",
+      "exit_code": 0,
+      "seconds": 154.58,
+      "pytest_summary": "2622 passed in 145.23s (0:02:25)"
+    }
+  ]
+}

@@ -33,7 +33,7 @@ from backend.services.agent_reach.native.cache import social_cache
 from backend.services.agent_reach.native.normalizer import native_normalizer
 from backend.services.agent_reach.native.source_discovery import extract_reddit_source
 from backend.services.url_validator import validate_url_safe
-from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http
+from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http, ProviderHTTPError
 from backend.infrastructure.acquisition.network.budget import remaining_timeout
 
 logger = logging.getLogger(__name__)
@@ -283,7 +283,7 @@ def fetch_reddit_subreddit_rss(
 ) -> List[EvidenceFragment]:
     """
     Acquire live Reddit submissions directly from public Subreddit RSS/Atom feed.
-    Zero-auth, bypasses Cloudflare/DataDome challenge via open Atom syndication.
+    Public Atom syndication when enabled; access denials are terminal.
     Governed by AEGIS_REDDIT_RSS_ENABLED feature flag and records sunset deprecation.
     """
     # 1. Feature Flag & Shutdown Governance Check
@@ -293,15 +293,24 @@ def fetch_reddit_subreddit_rss(
         return []
 
     clean_sub = re.sub(r"^/?r/", "", subreddit.strip().rstrip("/"))
-    if not clean_sub:
+    if not re.fullmatch(r"[A-Za-z0-9_]{3,21}", clean_sub) or limit <= 0:
         return []
+    limit = min(100, limit)
 
     cache_key = f"reddit:rss:{clean_sub.lower()}:{limit}"
     get_c = cache_get or social_cache.get
     set_c = cache_set or social_cache.set
 
     cached = get_c(cache_key)
-    if cached:
+    if isinstance(cached, dict) and cached.get('failure_status') in {401, 403, 429}:
+        if cached.get('expires_at', 0) > time.time():
+            raise ProviderHTTPError('Cached Reddit RSS access failure', endpoint='',
+                status_code=cached['failure_status'], network_observed=False, attempts=0,
+                retry_after_seconds=cached.get('retry_after_seconds'))
+        cached = None
+    if cached is not None:
+        if not cached:
+            return []
         cached_copy = copy.deepcopy(cached)
         for fragment in cached_copy:
             fragment.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
@@ -310,28 +319,32 @@ def fetch_reddit_subreddit_rss(
 
     url = f"https://www.reddit.com/r/{clean_sub}/.rss"
     timeout = DEFAULT_HTTP_TIMEOUT
-    req = urllib.request.Request(
-        url,
-        headers={
+    headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
             "Accept": "application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8",
-        },
-    )
+        }
     fragments: List[EvidenceFragment] = []
     try:
         import feedparser
         request_started = time.perf_counter()
-        with urllib.request.urlopen(req, timeout=remaining_timeout(min(5.0, timeout))) as resp:
-            raw_xml = resp.read()
+        response = fetch_public_http(url, headers=headers, timeout=remaining_timeout(min(5.0, timeout)),
+                                     max_bytes=1_000_000, max_attempts=1, max_redirects=0)
+        if response.status_code == 200:
+            raw_xml = decode_bounded_http_body(response, max_bytes=1_000_000)
+            opening = raw_xml[:1000]
+            if (not re.search(br'<(?:rss|feed)(?:\s|>)', opening, re.I)
+                    and re.search(br'401 unauthorized|403 forbidden|access denied|too many requests|verify you are human', opening, re.I)):
+                raise ProviderHTTPError('Reddit RSS returned an explicit access denial', endpoint=url,
+                    status_code=429 if b'too many requests' in opening.lower() else 403, network_observed=True)
             transport = {
                 "network_observed_this_attempt": True,
                 "endpoint": url,
-                "http_status": getattr(resp, "status", None),
-                "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
+                "http_status": response.status_code,
+                "content_type": response.content_type,
                 "raw_body_bytes": len(raw_xml),
                 "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
                 "cache_status": "CACHE_MISS",
-                "rate_limit_remaining": resp.headers.get("X-Ratelimit-Remaining") if getattr(resp, "headers", None) else None,
+                "rate_limit_remaining": response.headers.get("X-Ratelimit-Remaining"),
             }
             feed = feedparser.parse(raw_xml)
             for entry in feed.entries[:limit]:
@@ -382,15 +395,18 @@ def fetch_reddit_subreddit_rss(
                     }
                 )
                 fragments.append(frag)
-            if fragments:
-                set_c(cache_key, fragments)
-                return fragments
-    except urllib.error.HTTPError as e:
-        if e.code == 429:
-            logger.warning(f"[RedditAdapter] Subreddit RSS rate limited (429) for r/{clean_sub}")
-        else:
-            logger.debug(f"[RedditAdapter] Subreddit RSS HTTP {e.code} for r/{clean_sub}: {e}")
+            set_c(cache_key, fragments)
+            return fragments
+    except ProviderHTTPError as error:
+        if error.status_code in {401, 403, 429}:
+            set_c(cache_key, {'failure_status': error.status_code,
+                'retry_after_seconds': error.retry_after_seconds,
+                'expires_at': time.time() + min(300.0, max(1.0, error.retry_after_seconds or 30.0))})
+        raise  # Never turn an access/validation failure into an empty successful feed.
     except Exception as e:
+        from backend.services.research.source_registry import SourcePermissionError
+        if isinstance(e, SourcePermissionError):
+            raise
         logger.debug(f"[RedditAdapter] Subreddit RSS fetch failed for r/{clean_sub}: {e}")
     return fragments
 

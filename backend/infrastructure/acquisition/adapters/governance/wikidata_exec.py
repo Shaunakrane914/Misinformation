@@ -1,10 +1,7 @@
-"""Aegis Protocol — Wikidata & Executive Registry Adapter.
+"""Wikidata entity labels, aliases and descriptions for bounded background.
 
-Provides executive identity, corporate governance, and PEP/sanctions intelligence for Personal Watch:
-- Verified executive leadership career timelines and corporate directorships (Wikidata entity items)
-- Parent organizations, board seats, historical offices held, and educational background
-- Politically Exposed Person (PEP) flags and sanctions registry cross-referencing
-- Ingests up to 25,000 characters of structured executive biographical facts
+Retains the legacy adapter name for compatibility. Property counts are not
+verified biographies, directorships or sanctions/PEP assessments.
 """
 
 from __future__ import annotations
@@ -32,13 +29,13 @@ logger = logging.getLogger(__name__)
 WIKIDATA_SEARCH_BASE = "https://www.wikidata.org/w/api.php"
 WIKIDATA_ENTITY_BASE = "https://www.wikidata.org/wiki/Special:EntityData"
 DEFAULT_WIKIDATA_HEADERS = {
-    "User-Agent": "AegisProtocol/1.0 (governance-audit; intelligence@aegis-protocol.org)",
+    "User-Agent": "AegisProtocol/1.0 (https://github.com/Shaunakrane914/Misinformation; bounded research)",
     "Accept": "application/json",
 }
 
 
 class WikidataExecutiveAdapter(PlatformAdapter):
-    """Acquires verified executive career timelines and corporate directorships from Wikidata."""
+    """Acquires source-reported identity labels and description from Wikidata."""
 
     @property
     def platform(self) -> str:
@@ -136,38 +133,16 @@ class WikidataExecutiveAdapter(PlatformAdapter):
                             description = descriptions
                         aliases_en = [a.get("value") for a in entity_data.get("aliases", {}).get("en", [])]
 
-                        claims = entity_data.get("claims", {})
                         facts_summary.append(f"**Entity ID**: {qid}")
                         if aliases_en:
                             facts_summary.append(f"**Observed Aliases**: {', '.join(aliases_en)}")
                         facts_summary.append(f"**Primary Description**: {description}")
-                        facts_summary.append(f"**Total Registered Claims**: {len(claims)}")
-
-                        # Highlight key executive properties
-                        # P106: Occupation, P108: Employer, P39: Position held, P166: Award received, P569: Date of birth
-                        for pid, pname in [
-                            ("P106", "Occupation"),
-                            ("P108", "Employer / Corporate Ties"),
-                            ("P39", "Position Held / Directorship"),
-                            ("P166", "Awards / Honors"),
-                            ("P569", "Date of Birth"),
-                            ("P27", "Country of Citizenship"),
-                        ]:
-                            if pid in claims:
-                                claim_count = len(claims[pid])
-                                facts_summary.append(f"- **{pname} ({pid})**: {claim_count} recorded assertions")
                 except Exception as exc:
                     logger.debug("[WikidataExecutiveAdapter] Entity fetch notice for %s: %s", qid, type(exc).__name__)
 
         if not facts_summary:
             return FetchedDocument(url=url, status="EMPTY_CONTENT", backend_id=self.backend_id)
-        content = f"# Executive Governance Record: {label}\n\n"
-        content += f"**Public Registry**: {url}\n\n"
-        content += "## Source-Reported Biographical & Corporate Directorship Claims\n\n"
-        content += "\n".join(facts_summary) + "\n\n"
-        content += "## Governance & Compliance Provenance\n\n"
-        content += f"Entity facts retrieved from public Wikidata knowledge graph entity {qid}. "
-        content += "Information represents collaborative, referenced biographical claims for executive risk monitoring."
+        content = f"# {label} - Wikidata background\n\n" + "\n".join(facts_summary)
 
         capped = content[:25000]
 
@@ -201,7 +176,7 @@ class WikidataExecutiveAdapter(PlatformAdapter):
             platform="wikidata_exec",
             channel_name="wikidata_exec",
             url=candidate.url,
-            title=f"{label} (Executive & Corporate Governance Profile)",
+            title=f"{label} (Wikidata reference)",
             content=content,
             snippet=content[:400] + ("..." if len(content) > 400 else ""),
             author="Wikidata Registry / Wikimedia Knowledge Base",
@@ -225,6 +200,9 @@ class WikidataExecutiveAdapter(PlatformAdapter):
                 "qid": document.raw_metadata.get("qid"),
                 "label": label,
                 "description": document.raw_metadata.get("description"),
+                "source_permission": {"author": "Wikidata contributors",
+                    "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+                    "source_url": candidate.url, "adapted": False},
             },
         )
         return [fragment]

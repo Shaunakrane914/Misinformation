@@ -1,0 +1,203 @@
+{
+  "mode": "REAL_DEPLOYED_SSE",
+  "research_profile": "DEEP",
+  "scope": "One request per agent, no audit retries; independent accuracy is not established",
+  "ai": "Runtime advisory enabled, shared three-per-day cap; provider usage reported only if observed",
+  "cases": [
+    {
+      "agent": "trending",
+      "subject": "battery recycling",
+      "case_id": "01-trending",
+      "http_status": 200,
+      "result_event": true,
+      "seconds": 106.19,
+      "status": "INSUFFICIENT_EVIDENCE",
+      "error_events": [],
+      "progress_events": 46,
+      "acquisition_metrics": {
+        "source_count": 35,
+        "candidate_urls": 35,
+        "by_type": {
+          "DISCOVERY_LEAD": 19,
+          "BLOCKED_OR_FAILED": 4,
+          "FEED_ENTRY": 1,
+          "PUBLISHER_HOMEPAGE": 4,
+          "SOURCE_INDEX": 3,
+          "ARTICLE_BODY": 4
+        },
+        "reads_attempted": 14,
+        "successful_captures": 10,
+        "article_bodies": 4,
+        "raw_article_words": 3170,
+        "raw_source_words": 11635,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 296292,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "ACCESS_DENIED": 1
+        },
+        "dropped_by_limit": {},
+        "findings": 0,
+        "publisher_independence_verified": false
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "returned_records": 0,
+      "returned_record_words": 0,
+      "sources": [],
+      "findings": [],
+      "summary": "No recent article qualified for the 48-hour research window. 10 raw capture(s) retained; 4 article capture(s); qualification decisions: TEMPORAL_MISSING_TIMESTAMP: 6, TEMPORAL_STALE: 4; 4 failed read(s). Fresh-looking feed entries remain discovery leads, not current article evidence. This does not measure popularity or establish an absence of new developments.",
+      "funnel": {
+        "queries_planned": 18,
+        "queries_submitted": 18,
+        "queries_started": 18,
+        "queries_succeeded": 13,
+        "queries_failed": 3,
+        "queries_timed_out": 2,
+        "queries_auth_required": 0,
+        "queries_skipped": 0,
+        "queries_executed": 18,
+        "candidates_found": 35,
+        "candidates_accepted": 35,
+        "candidates_rejected": 10,
+        "unique_candidates": 0,
+        "deep_reads_count": 10,
+        "acquired_record_count": 0,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 0,
+        "contradictions_count": 0,
+        "findings_count": 0,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 10,
+        "article_body_count": 4,
+        "qualified_source_count": 0,
+        "publisher_link_decision_count": 333,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "ACCESS_DENIED": 1
+      },
+      "discarded_by_reason": {
+        "DUPLICATE_URL": 2
+      },
+      "query_statuses": {
+        "TIMEOUT": 2,
+        "FAILED": 3,
+        "SUCCESS": 13
+      },
+      "queries_generated": 18,
+      "reads_attempted": 14,
+      "native_http_admissions": 69,
+      "native_http_cap": 120,
+      "native_http_by_phase": {
+        "discovery": 48,
+        "reading": 21
+      },
+      "advisory": {
+        "status": "UNAVAILABLE",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "error_type": "AdvisoryPolicyError",
+        "latency_ms": 0.01
+      },
+      "historical_background": {
+        "status": "AVAILABLE",
+        "as_of": "2026-10-28T03:56:00.458362+00:00",
+        "sources": [
+          {
+            "evidence_id": "ev_hv_47a2a18c76bfe903203e",
+            "url": "https://resource-recycling.com/policy-now/2026/06/12/colorado-and-california-bills-take-aim-at-battery-recycling-gaps/",
+            "title": "Colorado and California bills take aim at battery recycling gaps",
+            "publisher": "resource-recycling.com",
+            "published_at": "2026-06-12T21:36:59+00:00",
+            "passage": "Spalding, senior vice president of corporate and external affairs at Cirba Solutions, helped shape the legislation that the General Assembly passed on May 14 . It expands Colorado’s Battery Stewardship Act, established under SB 25-163 in 2025 , to cover the largest and most hazardous battery stream in the vehicle recycling system.\n\nThe bill revises California’s Responsible Battery Recycling Act of 2022 to add medium-format batteries, defined in the bill text as rechargeable batteries weighing between 11 and 25 pounds, or rated between 300 and 2,000 watthours. The category covers e-bikes, lawn equipment and portable power systems.\n\n“The shape, size, weight and energy density create much more unique challenges,” Spalding told Resource Recycling. “Large format batteries for propulsion batteries specifically are more business-focused versus consumer-focused. The education target is very different, but also how you handle them.”\n\nUnder SB26-003, automakers and EV battery manufacturers are required to collect unwanted batteries from secondary handlers such as dismantlers and solid waste facilities at no cost to them. Approximately 330,000 vehicles reach end-of-life in Colorado annually, and automotive recycling facilities process the majority of them.",
+            "freshness": "OLDER_BACKGROUND",
+            "word_count": 182,
+            "source_permission": {
+              "author": "Stefanie Valentic",
+              "licence_url": ""
+            },
+            "observation_scope": "HISTORICAL_SOURCE_PASSAGES_NOT_CURRENT_TREND",
+            "source_body_sha256": "267e9cdccdd2e76569a43b9554838dff741c808e3ae079198a8a1946867fe68e"
+          },
+          {
+            "evidence_id": "ev_hv_2d3f12192fc2d7b56658",
+            "url": "https://resource-recycling.com/e-scrap/2026/05/27/illinois-expands-battery-recycling-as-lithium-ion-fire-concerns-mount/",
+            "title": "Illinois expands battery recycling as lithium-ion fire concerns mount",
+            "publisher": "resource-recycling.com",
+            "published_at": "2026-05-27T10:00:00+00:00",
+            "passage": "Illinois is rolling out an expanded battery stewardship program as waste and recycling operators across North America continue grappling with a sharp rise in lithium-ion battery fires tied to consumer products such as e-bikes, scooters, power tools and vaping devices.\n\nWith that in mind, Illinois’ Portable and Medium-Format Battery Stewardship Act officially took effect Jan. 1, requiring producers selling covered batteries in the state to participate in and fund a statewide recycling system.\n\nThe law significantly expands the scope of battery recycling programs by covering not only traditional household batteries, but also medium-format batteries used in products such as e-bikes, e-scooters, electric lawn mowers, snow blowers and power tools. The legislation applies to batteries weighing between 4.4 and 25 pounds or up to 2,000 watt-hours.\n\n“Proper battery recycling protects communities, workers, and the environment,” Leo Raudys, CEO of The Battery Network , said in announcing the program rollout. “Thanks to our statewide network of convenient drop-off locations, Illinois residents can now recycle safely and easily, keeping batteries out of landfills and helping to conserve valuable materials for the future.”",
+            "freshness": "OLDER_BACKGROUND",
+            "word_count": 179,
+            "source_permission": {
+              "author": "Keith Loria",
+              "licence_url": ""
+            },
+            "observation_scope": "HISTORICAL_SOURCE_PASSAGES_NOT_CURRENT_TREND",
+            "source_body_sha256": "1cc7494638a890a828a5e60d07288e3917a6a6617abdf2fac64fc75fd5b84f8c"
+          },
+          {
+            "evidence_id": "ev_hv_76f0ee5ec1594dbd1944",
+            "url": "https://resource-recycling.com/e-scrap/2026/04/09/rice-researchers-use-lemon-juice-to-boost-battery-recycling/",
+            "title": "Rice researchers use lemon juice to boost battery recycling",
+            "publisher": "resource-recycling.com",
+            "published_at": "2026-04-09T10:00:00+00:00",
+            "passage": "Researchers at Rice University in Texas have developed a lithium-ion battery recycling process that uses a brief plasma treatment and mild solvents to recover most of the valuable materials in black mass while also regenerating graphite for reuse in new batteries.\n\n“We have a crisis with the critical minerals required to make lithium-ion batteries, like lithium, manganese, nickel and graphite,” said Gautam Chandrasekhar, a doctoral student in materials science and nanoengineering at Rice and a first author on the study. “We were trying to develop new technologies for recycling these batteries.”\n\nConventional recycling routes can rely on high temperatures, strong acids or multiple processing steps and while metal recovery has drawn most of the attention, graphite often emerges too damaged for battery reuse. That matters because graphite is a major component of lithium-ion batteries by weight and, as researchers noted in a related review article, remains central to battery manufacturing even as supply and sustainability concerns intensify.",
+            "freshness": "OLDER_BACKGROUND",
+            "word_count": 157,
+            "source_permission": {
+              "author": "Scott Snowden",
+              "licence_url": ""
+            },
+            "observation_scope": "HISTORICAL_SOURCE_PASSAGES_NOT_CURRENT_TREND",
+            "source_body_sha256": "9059884c0530cd162512016c20d3cdb1a6558499ab75fda043cb7b8cd727edef"
+          },
+          {
+            "evidence_id": "ev_hv_6f33998bde94b8dfd6e4",
+            "url": "https://resource-recycling.com/e-scrap/2026/01/26/blue-whale-scales-up-battery-recycling-in-ok/",
+            "title": "Blue Whale scales up battery recycling in OK",
+            "publisher": "resource-recycling.com",
+            "published_at": "2026-01-26T18:57:51+00:00",
+            "passage": "The company reached a pivotal milestone in August 2025 when it launched operations at its first lithium-ion battery recycling facility in Bartlesville, Oklahoma.\n\n“Battery recycling is a hard business, and everything that you get in is a little bit different than what you got in before,” he said. Collection remains another constraint, he added, particularly for consumer batteries sitting in people’s homes.",
+            "freshness": "OLDER_BACKGROUND",
+            "word_count": 62,
+            "source_permission": {
+              "author": "Scott Snowden",
+              "licence_url": ""
+            },
+            "observation_scope": "HISTORICAL_SOURCE_PASSAGES_NOT_CURRENT_TREND",
+            "source_body_sha256": "470cd3509e9a8de2518edd960fb881a589f2cef0c04ce116570cf3ebc058d048"
+          }
+        ],
+        "published_words": 580,
+        "scope": "Older permitted relevant articles; excluded from fresh findings, trend counts and velocity"
+      }
+    }
+  ]
+}

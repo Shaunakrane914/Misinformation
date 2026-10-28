@@ -125,7 +125,10 @@
         }
       ],
       "returned_records": 2,
-      "returned_record_words": 1923
+      "returned_record_words": 1923,
+      "article_qualification_rejections_by_reason": {
+        "ARTICLE_RIGHTS_EXCEPTION_REVIEW_REQUIRED": 5
+      }
     },
     {
       "case_id": "02-brandshield",
@@ -258,7 +261,10 @@
         }
       ],
       "returned_records": 3,
-      "returned_record_words": 3081
+      "returned_record_words": 3081,
+      "article_qualification_rejections_by_reason": {
+        "NO_RELEVANT_PASSAGE": 5
+      }
     },
     {
       "case_id": "03-trending",
@@ -351,7 +357,11 @@
       "findings": [],
       "sources": [],
       "returned_records": 0,
-      "returned_record_words": 0
+      "returned_record_words": 0,
+      "article_qualification_rejections_by_reason": {
+        "ARTICLE_RIGHTS_EXCEPTION_REVIEW_REQUIRED": 5,
+        "TEMPORAL_STALE: Published 3689.0h ago exceeds Trending freshness window (48.0h)": 1
+      }
     },
     {
       "case_id": "04-personal_watch",
@@ -449,7 +459,10 @@
       "findings": [],
       "sources": [],
       "returned_records": 0,
-      "returned_record_words": 0
+      "returned_record_words": 0,
+      "article_qualification_rejections_by_reason": {
+        "NO_RELEVANT_PASSAGE": 2
+      }
     }
   ]
 }

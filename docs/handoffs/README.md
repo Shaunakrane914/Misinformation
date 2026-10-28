@@ -4,8 +4,9 @@
 
 - [Isolated release candidate, publication and production measurements](2026-10-28_ACQUISITION_DEPLOYMENT_AND_YIELD.md):
   preserves the divergent root/release worktrees, integrates observed publisher
-  locators and feed-to-reader continuity. Deployment and live results are recorded
-  as observed; initial candidate status is pending.
+  locators and feed-to-reader continuity. Deployed `ec5bef1`; measured four-agent
+  production output and a live Trending fallback of 580 dated background words.
+  Personal Watch remains empty; broader research acceptance remains partial.
 
 ## Public-source access activation — 2026-10-26
 

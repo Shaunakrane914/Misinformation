@@ -1,0 +1,126 @@
+[
+  {
+    "agent": "scout",
+    "mode": "EXACT_PRODUCTION_RESULT_REPLAY_ON_DEPLOYED_FRONTEND",
+    "views": [
+      {
+        "width": 390,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 2,
+        "expected_finding_count": 2,
+        "visible_workbench_passages": 8,
+        "historical_background_sources": 0,
+        "historical_background_words": 0,
+        "expected_historical_background_words": 0,
+        "expected_workbench_passages": 8
+      },
+      {
+        "width": 1440,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 2,
+        "expected_finding_count": 2,
+        "visible_workbench_passages": 8,
+        "historical_background_sources": 0,
+        "historical_background_words": 0,
+        "expected_historical_background_words": 0,
+        "expected_workbench_passages": 8
+      }
+    ],
+    "page_errors": []
+  },
+  {
+    "agent": "brandshield",
+    "mode": "EXACT_PRODUCTION_RESULT_REPLAY_ON_DEPLOYED_FRONTEND",
+    "views": [
+      {
+        "width": 390,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 5,
+        "expected_finding_count": 5,
+        "visible_workbench_passages": 8,
+        "historical_background_sources": 0,
+        "historical_background_words": 0,
+        "expected_historical_background_words": 0,
+        "expected_workbench_passages": 8
+      },
+      {
+        "width": 1440,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 5,
+        "expected_finding_count": 5,
+        "visible_workbench_passages": 8,
+        "historical_background_sources": 0,
+        "historical_background_words": 0,
+        "expected_historical_background_words": 0,
+        "expected_workbench_passages": 8
+      }
+    ],
+    "page_errors": []
+  },
+  {
+    "agent": "trending",
+    "mode": "EXACT_PRODUCTION_RESULT_REPLAY_ON_DEPLOYED_FRONTEND",
+    "views": [
+      {
+        "width": 390,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 0,
+        "expected_finding_count": 0,
+        "visible_workbench_passages": 0,
+        "historical_background_sources": 4,
+        "historical_background_words": 580,
+        "expected_historical_background_words": 580,
+        "expected_workbench_passages": 0
+      },
+      {
+        "width": 1440,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 0,
+        "expected_finding_count": 0,
+        "visible_workbench_passages": 0,
+        "historical_background_sources": 4,
+        "historical_background_words": 580,
+        "expected_historical_background_words": 580,
+        "expected_workbench_passages": 0
+      }
+    ],
+    "page_errors": []
+  },
+  {
+    "agent": "personal_watch",
+    "mode": "EXACT_PRODUCTION_RESULT_REPLAY_ON_DEPLOYED_FRONTEND",
+    "views": [
+      {
+        "width": 390,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 0,
+        "expected_finding_count": 0,
+        "visible_workbench_passages": 0,
+        "historical_background_sources": 0,
+        "historical_background_words": 0,
+        "expected_historical_background_words": 0,
+        "expected_workbench_passages": 0
+      },
+      {
+        "width": 1440,
+        "horizontal_overflow": false,
+        "report_visible": true,
+        "finding_count": 0,
+        "expected_finding_count": 0,
+        "visible_workbench_passages": 0,
+        "historical_background_sources": 0,
+        "historical_background_words": 0,
+        "expected_historical_background_words": 0,
+        "expected_workbench_passages": 0
+      }
+    ],
+    "page_errors": []
+  }
+]

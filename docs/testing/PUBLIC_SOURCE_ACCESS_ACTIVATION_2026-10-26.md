@@ -1,3 +1,8 @@
+# Latest continuation
+
+[October 28 deployment, four-agent yield and live Trending historical fallback](DEPLOYED_FOUR_AGENT_WORD_YIELD_2026-10-28.md).
+The dated observations below remain preserved as historical evidence.
+
 # Public-source access activation and bounded checks — 2026-10-26
 
 ## Decision and scope

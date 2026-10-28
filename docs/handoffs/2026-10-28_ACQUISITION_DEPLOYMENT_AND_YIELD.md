@@ -133,3 +133,30 @@ omitted CORS responses. After correction, Scout rendered at both widths, but
 a host/network interruption produced `ERR_NETWORK_IO_SUSPENDED` and
 `ERR_INTERNET_DISCONNECTED` for other pages. Those failures are retained and
 are not application JavaScript exceptions or successful four-agent browser proof.
+
+## Final observed closeout
+
+Final application `ec5bef19ff701d62fc10546a4a9bcc7b569f95f8` passed all five
+hosted jobs: full 2,811 /fast Python 3.12 2,603, with main CI also successful.
+Render `dep-dbgn2i7b9u1s7393pcgg` became live at `03:54:10Z`; Cloudflare
+`c9d0260f` serves the matching frontend. All nine attested assets matched Git;
+public health/CORS passed. No secret or access-policy changes were made.
+
+One additional normal production Trending request (battery recycling) completed
+in 106.19s, 69 native HTTP admissions /14 reads. It acquired four article bodies
+and returned **four older background articles /580 displayed words**, with zero
+current qualified sources. This is fresh autonomous acquisition and report
+assembly, not replay or supplied-URL proof. All four articles share one publisher.
+
+Saved reports from the original four cases plus this corrected Trending result
+were replayed on the final deployed frontend. Eight states passed count/overflow/
+exception checks; both Trending widths contained exactly 580 background words.
+Focused mobile/desktop background captures were visually inspected. The earlier
+host/harness failures remain separately recorded; no extra live source sweep was
+used for browser validation.
+
+[Full measured report and selected evidence](../testing/DEPLOYED_FOUR_AGENT_WORD_YIELD_2026-10-28.md).
+Original source worktrees remain preserved; the isolated publication worktree is
+the verified code snapshot. The four-agent research-quality milestone remains
+partial, especially Personal Watch. Production AI also still needs durable policy
+storage before suggestions can pass its existing admission guard.

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "dep-dbgn2i7b9u1s7393pcgg",
+    "status": "build_in_progress",
+    "createdAt": "2026-10-28T03:51:36.600091Z",
+    "finishedAt": null,
+    "commit": "ec5bef19ff701d62fc10546a4a9bcc7b569f95f8"
+  },
+  {
+    "id": "dep-dbgn2i7b9u1s7393pcgg",
+    "status": "update_in_progress",
+    "createdAt": "2026-10-28T03:51:36.600091Z",
+    "finishedAt": null,
+    "commit": "ec5bef19ff701d62fc10546a4a9bcc7b569f95f8"
+  },
+  {
+    "id": "dep-dbgn2i7b9u1s7393pcgg",
+    "status": "live",
+    "createdAt": "2026-10-28T03:51:36.600091Z",
+    "finishedAt": "2026-10-28T03:54:10.394696Z",
+    "commit": "ec5bef19ff701d62fc10546a4a9bcc7b569f95f8"
+  }
+]

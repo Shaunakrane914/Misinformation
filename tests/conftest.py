@@ -43,9 +43,16 @@ os.environ["AEGIS_MOCK_LLM"] = "true"
 os.environ["AEGIS_ENV"] = "test"
 os.environ["ENVIRONMENT"] = "test"
 os.environ["RSS_INGESTION_ENABLED"] = "false"
+# A locally enabled server must not change ordinary offline test behavior.
+# Individual advisory-policy controls opt in explicitly with monkeypatch.
+for _advisory_flag in ("AEGIS_LIVE_ADVISORY_ENABLED", "AEGIS_SEARCH_ADVISOR_ENABLED",
+                       "AEGIS_SOURCE_PLANNER_LLM_ENABLED", "AEGIS_EVIDENCE_ADVISOR_ENABLED"):
+    os.environ[_advisory_flag] = "false"
 os.environ["SQLITE_DB_PATH"] = str(_test_root / "aegis.db")
 os.environ["AEGIS_SQLITE_PATH"] = os.environ["SQLITE_DB_PATH"]
 os.environ["AEGIS_DOSSIER_DIR"] = str(_test_root / "dossiers")
+os.environ["AEGIS_AI_POLICY_DB"] = str(_test_root / "advisory-policy.sqlite3")
+os.environ["AEGIS_AI_DAILY_REQUEST_LIMIT"] = "3"
 os.environ["HUGINN_ENABLED"] = "false"
 os.environ["HUGINN_DB_PATH"] = str(_test_root / "huginn.db")
 _credential_prefixes = (

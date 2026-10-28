@@ -84,7 +84,7 @@ def runtime_advisory_scope(settings=None):
     """Reuse an explicit run, or admit an explicitly enabled UTC-day runtime run.
 
     The safe summary contains no keys, prompts or provider response bodies.
-    Three runtime reservations per UTC day are shared through the policy DB;
+    The configured runtime allowance per UTC day is shared through the policy DB;
     entering a new request or worker never resets that persisted count.
     """
     existing = policy._run.get()
@@ -137,7 +137,7 @@ def runtime_advisory_scope(settings=None):
                         state["expires_at"] = (now.replace(hour=0, minute=0, second=0, microsecond=0)
                                                + timedelta(days=1)).timestamp()
                         summary.update(status="ENABLED", reason="STRICT_DAILY_RUNTIME_SCOPE",
-                                       calls_reserved=budget["calls"], daily_request_cap=3)
+                                       calls_reserved=budget["calls"], daily_request_cap=budget["daily_request_limit"])
     except Exception as error:
         scope_stack.close()
         summary.update(status="UNAVAILABLE", reason="RUNTIME_ADVISORY_SETUP_FAILED", error_type=type(error).__name__)

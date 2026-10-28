@@ -1,0 +1,421 @@
+{
+  "scope": "OBSERVED_FAILED_RUN_NO_COUNTERFACTUAL_SUCCESS",
+  "input_sha256": "9a9e70edddf690e5c2607529a47403a52797cd2f634ac6f217996f84300a52b6",
+  "base_commit": "7ad13a5",
+  "rows": [
+    {
+      "candidate_id": "ev_hv_4d17555b4d6890a2ba54",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOaFdCWjdVZU9KdW9RdUZCWXRlcHl1T094c0hJWWhSbUZMNXdsdlBSbnk5MExWbGZGeE81cTRuZjNZRzVTMFhKQjhjcTZqVEdfVllkQmowYXQwMWFRcVdpQnc5cGVPemtyLTV5WVQydFpvU3owRmpyR0VZanlwMDN0VWpTdE9aNVhYWTRFRXR3M1BqbEJHZ0ZpRQ?oc=5",
+      "title": "Battery safety, sodium-ion and recycling research head to ECS meeting - Bioengineer.org",
+      "read_ordinal": 1,
+      "actual_dispatch_score": 0.5,
+      "actual_score_components": {
+        "target_in_title": 2.0,
+        "opaque_wrapper": -3.0,
+        "publication_window": 1.5
+      },
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_895c3e52e45fc4d9de1a",
+      "url": "https://bioengineer.org",
+      "title": "BIOENGINEER.ORG - Bioengineering",
+      "read_ordinal": 2,
+      "actual_dispatch_score": -3.0,
+      "actual_score_components": {
+        "index_or_hub": -3.0
+      },
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "Insufficient multi-token topic match"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 0
+    },
+    {
+      "candidate_id": "ev_hv_12ae2c2a8027770f029c",
+      "url": "https://bioengineer.org/comments/feed/",
+      "title": "Comments for BIOENGINEER.ORG",
+      "read_ordinal": 3,
+      "actual_dispatch_score": -3.6,
+      "actual_score_components": {
+        "index_or_hub": -3.0,
+        "publisher_diversity": -0.6
+      },
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "Insufficient multi-token topic match"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 1
+    },
+    {
+      "candidate_id": "ev_hv_4b9d51110f66f068a940",
+      "url": "https://bioengineer.org/?s=Battery+Recycling",
+      "title": "Are you looking for Battery Recycling? - BIOENGINEER.ORG",
+      "read_ordinal": 4,
+      "actual_dispatch_score": -4.836,
+      "actual_score_components": {
+        "index_or_hub": -3.0,
+        "publisher_diversity": -1.2,
+        "publisher_history_weak": -0.136,
+        "in_run_zero_yield_streak": -0.5
+      },
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 2
+    },
+    {
+      "candidate_id": "ev_hv_09f12b5da9a5d63dabc2",
+      "url": "https://bioengineer.org/new-bacterium-harnesses-spent-battery-waste-paving-the-way-for-self-sufficient-battery-recycling/",
+      "title": "New Bacterium Harnesses Spent Battery Waste, Paving the Way for",
+      "read_ordinal": 5,
+      "actual_dispatch_score": 4.014,
+      "actual_score_components": {
+        "target_in_title": 3.0,
+        "target_in_url": 2.0,
+        "article_url": 2.0,
+        "publisher_diversity": -1.7999999999999998,
+        "publisher_history_weak": -0.186,
+        "in_run_zero_yield_streak": -1.0
+      },
+      "captured_publication_after_read": "2025-10-22T21:27:35+01:00",
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 8828.8h ago exceeds Trending freshness window (48.0h)"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 3
+    },
+    {
+      "candidate_id": "ev_hv_14df22733d9cdf5f1ee9",
+      "url": "https://bioengineer.org/revolutionizing-battery-recycling-new-single-step-process-for-cathode-recovery/",
+      "title": "Revolutionizing Battery Recycling: New Single-Step Process for Cathode",
+      "read_ordinal": 6,
+      "actual_dispatch_score": 2.884,
+      "actual_score_components": {
+        "target_in_title": 3.0,
+        "target_in_url": 2.0,
+        "article_url": 2.0,
+        "publisher_diversity": -2.4,
+        "publisher_history_weak": -0.216,
+        "in_run_zero_yield_streak": -1.5
+      },
+      "captured_publication_after_read": "2025-10-01T00:09:17+01:00",
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 9354.1h ago exceeds Trending freshness window (48.0h)"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 4
+    },
+    {
+      "candidate_id": "ev_hv_40d92359f4058c641a60",
+      "url": "https://bioengineer.org/us-advanced-battery-consortium-funds-extension-of-lithium-ion-battery-recycling-process/",
+      "title": "US Advanced Battery Consortium funds extension of lithium-ion battery",
+      "read_ordinal": 7,
+      "actual_dispatch_score": 2.364,
+      "actual_score_components": {
+        "target_in_title": 3.0,
+        "target_in_url": 2.0,
+        "article_url": 2.0,
+        "publisher_diversity": -2.4,
+        "publisher_history_weak": -0.236,
+        "in_run_zero_yield_streak": -2.0
+      },
+      "captured_publication_after_read": "2018-11-07T21:00:48+00:00",
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 69812.2h ago exceeds Trending freshness window (48.0h)"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 5
+    },
+    {
+      "candidate_id": "ev_hv_a56b551f69c8e77b9e26",
+      "url": "https://bioengineer.org/new-challenges-and-trends-shape-automotive-battery-recycling-efforts/",
+      "title": "New Challenges and Trends Shape Automotive Battery Recycling Efforts",
+      "read_ordinal": 8,
+      "actual_dispatch_score": 2.35,
+      "actual_score_components": {
+        "target_in_title": 3.0,
+        "target_in_url": 2.0,
+        "article_url": 2.0,
+        "publisher_diversity": -2.4,
+        "publisher_history_weak": -0.25,
+        "in_run_zero_yield_streak": -2.0
+      },
+      "captured_publication_after_read": "2026-07-17T15:26:22+01:00",
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 2402.8h ago exceeds Trending freshness window (48.0h)"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 6
+    },
+    {
+      "candidate_id": "ev_hv_ba275908be676983e3d2",
+      "url": "https://bioengineer.org/rice-researchers-develop-innovative-battery-recycling-method/",
+      "title": "Rice researchers develop innovative battery recycling method",
+      "read_ordinal": 9,
+      "actual_dispatch_score": 2.339,
+      "actual_score_components": {
+        "target_in_title": 3.0,
+        "target_in_url": 2.0,
+        "article_url": 2.0,
+        "publisher_diversity": -2.4,
+        "publisher_history_weak": -0.261,
+        "in_run_zero_yield_streak": -2.0
+      },
+      "captured_publication_after_read": "2024-07-24T23:13:23+01:00",
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "TEMPORAL_STALE: Published 19747.0h ago exceeds Trending freshness window (48.0h)"
+      ],
+      "unread_reason": null,
+      "host_slots_before_read": 7
+    },
+    {
+      "candidate_id": "ev_hv_82d5190ed45d21acf946",
+      "url": "https://bioengineer.org/advancing-safer-metal-recycling-technologies-in-the-battery-industry/",
+      "title": "Advancing Safer Metal Recycling Technologies in the Battery Industry",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_8e2c55b68e233fd73753",
+      "url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+      "title": "Battery safety, sodium-ion and recycling research head to ECS meeting",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_fbd17e42179b7a017ef1",
+      "url": "https://bioengineer.org/collaborative-efforts-essential-to-overcoming-ev-battery-recycling-challenges/",
+      "title": "Collaborative Efforts Essential to Overcoming EV Battery Recycling Challenges",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_c9641a5d679490afa7ed",
+      "url": "https://bioengineer.org/electrochemical-recycling-transforms-lithium-battery-cathodes/",
+      "title": "Electrochemical Recycling Transforms Lithium Battery Cathodes",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_9999392ed43c779fe3ba",
+      "url": "https://bioengineer.org/feed/",
+      "title": "BIOENGINEER.ORG \u00bb Feed",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_dc2b1466cef5021eaa1a",
+      "url": "https://bioengineer.org/harnessing-inner-potential-the-role-of-lithium-battery-recycling-in-sustainable-innovation/",
+      "title": "Harnessing Inner Potential: The Role of Lithium Battery Recycling in Sustainable Innovation",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_f5a297e8c0fbbab4f486",
+      "url": "https://bioengineer.org/hazardous-contamination-found-around-lead-battery-recycling-plants-in/",
+      "title": "Hazardous contamination found around lead battery recycling plants in\u2026",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_fe8a30aba8895cd6509c",
+      "url": "https://bioengineer.org/is-battery-recycling-environmentally-friendly/",
+      "title": "Is battery recycling environmentally friendly?",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_d47d9bf3c40d6f3441d1",
+      "url": "https://bioengineer.org/leicester-expert-leads-ground-breaking-invention-on-battery-recycling/",
+      "title": "Leicester expert leads ground breaking invention on battery recycling",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_f01fe26de2c76b750237",
+      "url": "https://bioengineer.org/one-pot-recycling-turns-spent-ev-battery-cathodes-into-lithium-source-and-powerful-photocatalyst/",
+      "title": "One-Pot Recycling Turns Spent EV Battery Cathodes into Lithium Source and Powerful Photocatalyst",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_df7cd8f6fc918904bbfd",
+      "url": "https://bioengineer.org/optimizing-us-battery-materials-supply-and-recycling-insights/",
+      "title": "Optimizing US Battery Materials: Supply and Recycling Insights",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_425d202b998b39be64b2",
+      "url": "https://bioengineer.org/recyclings-hidden-workhorse-how-black-mass-separation-could-make-battery-reuse-pay/",
+      "title": "Recycling\u2019s Hidden Workhorse: How Black Mass Separation Could Make Battery Reuse Pay",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_42ac146fc2deadad3c7e",
+      "url": "https://bioengineer.org/search/Battery+Recycling/feed/rss2/",
+      "title": "BIOENGINEER.ORG \u00bb Search Results for \u201cBattery Recycling\u201d Feed",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_d1ea096479750bfaa662",
+      "url": "https://bioengineer.org/sitemap.xml",
+      "title": "Observed publisher discovery index",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    },
+    {
+      "candidate_id": "ev_hv_7b4b98c912f3d830e3e2",
+      "url": "https://bioengineer.org/tag/sustainable-battery-recycling/",
+      "title": "Sustainable battery recycling",
+      "read_ordinal": null,
+      "actual_dispatch_score": null,
+      "actual_score_components": null,
+      "captured_publication_after_read": null,
+      "qualification": "REJECTED",
+      "qualification_reasons": [
+        "NOT_ACQUIRED_OR_NOT_USABLE"
+      ],
+      "unread_reason": "HOST_READ_BUDGET_EXHAUSTED",
+      "host_slots_before_read": null
+    }
+  ],
+  "limitations": [
+    "Captured publication dates were learned after reading, not known at dispatch",
+    "Unselected candidates have no actual dispatch score",
+    "Host slots reconstructed from the actual ordered read list; one google wrapper precedes this single publisher"
+  ]
+}

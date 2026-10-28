@@ -305,7 +305,9 @@ function renderWorkbenchPage(workbench, filters = {}) {
     return `<article class="ur-workbench-passage"><h4>${esc(row.source_title || 'Captured source')}</h4>
       <p class="ur-ev-note">${esc(row.publisher_host || 'Unknown publisher')} · ${esc(row.content_role || 'SOURCE ASSERTION')} · UNVERIFIED</p>
       ${row.context_labels && typeof row.context_labels === 'object' ? `<p class="ur-ev-note">${Object.values(row.context_labels).filter(value => typeof value === 'string').map(esc).join(' · ')}</p>` : ''}
+      ${row.source_permission && safeEvidenceUrl(row.source_permission.licence_url) ? `<p class="ur-ev-note">Source credit: ${esc(row.source_permission.author || row.publisher_host || 'Original publisher')} · Exact excerpt · ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Original source</a> · ` : ''}<a href="${esc(safeEvidenceUrl(row.source_permission.licence_url))}" target="_blank" rel="noopener noreferrer">Source licence</a></p>` : ''}
       <blockquote>${esc(row.text)}</blockquote>
+      ${row.content_language ? `<p class="ur-ev-note">Source language: ${esc(row.content_language)} · Original text; no generated translation.</p>` : ''}
       <p class="ur-ev-note">${esc(row.evidence_id)} / ${esc(row.passage_id)} · offsets ${esc(row.start)}–${esc(row.end)} · ${esc(row.published_at || 'Publication date unknown')}</p>
       ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open reporting source</a>` : '<p>Source URL unavailable</p>'}
       ${array(row.also_reported_by).length ? `<p class="ur-ev-note">Identical passage also observed in ${array(row.also_reported_by).length} source record(s); not additional independent confirmation.</p>` : ''}

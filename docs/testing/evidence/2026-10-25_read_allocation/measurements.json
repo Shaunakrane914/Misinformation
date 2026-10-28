@@ -1,0 +1,611 @@
+{
+  "date": "2026-10-25",
+  "base_commit": "7ad13a5",
+  "branch": "release/specialist-task-20261024",
+  "scope": "FOUR_LIVE_CASES_WITH_SEPARATE_POSTLIVE_ATTRIBUTION_REBUILD",
+  "application_sha256_live": "8a7e2e3a60374958eb2cb7ce529f6f208ca6341c3f953991b4097425de0210da",
+  "live_application_stable": true,
+  "application_sha256_final": "0022567de34f07b4c61d3d2557d4d1d2b84d33b4c18738dcfd2eb9b10e03bb02",
+  "whole_investigation_retries": 0,
+  "native_HTTP_total": 334,
+  "AI": {
+    "model_check": {
+      "status": "ENABLED",
+      "model": "gemini-3.5-flash-lite",
+      "reason": "STRICT_DAILY_RUNTIME_SCOPE",
+      "capability_cached": false,
+      "capability_http_status": 200,
+      "calls_reserved": 0,
+      "daily_request_cap": 3
+    },
+    "new_reservations": 3,
+    "shared_before": 0,
+    "shared_after": 3,
+    "provider_reported_total_tokens": 1167,
+    "provider_reported_output_tokens": 260,
+    "observations": [
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "http_status": 200,
+        "status": "GENERATED",
+        "latency_ms": 1404.53,
+        "investigation_id": "52659dd70cbe4d948ff7e53ea4fec8d6",
+        "provider_model": "gemini-3.5-flash-lite",
+        "usage_source": "provider",
+        "prompt_tokens": 301,
+        "completion_tokens": 100,
+        "total_tokens": 401
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "http_status": 200,
+        "status": "GENERATED",
+        "latency_ms": 1195.23,
+        "investigation_id": "fa19ca66c0794a9a84bff7a090d463f3",
+        "provider_model": "gemini-3.5-flash-lite",
+        "usage_source": "provider",
+        "prompt_tokens": 303,
+        "completion_tokens": 82,
+        "total_tokens": 385
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "search_suggestion",
+        "http_status": 200,
+        "status": "GENERATED",
+        "latency_ms": 1315.88,
+        "investigation_id": "16b48908bede4b8fa102fe1b81f46279",
+        "provider_model": "gemini-3.5-flash-lite",
+        "usage_source": "provider",
+        "prompt_tokens": 303,
+        "completion_tokens": 78,
+        "total_tokens": 381
+      }
+    ],
+    "monetary_cost": "NOT_MEASURED"
+  },
+  "cases": [
+    {
+      "case": "01-trending",
+      "input": "battery recycling",
+      "query": "battery recycling",
+      "agent": "trending",
+      "seconds": 38.77,
+      "reads": 11,
+      "HTTP_admissions": 74,
+      "candidates": 27,
+      "article_bodies": 4,
+      "live_qualified_records_before_transcript_correction": 1,
+      "live_workbench": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 2,
+        "published_passages": 2,
+        "published_unique_words": 185,
+        "published_text_utf8_bytes": 1453,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 2
+        },
+        "independence_verified": false
+      },
+      "publisher_allocation_live": {
+        "host_cap_unchanged": 8,
+        "article_reserve": 4,
+        "initial_discovery": 2,
+        "maximum_discovery": 4,
+        "adaptive_reservation": 2,
+        "hosts": {
+          "bioengineer.org": {
+            "discovery_reads": 4,
+            "article_reads": 4,
+            "consecutive_temporally_unusable_articles": 1,
+            "discovery_kinds": {
+              "HUB": 1,
+              "MAIN_FEED": 2,
+              "SEARCH": 1
+            }
+          },
+          "news.google.com": {
+            "discovery_reads": 0,
+            "article_reads": 3,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          }
+        },
+        "scope": "Reservations within original cap, not requests made or final evidence acceptance"
+      },
+      "unread_by_reason": {
+        "HOST_READ_BUDGET_EXHAUSTED": 16
+      },
+      "query_statuses": {
+        "SUCCESS": 17,
+        "FAILED": 1,
+        "NOT_SUBMITTED": 1
+      },
+      "AI_advice": {
+        "status": "SUGGESTED",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "rejected": [],
+        "query_count": 1,
+        "latency_ms": 2822.93
+      },
+      "qualified_source_examples": [
+        {
+          "url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+          "published_at": "2026-10-24T15:38:21+01:00",
+          "publication_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "captured_words": 801,
+          "body_sha256": "692428c09035bbd570eebfd54ebaed464c4066585aec1c8e5859635fa4d90ccb"
+        }
+      ],
+      "rejected_body_reasons": {
+        "Insufficient multi-token topic match": 2,
+        "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp": 2,
+        "TEMPORAL_STALE: Published 8829.5h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 9354.8h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 69812.9h ago exceeds Trending freshness window (48.0h)": 1
+      }
+    },
+    {
+      "case": "02-trending",
+      "input": "semiconductor manufacturing",
+      "query": "semiconductor manufacturing",
+      "agent": "trending",
+      "seconds": 52.35,
+      "reads": 12,
+      "HTTP_admissions": 80,
+      "candidates": 22,
+      "article_bodies": 1,
+      "live_qualified_records_before_transcript_correction": 0,
+      "live_workbench": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "publisher_allocation_live": {
+        "host_cap_unchanged": 8,
+        "article_reserve": 4,
+        "initial_discovery": 2,
+        "maximum_discovery": 4,
+        "adaptive_reservation": 2,
+        "hosts": {
+          "news.google.com": {
+            "discovery_reads": 0,
+            "article_reads": 3,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          },
+          "www.financialexpress.com": {
+            "discovery_reads": 0,
+            "article_reads": 1,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          },
+          "www.marketbeat.com": {
+            "discovery_reads": 4,
+            "article_reads": 4,
+            "consecutive_temporally_unusable_articles": 2,
+            "discovery_kinds": {
+              "HUB": 1,
+              "MAIN_FEED": 1,
+              "SEARCH": 1,
+              "SITEMAP": 1
+            }
+          }
+        },
+        "scope": "Reservations within original cap, not requests made or final evidence acceptance"
+      },
+      "unread_by_reason": {
+        "HOST_READ_BUDGET_EXHAUSTED": 10
+      },
+      "query_statuses": {
+        "SUCCESS": 17,
+        "FAILED": 1,
+        "NOT_SUBMITTED": 1
+      },
+      "AI_advice": {
+        "status": "SUGGESTED",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "rejected": [],
+        "query_count": 1,
+        "latency_ms": 1675.73
+      },
+      "qualified_source_examples": [],
+      "rejected_body_reasons": {
+        "Insufficient multi-token topic match": 3,
+        "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp": 3,
+        "TEMPORAL_STALE: Published 264.6h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 11379.7h ago exceeds Trending freshness window (48.0h)": 1
+      }
+    },
+    {
+      "case": "03-personal_watch",
+      "input": "Mary Barra",
+      "query": "Mary Barra public statement",
+      "agent": "personal_watch",
+      "seconds": 103.3,
+      "reads": 19,
+      "HTTP_admissions": 93,
+      "candidates": 45,
+      "article_bodies": 1,
+      "live_qualified_records_before_transcript_correction": 1,
+      "live_workbench": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 1,
+        "published_passages": 1,
+        "published_unique_words": 114,
+        "published_text_utf8_bytes": 704,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 1
+        },
+        "independence_verified": false
+      },
+      "publisher_allocation_live": {
+        "host_cap_unchanged": 8,
+        "article_reserve": 4,
+        "initial_discovery": 2,
+        "maximum_discovery": 4,
+        "adaptive_reservation": 2,
+        "hosts": {
+          "auto.economictimes.indiatimes.com": {
+            "discovery_reads": 0,
+            "article_reads": 3,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          },
+          "fortune.com": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          },
+          "news.google.com": {
+            "discovery_reads": 0,
+            "article_reads": 3,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          },
+          "stanfordmag.org": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          },
+          "www.clickondetroit.com": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          },
+          "www.cnbc.com": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          },
+          "www.facebook.com": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          },
+          "www.wxyz.com": {
+            "discovery_reads": 3,
+            "article_reads": 5,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1,
+              "MAIN_FEED": 1,
+              "SEARCH": 1
+            }
+          }
+        },
+        "scope": "Reservations within original cap, not requests made or final evidence acceptance"
+      },
+      "unread_by_reason": {
+        "WRAPPER_READ_BUDGET_EXHAUSTED": 21,
+        "HOST_READ_BUDGET_EXHAUSTED": 3,
+        "DISCOVERY_READ_BUDGET_EXHAUSTED": 2
+      },
+      "query_statuses": {
+        "SUCCESS": 18,
+        "NOT_SUBMITTED": 1
+      },
+      "AI_advice": {
+        "status": "SUGGESTED",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "rejected": [],
+        "query_count": 1,
+        "latency_ms": 3637.04
+      },
+      "qualified_source_examples": [
+        {
+          "url": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+          "published_at": "2021-09-29T21:08:46+05:30",
+          "publication_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "captured_words": 484,
+          "body_sha256": "530fa5799c4afcf87949e388547c29cbd4d5b50f4baa333c9181247a08555f2a"
+        }
+      ],
+      "rejected_body_reasons": {
+        "Insufficient entity match confidence (0.0 < 0.35)": 4,
+        "NO_STRUCTURAL_BODY": 4
+      },
+      "offline_corrected_workbench": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 1,
+        "published_passages": 1,
+        "published_unique_words": 114,
+        "published_text_utf8_bytes": 704,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "PUBLIC_STATEMENT": 1
+        },
+        "independence_verified": false
+      },
+      "offline_projection_mode": "OFFLINE_SAVED_BODY_WORKBENCH_REBUILD"
+    },
+    {
+      "case": "04-personal_watch",
+      "input": "Tim Cook",
+      "query": "Tim Cook public statement",
+      "agent": "personal_watch",
+      "seconds": 63.95,
+      "reads": 19,
+      "HTTP_admissions": 87,
+      "candidates": 73,
+      "article_bodies": 6,
+      "live_qualified_records_before_transcript_correction": 4,
+      "live_workbench": {
+        "source_records_with_passages": 4,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 4,
+        "published_passages": 4,
+        "published_unique_words": 204,
+        "published_text_utf8_bytes": 1248,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "PUBLIC_STATEMENT": 4
+        },
+        "independence_verified": false
+      },
+      "publisher_allocation_live": {
+        "host_cap_unchanged": 8,
+        "article_reserve": 4,
+        "initial_discovery": 2,
+        "maximum_discovery": 4,
+        "adaptive_reservation": 2,
+        "hosts": {
+          "news.google.com": {
+            "discovery_reads": 0,
+            "article_reads": 3,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          },
+          "qz.com": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          },
+          "singjupost.com": {
+            "discovery_reads": 3,
+            "article_reads": 5,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1,
+              "MAIN_FEED": 1,
+              "SEARCH": 1
+            }
+          },
+          "time.com": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          },
+          "wccftech.com": {
+            "discovery_reads": 0,
+            "article_reads": 1,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          },
+          "www.computerworld.com": {
+            "discovery_reads": 2,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1,
+              "MAIN_FEED": 1
+            }
+          },
+          "www.financialexpress.com": {
+            "discovery_reads": 0,
+            "article_reads": 2,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {}
+          },
+          "www.rev.com": {
+            "discovery_reads": 1,
+            "article_reads": 0,
+            "consecutive_temporally_unusable_articles": 0,
+            "discovery_kinds": {
+              "HUB": 1
+            }
+          }
+        },
+        "scope": "Reservations within original cap, not requests made or final evidence acceptance"
+      },
+      "unread_by_reason": {
+        "WRAPPER_READ_BUDGET_EXHAUSTED": 44,
+        "DISCOVERY_READ_BUDGET_EXHAUSTED": 1,
+        "HOST_READ_BUDGET_EXHAUSTED": 9
+      },
+      "query_statuses": {
+        "SUCCESS": 18
+      },
+      "AI_advice": {
+        "status": "UNAVAILABLE",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "error_type": "AdvisoryPolicyError",
+        "latency_ms": 2.84
+      },
+      "qualified_source_examples": [
+        {
+          "url": "https://singjupost.com/full-transcript-tim-cook-at-apple-wwdc-2020-keynote/",
+          "published_at": null,
+          "publication_basis": null,
+          "captured_words": 3571,
+          "body_sha256": "05df188298d4f225eb398cb63dd348829a0f811f266046a11a25767350560ba3"
+        },
+        {
+          "url": "https://singjupost.com/apple-ceo-tim-cook-at-iphone-11-september-2019-event-full-transcript/",
+          "published_at": null,
+          "publication_basis": null,
+          "captured_words": 3561,
+          "body_sha256": "e3234565a9da3ec394a31c4beb92120596c7b1d3421d0e8ec2d4497bbdae6a5c"
+        },
+        {
+          "url": "https://singjupost.com/tim-cook-at-apple-wwdc-2018-keynote-full-transcript/",
+          "published_at": null,
+          "publication_basis": null,
+          "captured_words": 3623,
+          "body_sha256": "5bb958b684122b39236a7804ce06441702a780022cfa08121ac0290cd7e6d898"
+        },
+        {
+          "url": "https://singjupost.com/apple-ceo-tim-cook-iphone-x-september-2017-event-keynote-transcript/",
+          "published_at": null,
+          "publication_basis": null,
+          "captured_words": 3562,
+          "body_sha256": "c5cbee3a418384a47aa65e261e26d50642793a2eafed7b99d913a93eaaa199a8"
+        }
+      ],
+      "rejected_body_reasons": {
+        "NO_RELEVANT_PASSAGE": 2,
+        "NO_STRUCTURAL_BODY": 2,
+        "Insufficient entity match confidence (0.0 < 0.35)": 6
+      },
+      "offline_corrected_workbench": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 16,
+        "published_passages": 16,
+        "published_unique_words": 547,
+        "published_text_utf8_bytes": 3260,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "PUBLIC_STATEMENT": 16
+        },
+        "independence_verified": false
+      },
+      "offline_projection_mode": "OFFLINE_SAVED_BODY_WORKBENCH_REBUILD"
+    }
+  ],
+  "integrity_checks": [
+    {
+      "case": "01-trending-native",
+      "passages_checked": 2,
+      "errors": []
+    },
+    {
+      "case": "02-trending-native",
+      "passages_checked": 0,
+      "errors": []
+    },
+    {
+      "case": "03-personal_watch-native",
+      "passages_checked": 1,
+      "errors": []
+    },
+    {
+      "case": "03-personal_watch-offline-rebuilt",
+      "passages_checked": 1,
+      "errors": []
+    },
+    {
+      "case": "04-personal_watch-native",
+      "passages_checked": 4,
+      "errors": []
+    },
+    {
+      "case": "04-personal_watch-offline-rebuilt",
+      "passages_checked": 16,
+      "errors": []
+    }
+  ],
+  "limitations": [
+    "Semiconductor manufacturing still lacks qualified current evidence",
+    "Personal sources remain historical or unverified publication dates",
+    "Tim Cook native intro projections are invalid statement demonstrations; offline rebuilt passages are separate",
+    "No independent accuracy or 2x/20x acceptance",
+    "No deployment"
+  ]
+}

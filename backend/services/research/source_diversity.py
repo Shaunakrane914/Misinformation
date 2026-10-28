@@ -34,7 +34,7 @@ FAMILY_ANGLES = {
 }
 
 
-def diversify_search_plan(rows, target, domain, limit):
+def diversify_search_plan(rows, target, domain, limit, context=None):
     """Substitute bounded family searches for repeated generic channel queries.
 
     Validated source-plan actions retain their priority. Scoped queries inherit
@@ -44,6 +44,17 @@ def diversify_search_plan(rows, target, domain, limit):
     """
     rows = list(rows)
     families = DOMAIN_FAMILIES.get(domain, ())
+    from backend.services.research.topic_context import infer_context
+    context = context or infer_context(target, target, domain=domain)
+    topics = set(context.topics)
+    if domain in {'trending', 'personal'}:
+        if topics & {'bollywood', 'regional_cinema', 'film', 'hollywood', 'cricket', 'sports',
+                     'politics', 'elections', 'false_quotes', 'health'}:
+            # SourcePlanningEngine already supplies reviewed topic-family
+            # actions. Never substitute technology feeds on past yield alone.
+            families = ()
+        elif not topics:
+            families = ('general_reporting',)
     if limit < 6 or not families:
         return rows[:limit]
     planned = [row for row in rows if row.get("source_plan_action_id")]

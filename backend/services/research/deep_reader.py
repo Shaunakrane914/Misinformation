@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import ContentDepth, EvidenceItem, SourceRole, SourceTier
 from backend.infrastructure.acquisition.network.budget import acquisition_deadline, remaining_timeout
-from backend.infrastructure.acquisition.network.http import transport_failure_kind
+from backend.infrastructure.acquisition.network.http import ProviderHTTPError, transport_failure_kind
 from backend.infrastructure.acquisition.security.url_validator import validation_failure_kind
 from backend.infrastructure.acquisition.adapters.web.search_matching import headline_overlap
 
@@ -46,7 +46,7 @@ def _challenge_body(body):
 def _read_failure_kind(result, transport_success, body):
     status = str(result.get("status", "")).lower()
     error = str(result.get("error", "")).lower()
-    if result.get("failure_kind") in {"TIMEOUT", "ACCESS_REJECTED", "HTTP_FAILURE", "CHALLENGE_PAGE", "EMPTY_EXTRACTION", "PROVIDER_FAILURE", "PUBLISHER_UNRESOLVED",
+    if result.get("failure_kind") in {"ROBOTS_DENIED", "ROBOTS_UNVERIFIED", "ROBOTS_CRAWL_DELAY_REVIEW_REQUIRED", "PERMISSION_REQUIRED", "UNVERIFIED", "BLOCKED", "TIMEOUT", "ACCESS_REJECTED", "HTTP_FAILURE", "CHALLENGE_PAGE", "EMPTY_EXTRACTION", "PROVIDER_FAILURE", "PUBLISHER_UNRESOLVED",
                                      "DNS_ERROR", "DNS_TIMEOUT", "DNS_CAPACITY", "SSRF_BLOCKED", "CONNECTION_FAILURE", "BUDGET_EXHAUSTED", "RATE_LIMITED", "AUTH_REQUIRED", "ACCESS_DENIED"}:
         return result["failure_kind"]
     if "dns resolution failed" in error:
@@ -327,7 +327,7 @@ class DeepReader:
         ranked_candidates: List[EvidenceItem],
         max_reads: int = 15,
         timeout_per_read: float = 6.0,
-        *, service=None, max_concurrency: Optional[int] = None,
+        *, service=None, max_concurrency: Optional[int] = None, attempt_ids=None,
     ) -> Tuple[List[EvidenceItem], Dict[str, Any]]:
         """
         Deep-reads top diverse candidates using bounded concurrency and caching.
@@ -357,10 +357,19 @@ class DeepReader:
         def _fetch_url(item: EvidenceItem, attempt_id: str) -> Tuple[EvidenceItem, Dict[str, Any], str, float]:
             url = item.canonical_url
             t0 = time.perf_counter()
+            from backend.services.research.source_registry import source_registry, source_body_scope, paced_source_request
+            permission = source_registry.body_decision(url)
+            if not permission['eligible']:
+                return item, {'status': 'failed', 'failure_kind': permission['status'],
+                    'source_permission': permission, 'network_observed': False}, attempt_id, 0.0
             # Check cache
             if url in self._cache:
                 cached_res, ts = self._cache[url]
                 if (now - ts) < self.cache_ttl:
+                    cached_final = (cached_res.get('transport') or {}).get('endpoint')
+                    if cached_final and not source_registry.body_decision(cached_final)['eligible']:
+                        return item, {'status': 'failed', 'failure_kind': 'PERMISSION_REQUIRED',
+                                      'network_observed': False}, attempt_id, 0.0
                     dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                     return item, cached_res, attempt_id, dur_ms
 
@@ -375,7 +384,21 @@ class DeepReader:
                         if not url:
                             return item, {"status": "failed", "error": "Publisher URL unresolved; wrapper is not article evidence",
                                           "failure_kind": "PUBLISHER_UNRESOLVED", "wrapper_resolution": resolution}, attempt_id, round((time.perf_counter() - t0) * 1000, 2)
-                    res = read_service.read(url, max_chars=20_000 if service is not None else 12_000)
+                    permission = source_registry.body_decision(url)
+                    if not permission['eligible']:
+                        return item, {'status': 'failed', 'failure_kind': permission['status'],
+                            'source_permission': permission, 'network_observed': False}, attempt_id, 0.0
+                    robots = source_registry.robots_decision(url)
+                    if not robots['eligible']:
+                        return item, {'status': 'failed', 'failure_kind': robots['status'],
+                            'robots_access': robots}, attempt_id, round((time.perf_counter()-t0)*1000, 2)
+                    # Resolution above is discovery-only (perform_reads=False).
+                    # Apply publisher body policy to actual body transport, not
+                    # to the search engine used to locate its observed URL.
+                    with source_body_scope(), paced_source_request(url):
+                        res = read_service.read(url, max_chars=20_000 if service is not None else 12_000)
+                    if permission.get('source_family') and permission['status'] != 'EXISTING_ROUTE_POLICY':
+                        res = {**res, 'source_registry_managed': True}
                     if resolution:
                         res = {**res, "wrapper_resolution": resolution}
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)
@@ -386,12 +409,21 @@ class DeepReader:
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                 kind = transport_failure_kind(e)
                 logger.debug("[DeepReader] Read failed (%s)", kind)
-                return item, {"status": "error", "failure_kind": kind}, attempt_id, dur_ms
+                observation = {"status": "error", "failure_kind": kind}
+                if isinstance(e, ProviderHTTPError):
+                    observation.update(network_observed=e.network_observed,
+                        transport={'http_status': e.status_code,
+                                   'network_observed_this_attempt': e.network_observed})
+                if isinstance(getattr(e, 'provider_failures', None), list):
+                    observation['provider_failures'] = e.provider_failures[:3]
+                return item, observation, attempt_id, dur_ms
 
         # Prepare attempt IDs
         candidate_attempts = []
         for item in candidates_to_read:
-            att_id = f"acq_att_{uuid.uuid4().hex[:10]}"
+            # A scheduler may reserve the identity before worker submission so
+            # interrupted work retains the same lifecycle record.
+            att_id = (attempt_ids or {}).get(item.id) or f"acq_att_{uuid.uuid4().hex[:10]}"
             candidate_attempts.append((item, att_id))
 
         # Execute bounded concurrent reading
@@ -439,6 +471,7 @@ class DeepReader:
                             "fallback_backend": read_res.get("fallback_backend"),
                             "duration_ms": dur_ms,
                             "transport_success": transport_success,
+                            **({'network_observed': read_res['network_observed']} if 'network_observed' in read_res else {}),
                             "content_extraction_success": content_extraction_success,
                             "useful_content_extracted": useful,
                             "char_count": len(content_body) if useful else 0,
@@ -449,10 +482,18 @@ class DeepReader:
                                                 "RUNTIME_POLICY" if read_res.get("runtime_decision") else None),
                             "error_message": failure_kind.replace("_", " ").capitalize() if failure_kind else None,
                         }
+                        if isinstance(read_res.get('provider_failures'), list):
+                            attempt_record['provider_failures'] = read_res['provider_failures'][:3]
                         if read_res.get("wrapper_resolution"):
                             attempt_record["wrapper_resolution"] = read_res["wrapper_resolution"]
+                        if isinstance(read_res.get('robots_access'), dict):
+                            attempt_record['robots_access'] = read_res['robots_access']
+                        if isinstance(read_res.get('source_permission'), dict):
+                            attempt_record['source_permission'] = read_res['source_permission']
 
                         if useful:
+                            if read_res.get('source_registry_managed'):
+                                orig_item.metadata['topic_source_controlled'] = True
                             resolution = read_res.get("wrapper_resolution") or {}
                             if resolution.get("selected_url"):
                                 orig_item.metadata["discovery_url"] = orig_item.canonical_url
@@ -491,7 +532,9 @@ class DeepReader:
                             from backend.services.research.body_context import reconcile_captured_context
                             reconcile_captured_context(orig_item)
                             if orig_item.metadata.get("discovery_kind") == "FEED_INDEX":
-                                orig_item.metadata.setdefault("page_metadata", {})["content_scope"] = "PUBLIC_DISCOVERY_INDEX"
+                                page = orig_item.metadata.setdefault("page_metadata", {})
+                                if page.get("content_scope") not in {"FEED_INDEX", "SITEMAP_INDEX"}:
+                                    page["content_scope"] = "PUBLIC_DISCOVERY_INDEX"
                             
                             # Preserve metadata kinds; length and official
                             # ownership never establish full-document coverage.

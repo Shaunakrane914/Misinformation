@@ -1,5 +1,89 @@
 # Coding-agent handoffs
 
+## Acquisition deployment and four-agent yield — 2026-10-28
+
+- [Isolated release candidate, publication and production measurements](2026-10-28_ACQUISITION_DEPLOYMENT_AND_YIELD.md):
+  preserves the divergent root/release worktrees, integrates observed publisher
+  locators and feed-to-reader continuity. Deployment and live results are recorded
+  as observed; initial candidate status is pending.
+
+## Public-source access activation — 2026-10-26
+
+- [Scoped public routes, bounded checks and remaining access failures](2026-10-26_PUBLIC_SOURCE_ACCESS_ACTIVATION.md):
+  DOJ/FTC agency press text and CPSC API reviews; separate model-processing permissions,
+  exact robots lease and preserved typed failures. FTC feed retrieved, zero articles/recall
+  records across the approved checks. Full/fast 2,746/2,538 pass; original archive still has
+  55 failed dossiers. No model calls, commit, push or deployment; live research acceptance unmet.
+
+## Usable-source repair and individual website checks — 2026-10-26
+
+- [Latest repair, direct probes and remaining runtime failure](2026-10-26_USABLE_SOURCE_REPAIR_AND_SITE_CHECKS.md):
+  scoped-search fallback, publisher-directory continuation, geography/issuer routing and bounded crawl-delay
+  pacing. 60-site inventory; four reviewed sites probed, all blocked before body extraction by DNS/connection
+  failures. Three normal investigations still acquired zero bodies. Full/fast 2,645/2,437 pass; nine browser
+  replay states. Source availability/accuracy unmet; no commit, push or deployment.
+
+## Topic-source implementation and optional AI — 2026-10-26
+
+- [Implementation, failed bounded pilot and AI enablement](2026-10-26_TOPIC_SOURCE_INTELLIGENCE_IMPLEMENTATION.md):
+  shared topic/permission-aware routing, 59 declared families, observed-title refinement, pre-access read-slot
+  protection and source credit/language rendering. Two native pilots acquired zero bodies; acceptance unmet.
+  Full/fast 2,616/2,408 pass; nine browser replay states. Local optional AI enabled; one live suggestion,
+  40 tokens, shared strict budget preserved. No commit, push or deployment.
+
+## Topic-based source selection — 2026-10-26
+
+- [Broader four-agent website matrix and candidate catalog](2026-10-26_TOPIC_BASED_SOURCE_SELECTION.md):
+  58 proposed/existing/conditional source families; entertainment, regional news, sports, politics,
+  financial markets and specialist incident coverage. Research-only; access failures and restrictions
+  explicit. No new Aegis investigations, application integration, model calls or deployment.
+
+## Source coverage exploration — 2026-10-26
+
+- [Website research and prioritized integration scope](2026-10-26_SOURCE_COVERAGE_EXPANSION_RESEARCH.md):
+  official feeds/APIs reviewed for technical articles, incident reporting, Indian financial regulation
+  and attributed statements. Existing versus new families and access requirements distinguished.
+  Documentation only; no new live investigations, model calls, source integrations or deployment.
+
+## Publisher allocation and speaker attribution — 2026-10-26
+
+- [Latest repair and measured limits](2026-10-26_READ_ALLOCATION_AND_SPEAKER_ATTRIBUTION.md):
+  battery recycling now has live fresh article proof and 185 displayed words. Semiconductor remains
+  zero; Personal Watch remains historical. Tim's transcript introduction defect corrected offline.
+  Four live cases, 334 native HTTP admissions, three AI suggestions / 1,167 tokens. Full/fast
+  2,574/2,366 pass; 18 browser replay states. No push or deployment; broader acceptance partial.
+
+## Post-fix live demonstration — 2026-10-25
+
+- [Latest observed result](2026-10-25_POSTFIX_LIVE_DEMONSTRATION.md): two fresh native investigations,
+  155 HTTP admissions, zero AI calls. Trending still 0; known article blocked by exhausted publisher
+  read allocation. Personal Watch 176 words across historical/undated sources. Six rendered replay
+  states pass; research acceptance unmet. Read-only check; no push or deployment.
+
+## Pipeline review repairs and bounded pilot — 2026-10-25
+
+- [Latest repair handoff](2026-10-25_PIPELINE_REVIEW_REPAIRS.md): worker isolation, stable attempt
+  accounting, bounded AI hook, honest replay costs and optional resource sampling. Full/fast
+  2,556/2,348 pass. Four actual native cases: 301 HTTP admissions, zero AI reservations; 12 browser
+  replay states pass. Trending selection follow-up has offline proof; live acceptance remains partial.
+  Local suggestions enabled; no live model verification, push or deployment.
+
+## Acquisition growth progress review — 2026-10-25
+
+- [Current review and next repair order](2026-10-25_ACQUISITION_GROWTH_PROGRESS_REVIEW.md):
+  full/fast 2,540/2,332 pass; reproduced late worker mutation and interrupted-read accounting defects.
+  Saved replay has modest modeled efficiency improvement, fewer total evidence words; 2× unmet.
+  Experimental AI hook and replay cost provenance remain incomplete. Review only; no live/model calls,
+  application changes, push or deployment.
+
+## Trending passage predicate and GDELT provenance — 2026-10-25
+
+- [Predicate generalization and GDELT first-seen provenance](2026-10-25_TRENDING_PREDICATE_AND_GDELT_PROVENANCE.md):
+  uncommitted, saved captures only. A deterministic finite-clause recognizer replaces the hand-picked verb
+  list; the rejected ECS battery-recycling article now qualifies offline (3,315–4,088, 100 words); 37 saved
+  Trending pools replay 30 → 34 qualified, 0 lost. GDELT `seendate` is kept as `gdelt_seen_at`, never as
+  publication time. Full/fast 2,521/2,313. **No live verification; the Trending regression is not claimed resolved.**
+
 ## Adaptive Acquisition & Four-Agent Evaluation — 2026-10-25
 
 - [Adaptive Acquisition & Four-Agent Evaluation](2026-10-25_ADAPTIVE_ACQUISITION_AND_FOUR_AGENT_EVALUATION.md):

@@ -115,6 +115,7 @@ def _hash(value):
                 if key not in {"stage_timings_ms", "passages", "evidence_passages", "evidence_passage_accounting", "financial_observations", "financial_context", "acquisition",
                                "acquisition_timing", "discovery_funnel", "budget_observations", "pre_research_timings_ms", "ai_advisory_observations", "ai_search_advice",
                                "submitted_at", "provider_started", "queue_wait_ms", "provider_duration_ms", "provider_duration_censored", "submission_delay_ms"}
+                and not (key in {'research_context', 'source_family_decisions'} and 'plan_id' in node and 'actions' in node)
             }
         if isinstance(node, list):
             return [canonical(entry) for entry in node]
@@ -134,6 +135,15 @@ def _hash(value):
     # text, epistemic state, citations, source bytes and all old fields stay here.
     encoded = json.dumps(canonical(value), sort_keys=True, ensure_ascii=False, separators=(",", ":"), default=str)
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def test_topic_plan_diagnostics_are_additive_but_actions_and_evidence_remain_hashed():
+    original = {'plan_id': 'p', 'actions': [{'query': 'actual query'}]}
+    diagnostic = {**original, 'research_context': {'topics': ['film']},
+                  'source_family_decisions': [{'status': 'PERMISSION_REQUIRED'}]}
+    assert _hash(original) == _hash(diagnostic)
+    assert _hash(original) != _hash({**diagnostic, 'actions': [{'query': 'different query'}]})
+    assert _hash({'research_context': 'actual evidence'}) != _hash({'research_context': 'changed evidence'})
 
 
 def capture_scenario(name, include_payload=False):
@@ -278,6 +288,11 @@ def test_research_result_and_replay_match_reviewed_policy(name):
     # test_reporting_origin_integrity independently assert the new semantics.
     origin_deltas = json.loads((PHASE9_MANIFEST.parent / "research_origin_integrity_deltas.json").read_text(encoding="utf-8"))
     expected = {**expected, **origin_deltas["scenarios"].get(name, {})}
+    # Existing native SEC discovery is now eligible for topic selection. The
+    # reviewed delta changes source-plan disclosure only, not evidence/corpus
+    # or dossier hashes. Keep every earlier manifest intact.
+    topic_deltas = json.loads((PHASE9_MANIFEST.parent / "research_topic_source_policy_deltas_20261026.json").read_text(encoding="utf-8"))
+    expected = {**expected, **topic_deltas["scenarios"].get(name, {})}
     if name == "discovery_timeout":
         # Explicit correctness exception: the historical implementation read
         # documents AFTER its deadline. Keep that baseline, but require no reads.

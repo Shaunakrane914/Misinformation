@@ -1,0 +1,179 @@
+{
+  "mode": "OFFLINE_VALIDATION",
+  "full_passed": 2616,
+  "fast_passed": 2408,
+  "registry_controls": 41,
+  "focused_registry_and_pipeline_passed": 69,
+  "model_calls_during_automated_suites": 0,
+  "commands": [
+    {
+      "name": "full-closeout",
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 135.17
+    },
+    {
+      "name": "fast-closeout",
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/unit",
+        "tests/chaos",
+        "tests/security",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 115.92
+    },
+    {
+      "name": "lint-closeout",
+      "command": [
+        "python",
+        "-m",
+        "flake8",
+        "backend",
+        "tests",
+        "scripts",
+        "--count",
+        "--select=E9,F63,F7,F82",
+        "--show-source",
+        "--statistics"
+      ],
+      "exit_code": 0,
+      "seconds": 5.93
+    },
+    {
+      "name": "test_agent_research_client-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_agent_research_client.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.49
+    },
+    {
+      "name": "test_agent_ui_truth-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_agent_ui_truth.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.15
+    },
+    {
+      "name": "test_claim_ui_truth-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_claim_ui_truth.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.2
+    },
+    {
+      "name": "test_cloudflare_api_routing-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_cloudflare_api_routing.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.09
+    },
+    {
+      "name": "test_evidence_workbench-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_evidence_workbench.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.1
+    },
+    {
+      "name": "test_forensic_explorer_truth-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_forensic_explorer_truth.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.09
+    },
+    {
+      "name": "test_operation_health-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_operation_health.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.19
+    },
+    {
+      "name": "test_phase8e_frontend_intelligence-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_phase8e_frontend_intelligence.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.1
+    },
+    {
+      "name": "test_security_and_health_regressions-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_security_and_health_regressions.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.34
+    },
+    {
+      "name": "test_unified_report_renderer-closeout",
+      "command": [
+        "node",
+        "tests\\frontend\\test_unified_report_renderer.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.17
+    },
+    {
+      "name": "smoke-closeout",
+      "command": [
+        "python",
+        "scripts/validate_release_candidate_smoke.py",
+        "--output",
+        "<new-temp-directory>\\smoke-closeout.json"
+      ],
+      "exit_code": 0,
+      "seconds": 12.84
+    },
+    {
+      "name": "rollback-closeout",
+      "command": [
+        "python",
+        "scripts/validate_rollback_compatibility.py",
+        "--output",
+        "<new-temp-directory>\\rollback-closeout.json"
+      ],
+      "exit_code": 0,
+      "seconds": 12.83
+    },
+    {
+      "name": "frozen-closeout",
+      "command": [
+        "python",
+        "scripts/validation/verify_frozen_benchmarks.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.17
+    }
+  ],
+  "browser_native_states": 6,
+  "browser_synthetic_states": 3,
+  "frozen_data_verified": true,
+  "historical_archive": "NOT_VERIFIED",
+  "deployed_rollback": "NOT_VERIFIED"
+}

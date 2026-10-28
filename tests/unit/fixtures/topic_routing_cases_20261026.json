@@ -1,0 +1,19 @@
+{
+  "mode": "SYNTHETIC_ROUTING_CALIBRATION_NOT_LIVE_OR_INDEPENDENT_ACCURACY",
+  "cases": [
+    {"id":"bollywood","agent":"trending","domain":"trending","target":"Kavya Rao","claim":"Bollywood actor Kavya Rao film announcement","expected_topic":"bollywood"},
+    {"id":"regional_entertainment","agent":"personal_watch","domain":"personal","target":"Vela Raman","claim":"Tamil cinema actor Vela Raman public statement","hints":{"language":"ta","jurisdiction":"IN"},"expected_topic":"regional_cinema"},
+    {"id":"cricket","agent":"personal_watch","domain":"personal","target":"Aarav Malik","claim":"Cricketer Aarav Malik public statement","expected_topic":"cricket"},
+    {"id":"politics","agent":"trending","domain":"trending","target":"Indian electoral policy","claim":"Indian election parliament policy debate","hints":{"jurisdiction":"IN"},"expected_topic":"elections"},
+    {"id":"semiconductors","agent":"trending","domain":"trending","target":"semiconductor manufacturing","claim":"semiconductor manufacturing capacity research","expected_topic":"semiconductors"},
+    {"id":"financial_company","agent":"scout","domain":"financial","target":"Northstar Company","claim":"Northstar Company quarterly revenue","expected_topic":"finance"},
+    {"id":"brand_risk","agent":"brandshield","domain":"brand","target":"Oriole","claim":"Oriole fake celebrity advertisement Bollywood","expected_topic":"scams"},
+    {"id":"public_figure_quote","agent":"personal_watch","domain":"personal","target":"Elena Iqbal","claim":"Politician Elena Iqbal false quote","expected_topic":"false_quotes"}
+  ],
+  "controls": [
+    {"id":"ambiguous_name","agent":"trending","domain":"trending","target":"Asha Vale","claim":"Asha Vale","expected_topic":null},
+    {"id":"name_collision","agent":"brandshield","domain":"brand","target":"Recall Labs","claim":"Recall Labs","expected_topic":null},
+    {"id":"no_evidence","agent":"personal_watch","domain":"personal","target":"Unresolved Subject","claim":"Unresolved Subject","expected_topic":null}
+  ],
+  "limitations":["Names and propositions are fictional calibration inputs.","No real source bodies or successful acquisition outcomes are supplied by this fixture.","Stale, misleading-title and missing-body controls are covered separately by saved genuine response and passage tests."]
+}

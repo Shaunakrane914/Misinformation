@@ -41,6 +41,11 @@ _ROUTING_TASKS = {"COUNTERFEIT", "PHISHING", "COMPLAINT", "PRODUCT_SAFETY", "PUB
 def _routing_snapshot(metadata):
     """Retain bounded query intent, not an assertion about captured content."""
     result = {}
+    if metadata.get('topic_source_controlled') is True:
+        result['topic_source_controlled'] = True
+    family = metadata.get('source_family')
+    if isinstance(family, str) and re.fullmatch(r'[a-z0-9_]{1,70}', family):
+        result['source_family'] = family
     for key in ("specialist_tasks", "requested_specialist_tasks", "acquisition_objectives", "source_plan_action_ids"):
         values = metadata.get(key, [])
         if not isinstance(values, (list, tuple)):
@@ -277,7 +282,15 @@ class RawAcquisitionPool:
                 record["query_ids"].append(qid)
                 record["query_id"] = record["query_id"] or qid
             for key, values in _routing_snapshot(meta).items():
-                record[key] = list(dict.fromkeys([*record.get(key, []), *values]))[:16]
+                # Routing has scalar permission/family observations as well as
+                # repeatable task IDs. Never unpack a bool, or split a family
+                # string into characters, when merging another discovery.
+                if key in {'topic_source_controlled', 'source_family'}:
+                    record[key] = values
+                else:
+                    previous = record.get(key, [])
+                    previous = previous if isinstance(previous, list) else []
+                    record[key] = list(dict.fromkeys([*previous, *values]))[:16]
             if url not in record["source_urls"] and len(record["source_urls"]) < 16:
                 record["source_urls"].append(url)
             record["title"] = record["title"] or _text(_value(item, "title"))[:2000]
@@ -364,9 +377,14 @@ class RawAcquisitionPool:
             # Whitelisted structure/date observations are needed to re-run the
             # strict filter offline. Never retain arbitrary headers or cookies.
             record["page_metadata"] = {}
-            for key in ("title", "author", "published", "publication_time_basis", "publication_time_source", "content_scope", "extraction_method", "body_kind"):
+            for key in ("title", "author", "published", "publication_time_basis", "publication_time_source", "content_scope", "extraction_method", "body_kind", "language", "language_basis"):
                 if isinstance(page.get(key), str):
                     record["page_metadata"][key] = page[key][:2000]
+            if isinstance(page.get('licence_urls'), list):
+                record['page_metadata']['licence_urls'] = [s[:200] for s in page['licence_urls'][:4]
+                    if isinstance(s, str) and s.startswith('https://creativecommons.org/licenses/')]
+            if page.get('rights_exception_observed') is True:
+                record['page_metadata']['rights_exception_observed'] = True
             if type(page.get("publication_metadata_conflict")) is bool:
                 record["page_metadata"]["publication_metadata_conflict"] = page["publication_metadata_conflict"]
             observed_publications = page.get("publication_observations")

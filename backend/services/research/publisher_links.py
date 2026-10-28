@@ -94,11 +94,20 @@ def observed_publisher_articles(parent, domain, audit, target="", *, max_childre
                         and "".join(re.findall(r"[a-z0-9]+", target.casefold())) in origin.split("."))
     if domain == "trending":
         tokens = _topic_token_keys(target)
+    def captured_feed_summary(row):
+        # A feed may name the subject in its actual description rather than
+        # the headline or slug. This context permits a read only; it is not an
+        # acquired article or evidence for a claim. HTML-link summaries and
+        # arbitrary metadata cannot widen this bounded feed-entry exception.
+        summary = row.get('summary')
+        return (summary[:2000] if not article_parent and page.get('content_scope') == 'FEED_INDEX'
+                and row.get('kind') == 'FEED_ENTRY' and isinstance(summary, str) else '')
     def subject_hits(row):
         try:
             context = str(row.get("text", "")) + " " + unquote(urlsplit(str(row.get("url", ""))).path)
         except ValueError:
             context = ""
+        context += ' ' + captured_feed_summary(row)
         words = set(re.findall(r"[a-z0-9]+", context.lower()))
         if domain == "trending":
             words = _topic_token_keys(context)
@@ -167,6 +176,7 @@ def observed_publisher_articles(parent, domain, audit, target="", *, max_childre
                       "source_citation": bool(cited_source),
                       "citation_basis": "OBSERVED_ARTICLE_LINK_UNVERIFIED" if cited_source else None,
                       "discovery_kind": link.get("kind", "ARTICLE_LEAD"),
+                      "captured_feed_summary_used_for_read_selection": bool(captured_feed_summary(link)),
                       "source_type": "SOURCE_INDEX" if link.get("kind") == "FEED_INDEX" else "FEED_ENTRY" if link.get("kind") == "FEED_ENTRY" else "DISCOVERY_LEAD",
                       "publication_time_source": link.get("publication_time_source") or "",
                       "publisher_source_url": link.get("publisher_source_url") or "",

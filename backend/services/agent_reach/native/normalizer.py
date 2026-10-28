@@ -7,6 +7,7 @@ into strongly typed Aegis EvidenceFragment and EvidenceItem objects with full pr
 
 import re
 import html
+from urllib.parse import parse_qs, unquote, urlsplit
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
@@ -321,6 +322,22 @@ class NativeNormalizer:
             # exposes the same observed locator as url. Neither shape permits
             # inventing an article address from a headline.
             link = e.get("link") or e.get("url") or ""
+            discovery_link = link
+            # Only decode publisher locators actually present in known feed
+            # wrappers. The eventual read still applies URL/access validation.
+            try:
+                wrapper = urlsplit(link)
+                target = ""
+                if wrapper.hostname in {"bing.com", "www.bing.com"} and wrapper.path == "/news/apiclick.aspx":
+                    target = parse_qs(wrapper.query).get("url", [""])[0]
+                elif wrapper.hostname and (wrapper.hostname == "yahoo.com" or wrapper.hostname.endswith(".yahoo.com")):
+                    matched = re.search(r"/RU=([^/]+)(?:/|$)", wrapper.path)
+                    target = unquote(matched.group(1)) if matched else ""
+                parsed = urlsplit(target)
+                if parsed.scheme in {"http", "https"} and parsed.hostname and not parsed.username and not parsed.password:
+                    link = target
+            except (TypeError, ValueError):
+                pass
             published = e.get("published", "")
             summary = _clean_html_text(e.get("summary", ""))
             feed_content = _clean_feed_body(e.get("feed_content", ""))
@@ -348,6 +365,7 @@ class NativeNormalizer:
                     "backend": "feedparser",
                     "feed_title": e.get("feed_title"),
                     "feed_publisher": e.get("feed_publisher"),
+                    **({"discovery_url": discovery_link} if discovery_link != link else {}),
                     **{key: e[key] for key in ("publisher_source_url", "publisher_name") if e.get(key)},
                     "guid": e.get("guid"),
                     "updated": e.get("updated"),

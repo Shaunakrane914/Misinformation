@@ -1,0 +1,436 @@
+{
+  "scope": "READ_ONLY_REVIEW_OF_EXISTING_OFFLINE_REPLAY_PLUS_NEW_OFFLINE_REGRESSIONS",
+  "date": "2026-10-25",
+  "base_commit": "7ad13a5",
+  "replay_source_sha256": "fa86019cb4e0d365c784049ca91a12d4d016d0f5f9c839ba26b9fb3a23b2b933",
+  "replay_input_hash_check_reported": true,
+  "replay_runs_previously_executed": 72,
+  "review_reexecuted_matrix": false,
+  "live_acquisition_calls": 0,
+  "model_calls": 0,
+  "replay_aggregates": [
+    {
+      "configuration": "legacy",
+      "agent": "ALL",
+      "runs": 12,
+      "qualified_records": 51,
+      "selected_passage_words": 2899,
+      "modeled_admissions_ESTIMATE": 572,
+      "unobserved_reads": 31
+    },
+    {
+      "configuration": "legacy",
+      "agent": "scout",
+      "runs": 3,
+      "qualified_records": 25,
+      "selected_passage_words": 1346,
+      "modeled_admissions_ESTIMATE": 165,
+      "unobserved_reads": 10
+    },
+    {
+      "configuration": "legacy",
+      "agent": "brandshield",
+      "runs": 3,
+      "qualified_records": 23,
+      "selected_passage_words": 1327,
+      "modeled_admissions_ESTIMATE": 162,
+      "unobserved_reads": 4
+    },
+    {
+      "configuration": "legacy",
+      "agent": "trending",
+      "runs": 3,
+      "qualified_records": 2,
+      "selected_passage_words": 112,
+      "modeled_admissions_ESTIMATE": 164,
+      "unobserved_reads": 16
+    },
+    {
+      "configuration": "legacy",
+      "agent": "personal_watch",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 114,
+      "modeled_admissions_ESTIMATE": 81,
+      "unobserved_reads": 1
+    },
+    {
+      "configuration": "interleaved",
+      "agent": "ALL",
+      "runs": 12,
+      "qualified_records": 42,
+      "selected_passage_words": 2390,
+      "modeled_admissions_ESTIMATE": 505,
+      "unobserved_reads": 28
+    },
+    {
+      "configuration": "interleaved",
+      "agent": "scout",
+      "runs": 3,
+      "qualified_records": 16,
+      "selected_passage_words": 837,
+      "modeled_admissions_ESTIMATE": 125,
+      "unobserved_reads": 9
+    },
+    {
+      "configuration": "interleaved",
+      "agent": "brandshield",
+      "runs": 3,
+      "qualified_records": 23,
+      "selected_passage_words": 1327,
+      "modeled_admissions_ESTIMATE": 138,
+      "unobserved_reads": 4
+    },
+    {
+      "configuration": "interleaved",
+      "agent": "trending",
+      "runs": 3,
+      "qualified_records": 2,
+      "selected_passage_words": 112,
+      "modeled_admissions_ESTIMATE": 160,
+      "unobserved_reads": 14
+    },
+    {
+      "configuration": "interleaved",
+      "agent": "personal_watch",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 114,
+      "modeled_admissions_ESTIMATE": 82,
+      "unobserved_reads": 1
+    },
+    {
+      "configuration": "pipelined:r2:legacy_priority",
+      "agent": "ALL",
+      "runs": 12,
+      "qualified_records": 50,
+      "selected_passage_words": 2830,
+      "modeled_admissions_ESTIMATE": 554,
+      "unobserved_reads": 31
+    },
+    {
+      "configuration": "pipelined:r2:legacy_priority",
+      "agent": "scout",
+      "runs": 3,
+      "qualified_records": 24,
+      "selected_passage_words": 1277,
+      "modeled_admissions_ESTIMATE": 150,
+      "unobserved_reads": 8
+    },
+    {
+      "configuration": "pipelined:r2:legacy_priority",
+      "agent": "brandshield",
+      "runs": 3,
+      "qualified_records": 23,
+      "selected_passage_words": 1327,
+      "modeled_admissions_ESTIMATE": 161,
+      "unobserved_reads": 5
+    },
+    {
+      "configuration": "pipelined:r2:legacy_priority",
+      "agent": "trending",
+      "runs": 3,
+      "qualified_records": 2,
+      "selected_passage_words": 112,
+      "modeled_admissions_ESTIMATE": 164,
+      "unobserved_reads": 17
+    },
+    {
+      "configuration": "pipelined:r2:legacy_priority",
+      "agent": "personal_watch",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 114,
+      "modeled_admissions_ESTIMATE": 79,
+      "unobserved_reads": 1
+    },
+    {
+      "configuration": "pipelined:r2",
+      "agent": "ALL",
+      "runs": 12,
+      "qualified_records": 49,
+      "selected_passage_words": 2774,
+      "modeled_admissions_ESTIMATE": 518,
+      "unobserved_reads": 18
+    },
+    {
+      "configuration": "pipelined:r2",
+      "agent": "scout",
+      "runs": 3,
+      "qualified_records": 24,
+      "selected_passage_words": 1277,
+      "modeled_admissions_ESTIMATE": 152,
+      "unobserved_reads": 10
+    },
+    {
+      "configuration": "pipelined:r2",
+      "agent": "brandshield",
+      "runs": 3,
+      "qualified_records": 23,
+      "selected_passage_words": 1327,
+      "modeled_admissions_ESTIMATE": 150,
+      "unobserved_reads": 2
+    },
+    {
+      "configuration": "pipelined:r2",
+      "agent": "trending",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 56,
+      "modeled_admissions_ESTIMATE": 135,
+      "unobserved_reads": 5
+    },
+    {
+      "configuration": "pipelined:r2",
+      "agent": "personal_watch",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 114,
+      "modeled_admissions_ESTIMATE": 81,
+      "unobserved_reads": 1
+    },
+    {
+      "configuration": "pipelined:r3",
+      "agent": "ALL",
+      "runs": 12,
+      "qualified_records": 49,
+      "selected_passage_words": 2774,
+      "modeled_admissions_ESTIMATE": 527,
+      "unobserved_reads": 25
+    },
+    {
+      "configuration": "pipelined:r3",
+      "agent": "scout",
+      "runs": 3,
+      "qualified_records": 24,
+      "selected_passage_words": 1277,
+      "modeled_admissions_ESTIMATE": 156,
+      "unobserved_reads": 12
+    },
+    {
+      "configuration": "pipelined:r3",
+      "agent": "brandshield",
+      "runs": 3,
+      "qualified_records": 23,
+      "selected_passage_words": 1327,
+      "modeled_admissions_ESTIMATE": 155,
+      "unobserved_reads": 7
+    },
+    {
+      "configuration": "pipelined:r3",
+      "agent": "trending",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 56,
+      "modeled_admissions_ESTIMATE": 135,
+      "unobserved_reads": 5
+    },
+    {
+      "configuration": "pipelined:r3",
+      "agent": "personal_watch",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 114,
+      "modeled_admissions_ESTIMATE": 81,
+      "unobserved_reads": 1
+    },
+    {
+      "configuration": "pipelined:r4",
+      "agent": "ALL",
+      "runs": 12,
+      "qualified_records": 49,
+      "selected_passage_words": 2774,
+      "modeled_admissions_ESTIMATE": 525,
+      "unobserved_reads": 25
+    },
+    {
+      "configuration": "pipelined:r4",
+      "agent": "scout",
+      "runs": 3,
+      "qualified_records": 24,
+      "selected_passage_words": 1277,
+      "modeled_admissions_ESTIMATE": 152,
+      "unobserved_reads": 12
+    },
+    {
+      "configuration": "pipelined:r4",
+      "agent": "brandshield",
+      "runs": 3,
+      "qualified_records": 23,
+      "selected_passage_words": 1327,
+      "modeled_admissions_ESTIMATE": 157,
+      "unobserved_reads": 7
+    },
+    {
+      "configuration": "pipelined:r4",
+      "agent": "trending",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 56,
+      "modeled_admissions_ESTIMATE": 135,
+      "unobserved_reads": 5
+    },
+    {
+      "configuration": "pipelined:r4",
+      "agent": "personal_watch",
+      "runs": 3,
+      "qualified_records": 1,
+      "selected_passage_words": 114,
+      "modeled_admissions_ESTIMATE": 81,
+      "unobserved_reads": 1
+    }
+  ],
+  "new_full_suite": {
+    "exit_code": 0,
+    "passed": 2540,
+    "seconds": 69.62,
+    "scope": "Observed tool output; no raw full-suite transcript saved"
+  },
+  "other_commands": [
+    {
+      "label": "fast",
+      "exit_code": 0,
+      "seconds": 55.87,
+      "tail": [
+        "============================ 2332 passed in 52.55s ============================"
+      ]
+    },
+    {
+      "label": "fatal-lint",
+      "exit_code": 0,
+      "seconds": 3.38,
+      "tail": [
+        "0"
+      ]
+    },
+    {
+      "label": "smoke",
+      "exit_code": 0,
+      "seconds": 4.44,
+      "tail": [
+        "}"
+      ]
+    },
+    {
+      "label": "rollback",
+      "exit_code": 0,
+      "seconds": 4.84,
+      "tail": [
+        "}"
+      ]
+    },
+    {
+      "label": "frozen",
+      "exit_code": 0,
+      "seconds": 0.06,
+      "tail": [
+        "Frozen benchmark content hashes verified"
+      ]
+    },
+    {
+      "label": "whitespace",
+      "exit_code": 0,
+      "seconds": 0.05,
+      "tail": []
+    },
+    {
+      "label": "node-test_agent_research_client",
+      "exit_code": 0,
+      "seconds": 0.14,
+      "tail": [
+        "AGENT RESEARCH CLIENT CONTRACTS PASSED"
+      ]
+    },
+    {
+      "label": "node-test_agent_ui_truth",
+      "exit_code": 0,
+      "seconds": 0.08,
+      "tail": [
+        "AGENT UI TRUTH CONTRACTS PASSED"
+      ]
+    },
+    {
+      "label": "node-test_claim_ui_truth",
+      "exit_code": 0,
+      "seconds": 0.09,
+      "tail": [
+        "CLAIM UI TRUTH CONTRACTS PASSED"
+      ]
+    },
+    {
+      "label": "node-test_cloudflare_api_routing",
+      "exit_code": 0,
+      "seconds": 0.06,
+      "tail": [
+        "CLOUDFLARE DIRECT API AND LEDGER EMPTY STATES PASSED"
+      ]
+    },
+    {
+      "label": "node-test_evidence_workbench",
+      "exit_code": 0,
+      "seconds": 0.05,
+      "tail": [
+        "EVIDENCE WORKBENCH PASSED"
+      ]
+    },
+    {
+      "label": "node-test_forensic_explorer_truth",
+      "exit_code": 0,
+      "seconds": 0.05,
+      "tail": [
+        "FORENSIC EXPLORER TRUTH CONTRACTS PASSED"
+      ]
+    },
+    {
+      "label": "node-test_operation_health",
+      "exit_code": 0,
+      "seconds": 0.16,
+      "tail": [
+        "ALL FRONTEND OPERATION HEALTH TESTS PASSED (8/8)!"
+      ]
+    },
+    {
+      "label": "node-test_phase8e_frontend_intelligence",
+      "exit_code": 0,
+      "seconds": 0.06,
+      "tail": [
+        "ALL PHASE 8E FRONTEND INTELLIGENCE TESTS PASSED!"
+      ]
+    },
+    {
+      "label": "node-test_security_and_health_regressions",
+      "exit_code": 0,
+      "seconds": 0.29,
+      "tail": [
+        "FRONTEND SECURITY AND HEALTH REGRESSIONS PASSED"
+      ]
+    },
+    {
+      "label": "node-test_unified_report_renderer",
+      "exit_code": 0,
+      "seconds": 0.11,
+      "tail": [
+        "UNIFIED REPORT RENDERER PASSED"
+      ]
+    }
+  ],
+  "new_offline_diagnostics": {
+    "late_processing": {
+      "controller_reads_started": 2,
+      "main_reads_attempted": 0,
+      "returned_captures": 0,
+      "candidates_mutated_after_return": 2
+    },
+    "recorded_provider_timeout": {
+      "status": "TIMEOUT",
+      "modeled_admissions": 0
+    }
+  },
+  "limitations": [
+    "Replay costs are modeled and omit recorded failed-search charges",
+    "No independent passage review",
+    "No fresh live pilot or browser check",
+    "No hosted CI for uncommitted changes",
+    "No historical archive recovery or deployed rollback proof"
+  ]
+}

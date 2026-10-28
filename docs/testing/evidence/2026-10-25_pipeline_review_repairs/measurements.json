@@ -1,0 +1,352 @@
+{
+  "mode": "FOUR_REAL_NATIVE_CASES_AND_SEPARATE_OFFLINE_POSTFIX",
+  "date": "2026-10-25",
+  "branch": "release/specialist-task-20261024",
+  "base_commit": "7ad13a5",
+  "pilot_application_sha256": "66b33be1803cea7a0776cb41f122662cbac690f897260216e94ab717d06a8b0d",
+  "pilot_stable_application": true,
+  "pilot_live_ai_reservations": 0,
+  "authorized_cases": 4,
+  "whole_investigation_retries": 0,
+  "native_http_total": 301,
+  "cases": [
+    {
+      "agent": "scout",
+      "input": "Adobe",
+      "seconds": 24.69,
+      "http_admissions": 66,
+      "queries_generated": 18,
+      "queries": {
+        "SUCCESS": 17,
+        "AUTH_REQUIRED": 1
+      },
+      "candidates": 51,
+      "eligible": 50,
+      "reads": 24,
+      "article_bodies": 16,
+      "qualified_records": 15,
+      "selected_words": 822,
+      "workbench": {
+        "source_records_with_passages": 15,
+        "observed_publisher_hosts": 7,
+        "available_unique_passages": 122,
+        "published_passages": 122,
+        "published_unique_words": 6963,
+        "published_text_utf8_bytes": 44728,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 18,
+          "FINANCIAL_STATEMENT": 26,
+          "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 55,
+          "HISTORICAL_FINANCIAL_CONTEXT": 23
+        },
+        "independence_verified": false
+      },
+      "body_rejections": {
+        "NO_STRUCTURAL_BODY": 3,
+        "NO_RELEVANT_PASSAGE": 1
+      },
+      "stop_reason": "SHARED_READ_ATTEMPT_CAP",
+      "unread_by_reason": {
+        "READ_ATTEMPT_BUDGET_EXHAUSTED": 26
+      },
+      "capture_integrity_errors": [],
+      "passages_checked": 122,
+      "source_examples": [
+        {
+          "source_url": "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520",
+          "title": "Adobe : Earnings press release (au56y4ter)",
+          "published_at": "2026-09-10T22:12:18+02:00",
+          "qualification": "Not claim adjudication",
+          "sample_first_20_words": "SAN JOSE, Calif. - Sept. 10, 2026 - Adobe (Nasdaq:ADBE), the global technology leader that unleashes creativity and productivity for"
+        },
+        {
+          "source_url": "https://finance.yahoo.com/markets/stocks/articles/adobe-stock-looks-different-record-071254332.html",
+          "title": "Adobe Stock Looks Different After Record Quarter And Raised Guidance",
+          "published_at": "Sun, 25 Oct 2026 00:12:00 GMT",
+          "qualification": "Not claim adjudication",
+          "sample_first_20_words": "Adobe reported record Q3 2026 revenue of US$6.76b, up 13% year over year, with adjusted EPS up 15% and full"
+        },
+        {
+          "source_url": "https://www.theglobeandmail.com/investing/markets/stocks/MSFT/pressreleases/4497362/adobe-before-q3-earnings-should-you-hold-or-fold-the-adbe-stock/",
+          "title": "Adobe Before Q3 Earnings: Should You Hold or Fold the ADBE Stock?",
+          "published_at": "Tue Sep 8, 2:32PM CDT",
+          "qualification": "Not claim adjudication",
+          "sample_first_20_words": "Adobe ADBE is set to report its third-quarter fiscal 2026 results on Sept. 10. For the third quarter of fiscal"
+        }
+      ],
+      "resources": {
+        "peak_rss_mb": 234.4,
+        "memory_measurement_status": "AVAILABLE_SAMPLED",
+        "memory_unavailable_reason": null,
+        "process_cpu_seconds": 9.672,
+        "wall_seconds_measured": 24.347,
+        "peak_threads": 36,
+        "cpu_fraction_of_one_core": 0.397,
+        "sample_interval_seconds": 0.05,
+        "render_free_projection_ESTIMATE": {
+          "minimum_cpu_bound_seconds": 96.7,
+          "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+          "peak_rss_within_ram_limit": true
+        },
+        "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+      },
+      "prior_separate_interleaved_observation": {
+        "qualified": 10,
+        "selected_words": 598,
+        "workbench_words": 5413,
+        "http_admissions": 67
+      }
+    },
+    {
+      "agent": "brandshield",
+      "input": "Dyson",
+      "seconds": 31.27,
+      "http_admissions": 86,
+      "queries_generated": 18,
+      "queries": {
+        "SUCCESS": 17,
+        "TIMEOUT": 1
+      },
+      "candidates": 38,
+      "eligible": 37,
+      "reads": 22,
+      "article_bodies": 7,
+      "qualified_records": 5,
+      "selected_words": 317,
+      "workbench": {
+        "source_records_with_passages": 5,
+        "observed_publisher_hosts": 5,
+        "available_unique_passages": 27,
+        "published_passages": 27,
+        "published_unique_words": 1629,
+        "published_text_utf8_bytes": 10905,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "UNVERIFIED_ALLEGATION": 24,
+          "REPORTED_ENFORCEMENT": 1,
+          "ARTICLE_CONTENT": 2
+        },
+        "independence_verified": false
+      },
+      "body_rejections": {
+        "NO_STRUCTURAL_BODY": 13,
+        "Rejected utility/authentication endpoint (APP_CATALOG): contains zero substantive claim evidence": 1,
+        "NO_RELEVANT_PASSAGE": 2
+      },
+      "stop_reason": "FUTILITY_STOP",
+      "unread_by_reason": {
+        "PIPELINE_FUTILITY_STOP": 15
+      },
+      "capture_integrity_errors": [],
+      "passages_checked": 27,
+      "source_examples": [
+        {
+          "source_url": "https://www.dimsumdaily.hk/counterfeit-dyson-airstrait-models-flooding-hong-kong-market-and-how-to-identify-authentic-products/",
+          "title": "Counterfeit Dyson Airstrait models flooding Hong Kong market and how to identify authentic products",
+          "published_at": null,
+          "qualification": "Not claim adjudication",
+          "sample_first_20_words": "25th December 2024 \u2013 (Hong Kong) As the festive season approaches, the Hong Kong market is witnessing an alarming increase"
+        },
+        {
+          "source_url": "https://www.which.co.uk/news/article/dyson-warns-of-fake-products-on-online-marketplaces-averd8q7dY3K",
+          "title": "Dyson warns of fake products on online marketplaces - Which?",
+          "published_at": "2020-08-07T16:57:03.000Z",
+          "qualification": "Not claim adjudication",
+          "sample_first_20_words": "Shoppers warned as 35 are people sentenced in China for manufacturing fake and potentially harmful versions of the Dyson Supersonic"
+        },
+        {
+          "source_url": "https://lawstreetmedia.com/news/tech/dyson-sues-for-trademark-infringement-for-counterfeit-goods/",
+          "title": "Dyson Sues For Trademark Infringement For Counterfeit Goods | Law Street Media",
+          "published_at": "2020-09-29T17:13:52-04:00",
+          "qualification": "Not claim adjudication",
+          "sample_first_20_words": "Dyson Technology Limited (Dyson) filed a complaint on Friday in the Northern District of Illinois for trademark infringement against a"
+        }
+      ],
+      "resources": {
+        "peak_rss_mb": 270.1,
+        "memory_measurement_status": "AVAILABLE_SAMPLED",
+        "memory_unavailable_reason": null,
+        "process_cpu_seconds": 12.391,
+        "wall_seconds_measured": 31.008,
+        "peak_threads": 39,
+        "cpu_fraction_of_one_core": 0.4,
+        "sample_interval_seconds": 0.05,
+        "render_free_projection_ESTIMATE": {
+          "minimum_cpu_bound_seconds": 123.9,
+          "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+          "peak_rss_within_ram_limit": true
+        },
+        "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+      },
+      "prior_separate_interleaved_observation": {
+        "qualified": 8,
+        "selected_words": 519,
+        "workbench_words": 1851,
+        "http_admissions": 85
+      }
+    },
+    {
+      "agent": "trending",
+      "input": "battery recycling",
+      "seconds": 31.18,
+      "http_admissions": 73,
+      "queries_generated": 18,
+      "queries": {
+        "SUCCESS": 17,
+        "FAILED": 1
+      },
+      "candidates": 49,
+      "eligible": 49,
+      "reads": 11,
+      "article_bodies": 1,
+      "qualified_records": 0,
+      "selected_words": 0,
+      "workbench": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "body_rejections": {
+        "Insufficient multi-token topic match": 3,
+        "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp": 2,
+        "Rejected utility/authentication endpoint (APP_CATALOG): contains zero substantive claim evidence": 3,
+        "TEMPORAL_STALE: Published 2587.9h ago exceeds Trending freshness window (48.0h)": 1
+      },
+      "stop_reason": "FUTILITY_STOP",
+      "unread_by_reason": {
+        "PIPELINE_FUTILITY_STOP": 38
+      },
+      "capture_integrity_errors": [],
+      "passages_checked": 0,
+      "source_examples": [],
+      "resources": {
+        "peak_rss_mb": 277.5,
+        "memory_measurement_status": "AVAILABLE_SAMPLED",
+        "memory_unavailable_reason": null,
+        "process_cpu_seconds": 8.594,
+        "wall_seconds_measured": 31.042,
+        "peak_threads": 36,
+        "cpu_fraction_of_one_core": 0.277,
+        "sample_interval_seconds": 0.05,
+        "render_free_projection_ESTIMATE": {
+          "minimum_cpu_bound_seconds": 85.9,
+          "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+          "peak_rss_within_ram_limit": true
+        },
+        "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+      },
+      "prior_separate_interleaved_observation": {
+        "qualified": 0,
+        "selected_words": 0,
+        "workbench_words": 0,
+        "http_admissions": 79
+      }
+    },
+    {
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "seconds": 28.18,
+      "http_admissions": 76,
+      "queries_generated": 18,
+      "queries": {
+        "SUCCESS": 18
+      },
+      "candidates": 17,
+      "eligible": 16,
+      "reads": 9,
+      "article_bodies": 2,
+      "qualified_records": 1,
+      "selected_words": 114,
+      "workbench": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 1,
+        "published_passages": 1,
+        "published_unique_words": 114,
+        "published_text_utf8_bytes": 704,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 1
+        },
+        "independence_verified": false
+      },
+      "body_rejections": {
+        "NO_RELEVANT_PASSAGE": 1,
+        "NO_STRUCTURAL_BODY": 2,
+        "Insufficient entity match confidence (0.0 < 0.35)": 1
+      },
+      "stop_reason": "NO_FURTHER_USEFUL_WORK",
+      "unread_by_reason": {
+        "WRAPPER_READ_BUDGET_EXHAUSTED": 7
+      },
+      "capture_integrity_errors": [],
+      "passages_checked": 1,
+      "source_examples": [
+        {
+          "source_url": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+          "title": "GM CEO Barra first woman to chair Business Roundtable",
+          "published_at": "2021-09-29T21:08:46+05:30",
+          "qualification": "Not claim adjudication",
+          "sample_first_20_words": "Barra will serve a two-year-term at a time when businesses face major issues in Washington, including proposals in Congress to"
+        }
+      ],
+      "resources": {
+        "peak_rss_mb": 275.1,
+        "memory_measurement_status": "AVAILABLE_SAMPLED",
+        "memory_unavailable_reason": null,
+        "process_cpu_seconds": 7.844,
+        "wall_seconds_measured": 28.061,
+        "peak_threads": 37,
+        "cpu_fraction_of_one_core": 0.28,
+        "sample_interval_seconds": 0.05,
+        "render_free_projection_ESTIMATE": {
+          "minimum_cpu_bound_seconds": 78.4,
+          "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+          "peak_rss_within_ram_limit": true
+        },
+        "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+      },
+      "prior_separate_interleaved_observation": {
+        "qualified": 1,
+        "selected_words": 114,
+        "workbench_words": 114,
+        "http_admissions": 83
+      }
+    }
+  ],
+  "limitations": [
+    "Prior interleaved observation was a separate run; not a controlled causal speed/yield comparison",
+    "Post-pilot root-slug/headline/futility fixes have offline proof only",
+    "Historical statements and allegations are not current verified threats",
+    "No live model generation or production changes"
+  ],
+  "final_application_sha256": "df8e060ae054ad6c55793287bc1be5b25760dc79a3b68617ea151fff292650b1",
+  "final_code_live_verified": false
+}

@@ -64,9 +64,13 @@ def run_harvest_pipeline(request, budget, profile_name):
     # publisher harvesting with a universal social-source sweep.
     from backend.services.agent_reach.source_planner import source_planning_engine
     source_plan = source_planning_engine.plan(request.extra_params.get("claim_text") or request.target,
-        entity=request.target, domain=request.domain, agent=request.agent_name, use_llm=False)
+        entity=request.target, domain=request.domain, agent=request.agent_name, use_llm=False,
+        routing_hints={**request.extra_params, 'time_scope': request.time_scope},
+        allowed_channels=request.extra_params.get('allowed_channels'))
     extra_queries = [{"channel": channel, **row} for channel, rows in source_plan.to_channel_queries().items()
-                     if channel not in {"web", "news", "rss", "reddit", "twitter"} for row in rows][:2]
+                     if channel not in {"reddit", "twitter"} for row in rows]
+    for row in extra_queries:
+        row['source_plan_action_id'] = row['query_id']
     specialist_plan = None
     if request.domain in {"brand", "personal"}:
         from backend.services.research.specialist_planning import build_specialist_harvest_plan
@@ -75,9 +79,9 @@ def run_harvest_pipeline(request, budget, profile_name):
     # optional slots; its returned leads still require normal budgeted reads.
     from backend.infrastructure.acquisition.adapters.expanded_catalog import expanded_query
     from backend.services.agent_reach.native.operation_capabilities import runtime_operation_capabilities
-    expanded = expanded_query(request)
+    expanded = expanded_query(request, research_context=getattr(source_plan, 'research_context', {}))
     allowed = request.extra_params.get("allowed_channels")
-    expanded_allowed = not allowed or "expanded_sources" in allowed
+    expanded_allowed = allowed is None or "expanded_sources" in allowed
     if (expanded and expanded_allowed and not request.source_url
             and runtime_operation_capabilities.assess("expanded_sources", "search")["decision"] not in {"EXCLUDE", "DEFER_TEMPORARY"}):
         core = [row for row in extra_queries if row.get("channel") in {"web", "news", "rss"}]
@@ -89,6 +93,7 @@ def run_harvest_pipeline(request, budget, profile_name):
                 target=request.target, domain=request.domain, intent=request.intent, agent_name=request.agent_name,
                 profile=profile, deadline=started + timeout * .90, request=request,
                 source_url=request.source_url, query_plan=extra_queries,
+                source_plan=source_plan,
                 controller=os.getenv("AEGIS_ACQUISITION_CONTROLLER", "legacy"),
                 specialist_tasks=(specialist_plan or {}).get("requested_tasks", []),
                 specialist_task_explicit=bool((specialist_plan or {}).get("explicit_task")),
@@ -127,8 +132,12 @@ def run_harvest_pipeline(request, budget, profile_name):
             result = relevance_gate.evaluate_item(item, request.target, domain=request.domain, intent=request.intent)
             raw_record = pool.get(item.id) or {}
             structural_body = raw_record.get("source_type") in {"ARTICLE_BODY", "OFFICIAL_DOCUMENT", "COMMUNITY_POST", "STRUCTURED_PUBLIC_DATA"}
-            item.metadata["layer2_eligible"] = result.is_accepted and structural_body
-            reason = result.rejection_reason or ("NO_STRUCTURAL_BODY" if not structural_body else None)
+            from backend.services.research.source_registry import source_registry
+            permission = source_registry.excerpt_decision(item.canonical_url, item.metadata.get('page_metadata'))
+            item.metadata['source_use_permission'] = permission
+            item.metadata["layer2_eligible"] = result.is_accepted and structural_body and permission['eligible']
+            reason = result.rejection_reason or ("NO_STRUCTURAL_BODY" if not structural_body else
+                     permission.get('reason') if not permission['eligible'] else None)
             item.metadata["post_read_qualification_reason"] = reason
             item.metadata["temporal_required"] = request.domain == "trending"
             item.metadata["temporal_eligible"] = result.is_accepted if request.domain == "trending" else True

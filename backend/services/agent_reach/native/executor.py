@@ -8,6 +8,8 @@ command allowlists. Arbitrary shell text execution is strictly prohibited.
 
 import base64
 import binascii
+import codecs
+from email.message import Message
 import hashlib
 import json
 import logging
@@ -25,6 +27,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from backend.infrastructure.acquisition.network.http import (
     BoundedHTTPResponse,
     ProviderHTTPError,
+    ResponseTooLargeError,
     decode_bounded_http_body,
     fetch_public_http,
 )
@@ -44,7 +47,33 @@ logger = logging.getLogger(__name__)
 # Execution security boundaries
 DEFAULT_TIMEOUT_SECONDS = 12.0
 MAX_OUTPUT_BYTES = 1_000_000  # Shared public acquisition response cap
+MAX_HTML_DECODED_BYTES = 4_000_000  # Compressed HTML only; wire/PDF/JSON caps stay unchanged.
 _USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 AegisAgentReach/3.0"
+
+
+def _decode_web_text(body: bytes, content_type: Optional[str]) -> str:
+    """Decode observed HTTP charset declarations without guessing binary text.
+
+    UTF-8 remains the default. A small set of conventional text encodings may
+    be selected only by the captured Content-Type charset. Invalid bytes and
+    unsupported encodings remain extraction failures, never replacement prose.
+    """
+    header = Message()
+    header['Content-Type'] = (content_type or '')[:1000]
+    declared = header.get_content_charset()
+    try:
+        encoding = codecs.lookup(declared or 'utf-8').name
+    except LookupError as error:
+        raise ValueError('Unsupported HTTP text charset') from error
+    if encoding not in {'utf-8', 'utf-8-sig', 'cp1252', 'iso8859-1'}:
+        raise ValueError('Unsupported HTTP text charset')
+    if encoding == 'utf-8' and body.startswith(codecs.BOM_UTF8):
+        encoding = 'utf-8-sig'
+    text = body.decode(encoding, errors='strict')
+    if any((ord(character) < 32 or 127 <= ord(character) <= 159)
+           and character not in '\t\r\n' for character in text):
+        raise ValueError('HTTP response contains binary control characters')
+    return text
 
 
 def _caption_segments(text: str) -> List[Dict[str, str]]:
@@ -125,13 +154,21 @@ class NativeExecutor:
             headers = {
                 "User-Agent": _USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Encoding": "gzip, deflate",
             }
             response = fetch_public_http(
                 clean_url, headers=headers, timeout=timeout, max_bytes=MAX_OUTPUT_BYTES
             )
             status_code = response.status_code
             raw_body_bytes = len(response.body)
-            decoded_body = decode_bounded_http_body(response, max_bytes=MAX_OUTPUT_BYTES)
+            # Large HTML shells can compress below the ordinary wire limit.
+            # An expanded HTML allowance is not a larger network/PDF/JSON cap.
+            if len(response.body) > MAX_OUTPUT_BYTES:
+                raise ResponseTooLargeError('Response exceeds wire byte limit', endpoint=response.endpoint,
+                    status_code=response.status_code, network_observed=True, attempts=response.attempts)
+            media_type = (response.content_type or '').split(';', 1)[0].strip().lower()
+            decoded_limit = MAX_HTML_DECODED_BYTES if media_type in {'text/html', 'application/xhtml+xml'} else MAX_OUTPUT_BYTES
+            decoded_body = decode_bounded_http_body(response, max_bytes=decoded_limit)
             decoded_body_bytes = len(decoded_body)
             if (response.content_type or "").split(";", 1)[0].lower().strip() == "application/pdf" or decoded_body.startswith(b"%PDF-"):
                 from backend.infrastructure.acquisition.adapters.web.pdf_text import extract_pdf_text
@@ -150,9 +187,7 @@ class NativeExecutor:
                         "truncated": pdf["truncated"], "source_text_chars": len(pdf["text"]),
                         "source_text_sha256": hashlib.sha256(pdf["text"].encode()).hexdigest()},
                 }
-            raw_text = decoded_body.decode("utf-8")
-            if any(ord(character) < 32 and character not in "\t\r\n" for character in raw_text):
-                raise ValueError("HTTP response contains binary control characters")
+            raw_text = _decode_web_text(decoded_body, response.content_type)
             content_type = response.content_type
             media_type = (content_type or "").split(";", 1)[0].strip().lower()
             if media_type and not (
@@ -207,7 +242,8 @@ class NativeExecutor:
                 page_metadata["content_scope"] = extracted["content_scope"]
                 page_metadata["text_blocks"] = extracted["text_blocks"]
                 page_metadata["date_observations"] = extracted["date_observations"]
-                for key in ("body_quality", "extraction_method", "readable_word_count", "readable_character_count", "readable_sha256"):
+                for key in ("body_quality", "extraction_method", "readable_word_count", "readable_character_count",
+                            "readable_text_sha256", "language", "language_basis", "licence_urls", "rights_exception_observed"):
                     if key in extracted:
                         page_metadata[key] = extracted[key]
                 raw_text = extracted["raw_text"]
@@ -230,6 +266,9 @@ class NativeExecutor:
             logger.debug("[NativeExecutor] Bounded HTTP read failed for %s: %s", clean_url, error)
             raise
         except Exception as error:
+            from backend.services.research.source_registry import SourcePermissionError
+            if isinstance(error, SourcePermissionError):
+                raise  # A source policy denial is never an extraction failure.
             logger.debug("[NativeExecutor] HTTP parsing failed for %s: %s", clean_url, error)
 
         # News about a CDN/security challenge is not itself a challenge page.

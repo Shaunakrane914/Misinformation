@@ -48,6 +48,27 @@ def _captured_surname_unambiguous(body, target):
     return named > 0
 
 
+def _transcript_speaker_section(body, offset, target):
+    """Explicit transcript boundary plus an observed speaker label, not a roster.
+
+    The last speaker owns only the following section. This never authenticates
+    identity or treats a page's title/intro as words spoken by its subject.
+    """
+    markers = list(re.finditer(r"(?mi)^\s*(?:full |interview )?transcript\s*:\s*$", body[:offset]))
+    if not markers:
+        return None
+    line_end = body.find("\n", offset)
+    section = body[markers[-1].end():line_end if line_end >= 0 else len(body)]
+    label = re.compile(r"(?m)^([A-Z][\w.'-]+(?:[ \t]+[A-Z][\w.'-]+){1,4})[ \t]*"
+                       r"(?:[–—-][ \t]*(?:CEO|CFO|CTO|SVP|VP|Director|Manager|President|Founder|Engineer|Host|Moderator|Interviewer)\b[^\n]*|:[^\n]*)$")
+    labels = list(label.finditer(section))
+    if not labels:
+        return None
+    normalize = lambda value: re.sub(r"[^\w]+", " ", value.casefold()).strip()
+    return ("OBSERVED_TRANSCRIPT_SPEAKER_SECTION" if normalize(labels[-1].group(1)) == normalize(target)
+            else "OTHER_OBSERVED_TRANSCRIPT_SPEAKER")
+
+
 def public_statement_attribution(record, paragraph, target):
     """Observed speaker/author linkage only, never identity authentication.
 
@@ -90,12 +111,17 @@ def public_statement_attribution(record, paragraph, target):
             return None
         return "REPORTED_QUOTATION" if (_reported_quote_has_speaker(paragraph, re.escape(target))
             and (len(target.split()) < 2 or _captured_surname_unambiguous(body, target))) else None
-    if (get("source_name") or get("author") or "").casefold().strip() == target.casefold().strip():
-        return "OBSERVED_FEED_AUTHOR"
     body = get("content", "") or ""
     offset = body.find(paragraph)
     if offset < 0:
         return None
+    transcript_speaker = _transcript_speaker_section(body, offset, target)
+    if transcript_speaker == "OTHER_OBSERVED_TRANSCRIPT_SPEAKER":
+        return None
+    if transcript_speaker:
+        return transcript_speaker
+    if (get("source_name") or get("author") or "").casefold().strip() == target.casefold().strip():
+        return "OBSERVED_FEED_AUTHOR"
     labels = list(re.finditer(r"(?m)^([A-Z][A-Z .'-]{4,70}) MESSAGE\s*$", body[:offset]))
     if labels:
         normalize = lambda text: re.sub(r"[^a-z0-9]+", " ", text.casefold()).strip()
@@ -209,6 +235,8 @@ def captured_passages(record, domain="", target=""):
         role = classify_passage(text, domain=domain)
         attribution = public_statement_attribution(record, text, target) if domain == "personal" else None
         attributed = bool(attribution)
+        if domain == "personal" and role == "PUBLIC_STATEMENT" and not attributed:
+            role = "ARTICLE_CONTENT"
         if attributed and role == "ARTICLE_CONTENT":
             role = "PUBLIC_STATEMENT"
         subject_tokens = list(dict.fromkeys(re.findall(r"\w{2,}" if domain == "personal" else r"\w{3,}", target.casefold())))

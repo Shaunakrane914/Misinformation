@@ -1,0 +1,62 @@
+{
+  "mode": "GENUINE_NORMALIZED_SEARCH_DECISIONS_REPLAY",
+  "recorded_at": "2026-10-26",
+  "query": "Jasprit Bumrah public statement statement interview site:globalvoices.org",
+  "target": "Jasprit Bumrah",
+  "rows": [
+    {
+      "url": "https://en.m.wikipedia.org/wiki/Jasprit_Bumrah",
+      "title": "Jasprit Bumrah - Wikipedia",
+      "discard_reason": null
+    },
+    {
+      "url": "https://www.cricinfo.com/cricketers/jasprit-bumrah-625383",
+      "title": "Jasprit Bumrah Profile - Cricket Player India | Stats, Records, Video",
+      "discard_reason": null
+    },
+    {
+      "url": "https://m.cricbuzz.com/profiles/9311/jasprit-bumrah",
+      "title": "Jasprit Bumrah Profile - ICC Ranking, Age, Career Info & Stats",
+      "discard_reason": null
+    },
+    {
+      "url": "https://www.instagram.com/jaspritb1/",
+      "title": "jasprit bumrah (@jaspritb1) • Instagram photos and videos",
+      "discard_reason": null
+    },
+    {
+      "url": "https://www.youtube.com/@JaspritBumrah1993",
+      "title": "Jasprit Bumrah - YouTube",
+      "discard_reason": null
+    },
+    {
+      "url": "https://starsunfolded.com/jasprit-bumrah/",
+      "title": "Jasprit Bumrah Height, Age, Girlfriend, Wife, Family, Biography",
+      "discard_reason": null
+    },
+    {
+      "url": "https://www.britannica.com/biography/Jasprit-Bumrah",
+      "title": "Jasprit Bumrah | Cricket, Fast Bowling, Life, Career, International ...",
+      "discard_reason": null
+    },
+    {
+      "url": "https://bn.m.wikipedia.org/wiki/%E0%A6%9C%E0%A6%B8%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A7%80%E0%A6%A4_%E0%A6%AC%E0%A7%81%E0%A6%AE%E0%A6%B0%E0%A6%BE%E0%A6%B9",
+      "title": "জসপ্রীত বুমরাহ - উইকিপিডিয়া",
+      "discard_reason": null
+    },
+    {
+      "url": "https://crex.com/player/jasprit-bumrah-AJ",
+      "title": "Jasprit Bumrah Indian Cricket Player Profile, Batting and Bowling stats ...",
+      "discard_reason": null
+    },
+    {
+      "url": "https://www.instagram.com/i.am.jasprit/",
+      "title": "Jasprit Singh (@i.am. jasprit ) • Instagram photos and videos",
+      "discard_reason": "SUBJECT_MISMATCH"
+    }
+  ],
+  "limitations": [
+    "Captured normalized URLs/titles only, not original provider HTML or bodies.",
+    "Snippet text was not retained in the decision projection; do not invent it."
+  ]
+}

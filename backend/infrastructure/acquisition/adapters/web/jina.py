@@ -18,6 +18,7 @@ from backend.infrastructure.acquisition.network.http import (
     ProviderHTTPError,
     decode_bounded_http_body,
     fetch_public_http,
+    transport_failure_kind,
 )
 from backend.services.url_validator import is_safe_url
 from backend.infrastructure.acquisition.security.url_validator import validation_failure_kind
@@ -30,6 +31,43 @@ logger = logging.getLogger(__name__)
 JINA_READER_BASE = "https://r.jina.ai"
 
 
+_FAILURE_KINDS = frozenset({
+    'TIMEOUT', 'DNS_ERROR', 'DNS_TIMEOUT', 'DNS_CAPACITY', 'CONNECTION_FAILURE',
+    'HTTP_FAILURE', 'PROVIDER_FAILURE', 'EMPTY_EXTRACTION', 'CHALLENGE_PAGE',
+    'SSRF_BLOCKED', 'BUDGET_EXHAUSTED', 'RATE_LIMITED', 'AUTH_REQUIRED',
+    'ACCESS_DENIED', 'CONFIG_REQUIRED', 'PERMISSION_REQUIRED', 'UNVERIFIED',
+    'BLOCKED', 'ROBOTS_DENIED', 'ROBOTS_UNVERIFIED', 'ROBOTS_CRAWL_DELAY_BUDGET_EXHAUSTED',
+    'ROBOTS_CRAWL_DELAY_REVIEW_REQUIRED', 'PAYWALL', 'LOGIN_REQUIRED',
+})
+
+
+def _failure_observation(stage, result):
+    """Copy only bounded typed observations, never raw exception text/headers."""
+    transport = result.get('transport') if isinstance(result.get('transport'), dict) else {}
+    kind = result.get('failure_kind')
+    kind = kind if isinstance(kind, str) and kind in _FAILURE_KINDS else 'PROVIDER_FAILURE'
+    status = transport.get('http_status', result.get('status_code'))
+    status = status if type(status) is int and 100 <= status <= 599 else None
+    observed = transport.get('network_observed_this_attempt', result.get('network_observed'))
+    return {'stage': stage, 'failure_kind': kind, 'http_status': status,
+            'network_observed': observed if type(observed) is bool else None}
+
+
+def _with_failures(result, failures):
+    return {**result, **({'provider_failures': failures[:3]} if failures else {})}
+
+
+def _failed_read(url, failures):
+    if not failures:
+        return {"status": "error", "error": "Failed to read content", "url": url}
+    first = failures[0]
+    return _with_failures({'status': 'error', 'url': url,
+        'error': 'No reader acquired content; see typed provider observations',
+        'failure_kind': first['failure_kind'], 'network_observed': first['network_observed'],
+        'transport': {'http_status': first['http_status'],
+                      'network_observed_this_attempt': first['network_observed']}}, failures)
+
+
 def _terminal_failure(result):
     if not isinstance(result, dict):
         return False
@@ -39,7 +77,9 @@ def _terminal_failure(result):
     return (status in {"401", "403", "429"}
             or str(result.get("failure_kind", "")).upper() in {"ACCESS_DENIED", "AUTH_REQUIRED", "FORBIDDEN", "CHALLENGE_PAGE",
                                              "SSRF_BLOCKED", "RATE_LIMITED", "BUDGET_EXHAUSTED", "ROBOTS_DENIED",
-                                             "PAYWALL", "LOGIN_REQUIRED"}
+                                             "PAYWALL", "LOGIN_REQUIRED", "PERMISSION_REQUIRED", "UNVERIFIED", "BLOCKED",
+                                             "ROBOTS_UNVERIFIED", "ROBOTS_CRAWL_DELAY_REVIEW_REQUIRED",
+                                             "ROBOTS_CRAWL_DELAY_BUDGET_EXHAUSTED"}
             or str(result.get("status", "")).lower() in {"blocked_ssrf", "forbidden", "access_denied", "rate_limited"})
 
 
@@ -116,8 +156,13 @@ def read_article_via_jina(url: str, timeout: float = 5.0) -> Optional[Dict[str, 
                 "error": "Reader provider request failed", "transport": {
                     "http_status": error.status_code, "retry_after_seconds": error.retry_after_seconds,
                     "network_observed_this_attempt": error.network_observed}}
-    except Exception:
+    except Exception as error:
+        from backend.services.research.source_registry import SourcePermissionError
+        if isinstance(error, SourcePermissionError):
+            raise
         logger.debug("[JinaWebReader] Reader response could not be processed")
+        return {"status": "failed", "url": url, "failure_kind": transport_failure_kind(error),
+                "error": "Reader response could not be processed"}
 
     return None
 
@@ -160,12 +205,15 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
             "url": url,
         }
 
+    failures = []
+
     # 1. Primary: Native executor web read
     if executor is not None and hasattr(executor, "execute_web_read"):
         try:
             res = executor.execute_web_read(url)
             if _terminal_failure(res):
-                return res
+                failures.append(_failure_observation('NATIVE_READER', res))
+                return _with_failures(res, failures)
             content = res.get("content", "")
             if content and len(content.strip()) > 50:
                 page_metadata = res.get("page_metadata") or {}
@@ -186,6 +234,8 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
                     "fallback_used": res.get("backend") == "jina_reader_fallback",
                     "transport": res.get("transport"),
                 }
+            failures.append(_failure_observation('NATIVE_READER', {
+                **res, 'failure_kind': res.get('failure_kind') or 'EMPTY_EXTRACTION'}))
 
         except SecurityPolicyViolation:
             return {"status": "blocked_ssrf", "failure_kind": "SSRF_BLOCKED", "error": "URL failed security validation", "url": url}
@@ -201,9 +251,14 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
                               "retry_after_seconds": error.retry_after_seconds,
                               "network_observed_this_attempt": error.network_observed},
             }
+            failures.append(_failure_observation('NATIVE_READER', failure))
             if _terminal_failure(failure):
-                return failure
-        except Exception:
+                return _with_failures(failure, failures)
+        except Exception as error:
+            from backend.services.research.source_registry import SourcePermissionError
+            if isinstance(error, SourcePermissionError):
+                raise
+            failures.append(_failure_observation('NATIVE_READER', {'failure_kind': transport_failure_kind(error)}))
             logger.debug("[JinaWebReader] Native web read failed; trying bounded fallback")
 
     # 2. Secondary Fallback: Firecrawl (if configured and permitted)
@@ -219,7 +274,8 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
         try:
             fc_res = fc_adapter.scrape_article(url, timeout=remaining_timeout(5.0))
             if fc_res and _terminal_failure(fc_res):
-                return fc_res
+                failures.append(_failure_observation('FIRECRAWL', fc_res))
+                return _with_failures(fc_res, failures)
             if fc_res and fc_res.get("status") == "success":
                 c = fc_res.get("content", "")
                 if c and len(c.strip()) > 30:
@@ -239,16 +295,37 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
                         "fallback_used": True,
                         "fallback_backend": "firecrawl-v1",
                         "transport": fc_res.get("transport"),
+                        **({'provider_failures': failures[:3]} if failures else {}),
                     }
-        except TimeoutError:
-            raise
-        except Exception:
+            if fc_res:
+                failures.append(_failure_observation('FIRECRAWL', fc_res))
+        except TimeoutError as error:
+            failures.append(_failure_observation('FIRECRAWL', {'failure_kind': transport_failure_kind(error)}))
+            return _failed_read(url, failures)
+        except Exception as error:
+            from backend.services.research.source_registry import SourcePermissionError
+            if isinstance(error, SourcePermissionError):
+                error.provider_failures = [*failures, _failure_observation('FIRECRAWL', {
+                    'failure_kind': error.failure_kind, 'network_observed': False})][:3]
+                raise
+            failures.append(_failure_observation('FIRECRAWL', {'failure_kind': transport_failure_kind(error)}))
             logger.debug("[JinaWebReader] Firecrawl fallback failed; proceeding to bounded reader")
 
     # 3. Tertiary Fallback: Jina Reader (bounded public endpoint)
-    jina_res = read_article_via_jina(url, timeout=remaining_timeout(5.0))
+    try:
+        jina_res = read_article_via_jina(url, timeout=remaining_timeout(5.0))
+    except Exception as error:
+        from backend.services.research.source_registry import SourcePermissionError
+        if isinstance(error, TimeoutError):
+            failures.append(_failure_observation('JINA_READER', {'failure_kind': transport_failure_kind(error)}))
+            return _failed_read(url, failures)
+        if isinstance(error, SourcePermissionError):
+            error.provider_failures = [*failures, _failure_observation('JINA_READER', {
+                'failure_kind': error.failure_kind, 'network_observed': False})][:3]
+        raise
     if jina_res and _terminal_failure(jina_res):
-        return jina_res
+        failures.append(_failure_observation('JINA_READER', jina_res))
+        return _with_failures(jina_res, failures)
     if jina_res and jina_res.get("status") == "success":
         c = jina_res.get("content", "")
         return {
@@ -266,9 +343,12 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
             "fallback_used": True,
             "fallback_backend": "jina-reader",
             "transport": jina_res.get("transport"),
+            **({'provider_failures': failures[:3]} if failures else {}),
         }
 
-    return {"status": "error", "error": "Failed to read content", "url": url}
+    if jina_res:
+        failures.append(_failure_observation('JINA_READER', jina_res))
+    return _failed_read(url, failures)
 
 
 class JinaWebReaderAdapter:

@@ -1,0 +1,4683 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "bollywood_hungama",
+      "name": "Bollywood Hungama",
+      "hosts": [
+        "bollywoodhungama.com"
+      ],
+      "reference": "https://www.bollywoodhungama.com/rss-feed/",
+      "topics": [
+        "bollywood",
+        "film",
+        "box_office"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "News/interviews and film reporting; box-office estimates need methodology."
+    },
+    {
+      "id": "filmfare",
+      "name": "Filmfare",
+      "hosts": [
+        "filmfare.com"
+      ],
+      "reference": "https://www.filmfare.com/",
+      "topics": [
+        "bollywood",
+        "regional_cinema",
+        "interviews"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "AGREEMENT_REQUIRED_FOR_INTENDED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Written content-use clearance required; no agreement configured.",
+      "permission_basis": "https://www.filmfare.com/copyright-and-content-usage-policy"
+    },
+    {
+      "id": "hindustan_times",
+      "name": "Hindustan Times",
+      "hosts": [
+        "hindustantimes.com"
+      ],
+      "reference": "https://www.hindustantimes.com/rss",
+      "topics": [
+        "bollywood",
+        "hollywood",
+        "sports",
+        "politics"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "AGREEMENT_REQUIRED_FOR_INTENDED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Syndication licence and intended automated/AI use require agreement; none configured.",
+      "permission_basis": "https://www.htmedia.in/ht-syndication"
+    },
+    {
+      "id": "indian_express",
+      "name": "Indian Express",
+      "hosts": [
+        "indianexpress.com"
+      ],
+      "reference": "https://indianexpress.com/rss/",
+      "topics": [
+        "bollywood",
+        "regional_cinema",
+        "sports",
+        "politics",
+        "business"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "RESTRICTED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_RESTRICTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Published feeds; stated personal/non-commercial and syndication restrictions."
+    },
+    {
+      "id": "ndtv",
+      "name": "NDTV",
+      "hosts": [
+        "ndtv.com"
+      ],
+      "reference": "https://www.ndtv.com/rss?site=classic",
+      "topics": [
+        "bollywood",
+        "sports",
+        "politics",
+        "business",
+        "health"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "RESTRICTED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_RESTRICTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Headline feed terms distinguish personal/non-commercial use; article rights separate."
+    },
+    {
+      "id": "live_hindustan",
+      "name": "Live Hindustan",
+      "hosts": [
+        "livehindustan.com"
+      ],
+      "reference": "https://www.livehindustan.com/rss",
+      "topics": [
+        "hindi",
+        "regional_news",
+        "bollywood",
+        "sports"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "hi"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Preserve Hindi text and original quote; reuse conditions apply."
+    },
+    {
+      "id": "yrf",
+      "name": "Yash Raj Films",
+      "hosts": [
+        "yashrajfilms.com"
+      ],
+      "reference": "https://www.yashrajfilms.com/",
+      "topics": [
+        "bollywood",
+        "film",
+        "official_statements"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "First-party announcements; not independent reviews or authenticated personal speech.",
+      "entity_scoped": true
+    },
+    {
+      "id": "variety",
+      "name": "Variety",
+      "hosts": [
+        "variety.com"
+      ],
+      "reference": "https://variety.com/",
+      "topics": [
+        "hollywood",
+        "film",
+        "television"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_FETCH_402",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Trade-publication candidate; web tool returned 402, not local runtime proof."
+    },
+    {
+      "id": "deadline",
+      "name": "Deadline",
+      "hosts": [
+        "deadline.com"
+      ],
+      "reference": "https://deadline.com/",
+      "topics": [
+        "hollywood",
+        "film",
+        "television"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_FETCH_402",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Trade-publication candidate; web tool returned 402, not enabled."
+    },
+    {
+      "id": "bcci",
+      "name": "BCCI",
+      "hosts": [
+        "bcci.tv"
+      ],
+      "reference": "https://www.bcci.tv/",
+      "topics": [
+        "cricket",
+        "sports",
+        "official_statements"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "AGREEMENT_REQUIRED_FOR_INTENDED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Systematic content collection requires written clearance; none configured.",
+      "permission_basis": "https://www.bcci.tv/news/article/copyright"
+    },
+    {
+      "id": "icc",
+      "name": "ICC",
+      "hosts": [
+        "icc-cricket.com"
+      ],
+      "reference": "https://www.icc-cricket.com/news",
+      "topics": [
+        "cricket",
+        "sports",
+        "official_statements"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "AGREEMENT_REQUIRED_FOR_INTENDED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Commercial product use requires an appropriate licence; none configured.",
+      "permission_basis": "https://www.icc-cricket.com/about/the-icc/legal-notices/website-terms-of-use"
+    },
+    {
+      "id": "techcrunch",
+      "name": "TechCrunch",
+      "hosts": [
+        "techcrunch.com"
+      ],
+      "reference": "https://techcrunch.com/",
+      "topics": [
+        "technology",
+        "startups",
+        "executives"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Observed topic pages; automated route/reuse not accepted."
+    },
+    {
+      "id": "the_register",
+      "name": "The Register",
+      "hosts": [
+        "theregister.com"
+      ],
+      "reference": "https://www.theregister.com/",
+      "topics": [
+        "technology",
+        "semiconductors",
+        "cybersecurity"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Separate editorial reporting from vendor/sponsored material."
+    },
+    {
+      "id": "who",
+      "name": "WHO",
+      "hosts": [
+        "who.int"
+      ],
+      "reference": "https://www.who.int/news-room",
+      "topics": [
+        "health",
+        "public_policy",
+        "official_statements"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Health statements and speeches; not a general celebrity source."
+    },
+    {
+      "id": "eci",
+      "name": "Election Commission of India",
+      "hosts": [
+        "eci.gov.in"
+      ],
+      "reference": "https://www.eci.gov.in/",
+      "topics": [
+        "elections",
+        "politics"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_FETCH_TIMEOUT",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Candidate official election records; no local access proof."
+    },
+    {
+      "id": "prs",
+      "name": "PRS Legislative Research",
+      "hosts": [
+        "prsindia.org"
+      ],
+      "reference": "https://prsindia.org/",
+      "topics": [
+        "politics",
+        "legislation",
+        "public_policy"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Legislative analysis; original law/parliament text remains separately inspectable."
+    },
+    {
+      "id": "pib",
+      "name": "PIB",
+      "hosts": [
+        "pib.gov.in"
+      ],
+      "reference": "https://www.pib.gov.in/ViewRss.aspx?lang=1&reg=1",
+      "topics": [
+        "politics",
+        "public_policy",
+        "official_statements",
+        "business",
+        "film",
+        "bollywood",
+        "regional_cinema",
+        "sports",
+        "cricket"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en",
+        "hi",
+        "pa"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true,
+        "entrypoints": [
+          "https://www.pib.gov.in/ViewRss.aspx?lang=1&reg=1"
+        ]
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "ATTRIBUTED_EXACT_TEXT_UNLESS_THIRD_PARTY",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "OFFICIAL_REUSE_POLICY_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Official issuing-government statements on culture, film, sports and policy; not independent reporting. Contrary/third-party notices excluded.",
+      "licence_url": "https://www.pib.gov.in/content/3622_2_CopyrightPolicy.aspx?lang=6&reg=17",
+      "required_jurisdiction": "IN"
+    },
+    {
+      "id": "govuk",
+      "name": "GOV.UK",
+      "hosts": [
+        "gov.uk"
+      ],
+      "reference": "https://www.gov.uk/help/reuse-govuk-content",
+      "topics": [
+        "public_policy",
+        "official_statements",
+        "regulation",
+        "incidents"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": true
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "OGL_TEXT_UNLESS_EXCLUDED",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_CONTENT_API",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Content API and OGL guidance; restrict route to relevant department/task.",
+      "licence_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+    },
+    {
+      "id": "mit_news",
+      "name": "MIT News",
+      "hosts": [
+        "news.mit.edu"
+      ],
+      "reference": "https://news.mit.edu/rss",
+      "topics": [
+        "technology",
+        "materials",
+        "energy",
+        "research"
+      ],
+      "agents": [
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Topic feeds; institutional science communication, not independent replication."
+    },
+    {
+      "id": "nist_news",
+      "name": "NIST News",
+      "hosts": [
+        "nist.gov"
+      ],
+      "reference": "https://www.nist.gov/coo/nist-rss-feeds",
+      "topics": [
+        "technology",
+        "semiconductors",
+        "manufacturing",
+        "cybersecurity"
+      ],
+      "agents": [
+        "trending",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "News family distinct from current NVD route."
+    },
+    {
+      "id": "nsf",
+      "name": "NSF",
+      "hosts": [
+        "nsf.gov"
+      ],
+      "reference": "https://www.nsf.gov/rss",
+      "topics": [
+        "research",
+        "technology",
+        "science"
+      ],
+      "agents": [
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Do not confuse award/funding announcements with demonstrated results."
+    },
+    {
+      "id": "crossref",
+      "name": "Crossref",
+      "hosts": [
+        "crossref.org"
+      ],
+      "reference": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+      "topics": [
+        "research",
+        "science"
+      ],
+      "agents": [
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": true
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_METADATA_API",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "DOI metadata discovery; not publisher body acquisition."
+    },
+    {
+      "id": "europe_pmc",
+      "name": "Europe PMC",
+      "hosts": [
+        "europepmc.org"
+      ],
+      "reference": "https://europepmc.org/RestfulWebService",
+      "topics": [
+        "health",
+        "biomedical",
+        "research"
+      ],
+      "agents": [
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": true
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_OA_API",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Full text only for eligible open-access subset; status/licence retained."
+    },
+    {
+      "id": "sec",
+      "name": "SEC EDGAR",
+      "hosts": [
+        "sec.gov"
+      ],
+      "reference": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "topics": [
+        "finance",
+        "filings",
+        "enforcement"
+      ],
+      "agents": [
+        "scout",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": true
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_API_EXISTING_GATE",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Existing route; retain declared contact and all project access gates."
+    },
+    {
+      "id": "rbi",
+      "name": "RBI",
+      "hosts": [
+        "rbi.org.in"
+      ],
+      "reference": "https://www.rbi.org.in/Scripts/rss.aspx",
+      "topics": [
+        "finance",
+        "banking",
+        "regulation",
+        "official_statements"
+      ],
+      "agents": [
+        "scout",
+        "brandshield",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Indian financial policy/releases/speeches."
+    },
+    {
+      "id": "sebi",
+      "name": "SEBI",
+      "hosts": [
+        "sebi.gov.in"
+      ],
+      "reference": "https://www.sebi.gov.in/rss.html",
+      "topics": [
+        "finance",
+        "enforcement",
+        "regulation"
+      ],
+      "agents": [
+        "scout",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Releases/orders; distinguish allegation, interim order and final outcome."
+    },
+    {
+      "id": "nse",
+      "name": "NSE",
+      "hosts": [
+        "nseindia.com"
+      ],
+      "reference": "https://www.nseindia.com/static/rss-feed",
+      "topics": [
+        "finance",
+        "filings",
+        "india"
+      ],
+      "agents": [
+        "scout"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS_ACCESS_REVIEW",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Financial disclosures; usage/automation review required, not bulk approval."
+    },
+    {
+      "id": "bse",
+      "name": "BSE",
+      "hosts": [
+        "bseindia.com"
+      ],
+      "reference": "https://www.bseindia.com/corporates/ann.html",
+      "topics": [
+        "finance",
+        "filings",
+        "india"
+      ],
+      "agents": [
+        "scout"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_FETCH_403",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Observed web-tool denial; no undocumented API or bypass proposed."
+    },
+    {
+      "id": "hkex",
+      "name": "HKEXnews",
+      "hosts": [
+        "hkexnews.hk"
+      ],
+      "reference": "https://www.hkexnews.hk/index.htm?sc_lang=en",
+      "topics": [
+        "finance",
+        "filings",
+        "hong_kong"
+      ],
+      "agents": [
+        "scout"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_PUBLIC_SEARCH",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Public document-search candidate; automated access and extraction unverified."
+    },
+    {
+      "id": "economic_times",
+      "name": "Economic Times",
+      "hosts": [
+        "economictimes.indiatimes.com"
+      ],
+      "reference": "https://economictimes.indiatimes.com/rss.cms",
+      "topics": [
+        "business",
+        "finance",
+        "executives",
+        "technology"
+      ],
+      "agents": [
+        "scout",
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "RESTRICTED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_RESTRICTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Personal-use/syndication limits; not enabled for unrestricted aggregation."
+    },
+    {
+      "id": "mint",
+      "name": "Mint",
+      "hosts": [
+        "livemint.com"
+      ],
+      "reference": "https://www.livemint.com/rss",
+      "topics": [
+        "business",
+        "finance",
+        "executives",
+        "technology"
+      ],
+      "agents": [
+        "scout",
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "RESTRICTED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_RESTRICTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Personal/non-commercial headlines terms; permissions for broader usage."
+    },
+    {
+      "id": "business_standard",
+      "name": "Business Standard",
+      "hosts": [
+        "business-standard.com"
+      ],
+      "reference": "https://www.business-standard.com/rss-feeds/listing",
+      "topics": [
+        "business",
+        "finance",
+        "politics",
+        "sports"
+      ],
+      "agents": [
+        "scout",
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Feed directory; article access/reuse still unverified."
+    },
+    {
+      "id": "moneycontrol_hindi",
+      "name": "Moneycontrol Hindi",
+      "hosts": [
+        "hindi.moneycontrol.com"
+      ],
+      "reference": "https://hindi.moneycontrol.com/rss",
+      "topics": [
+        "business",
+        "finance",
+        "hindi"
+      ],
+      "agents": [
+        "scout",
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "hi"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Only Hindi directory inspected; English acquisition route unverified."
+    },
+    {
+      "id": "companies_house",
+      "name": "Companies House",
+      "hosts": [
+        "company-information.service.gov.uk"
+      ],
+      "reference": "https://developer-specs.company-information.service.gov.uk/guides/quickStart",
+      "topics": [
+        "company_identity",
+        "filings",
+        "directors"
+      ],
+      "agents": [
+        "scout",
+        "brandshield",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": true
+      },
+      "auth_env": "COMPANIES_HOUSE_API_KEY",
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_API_KEY_REQUIRED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Account/key required; filings do not independently authenticate allegations or current roles."
+    },
+    {
+      "id": "fca",
+      "name": "FCA",
+      "hosts": [
+        "fca.org.uk"
+      ],
+      "reference": "https://www.fca.org.uk/consumers/warning-list-unauthorised-firms",
+      "topics": [
+        "finance",
+        "clone_firms",
+        "impersonation"
+      ],
+      "agents": [
+        "scout",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_WARNING_LIST",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Company identity and domain matching; absence is not proof of authorisation."
+    },
+    {
+      "id": "ftc",
+      "name": "FTC",
+      "hosts": [
+        "ftc.gov"
+      ],
+      "reference": "https://www.ftc.gov/stay-connected/rss",
+      "topics": [
+        "scams",
+        "enforcement",
+        "consumer_protection"
+      ],
+      "agents": [
+        "brandshield",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true,
+        "entrypoints": [
+          "https://www.ftc.gov/feeds/press-release.xml"
+        ]
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "SCOPED_AGENCY_TEXT_ONLY",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Agency-authored press text only. Public comments, filings, attachments, media and third-party notices excluded.",
+      "permission_basis": "https://www.ftc.gov/policy-notices/website-policy",
+      "allowed_paths": {
+        "body": [
+          "/feeds/press-release.xml",
+          "/news-events/news/press-releases/"
+        ],
+        "excerpt": [
+          "/news-events/news/press-releases/"
+        ],
+        "model_processing": [
+          "/news-events/news/press-releases/"
+        ]
+      },
+      "scope_hosts": {
+        "body": [
+          "ftc.gov",
+          "www.ftc.gov"
+        ],
+        "excerpt": [
+          "ftc.gov",
+          "www.ftc.gov"
+        ],
+        "model_processing": [
+          "ftc.gov",
+          "www.ftc.gov"
+        ]
+      }
+    },
+    {
+      "id": "doj",
+      "name": "US DOJ",
+      "hosts": [
+        "justice.gov"
+      ],
+      "reference": "https://www.justice.gov/developer/api-documentation/api_v1",
+      "topics": [
+        "fraud",
+        "enforcement",
+        "impersonation"
+      ],
+      "agents": [
+        "brandshield",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false,
+        "entrypoints": [
+          "https://www.justice.gov/news"
+        ]
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": true
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "SCOPED_AGENCY_TEXT_ONLY",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_API",
+      "rate_limit_rps": 1,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Agency-authored OPA press text only. Court filings, FOIA, media, attachments and contrary rights notices excluded.",
+      "permission_basis": "https://www.justice.gov/legalpolicies",
+      "allowed_paths": {
+        "body": [
+          "/news",
+          "/opa/pr/"
+        ],
+        "excerpt": [
+          "/opa/pr/"
+        ],
+        "model_processing": [
+          "/opa/pr/"
+        ]
+      },
+      "scope_hosts": {
+        "body": [
+          "justice.gov",
+          "www.justice.gov"
+        ],
+        "excerpt": [
+          "justice.gov",
+          "www.justice.gov"
+        ],
+        "model_processing": [
+          "justice.gov",
+          "www.justice.gov"
+        ]
+      }
+    },
+    {
+      "id": "cpsc",
+      "name": "CPSC",
+      "hosts": [
+        "cpsc.gov",
+        "www.saferproducts.gov"
+      ],
+      "reference": "https://www.cpsc.gov/Recalls/CPSC-Recalls-Application-Program-Interface-API-Information",
+      "topics": [
+        "recalls",
+        "product_safety"
+      ],
+      "agents": [
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "PRODUCT_SAFETY"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true,
+        "automatic_selection": false,
+        "adapter_selector": "cpsc_recalls"
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": true
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "SCOPED_AGENCY_TEXT_ONLY",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Documented recall JSON fields only; no agency-wide webpage/media grant. Dataset catalogue search metadata declares public-domain terms; direct catalogue fetch returned 404. Explicit adapter/diagnostic only; automatic article planning is not enabled for this API-only review.",
+      "permission_basis": "https://catalog.data.gov/dataset/recalls-api",
+      "allowed_paths": {
+        "body": [
+          "/RestWebServices/Recall"
+        ],
+        "excerpt": [
+          "/RestWebServices/Recall"
+        ],
+        "model_processing": [
+          "/RestWebServices/Recall"
+        ]
+      },
+      "scope_hosts": {
+        "body": [
+          "www.saferproducts.gov"
+        ],
+        "excerpt": [
+          "www.saferproducts.gov"
+        ],
+        "model_processing": [
+          "www.saferproducts.gov"
+        ]
+      }
+    },
+    {
+      "id": "fda",
+      "name": "FDA",
+      "hosts": [
+        "fda.gov"
+      ],
+      "reference": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts",
+      "topics": [
+        "recalls",
+        "health",
+        "product_safety"
+      ],
+      "agents": [
+        "brandshield",
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "PRODUCT_SAFETY"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Alert list is not exhaustive; link product/company and exact action."
+    },
+    {
+      "id": "eu_safety_gate",
+      "name": "EU Safety Gate",
+      "hosts": [
+        "ec.europa.eu"
+      ],
+      "reference": "https://ec.europa.eu/safety-gate-alerts/screen/webReport",
+      "topics": [
+        "recalls",
+        "product_safety",
+        "europe"
+      ],
+      "agents": [
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "PRODUCT_SAFETY"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_JS_SHELL",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Public report rendered no text in tool; acquisition mechanism unverified."
+    },
+    {
+      "id": "cisa",
+      "name": "CISA",
+      "hosts": [
+        "cisa.gov"
+      ],
+      "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "topics": [
+        "cybersecurity",
+        "exploitation"
+      ],
+      "agents": [
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_FETCH_403",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Observed denial in web tool; not proof of permanent local block. Vulnerability is not target compromise."
+    },
+    {
+      "id": "cert_in",
+      "name": "CERT-In",
+      "hosts": [
+        "cert-in.org.in"
+      ],
+      "reference": "https://www.cert-in.org.in/",
+      "topics": [
+        "cybersecurity",
+        "india"
+      ],
+      "agents": [
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_EMPTY_PAGE",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Official advisory candidate; body discovery unverified."
+    },
+    {
+      "id": "scamwatch",
+      "name": "Scamwatch",
+      "hosts": [
+        "scamwatch.gov.au"
+      ],
+      "reference": "https://www.scamwatch.gov.au/",
+      "topics": [
+        "scams",
+        "impersonation",
+        "australia"
+      ],
+      "agents": [
+        "brandshield",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Separate general advice, aggregate reports and named incidents."
+    },
+    {
+      "id": "asa",
+      "name": "ASA",
+      "hosts": [
+        "asa.org.uk"
+      ],
+      "reference": "https://www.asa.org.uk/codes-and-rulings/rulings.html",
+      "topics": [
+        "advertising",
+        "endorsements",
+        "misleading_claims"
+      ],
+      "agents": [
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "ENDORSEMENT_CLAIM",
+          "BRAND_RISK"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_RULINGS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Preserve upheld/not upheld/informal outcome and exact advertiser."
+    },
+    {
+      "id": "securityweek",
+      "name": "SecurityWeek",
+      "hosts": [
+        "securityweek.com"
+      ],
+      "reference": "https://www.securityweek.com/",
+      "topics": [
+        "cybersecurity",
+        "incidents",
+        "fraud"
+      ],
+      "agents": [
+        "brandshield",
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Reported incidents need original technical/source links and dates."
+    },
+    {
+      "id": "bleepingcomputer",
+      "name": "BleepingComputer",
+      "hosts": [
+        "bleepingcomputer.com"
+      ],
+      "reference": "https://www.bleepingcomputer.com/",
+      "topics": [
+        "cybersecurity",
+        "incidents"
+      ],
+      "agents": [
+        "brandshield",
+        "trending"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "RESEARCH_FETCH_TIMEOUT",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Candidate reporting source; no local access proof."
+    },
+    {
+      "id": "boom",
+      "name": "BOOM",
+      "hosts": [
+        "boomlive.in"
+      ],
+      "reference": "https://www.boomlive.in/about-us",
+      "topics": [
+        "fact_checks",
+        "india",
+        "false_quotes",
+        "synthetic_media"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLISHER_PURPOSE_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Inspect exact reviewed claim and original evidence; no blanket verdict inheritance."
+    },
+    {
+      "id": "afp_factcheck",
+      "name": "AFP Fact Check",
+      "hosts": [
+        "factcheck.afp.com"
+      ],
+      "reference": "https://factcheck.afp.com/How-we-work",
+      "topics": [
+        "fact_checks",
+        "false_quotes",
+        "synthetic_media",
+        "international"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLISHER_METHOD_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Language/date/claim match; content access and reuse distinct from methodology."
+    },
+    {
+      "id": "full_fact",
+      "name": "Full Fact",
+      "hosts": [
+        "fullfact.org"
+      ],
+      "reference": "https://fullfact.org/about/",
+      "topics": [
+        "fact_checks",
+        "politics",
+        "false_quotes"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLISHER_PURPOSE_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Review underlying evidence and exact claim; not generic authority score."
+    },
+    {
+      "id": "apple_newsroom",
+      "name": "Apple Newsroom family",
+      "hosts": [
+        "apple.com"
+      ],
+      "reference": "https://www.apple.com/ca/rss/",
+      "topics": [
+        "executives",
+        "official_statements",
+        "finance"
+      ],
+      "agents": [
+        "scout",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEED_DIRECTORY",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Regional directory links newsroom; generic RSS URL redirected; exact feed not locally proven.",
+      "entity_scoped": true
+    },
+    {
+      "id": "microsoft_source",
+      "name": "Microsoft Source",
+      "hosts": [
+        "news.microsoft.com"
+      ],
+      "reference": "https://news.microsoft.com/source/",
+      "topics": [
+        "executives",
+        "official_statements",
+        "technology"
+      ],
+      "agents": [
+        "scout",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "PUBLIC_PAGE_OBSERVED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Underlying articles only; AI search answers are not source bodies.",
+      "entity_scoped": true
+    },
+    {
+      "id": "federal_reserve",
+      "name": "Federal Reserve",
+      "hosts": [
+        "federalreserve.gov"
+      ],
+      "reference": "https://www.federalreserve.gov/feeds/feeds.htm",
+      "topics": [
+        "finance",
+        "official_statements",
+        "public_policy"
+      ],
+      "agents": [
+        "scout",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "UNVERIFIED",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_FEEDS",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Relevant public speakers only; statements not interchangeable with corporate executives."
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube original recordings",
+      "hosts": [
+        "youtube.com"
+      ],
+      "reference": "https://www.youtube.com/",
+      "topics": [
+        "interviews",
+        "official_statements",
+        "entertainment",
+        "sports"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "EXISTING_ROUTE_ACCESS_DEPENDENT",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Use attributable original recordings via existing operations; captions are not always available/authenticated."
+    },
+    {
+      "id": "reddit",
+      "name": "Reddit",
+      "hosts": [
+        "reddit.com"
+      ],
+      "reference": "https://www.reddit.com/",
+      "topics": [
+        "community",
+        "leads",
+        "entertainment",
+        "scams"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "EXISTING_POLICY_GATED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Preserve approved-access state; no new permission or bypass."
+    },
+    {
+      "id": "x",
+      "name": "X",
+      "hosts": [
+        "x.com"
+      ],
+      "reference": "https://x.com/",
+      "topics": [
+        "original_posts",
+        "community",
+        "leads"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "EXISTING_ACCESS_GATED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Original post provenance needed; no guaranteed direct access or invented approval."
+    },
+    {
+      "id": "bluesky",
+      "name": "Bluesky",
+      "hosts": [
+        "bsky.app"
+      ],
+      "reference": "https://docs.bsky.app/docs/api/app-bsky-feed-search-posts",
+      "topics": [
+        "original_posts",
+        "community",
+        "leads"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "EXISTING_ADAPTER",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Existing public-post adapter; usage and actual local results remain separate."
+    },
+    {
+      "id": "guardian",
+      "name": "Guardian",
+      "hosts": [
+        "theguardian.com"
+      ],
+      "reference": "https://open-platform.theguardian.com/access/",
+      "topics": [
+        "international",
+        "politics",
+        "business",
+        "culture"
+      ],
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch",
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": "GUARDIAN_API_KEY",
+      "permission_status": "PERMISSION_REQUIRED",
+      "licensing_status": "AGREEMENT_REQUIRED_FOR_INTENDED_USE",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "DOCUMENTED_KEY_AND_USE_REQUIRED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "API key alone does not approve this automated AI workflow; retain intended-use licensing review.",
+      "permission_basis": "https://www.theguardian.com/open-platform/terms-and-conditions"
+    },
+    {
+      "id": "trustpilot",
+      "name": "Trustpilot and current review family",
+      "hosts": [
+        "trustpilot.com"
+      ],
+      "reference": "https://www.trustpilot.com/",
+      "topics": [
+        "consumer_complaints",
+        "leads"
+      ],
+      "agents": [
+        "brandshield"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "topic",
+        "organisation"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en"
+      ],
+      "geographies": [
+        "GLOBAL"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "EXISTING_ROUTE_POLICY",
+      "licensing_status": "NOT_VERIFIED_FOR_PRODUCT",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "EXISTING_ADAPTER_ACCESS_DEPENDENT",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Reviews are allegations/selection-biased samples, not adjudicated scams."
+    },
+    {
+      "id": "global_voices",
+      "name": "Global Voices",
+      "hosts": [
+        "globalvoices.org"
+      ],
+      "reference": "https://globalvoices.org/about/global-voices-attribution-policy/",
+      "topics": [
+        "film",
+        "bollywood",
+        "regional_cinema",
+        "sports",
+        "cricket",
+        "politics",
+        "elections",
+        "culture",
+        "false_quotes",
+        "official_statements"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en",
+        "hi",
+        "ta",
+        "bn",
+        "ur",
+        "es",
+        "fr"
+      ],
+      "geographies": [
+        "GLOBAL",
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": true,
+        "entrypoints": [
+          "https://globalvoices.org/"
+        ]
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "CC_BY_3_0_TEXT_ONLY_UNLESS_NOTED",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "OFFICIAL_REUSE_POLICY_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Conditional on attribution, source licence and no contrary article notice; third-party media excluded.",
+      "licence_url": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    {
+      "id": "yas",
+      "name": "Ministry of Youth Affairs and Sports",
+      "hosts": [
+        "yas.gov.in"
+      ],
+      "reference": "https://yas.gov.in/",
+      "topics": [
+        "cricket",
+        "sports",
+        "official_statements",
+        "public_policy"
+      ],
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "subject_types": [
+        "person",
+        "company",
+        "organisation",
+        "topic"
+      ],
+      "tasks": {
+        "trending": [
+          "TOPIC_DISCOVERY"
+        ],
+        "scout": [
+          "FINANCIAL_VERIFICATION"
+        ],
+        "brandshield": [
+          "BRAND_RISK",
+          "ENDORSEMENT_CLAIM",
+          "PRODUCT_SAFETY",
+          "COUNTERFEIT",
+          "PHISHING",
+          "IMPERSONATION"
+        ],
+        "personal_watch": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT",
+          "QUOTE_VERIFICATION",
+          "IMPERSONATION"
+        ]
+      },
+      "languages": [
+        "en",
+        "hi"
+      ],
+      "geographies": [
+        "IN"
+      ],
+      "discovery": {
+        "channel": "web",
+        "operation": "search",
+        "capability": "DISCOVERY_ONLY",
+        "feed_declared": false,
+        "entrypoints": [
+          "https://yas.gov.in/"
+        ]
+      },
+      "body": {
+        "channel": "web",
+        "operation": "read",
+        "capability": "BODY_ACQUISITION",
+        "structured": false
+      },
+      "auth_env": null,
+      "permission_status": "PUBLIC_LICENSE_REVIEWED",
+      "licensing_status": "ATTRIBUTED_EXACT_TEXT_UNLESS_THIRD_PARTY",
+      "local_runtime": "UNVERIFIED",
+      "review_observation": "OFFICIAL_REUSE_POLICY_REVIEWED",
+      "rate_limit_rps": null,
+      "request_cost": {
+        "monetary": "UNKNOWN",
+        "http_admissions": "MEASURED_BY_SHARED_BUDGET"
+      },
+      "fresh_content": "NOT_LIVE_VERIFIED",
+      "historical_content": "SEARCH_OR_ARCHIVE_DEPENDENT",
+      "note": "Official sports ministry records and statements; not a player quote unless actually attributed. Third-party media/content excluded.",
+      "licence_url": "https://yas.gov.in/en/copyright-policy",
+      "required_jurisdiction": "IN"
+    }
+  ]
+}

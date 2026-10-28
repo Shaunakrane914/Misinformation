@@ -1,0 +1,57 @@
+{
+  "mode": "DNS_ONLY_TWO_HOST_PAIRS_FOUR_OPERATIONS",
+  "http_requests": 0,
+  "model_calls": 0,
+  "max_seconds_per_operation": 3,
+  "rows": [
+    {
+      "host": "www.justice.gov",
+      "method": "OS_GETADDRINFO",
+      "seconds": 0.056,
+      "status": "RESOLVED",
+      "answer_count": 1,
+      "families": [
+        2
+      ],
+      "all_answers_public": true
+    },
+    {
+      "host": "www.justice.gov",
+      "method": "AEGIS_PUBLIC_GUARD",
+      "seconds": 0.064,
+      "status": "RESOLVED",
+      "answer_count": 1,
+      "families": [
+        2
+      ],
+      "all_answers_public": true
+    },
+    {
+      "host": "www.ftc.gov",
+      "method": "OS_GETADDRINFO",
+      "seconds": 0.01,
+      "status": "RESOLVED",
+      "answer_count": 1,
+      "families": [
+        2
+      ],
+      "all_answers_public": true
+    },
+    {
+      "host": "www.ftc.gov",
+      "method": "AEGIS_PUBLIC_GUARD",
+      "seconds": 0.001,
+      "status": "RESOLVED",
+      "answer_count": 1,
+      "families": [
+        2
+      ],
+      "all_answers_public": true
+    }
+  ],
+  "limitations": [
+    "Sequential observations may benefit from OS DNS cache.",
+    "Public resolution does not establish HTTP/robots access or explain historical failures.",
+    "No resolver configuration, address filtering or application guard changed."
+  ]
+}

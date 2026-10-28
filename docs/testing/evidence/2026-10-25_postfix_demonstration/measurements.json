@@ -1,0 +1,113 @@
+{
+  "mode": "TWO_REAL_LOCAL_QUERY_INVESTIGATIONS_POSTFIX",
+  "base_commit": "7ad13a5",
+  "application_sha256": "df8e060ae054ad6c55793287bc1be5b25760dc79a3b68617ea151fff292650b1",
+  "stable_application": true,
+  "AI_reservations": 0,
+  "native_http_total": 155,
+  "cases": [
+    {
+      "agent": "trending",
+      "input": "battery recycling",
+      "seconds": 37.26,
+      "reads": 9,
+      "http_admissions": 71,
+      "candidate_urls": 24,
+      "article_bodies": 5,
+      "qualified_sources": [],
+      "workbench": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "stop_reason": "NO_FURTHER_USEFUL_WORK",
+      "unread_by_reason": {
+        "HOST_READ_BUDGET_EXHAUSTED": 15
+      },
+      "integrity_errors": [],
+      "source_body_rejections": {
+        "Insufficient multi-token topic match": 2,
+        "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp": 1,
+        "TEMPORAL_STALE: Published 2402.8h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 8828.8h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 9354.1h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 19747.0h ago exceeds Trending freshness window (48.0h)": 1,
+        "TEMPORAL_STALE: Published 69812.2h ago exceeds Trending freshness window (48.0h)": 1
+      },
+      "ecs_candidate": [
+        {
+          "url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+          "title": "Battery safety, sodium-ion and recycling research head to ECS meeting",
+          "read_disposition": "HOST_READ_BUDGET_EXHAUSTED"
+        }
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "seconds": 43.25,
+      "reads": 17,
+      "http_admissions": 84,
+      "candidate_urls": 39,
+      "article_bodies": 7,
+      "qualified_sources": [
+        {
+          "url": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+          "date": "2021-09-29T21:08:46+05:30",
+          "word_count": 484,
+          "body_sha256": "530fa5799c4afcf87949e388547c29cbd4d5b50f4baa333c9181247a08555f2a"
+        },
+        {
+          "url": "https://www.deadlinedetroit.com/articles/35238/starkman_mary_barra_s_48m_payday_and_massive_stock_buybacks_ignite_bipartisan_backlash_from_el-sayed_and_rogers",
+          "date": null,
+          "word_count": 1417,
+          "body_sha256": "3543c239afd960ef1b9e8a5f1d18c1704b266b03b191c2ef4b7ffa4724cc317a"
+        }
+      ],
+      "workbench": {
+        "source_records_with_passages": 2,
+        "observed_publisher_hosts": 2,
+        "available_unique_passages": 2,
+        "published_passages": 2,
+        "published_unique_words": 176,
+        "published_text_utf8_bytes": 1049,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 1,
+          "UNVERIFIED_ALLEGATION": 1
+        },
+        "independence_verified": false
+      },
+      "stop_reason": "FUTILITY_STOP",
+      "unread_by_reason": {
+        "WRAPPER_READ_BUDGET_EXHAUSTED": 15,
+        "HOST_READ_BUDGET_EXHAUSTED": 4,
+        "PIPELINE_FUTILITY_STOP": 2
+      },
+      "integrity_errors": [],
+      "source_body_rejections": {
+        "NO_STRUCTURAL_BODY": 4,
+        "NO_RELEVANT_PASSAGE": 5,
+        "Insufficient entity match confidence (0.0 < 0.35)": 1
+      }
+    }
+  ],
+  "acceptance": "RESEARCH_QUALITY_NOT_MET",
+  "scope": "No supplied article URLs, saved-body injection, whole-investigation retry, model calls or deployment"
+}

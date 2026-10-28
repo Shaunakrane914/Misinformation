@@ -1,0 +1,738 @@
+{
+  "mode": "THREE_AUTHORIZED_NORMAL_NATIVE_INVESTIGATIONS",
+  "cases": [
+    {
+      "batch": "live",
+      "input": "Bollywood cinema",
+      "agent": "trending",
+      "seconds": 26.25,
+      "http_status": 200,
+      "stable_application": true,
+      "application_sha256": "6f375ea93454e5972f3258444449e821cbae7d1d23a94f112c03a4711e2bf1fd",
+      "investigation_status": "ACQUISITION_FAILED",
+      "metrics": {
+        "queries_generated": 18,
+        "candidate_urls_discovered": 3,
+        "reads_attempted": 2,
+        "read_service_starts": 0,
+        "native_http_admissions": 42,
+        "article_bodies": 0,
+        "captures": 0,
+        "failure_categories": {
+          "ROBOTS_UNVERIFIED": 1,
+          "ROBOTS_CRAWL_DELAY_REVIEW_REQUIRED": 1
+        }
+      },
+      "directories": [
+        {
+          "source_family": "global_voices",
+          "url": "https://globalvoices.org/",
+          "network_calls": 0,
+          "basis": "VERSIONED_PUBLISHER_DIRECTORY",
+          "not_article_evidence": true
+        },
+        {
+          "source_family": "pib",
+          "url": "https://www.pib.gov.in/ViewRss.aspx",
+          "network_calls": 0,
+          "basis": "VERSIONED_PUBLISHER_DIRECTORY",
+          "not_article_evidence": true
+        }
+      ],
+      "research_context": {
+        "subject": "Bollywood Cinema",
+        "agent": "trending",
+        "tasks": [
+          "TOPIC_DISCOVERY"
+        ],
+        "topics": [
+          "bollywood",
+          "film"
+        ],
+        "subject_type": "topic",
+        "aliases": [],
+        "jurisdiction": "IN",
+        "language": "und",
+        "time_window": "recent",
+        "confidence": 0.8,
+        "ambiguity": [],
+        "basis": "DETERMINISTIC_REQUEST_CUES",
+        "topic_scores": {
+          "bollywood": 0.8,
+          "film": 0.8
+        }
+      },
+      "query_statuses": [
+        {
+          "query_id": "hv_q_005",
+          "query_text": "Bollywood Cinema recent developments when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_006",
+          "query_text": "Bollywood Cinema recent developments when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_001",
+          "query_text": "Bollywood cinema site:globalvoices.org",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_002",
+          "query_text": "Bollywood cinema site:pib.gov.in",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_004",
+          "query_text": "Bollywood cinema latest independent reporting",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_003",
+          "query_text": "Bollywood cinema official source",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_008",
+          "query_text": "Bollywood Cinema research update when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_007",
+          "query_text": "Bollywood Cinema recent developments when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_009",
+          "query_text": "Bollywood Cinema research update when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_010",
+          "query_text": "Bollywood Cinema research update when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_011",
+          "query_text": "Bollywood Cinema industry announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_012",
+          "query_text": "Bollywood Cinema industry announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_013",
+          "query_text": "Bollywood Cinema industry announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "NOT_SUBMITTED",
+          "result_count_normalized": 0,
+          "error": "DISCOVERY_HTTP_RESERVE_FOR_READING"
+        },
+        {
+          "query_id": "hv_q_014",
+          "query_text": "Bollywood Cinema institution announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "NOT_SUBMITTED",
+          "result_count_normalized": 0,
+          "error": "DISCOVERY_HTTP_RESERVE_FOR_READING"
+        },
+        {
+          "query_id": "hv_q_015",
+          "query_text": "Bollywood Cinema institution announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "NOT_SUBMITTED",
+          "result_count_normalized": 0,
+          "error": "DISCOVERY_HTTP_RESERVE_FOR_READING"
+        },
+        {
+          "query_id": "hv_q_016",
+          "query_text": "Bollywood Cinema institution announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "NOT_SUBMITTED",
+          "result_count_normalized": 0,
+          "error": "DISCOVERY_HTTP_RESERVE_FOR_READING"
+        },
+        {
+          "query_id": "hv_q_017",
+          "query_text": "Bollywood Cinema latest news when:2d after:2026-10-24 before:2026-10-27",
+          "status": "NOT_SUBMITTED",
+          "result_count_normalized": 0,
+          "error": "DISCOVERY_HTTP_RESERVE_FOR_READING"
+        },
+        {
+          "query_id": "hv_q_018",
+          "query_text": "gdelt|Bollywood Cinema",
+          "status": "NOT_SUBMITTED",
+          "result_count_normalized": 0,
+          "error": "DISCOVERY_HTTP_RESERVE_FOR_READING"
+        }
+      ],
+      "read_attempts": [
+        {
+          "url": "https://www.pib.gov.in/ViewRss.aspx?lang=1&reg=1",
+          "status": "FAILED",
+          "failure_kind": "ROBOTS_UNVERIFIED",
+          "http_status": null,
+          "robots_access": {
+            "eligible": false,
+            "status": "ROBOTS_UNVERIFIED",
+            "http_status": 403,
+            "cause": "ACCESS_DENIED"
+          },
+          "duration_ms": 403.35,
+          "network_observed": null,
+          "source_permission": null
+        },
+        {
+          "url": "https://globalvoices.org/",
+          "status": "FAILED",
+          "failure_kind": "ROBOTS_CRAWL_DELAY_REVIEW_REQUIRED",
+          "http_status": null,
+          "robots_access": {
+            "eligible": false,
+            "status": "ROBOTS_CRAWL_DELAY_REVIEW_REQUIRED",
+            "crawl_delay_seconds": 10
+          },
+          "duration_ms": 1131.51,
+          "network_observed": null,
+          "source_permission": null
+        }
+      ],
+      "ai_advice": {
+        "status": "SKIPPED_DISCOVERY_BUDGET",
+        "advisory_only": true
+      },
+      "retained_words": 0,
+      "retained_kb": 0.0,
+      "records": 0,
+      "published_evidence_words": 0
+    },
+    {
+      "batch": "live",
+      "input": "Jasprit Bumrah",
+      "agent": "personal_watch",
+      "seconds": 29.54,
+      "http_status": 200,
+      "stable_application": true,
+      "application_sha256": "6f375ea93454e5972f3258444449e821cbae7d1d23a94f112c03a4711e2bf1fd",
+      "investigation_status": "ACQUISITION_FAILED",
+      "metrics": {
+        "queries_generated": 16,
+        "candidate_urls_discovered": 34,
+        "reads_attempted": 2,
+        "read_service_starts": 0,
+        "native_http_admissions": 38,
+        "article_bodies": 0,
+        "captures": 0,
+        "failure_categories": {
+          "ROBOTS_UNVERIFIED": 2
+        }
+      },
+      "directories": [
+        {
+          "source_family": "pib",
+          "url": "https://www.pib.gov.in/ViewRss.aspx",
+          "network_calls": 0,
+          "basis": "VERSIONED_PUBLISHER_DIRECTORY",
+          "not_article_evidence": true
+        },
+        {
+          "source_family": "yas",
+          "url": "https://yas.gov.in/",
+          "network_calls": 0,
+          "basis": "VERSIONED_PUBLISHER_DIRECTORY",
+          "not_article_evidence": true
+        }
+      ],
+      "research_context": {
+        "subject": "Jasprit Bumrah",
+        "agent": "personal_watch",
+        "tasks": [
+          "PUBLIC_STATEMENT"
+        ],
+        "topics": [
+          "cricket"
+        ],
+        "subject_type": "unknown",
+        "aliases": [],
+        "jurisdiction": "IN",
+        "language": "und",
+        "time_window": "unspecified",
+        "confidence": 0.55,
+        "ambiguity": [
+          "SUBJECT_TYPE_UNRESOLVED"
+        ],
+        "basis": "REQUEST_AND_OBSERVED_TITLE_CUES",
+        "topic_scores": {
+          "cricket": 0.55
+        }
+      },
+      "query_statuses": [
+        {
+          "query_id": "hv_q_006",
+          "query_text": "Jasprit Bumrah original statement transcript",
+          "status": "SUCCESS",
+          "result_count_normalized": 2,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_007",
+          "query_text": "Jasprit Bumrah original statement transcript",
+          "status": "SUCCESS",
+          "result_count_normalized": 9,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_002",
+          "query_text": "\"Jasprit Bumrah\" statement",
+          "status": "SUCCESS",
+          "result_count_normalized": 10,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_001",
+          "query_text": "Jasprit Bumrah public statement statement interview site:pib.gov.in",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_004",
+          "query_text": "Jasprit Bumrah public statement",
+          "status": "SUCCESS",
+          "result_count_normalized": 10,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_003",
+          "query_text": "Jasprit Bumrah public statement statement interview site:yas.gov.in",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_005",
+          "query_text": "\"Jasprit Bumrah\" speech remarks announcement",
+          "status": "SUCCESS",
+          "result_count_normalized": 9,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_008",
+          "query_text": "\"Jasprit Bumrah\" statement interview transcript (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_009",
+          "query_text": "Jasprit Bumrah original statement transcript",
+          "status": "SUCCESS",
+          "result_count_normalized": 2,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_010",
+          "query_text": "Jasprit Bumrah interview quotation source",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_011",
+          "query_text": "Jasprit Bumrah interview quotation source",
+          "status": "SUCCESS",
+          "result_count_normalized": 9,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_012",
+          "query_text": "Jasprit Bumrah interview quotation source",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_014",
+          "query_text": "Jasprit Bumrah public speech transcript",
+          "status": "SUCCESS",
+          "result_count_normalized": 9,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_013",
+          "query_text": "Jasprit Bumrah public speech transcript",
+          "status": "SUCCESS",
+          "result_count_normalized": 3,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_015",
+          "query_text": "Jasprit Bumrah public speech transcript",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_016",
+          "query_text": "substack|Jasprit Bumrah",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "ai_search_1",
+          "query_text": "Jasprit Bumrah latest news updates",
+          "status": "SUCCESS",
+          "result_count_normalized": 3,
+          "error": null
+        }
+      ],
+      "read_attempts": [
+        {
+          "url": "https://www.pib.gov.in/ViewRss.aspx?lang=1&reg=1",
+          "status": "FAILED",
+          "failure_kind": "ROBOTS_UNVERIFIED",
+          "http_status": null,
+          "robots_access": {
+            "eligible": false,
+            "status": "ROBOTS_UNVERIFIED",
+            "http_status": 403,
+            "cause": "ACCESS_DENIED"
+          },
+          "duration_ms": 7.62,
+          "network_observed": null,
+          "source_permission": null
+        },
+        {
+          "url": "https://yas.gov.in/",
+          "status": "FAILED",
+          "failure_kind": "ROBOTS_UNVERIFIED",
+          "http_status": null,
+          "robots_access": {
+            "eligible": false,
+            "status": "ROBOTS_UNVERIFIED",
+            "http_status": null,
+            "cause": "CONNECTION_FAILURE"
+          },
+          "duration_ms": 753.6,
+          "network_observed": null,
+          "source_permission": null
+        }
+      ],
+      "ai_advice": {
+        "status": "SUGGESTED",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "rejected": [],
+        "query_count": 1,
+        "latency_ms": 2294.17
+      },
+      "retained_words": 0,
+      "retained_kb": 0.0,
+      "records": 0,
+      "published_evidence_words": 0
+    },
+    {
+      "batch": "paced-live",
+      "input": "Bollywood cinema",
+      "agent": "trending",
+      "seconds": 60.31,
+      "http_status": 200,
+      "stable_application": true,
+      "application_sha256": "33d8178d67928e5936cc5b98de4e3a7a7debd9040d3f215992ac7f35d5cda6c6",
+      "investigation_status": "ACQUISITION_FAILED",
+      "metrics": {
+        "queries_generated": 18,
+        "candidate_urls_discovered": 4,
+        "reads_attempted": 2,
+        "read_service_starts": 0,
+        "native_http_admissions": 39,
+        "article_bodies": 0,
+        "captures": 0,
+        "failure_categories": {
+          "ROBOTS_UNVERIFIED": 2
+        }
+      },
+      "directories": [
+        {
+          "source_family": "global_voices",
+          "url": "https://globalvoices.org/",
+          "network_calls": 0,
+          "basis": "VERSIONED_PUBLISHER_DIRECTORY",
+          "not_article_evidence": true
+        },
+        {
+          "source_family": "pib",
+          "url": "https://www.pib.gov.in/ViewRss.aspx",
+          "network_calls": 0,
+          "basis": "VERSIONED_PUBLISHER_DIRECTORY",
+          "not_article_evidence": true
+        }
+      ],
+      "research_context": {
+        "subject": "Bollywood Cinema",
+        "agent": "trending",
+        "tasks": [
+          "TOPIC_DISCOVERY"
+        ],
+        "topics": [
+          "bollywood",
+          "film"
+        ],
+        "subject_type": "topic",
+        "aliases": [],
+        "jurisdiction": "IN",
+        "language": "und",
+        "time_window": "recent",
+        "confidence": 0.8,
+        "ambiguity": [],
+        "basis": "DETERMINISTIC_REQUEST_CUES",
+        "topic_scores": {
+          "bollywood": 0.8,
+          "film": 0.8
+        }
+      },
+      "query_statuses": [
+        {
+          "query_id": "hv_q_006",
+          "query_text": "Bollywood Cinema recent developments when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_005",
+          "query_text": "Bollywood Cinema recent developments when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_001",
+          "query_text": "Bollywood cinema site:globalvoices.org",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_002",
+          "query_text": "Bollywood cinema site:pib.gov.in",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_004",
+          "query_text": "Bollywood cinema latest independent reporting",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_003",
+          "query_text": "Bollywood cinema official source",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_008",
+          "query_text": "Bollywood Cinema research update when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_007",
+          "query_text": "Bollywood Cinema recent developments when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_010",
+          "query_text": "Bollywood Cinema research update when:2d after:2026-10-24 before:2026-10-27",
+          "status": "FAILED",
+          "result_count_normalized": 0,
+          "error": "Instrumented search providers failed; no candidates retained; legacy transport, if invoked, is unverified"
+        },
+        {
+          "query_id": "hv_q_009",
+          "query_text": "Bollywood Cinema research update when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_012",
+          "query_text": "Bollywood Cinema industry announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_011",
+          "query_text": "Bollywood Cinema industry announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_013",
+          "query_text": "Bollywood Cinema industry announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_014",
+          "query_text": "Bollywood Cinema institution announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_015",
+          "query_text": "Bollywood Cinema institution announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 1,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_016",
+          "query_text": "Bollywood Cinema institution announcement when:2d after:2026-10-24 before:2026-10-27",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        },
+        {
+          "query_id": "hv_q_017",
+          "query_text": "Bollywood Cinema latest news when:2d after:2026-10-24 before:2026-10-27",
+          "status": "TIMEOUT",
+          "result_count_normalized": 0,
+          "error": "Acquisition chain deadline exhausted"
+        },
+        {
+          "query_id": "hv_q_018",
+          "query_text": "gdelt|Bollywood Cinema",
+          "status": "SUCCESS",
+          "result_count_normalized": 0,
+          "error": null
+        }
+      ],
+      "read_attempts": [
+        {
+          "url": "https://www.pib.gov.in/ViewRss.aspx?lang=1&reg=1",
+          "status": "FAILED",
+          "failure_kind": "ROBOTS_UNVERIFIED",
+          "http_status": null,
+          "robots_access": {
+            "eligible": false,
+            "status": "ROBOTS_UNVERIFIED",
+            "http_status": null,
+            "cause": "DNS_TIMEOUT",
+            "crawl_delay_seconds": 0
+          },
+          "duration_ms": 2508.46,
+          "network_observed": null,
+          "source_permission": null
+        },
+        {
+          "url": "https://globalvoices.org/",
+          "status": "FAILED",
+          "failure_kind": "ROBOTS_UNVERIFIED",
+          "http_status": null,
+          "robots_access": {
+            "eligible": false,
+            "status": "ROBOTS_UNVERIFIED",
+            "http_status": null,
+            "cause": "DNS_TIMEOUT",
+            "crawl_delay_seconds": 0
+          },
+          "duration_ms": 2509.35,
+          "network_observed": null,
+          "source_permission": null
+        }
+      ],
+      "ai_advice": {
+        "status": "UNAVAILABLE",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "error_type": "TimeoutError",
+        "latency_ms": 2513.34
+      },
+      "retained_words": 0,
+      "retained_kb": 0.0,
+      "records": 0,
+      "published_evidence_words": 0
+    }
+  ],
+  "ai": [
+    {
+      "batch": "live",
+      "reservations": 1,
+      "before": 1,
+      "after": 2,
+      "observations": [
+        {
+          "model": "gemini-3.5-flash-lite",
+          "purpose": "search_suggestion",
+          "http_status": 200,
+          "status": "GENERATED",
+          "latency_ms": 1109.81,
+          "investigation_id": "fccc557f3ac243e8bf4d8cf0e77b6141",
+          "provider_model": "gemini-3.5-flash-lite",
+          "usage_source": "provider",
+          "prompt_tokens": 307,
+          "completion_tokens": 82,
+          "total_tokens": 389
+        }
+      ]
+    },
+    {
+      "batch": "paced-live",
+      "reservations": 1,
+      "before": 2,
+      "after": 3,
+      "observations": []
+    }
+  ],
+  "bounds_per_case": {
+    "seconds": 180,
+    "reads": 16,
+    "native_http_admissions": 80
+  },
+  "ai_limitations": [
+    "The paced batch consumed one reservation but captured no provider outcome/token record. Advice timed out locally; provider usage is unknown, not zero.",
+    "One successful 389-token suggestion is recorded for the two-case batch. The earlier 40-token enablement check is separate; the shared daily counter ends at three."
+  ],
+  "no_deployment": true
+}

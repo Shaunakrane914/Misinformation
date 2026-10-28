@@ -122,6 +122,12 @@ def requalify_payload(payload, *, target, domain, intent="", reference_time=None
                     row["passage"] = {"text": item.relevant_excerpt, "start": item.excerpt_start,
                         "end": item.excerpt_end, "word_count": len(item.relevant_excerpt.split()),
                         "source_id": source_id, "claim_support": "NOT_ADJUDICATED"}
+                    # Every bounded paragraph that passed the same gates (additive; the winner above is unchanged).
+                    row["workbench_passages"] = [
+                        {"text": p["text"], "start": p["start"], "end": p["end"], "word_count": len(p["text"].split())}
+                        for p in (item.metadata.get("evidence_passages") or [])
+                        if isinstance(p, dict) and isinstance(p.get("text"), str)
+                        and item.content[p.get("start", -1):p.get("end", -1)] == p["text"]]
                 else:
                     row["reasons"] = [item.extraction_status if exact else "NO_EXACT_USABLE_PASSAGE"]
         pool.mark_qualification(source_id, row["qualification_status"], row["reasons"],

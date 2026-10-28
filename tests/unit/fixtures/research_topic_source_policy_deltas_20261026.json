@@ -1,0 +1,42 @@
+{
+  "review": "Restored existing native SEC discovery eligibility; only source-plan/action disclosure changes. Actual evidence, corpus, dossier, candidate IDs, citations and finding states unchanged. Historical fixtures preserved.",
+  "reviewed_at": "2026-10-26",
+  "scenarios": {
+    "adaptive_saturation": {
+      "result_sha256": "965904c47174f2da5721a6aa8aaa00792e2b3eb419bcc04e371fcc6810cd1b31"
+    },
+    "adversarial": {
+      "result_sha256": "99a720423a3d6ae10ca300ef63401e7ddf5fdcec0b627cad232ba903b494bbed"
+    },
+    "conflicting": {
+      "result_sha256": "e082c1c9c03e401c510d9cf6d9a345eaa269e7ab245689f54fd514331ef6b8cf"
+    },
+    "credential_failure": {
+      "result_sha256": "91921d4deebff42ef3bd69043c36ed65a69f5881b7b37615ee0daa587f7a9e25"
+    },
+    "discovery_timeout": {
+      "result_sha256": "ee5b19d9a4b4f98d698835aaf96d8d7ed1d1a086be5e5a75e7c30da99b3ead9f"
+    },
+    "empty": {
+      "result_sha256": "bacc10bb47a94cdb9eef29fb3741ecd5f01253039329c26f6524f38007335d1d"
+    },
+    "insufficient": {
+      "result_sha256": "88d10d3eb60ef28e316c8bc7fb71ae525259887753633718d8d6e9767539e6bc"
+    },
+    "malformed_metadata": {
+      "result_sha256": "6f146970a7c606e19b46c280c0f7cf61cb3c55c3e84f4ea95237b0f5108dc9dd"
+    },
+    "missing_primary": {
+      "result_sha256": "3dc624e11ac4df6c503f9ec6a38e0e5d7e35cd4a8185308bb0aa355e75ffb50f"
+    },
+    "primary_escalation": {
+      "result_sha256": "71bdb2e8617ad37714a9b83ffff2cadca2406770ca1d84721869d686d159b1e1"
+    },
+    "relevant": {
+      "result_sha256": "d54a7df281fa5d6142c68a2659fe945809e9a1837590ac3306893793cdf25b82"
+    },
+    "syndicated": {
+      "result_sha256": "c79a3e6787c225f46bb7ab4dc9cd7f5ab4950206dab0770fb657ca9fc0cf9257"
+    }
+  }
+}

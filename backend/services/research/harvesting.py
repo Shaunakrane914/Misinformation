@@ -196,6 +196,18 @@ def _observed_publisher(item):
     return _host(item.canonical_url)
 
 
+def _source_body_admissible(item):
+    """Cached/configuration-only policy preflight; never spend a reader slot on denial.
+
+    Keep the lead inspectable. DeepReader and the transport still recheck rights,
+    robots and redirects immediately before actual access.
+    """
+    from backend.services.research.source_registry import source_registry
+    decision = source_registry.body_decision(item.canonical_url)
+    item.metadata['source_body_admission'] = decision
+    return decision['eligible']
+
+
 def _read_priority(item, target, domain, host_counts, publisher_counts):
     """Order observed leads; final body, subject and publication gates are later."""
     ordinary = (item.metadata.get("harvest_temporal_priority", 0),
@@ -421,8 +433,8 @@ class HarvestingEngine:
 
     def run(self, target, domain="general", intent="", agent_name="research", profile="STANDARD",
             deadline=None, initial_candidates=(), query_plan=None, progress=None, aliases=(), request=None,
-            source_url=None, specialist_tasks=(), specialist_task_explicit=False, controller="legacy"):
-        if controller not in {"legacy", "interleaved_v1"}:
+            source_url=None, specialist_tasks=(), specialist_task_explicit=False, controller="legacy", source_plan=None):
+        if controller not in {"legacy", "interleaved_v1", "pipelined_v1"}:
             raise ValueError("Unknown acquisition controller")
         profile = get_research_profile(profile)
         started = time.monotonic()
@@ -441,6 +453,11 @@ class HarvestingEngine:
         known, attempted, captured = {}, set(), set()
         upstream_ids, submitted_query_ids = {}, set()
         reference_time = datetime.now(timezone.utc)
+        from backend.services.research.topic_context import infer_context
+        params = getattr(request, 'extra_params', {}) or {}
+        routing_context = infer_context(params.get('claim_text') or target, target, domain=domain,
+            agent=agent_name, hints={**params, 'time_scope': getattr(request, 'time_scope', 'unspecified')})
+        output.retrieval_trace['research_context'] = routing_context.to_dict()
         discarded = Counter()
         discovery_publishers = Counter()
         discovery_capacity = max(1, profile.max_candidates - profile.max_reads)
@@ -462,10 +479,13 @@ class HarvestingEngine:
         # Registered optional actions remain in their original reserved slots.
         core_limit = max(0, profile.max_queries - len(extra_queries))
         generated = diversify_search_plan([row for row in generated if row not in extra_queries],
-                                         target, domain, core_limit) + extra_queries
+                                         target, domain, core_limit, context=routing_context) + extra_queries
         queries, seen_queries = [], set()
         for row in generated:
             channel, text = row.get("channel", "web"), str(row.get("query_text", "")).strip()
+            allowed_channels = params.get('allowed_channels')
+            if allowed_channels is not None and channel not in allowed_channels:
+                continue
             if channel not in core_channels | registered or not text or (channel, text.casefold()) in seen_queries:
                 continue
             seen_queries.add((channel, text.casefold()))
@@ -474,6 +494,33 @@ class HarvestingEngine:
                 break
         for row in queries:
             output.channel_queries.setdefault(row["channel"], []).append({k: v for k, v in row.items() if k != "channel"})
+
+        def refine_topics():
+            if source_plan is None:
+                return
+            from backend.services.agent_reach.source_planner import source_planning_engine
+            pending = [row.get('source_plan_action_id') for row in queries
+                       if row['query_id'] not in submitted_query_ids]
+            updates = source_planning_engine.refine_topics(source_plan, domain=domain,
+                observed_titles=[item.title for item in list(known.values())[:8]], pending_action_ids=pending)
+            for old, action in updates:
+                row = next((r for r in queries if r.get('source_plan_action_id') == old.action_id), None)
+                if row is None or row['query_id'] in submitted_query_ids:
+                    continue
+                # Preserve the row object/order/id held by the active scheduler.
+                before = dict(row)
+                row.update(query_text=action.query, query_class=action.source_category,
+                    source_plan_action_id=action.action_id, source_family=action.source_family)
+                output.retrieval_trace.setdefault('topic_refinement', []).append({
+                    'query_id': row['query_id'], 'old_action_id': old.action_id,
+                    'new_action_id': action.action_id, 'replaced_before_submission': True,
+                    'source_family': action.source_family, 'network_calls': 0})
+                projected = next((r for r in output.channel_queries.get(row['channel'], [])
+                                  if r['query_id'] == before['query_id']), None)
+                if projected is not None:
+                    projected.update({k: v for k, v in row.items() if k != 'channel'})
+            output.retrieval_trace['research_context'] = source_plan.research_context
+            seed_publisher_directories()
         advice_trace = {"status": "DISABLED", "advisory_only": True}
         advice_checked = False
 
@@ -495,6 +542,9 @@ class HarvestingEngine:
             original_url = item.canonical_url
             query_row = next((row for row in queries if row["query_id"] == item.query_id), {})
             query_objective = query_row.get("acquisition_objective")
+            if query_row.get('source_family'):
+                item.metadata['source_family'] = query_row['source_family']
+                item.metadata['routing_topics'] = list(routing_context.topics)
             _merge_task_lineage(item.metadata, query_row)
             _merge_task_lineage(item.metadata, {"requested_specialist_tasks": specialist_tasks})
             parent_id = item.metadata.get("discovered_on_candidate_id")
@@ -512,6 +562,9 @@ class HarvestingEngine:
                 item.metadata["discovery_url"] = original_url
                 item.metadata["publisher_url_basis"] = "DECODED_OBSERVED_BING_REDIRECT"
             key = source_url_key(item.canonical_url)
+            if item.metadata.get('read_success'):
+                from backend.services.research.source_registry import source_registry
+                source_registry.observe(item.canonical_url, body_acquired=raw_source_type(item) in {'ARTICLE_BODY', 'OFFICIAL_DOCUMENT'})
             if domain == "trending":
                 from backend.services.research.temporal_guard import temporal_guard
                 temporal = temporal_guard.evaluate(item, reference_time=reference_time)
@@ -522,7 +575,7 @@ class HarvestingEngine:
                 discarded["DUPLICATE_URL"] += 1
                 known[key].metadata.setdefault("discovery_query_aliases", []).append(item.query_id)
                 _merge_task_lineage(known[key].metadata, item.metadata)
-                if (controller == "interleaved_v1" and domain == "trending"
+                if (controller in {"interleaved_v1", "pipelined_v1"} and domain == "trending"
                         and item.metadata.get("harvest_temporal_priority", 9) < known[key].metadata.get("harvest_temporal_priority", 9)):
                     known[key].metadata.update(harvest_temporal_priority=item.metadata["harvest_temporal_priority"],
                         discovery_temporal_observation=item.metadata["discovery_temporal_observation"],
@@ -599,6 +652,26 @@ class HarvestingEngine:
                     item.metadata.pop(name, None)
 
 
+        def seed_publisher_directories():
+            if source_plan is None or params.get('allowed_channels') is not None and 'web' not in params['allowed_channels']:
+                return
+            from backend.services.research.source_registry import source_registry
+            families = list(dict.fromkeys(action.source_family for action in source_plan.actions if action.source_family))[:2]
+            for family in families:
+                for url in source_registry.discovery_entrypoints(family)[:1]:
+                    if source_url_key(url) in known:
+                        continue
+                    add(EvidenceItem(id='publisher_directory_' + family, canonical_url=url,
+                        title='Publisher discovery directory: ' + source_registry.by_id[family]['name'],
+                        channel='web', content_depth='METADATA', query_class='reviewed_publisher_directory',
+                        metadata={'source_family': family, 'publisher_basis': 'VERSIONED_PUBLISHER_DIRECTORY',
+                                  'discovery_kind': 'FEED_INDEX', 'publisher_hop': 0,
+                                  'authority_scope': 'DISCOVERY_ONLY', 'publisher_identity_verified': False}))
+                    output.retrieval_trace.setdefault('publisher_directories', []).append({
+                        'source_family': family, 'url': _locator(url), 'network_calls': 0,
+                        'basis': 'VERSIONED_PUBLISHER_DIRECTORY', 'not_article_evidence': True})
+
+        seed_publisher_directories()
         wrapper_count, discovery_count, raw_chars = 0, 0, 0
         read_host_counts, read_publisher_counts = Counter(), Counter()
         adaptive_controller = None
@@ -608,13 +681,26 @@ class HarvestingEngine:
             adaptive_controller = InterleavedController(target, domain, intent, reference_time)
             allocation = configure_interleaved_discovery()
             adaptive_controller.record("CONFIGURED", allocation=allocation)
+        pipeline = None
+        if controller == "pipelined_v1":
+            # Experimental scheduler: same budgeted service, deadlines, caps and gates; see the module docstring.
+            from backend.services.research.pipelined_acquisition import PipelinedAcquisition
+            pipeline = PipelinedAcquisition(
+                target=target, domain=domain, intent=intent, agent_name=agent_name, profile=profile, queries=queries,
+                known=known, attempted=attempted, captured=captured, telemetry=telemetry, output=output,
+                service=service, reader=self.reader, add=add, emit=emit, observed_children=self._observed_children,
+                discarded=discarded, reference_time=reference_time, discovery_capacity=discovery_capacity,
+                discovery_deadline=discovery_deadline, reading_deadline=reading_deadline,
+                read_host_counts=read_host_counts, read_publisher_counts=read_publisher_counts,
+                submitted_query_ids=submitted_query_ids, request=request, refine_topics=refine_topics)
 
         def read_available(max_additional_reads=None):
             nonlocal wrapper_count, discovery_count, raw_chars
             read_cutoff = (profile.max_reads if max_additional_reads is None else
                            min(profile.max_reads, telemetry["attempted"] + max_additional_reads))
             while time.monotonic() < reading_deadline and telemetry["attempted"] < read_cutoff:
-                pending = [item for key, item in known.items() if key not in attempted and item.metadata.get("harvest_acquisition_eligible")]
+                pending = [item for key, item in known.items() if key not in attempted
+                           and item.metadata.get("harvest_acquisition_eligible") and _source_body_admissible(item)]
                 # Concrete task-appropriate titles, then article-shaped paths;
                 # hostname is never treated as entity/independence evidence.
                 pending.sort(key=lambda item: _read_priority(item, target, domain,
@@ -708,7 +794,7 @@ class HarvestingEngine:
         try:
             # Small provider-bulkheaded waves rather than one giant worker queue.
             wave_size = 3 if adaptive_controller else min(6, max(3, profile.max_queries // 2))
-            for offset in range(0, len(queries), wave_size):
+            for offset in (range(0, len(queries), wave_size) if pipeline is None else ()):
                 if time.monotonic() >= discovery_deadline or len(known) >= discovery_capacity:
                     if adaptive_controller:
                         output.retrieval_trace["discovery_stop_reason"] = ("DISCOVERY_DEADLINE_EXHAUSTED"
@@ -790,6 +876,7 @@ class HarvestingEngine:
                                 status="TIMEOUT" if isinstance(exc, TimeoutError) else "FAILED",
                                 error="Harvester transport exception: " + type(exc).__name__,
                                 result_count_raw=0, result_count_normalized=0))
+                refine_topics()
                 emit("HARVEST_DISCOVERY")
                 if adaptive_controller:
                     before_reads = telemetry["attempted"]
@@ -833,7 +920,8 @@ class HarvestingEngine:
                         output.retrieval_trace["discovery_stop_reason"] = "SHARED_READ_ATTEMPT_CAP"
                         break
 
-            if adaptive_controller is None and request is not None and discovery_deadline - time.monotonic() >= 2 and discovery_http_remaining() != 0:
+            if (adaptive_controller is None and pipeline is None and request is not None
+                    and discovery_deadline - time.monotonic() >= 2 and discovery_http_remaining() != 0):
                 from backend.services.research.search_advice import expand_with_advice
                 with public_request_phase("discovery"):
                     advice_result, advice_trace = expand_with_advice(request,
@@ -847,7 +935,13 @@ class HarvestingEngine:
                         item_id = getattr(fragment, "evidence_id", "") or "ev_" + hashlib.sha256(source_url_key(url).encode()).hexdigest()[:16]
                         add(EvidenceItem.from_evidence_fragment(fragment, item_id=item_id, target_name=target))
 
-            read_available()
+            if pipeline is not None:
+                try:
+                    pipeline.run()
+                finally:
+                    wrapper_count, discovery_count, raw_chars = pipeline.wrapper_count, pipeline.index_count, pipeline.raw_chars
+            else:
+                read_available()
 
         finally:
             service.close()
@@ -859,7 +953,10 @@ class HarvestingEngine:
         for key, item in known.items():
             if key in attempted or not item.metadata.get("harvest_acquisition_eligible"):
                 continue
-            reason = ("READ_DEADLINE_EXHAUSTED" if time.monotonic() >= reading_deadline else
+            permission = item.metadata.get('source_body_admission') or {}
+            policy_blocked = permission.get('eligible') is False
+            reason = (permission.get('reason') or permission.get('status') if policy_blocked else
+                      "READ_DEADLINE_EXHAUSTED" if time.monotonic() >= reading_deadline else
                       "READ_ATTEMPT_BUDGET_EXHAUSTED" if telemetry["attempted"] >= profile.max_reads else
                       "HOST_READ_BUDGET_EXHAUSTED" if read_host_counts[_host(item.canonical_url)] >= profile.max_host_reads else
                       "WRAPPER_READ_BUDGET_EXHAUSTED" if _is_wrapper(item) and wrapper_count >= profile.max_wrapper_reads else
@@ -868,8 +965,8 @@ class HarvestingEngine:
             unread_reasons[reason] += 1
             item.metadata["harvest_unread_reason"] = reason
             telemetry["candidate_selection_audit"].append({"candidate_id": item.id,
-                "selected": False, "eligible_for_read": True, "selection_decision": "NOT_SELECTED",
-                "selection_reason": reason, "rejection_reason": None})
+                "selected": False, "eligible_for_read": not policy_blocked, "selection_decision": "NOT_SELECTED",
+                "selection_reason": reason, "rejection_reason": reason if policy_blocked else None})
 
         # Planning, submission and transport observations are distinct states.
         # Do not silently omit generated queries when an early cap/deadline wins.
@@ -930,6 +1027,9 @@ class HarvestingEngine:
             }
         if adaptive_controller:
             output.metrics["acquisition_controller"] = adaptive_controller.snapshot()
+        elif pipeline is not None:
+            output.metrics["acquisition_controller"] = pipeline.snapshot()
+            output.metrics["ai_search_advice"] = pipeline.advice_trace
         emit("HARVEST_COMPLETE")
         return output
 

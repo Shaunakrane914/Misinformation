@@ -1,0 +1,961 @@
+{
+  "date": "2026-10-26",
+  "status": "PROPOSED_RESEARCH_CATALOG_NOT_RUNTIME_CONFIGURATION",
+  "runtime_enabled": false,
+  "local_live_validation": "NOT_RUN",
+  "notes": [
+    "Includes existing families, new proposed integrations and conditional candidates; not a count of implemented scrapers.",
+    "Feeds/metadata/public pages do not establish body acquisition or product reuse permission.",
+    "Source independence and coverage are not established by the number of domains."
+  ],
+  "sources": [
+    {
+      "id": "bollywood_hungama",
+      "name": "Bollywood Hungama",
+      "discovery_reference": "https://www.bollywoodhungama.com/rss-feed/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "bollywood",
+        "film",
+        "box_office"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "News/interviews and film reporting; box-office estimates need methodology."
+    },
+    {
+      "id": "filmfare",
+      "name": "Filmfare",
+      "discovery_reference": "https://www.filmfare.com/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "bollywood",
+        "regional_cinema",
+        "interviews"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Interview/news sections observed; feed and automated reuse unverified."
+    },
+    {
+      "id": "hindustan_times",
+      "name": "Hindustan Times",
+      "discovery_reference": "https://www.hindustantimes.com/rss",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "bollywood",
+        "hollywood",
+        "sports",
+        "politics"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Feed directory includes entertainment sections; usage/body access must be checked."
+    },
+    {
+      "id": "indian_express",
+      "name": "Indian Express",
+      "discovery_reference": "https://indianexpress.com/rss/",
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "bollywood",
+        "regional_cinema",
+        "sports",
+        "politics",
+        "business"
+      ],
+      "review_status": "DOCUMENTED_RESTRICTED_FEEDS",
+      "note": "Published feeds; stated personal/non-commercial and syndication restrictions."
+    },
+    {
+      "id": "ndtv",
+      "name": "NDTV",
+      "discovery_reference": "https://www.ndtv.com/rss?site=classic",
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "topics": [
+        "bollywood",
+        "sports",
+        "politics",
+        "business",
+        "health"
+      ],
+      "review_status": "DOCUMENTED_RESTRICTED_FEEDS",
+      "note": "Headline feed terms distinguish personal/non-commercial use; article rights separate."
+    },
+    {
+      "id": "live_hindustan",
+      "name": "Live Hindustan",
+      "discovery_reference": "https://www.livehindustan.com/rss",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "hindi",
+        "regional_news",
+        "bollywood",
+        "sports"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Preserve Hindi text and original quote; reuse conditions apply."
+    },
+    {
+      "id": "yrf",
+      "name": "Yash Raj Films",
+      "discovery_reference": "https://www.yashrajfilms.com/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "bollywood",
+        "film",
+        "official_statements"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "First-party announcements; not independent reviews or authenticated personal speech."
+    },
+    {
+      "id": "variety",
+      "name": "Variety",
+      "discovery_reference": "https://variety.com/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "hollywood",
+        "film",
+        "television"
+      ],
+      "review_status": "RESEARCH_FETCH_402",
+      "note": "Trade-publication candidate; web tool returned 402, not local runtime proof."
+    },
+    {
+      "id": "deadline",
+      "name": "Deadline",
+      "discovery_reference": "https://deadline.com/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "hollywood",
+        "film",
+        "television"
+      ],
+      "review_status": "RESEARCH_FETCH_402",
+      "note": "Trade-publication candidate; web tool returned 402, not enabled."
+    },
+    {
+      "id": "bcci",
+      "name": "BCCI",
+      "discovery_reference": "https://www.bcci.tv/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "cricket",
+        "sports",
+        "official_statements"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Official releases/press conferences; not an independent news publisher."
+    },
+    {
+      "id": "icc",
+      "name": "ICC",
+      "discovery_reference": "https://www.icc-cricket.com/news",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "cricket",
+        "sports",
+        "official_statements"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Official tournament/news sources; attribution and dates required."
+    },
+    {
+      "id": "techcrunch",
+      "name": "TechCrunch",
+      "discovery_reference": "https://techcrunch.com/",
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "topics": [
+        "technology",
+        "startups",
+        "executives"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Observed topic pages; automated route/reuse not accepted."
+    },
+    {
+      "id": "the_register",
+      "name": "The Register",
+      "discovery_reference": "https://www.theregister.com/",
+      "agents": [
+        "trending",
+        "scout",
+        "brandshield"
+      ],
+      "topics": [
+        "technology",
+        "semiconductors",
+        "cybersecurity"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Separate editorial reporting from vendor/sponsored material."
+    },
+    {
+      "id": "who",
+      "name": "WHO",
+      "discovery_reference": "https://www.who.int/news-room",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "health",
+        "public_policy",
+        "official_statements"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Health statements and speeches; not a general celebrity source."
+    },
+    {
+      "id": "eci",
+      "name": "Election Commission of India",
+      "discovery_reference": "https://www.eci.gov.in/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "elections",
+        "politics"
+      ],
+      "review_status": "RESEARCH_FETCH_TIMEOUT",
+      "note": "Candidate official election records; no local access proof."
+    },
+    {
+      "id": "prs",
+      "name": "PRS Legislative Research",
+      "discovery_reference": "https://prsindia.org/",
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "topics": [
+        "politics",
+        "legislation",
+        "public_policy"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Legislative analysis; original law/parliament text remains separately inspectable."
+    },
+    {
+      "id": "pib",
+      "name": "PIB",
+      "discovery_reference": "https://www.pib.gov.in/ViewRss.aspx?lang=1&reg=1",
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch"
+      ],
+      "topics": [
+        "politics",
+        "public_policy",
+        "official_statements",
+        "business"
+      ],
+      "review_status": "DOCUMENTED_FEEDS_EXISTING_FAMILY",
+      "note": "Already declared; improve language/region/ministry routing."
+    },
+    {
+      "id": "govuk",
+      "name": "GOV.UK",
+      "discovery_reference": "https://www.gov.uk/help/reuse-govuk-content",
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "public_policy",
+        "official_statements",
+        "regulation",
+        "incidents"
+      ],
+      "review_status": "DOCUMENTED_CONTENT_API",
+      "note": "Content API and OGL guidance; restrict route to relevant department/task."
+    },
+    {
+      "id": "mit_news",
+      "name": "MIT News",
+      "discovery_reference": "https://news.mit.edu/rss",
+      "agents": [
+        "trending"
+      ],
+      "topics": [
+        "technology",
+        "materials",
+        "energy",
+        "research"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Topic feeds; institutional science communication, not independent replication."
+    },
+    {
+      "id": "nist_news",
+      "name": "NIST News",
+      "discovery_reference": "https://www.nist.gov/coo/nist-rss-feeds",
+      "agents": [
+        "trending",
+        "brandshield"
+      ],
+      "topics": [
+        "technology",
+        "semiconductors",
+        "manufacturing",
+        "cybersecurity"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "News family distinct from current NVD route."
+    },
+    {
+      "id": "nsf",
+      "name": "NSF",
+      "discovery_reference": "https://www.nsf.gov/rss",
+      "agents": [
+        "trending"
+      ],
+      "topics": [
+        "research",
+        "technology",
+        "science"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Do not confuse award/funding announcements with demonstrated results."
+    },
+    {
+      "id": "crossref",
+      "name": "Crossref",
+      "discovery_reference": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+      "agents": [
+        "trending"
+      ],
+      "topics": [
+        "research",
+        "science"
+      ],
+      "review_status": "DOCUMENTED_METADATA_API",
+      "note": "DOI metadata discovery; not publisher body acquisition."
+    },
+    {
+      "id": "europe_pmc",
+      "name": "Europe PMC",
+      "discovery_reference": "https://europepmc.org/RestfulWebService",
+      "agents": [
+        "trending"
+      ],
+      "topics": [
+        "health",
+        "biomedical",
+        "research"
+      ],
+      "review_status": "DOCUMENTED_OA_API",
+      "note": "Full text only for eligible open-access subset; status/licence retained."
+    },
+    {
+      "id": "sec",
+      "name": "SEC EDGAR",
+      "discovery_reference": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "agents": [
+        "scout",
+        "brandshield"
+      ],
+      "topics": [
+        "finance",
+        "filings",
+        "enforcement"
+      ],
+      "review_status": "DOCUMENTED_API_EXISTING_GATE",
+      "note": "Existing route; retain declared contact and all project access gates."
+    },
+    {
+      "id": "rbi",
+      "name": "RBI",
+      "discovery_reference": "https://www.rbi.org.in/Scripts/rss.aspx",
+      "agents": [
+        "scout",
+        "brandshield",
+        "personal_watch"
+      ],
+      "topics": [
+        "finance",
+        "banking",
+        "regulation",
+        "official_statements"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Indian financial policy/releases/speeches."
+    },
+    {
+      "id": "sebi",
+      "name": "SEBI",
+      "discovery_reference": "https://www.sebi.gov.in/rss.html",
+      "agents": [
+        "scout",
+        "brandshield"
+      ],
+      "topics": [
+        "finance",
+        "enforcement",
+        "regulation"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Releases/orders; distinguish allegation, interim order and final outcome."
+    },
+    {
+      "id": "nse",
+      "name": "NSE",
+      "discovery_reference": "https://www.nseindia.com/static/rss-feed",
+      "agents": [
+        "scout"
+      ],
+      "topics": [
+        "finance",
+        "filings",
+        "india"
+      ],
+      "review_status": "DOCUMENTED_FEEDS_ACCESS_REVIEW",
+      "note": "Financial disclosures; usage/automation review required, not bulk approval."
+    },
+    {
+      "id": "bse",
+      "name": "BSE",
+      "discovery_reference": "https://www.bseindia.com/corporates/ann.html",
+      "agents": [
+        "scout"
+      ],
+      "topics": [
+        "finance",
+        "filings",
+        "india"
+      ],
+      "review_status": "RESEARCH_FETCH_403",
+      "note": "Observed web-tool denial; no undocumented API or bypass proposed."
+    },
+    {
+      "id": "hkex",
+      "name": "HKEXnews",
+      "discovery_reference": "https://www.hkexnews.hk/index.htm?sc_lang=en",
+      "agents": [
+        "scout"
+      ],
+      "topics": [
+        "finance",
+        "filings",
+        "hong_kong"
+      ],
+      "review_status": "DOCUMENTED_PUBLIC_SEARCH",
+      "note": "Public document-search candidate; automated access and extraction unverified."
+    },
+    {
+      "id": "economic_times",
+      "name": "Economic Times",
+      "discovery_reference": "https://economictimes.indiatimes.com/rss.cms",
+      "agents": [
+        "scout",
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "business",
+        "finance",
+        "executives",
+        "technology"
+      ],
+      "review_status": "DOCUMENTED_RESTRICTED_FEEDS",
+      "note": "Personal-use/syndication limits; not enabled for unrestricted aggregation."
+    },
+    {
+      "id": "mint",
+      "name": "Mint",
+      "discovery_reference": "https://www.livemint.com/rss",
+      "agents": [
+        "scout",
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "business",
+        "finance",
+        "executives",
+        "technology"
+      ],
+      "review_status": "DOCUMENTED_RESTRICTED_FEEDS",
+      "note": "Personal/non-commercial headlines terms; permissions for broader usage."
+    },
+    {
+      "id": "business_standard",
+      "name": "Business Standard",
+      "discovery_reference": "https://www.business-standard.com/rss-feeds/listing",
+      "agents": [
+        "scout",
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "business",
+        "finance",
+        "politics",
+        "sports"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Feed directory; article access/reuse still unverified."
+    },
+    {
+      "id": "moneycontrol_hindi",
+      "name": "Moneycontrol Hindi",
+      "discovery_reference": "https://hindi.moneycontrol.com/rss",
+      "agents": [
+        "scout",
+        "trending"
+      ],
+      "topics": [
+        "business",
+        "finance",
+        "hindi"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Only Hindi directory inspected; English acquisition route unverified."
+    },
+    {
+      "id": "companies_house",
+      "name": "Companies House",
+      "discovery_reference": "https://developer-specs.company-information.service.gov.uk/guides/quickStart",
+      "agents": [
+        "scout",
+        "brandshield",
+        "personal_watch"
+      ],
+      "topics": [
+        "company_identity",
+        "filings",
+        "directors"
+      ],
+      "review_status": "DOCUMENTED_API_KEY_REQUIRED",
+      "note": "Account/key required; filings do not independently authenticate allegations or current roles."
+    },
+    {
+      "id": "fca",
+      "name": "FCA",
+      "discovery_reference": "https://www.fca.org.uk/consumers/warning-list-unauthorised-firms",
+      "agents": [
+        "scout",
+        "brandshield"
+      ],
+      "topics": [
+        "finance",
+        "clone_firms",
+        "impersonation"
+      ],
+      "review_status": "PUBLIC_WARNING_LIST",
+      "note": "Company identity and domain matching; absence is not proof of authorisation."
+    },
+    {
+      "id": "ftc",
+      "name": "FTC",
+      "discovery_reference": "https://www.ftc.gov/news-events/stay-connected/ftc-rss-feeds",
+      "agents": [
+        "brandshield",
+        "personal_watch"
+      ],
+      "topics": [
+        "scams",
+        "enforcement",
+        "consumer_protection"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Generic warnings remain advice; case allegations are not convictions."
+    },
+    {
+      "id": "doj",
+      "name": "US DOJ",
+      "discovery_reference": "https://www.justice.gov/developer/api-documentation/api_v1",
+      "agents": [
+        "brandshield",
+        "personal_watch"
+      ],
+      "topics": [
+        "fraud",
+        "enforcement",
+        "impersonation"
+      ],
+      "review_status": "DOCUMENTED_API",
+      "note": "Use actual case text/status and named-entity match."
+    },
+    {
+      "id": "cpsc",
+      "name": "CPSC",
+      "discovery_reference": "https://www.cpsc.gov/Newsroom/CPSC-RSS-Feed",
+      "agents": [
+        "brandshield"
+      ],
+      "topics": [
+        "recalls",
+        "product_safety"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Recall evidence is not counterfeit or phishing evidence."
+    },
+    {
+      "id": "fda",
+      "name": "FDA",
+      "discovery_reference": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts",
+      "agents": [
+        "brandshield",
+        "trending"
+      ],
+      "topics": [
+        "recalls",
+        "health",
+        "product_safety"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Alert list is not exhaustive; link product/company and exact action."
+    },
+    {
+      "id": "eu_safety_gate",
+      "name": "EU Safety Gate",
+      "discovery_reference": "https://ec.europa.eu/safety-gate-alerts/screen/webReport",
+      "agents": [
+        "brandshield"
+      ],
+      "topics": [
+        "recalls",
+        "product_safety",
+        "europe"
+      ],
+      "review_status": "RESEARCH_JS_SHELL",
+      "note": "Public report rendered no text in tool; acquisition mechanism unverified."
+    },
+    {
+      "id": "cisa",
+      "name": "CISA",
+      "discovery_reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "agents": [
+        "brandshield"
+      ],
+      "topics": [
+        "cybersecurity",
+        "exploitation"
+      ],
+      "review_status": "RESEARCH_FETCH_403",
+      "note": "Observed denial in web tool; not proof of permanent local block. Vulnerability is not target compromise."
+    },
+    {
+      "id": "cert_in",
+      "name": "CERT-In",
+      "discovery_reference": "https://www.cert-in.org.in/",
+      "agents": [
+        "brandshield"
+      ],
+      "topics": [
+        "cybersecurity",
+        "india"
+      ],
+      "review_status": "RESEARCH_EMPTY_PAGE",
+      "note": "Official advisory candidate; body discovery unverified."
+    },
+    {
+      "id": "scamwatch",
+      "name": "Scamwatch",
+      "discovery_reference": "https://www.scamwatch.gov.au/",
+      "agents": [
+        "brandshield",
+        "personal_watch"
+      ],
+      "topics": [
+        "scams",
+        "impersonation",
+        "australia"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Separate general advice, aggregate reports and named incidents."
+    },
+    {
+      "id": "asa",
+      "name": "ASA",
+      "discovery_reference": "https://www.asa.org.uk/codes-and-rulings/rulings.html",
+      "agents": [
+        "brandshield"
+      ],
+      "topics": [
+        "advertising",
+        "endorsements",
+        "misleading_claims"
+      ],
+      "review_status": "PUBLIC_RULINGS",
+      "note": "Preserve upheld/not upheld/informal outcome and exact advertiser."
+    },
+    {
+      "id": "securityweek",
+      "name": "SecurityWeek",
+      "discovery_reference": "https://www.securityweek.com/",
+      "agents": [
+        "brandshield",
+        "trending"
+      ],
+      "topics": [
+        "cybersecurity",
+        "incidents",
+        "fraud"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Reported incidents need original technical/source links and dates."
+    },
+    {
+      "id": "bleepingcomputer",
+      "name": "BleepingComputer",
+      "discovery_reference": "https://www.bleepingcomputer.com/",
+      "agents": [
+        "brandshield",
+        "trending"
+      ],
+      "topics": [
+        "cybersecurity",
+        "incidents"
+      ],
+      "review_status": "RESEARCH_FETCH_TIMEOUT",
+      "note": "Candidate reporting source; no local access proof."
+    },
+    {
+      "id": "boom",
+      "name": "BOOM",
+      "discovery_reference": "https://www.boomlive.in/about-us",
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "fact_checks",
+        "india",
+        "false_quotes",
+        "synthetic_media"
+      ],
+      "review_status": "PUBLISHER_PURPOSE_REVIEWED",
+      "note": "Inspect exact reviewed claim and original evidence; no blanket verdict inheritance."
+    },
+    {
+      "id": "afp_factcheck",
+      "name": "AFP Fact Check",
+      "discovery_reference": "https://factcheck.afp.com/How-we-work",
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "fact_checks",
+        "false_quotes",
+        "synthetic_media",
+        "international"
+      ],
+      "review_status": "PUBLISHER_METHOD_REVIEWED",
+      "note": "Language/date/claim match; content access and reuse distinct from methodology."
+    },
+    {
+      "id": "full_fact",
+      "name": "Full Fact",
+      "discovery_reference": "https://fullfact.org/about/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "fact_checks",
+        "politics",
+        "false_quotes"
+      ],
+      "review_status": "PUBLISHER_PURPOSE_REVIEWED",
+      "note": "Review underlying evidence and exact claim; not generic authority score."
+    },
+    {
+      "id": "apple_newsroom",
+      "name": "Apple Newsroom family",
+      "discovery_reference": "https://www.apple.com/ca/rss/",
+      "agents": [
+        "scout",
+        "personal_watch"
+      ],
+      "topics": [
+        "executives",
+        "official_statements",
+        "finance"
+      ],
+      "review_status": "DOCUMENTED_FEED_DIRECTORY",
+      "note": "Regional directory links newsroom; generic RSS URL redirected; exact feed not locally proven."
+    },
+    {
+      "id": "microsoft_source",
+      "name": "Microsoft Source",
+      "discovery_reference": "https://news.microsoft.com/source/",
+      "agents": [
+        "scout",
+        "personal_watch"
+      ],
+      "topics": [
+        "executives",
+        "official_statements",
+        "technology"
+      ],
+      "review_status": "PUBLIC_PAGE_OBSERVED",
+      "note": "Underlying articles only; AI search answers are not source bodies."
+    },
+    {
+      "id": "federal_reserve",
+      "name": "Federal Reserve",
+      "discovery_reference": "https://www.federalreserve.gov/feeds/feeds.htm",
+      "agents": [
+        "scout",
+        "personal_watch"
+      ],
+      "topics": [
+        "finance",
+        "official_statements",
+        "public_policy"
+      ],
+      "review_status": "DOCUMENTED_FEEDS",
+      "note": "Relevant public speakers only; statements not interchangeable with corporate executives."
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube original recordings",
+      "discovery_reference": "https://www.youtube.com/",
+      "agents": [
+        "trending",
+        "personal_watch"
+      ],
+      "topics": [
+        "interviews",
+        "official_statements",
+        "entertainment",
+        "sports"
+      ],
+      "review_status": "EXISTING_ROUTE_ACCESS_DEPENDENT",
+      "note": "Use attributable original recordings via existing operations; captions are not always available/authenticated."
+    },
+    {
+      "id": "reddit",
+      "name": "Reddit",
+      "discovery_reference": "https://www.reddit.com/",
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "community",
+        "leads",
+        "entertainment",
+        "scams"
+      ],
+      "review_status": "EXISTING_POLICY_GATED",
+      "note": "Preserve approved-access state; no new permission or bypass."
+    },
+    {
+      "id": "x",
+      "name": "X",
+      "discovery_reference": "https://x.com/",
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "original_posts",
+        "community",
+        "leads"
+      ],
+      "review_status": "EXISTING_ACCESS_GATED",
+      "note": "Original post provenance needed; no guaranteed direct access or invented approval."
+    },
+    {
+      "id": "bluesky",
+      "name": "Bluesky",
+      "discovery_reference": "https://docs.bsky.app/docs/api/app-bsky-feed-search-posts",
+      "agents": [
+        "trending",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "original_posts",
+        "community",
+        "leads"
+      ],
+      "review_status": "EXISTING_ADAPTER",
+      "note": "Existing public-post adapter; usage and actual local results remain separate."
+    },
+    {
+      "id": "guardian",
+      "name": "Guardian",
+      "discovery_reference": "https://open-platform.theguardian.com/access/",
+      "agents": [
+        "trending",
+        "scout",
+        "personal_watch",
+        "brandshield"
+      ],
+      "topics": [
+        "international",
+        "politics",
+        "business",
+        "culture"
+      ],
+      "review_status": "DOCUMENTED_KEY_AND_USE_REQUIRED",
+      "note": "Suitable API key/licence required; not enabled."
+    },
+    {
+      "id": "trustpilot",
+      "name": "Trustpilot and current review family",
+      "discovery_reference": "https://www.trustpilot.com/",
+      "agents": [
+        "brandshield"
+      ],
+      "topics": [
+        "consumer_complaints",
+        "leads"
+      ],
+      "review_status": "EXISTING_ADAPTER_ACCESS_DEPENDENT",
+      "note": "Reviews are allegations/selection-biased samples, not adjudicated scams."
+    }
+  ]
+}

@@ -43,10 +43,20 @@ class NewswireAdapter(PlatformAdapter):
     }
 
     OFFICIAL_FEEDS = {
-        "reuters": "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best",
-        "bbc": "https://feeds.bbci.co.uk/news/world/rss.xml",
-        "pib_india": "https://pib.gov.in/RssMain.aspx",
+        # Direct publisher feeds observed in the IDE-checkout repair. The old
+        # Reuters endpoint is gone and the PIB endpoint returns an HTML index.
+        # Keep the original three-feed bound and existing reader/access policy.
+        "bbc_world": "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "bbc_business": "https://feeds.bbci.co.uk/news/business/rss.xml",
+        "bbc_technology": "https://feeds.bbci.co.uk/news/technology/rss.xml",
     }
+    FEED_SECTIONS = {'bbc_world': 'world', 'bbc_business': 'business', 'bbc_technology': 'technology'}
+    CATEGORY_QUERIES = {
+        'world': {'world', 'world news', 'international news'},
+        'business': {'business', 'business news', 'finance', 'finance news'},
+        'technology': {'technology', 'technology news', 'tech', 'tech news'},
+    }
+    MAX_FEEDS_PER_DISCOVER = 3
 
     @property
     def platform(self) -> str:
@@ -65,10 +75,18 @@ class NewswireAdapter(PlatformAdapter):
     def discover(self, query: str, limit: int = 5) -> List[CandidateSource]:
         """Discover live newswire stories matching the query via official feeds."""
         candidates: List[CandidateSource] = []
-        clean_q = query.lower().strip()
-        tokens = set(clean_q.split())
+        seen = set()
+        clean_q = ' '.join(re.findall(r'\w+', query.casefold()))
+        if not clean_q or limit <= 0:
+            return candidates
+        section = next((name for name, labels in self.CATEGORY_QUERIES.items() if clean_q in labels), None)
+        category_words = {word for labels in self.CATEGORY_QUERIES.values() for label in labels for word in label.split()}
+        tokens = {word for word in clean_q.split() if len(word) > 2}
+        meaningful = tokens - category_words - {'latest', 'updates', 'update', 'the', 'and', 'for', 'about'}
+        feeds = sorted(self.OFFICIAL_FEEDS.items(),
+                       key=lambda row: self.FEED_SECTIONS.get(row[0]) != section if section else False)
 
-        for wire_name, feed_url in self.OFFICIAL_FEEDS.items():
+        for wire_name, feed_url in feeds[:self.MAX_FEEDS_PER_DISCOVER]:
             if len(candidates) >= limit:
                 break
             try:
@@ -80,9 +98,19 @@ class NewswireAdapter(PlatformAdapter):
                         limit=20,
                     )
                     for f in frags:
-                        text_to_match = f"{f.title} {f.snippet}".lower()
-                        # If query tokens match or query is generic
-                        if not tokens or any(tok in text_to_match for tok in tokens if len(tok) > 2):
+                        identity = (f.url or '').split('#', 1)[0]
+                        if not identity or identity in seen:
+                            continue
+                        text_to_match = set(re.findall(r'\w+', f"{f.title} {f.snippet}".casefold()))
+                        topic_section = section and self.FEED_SECTIONS.get(wire_name) == section
+                        # A technology section contains AI/device reports that
+                        # need not repeat 'technology' in each headline. This
+                        # permits reading leads only, never evidence acceptance.
+                        # Names/other terms cannot pass on the section word alone.
+                        token_match = (bool(meaningful) and meaningful <= text_to_match if not section
+                                       else bool(tokens & text_to_match))
+                        if topic_section or token_match:
+                            seen.add(identity)
                             candidates.append(
                                 CandidateSource(
                                     url=f.url,
@@ -92,6 +120,12 @@ class NewswireAdapter(PlatformAdapter):
                                     search_engine=f"{wire_name}_wire",
                                     metadata={
                                         "wire": wire_name,
+                                        "feed_url": feed_url,
+                                        "publisher_section": self.FEED_SECTIONS.get(wire_name),
+                                        "discovery_match_basis": 'PUBLISHER_TOPIC_SECTION' if topic_section else 'TITLE_OR_SNIPPET_TOKENS',
+                                        "discovery_only": True,
+                                        "linked_article_retrieved": False,
+                                        "publication_time_basis": "PUBLISHER_FEED_DECLARATION",
                                         "published": f.published,
                                         "author": f.author,
                                         "full_content": f.content,

@@ -56,11 +56,17 @@ def search_brand_evidence(
             "query_classes": query_classes,
             "trace": retrieval_trace
         }
-    except Exception as e:
-        logger.warning(f"[BrandShield 2.0] ResearchEngine retrieval exception: {e}")
+    except Exception as error:
+        error_type = type(error).__name__
+        logger.warning("[BrandShield 2.0] ResearchEngine retrieval failed (%s)", error_type)
         fragments = []
         channel_health = {}
-        plan = {}
+        plan = {"trace": {"acquisition": {
+            "status": "ACQUISITION_FAILED", "reason": "RESEARCH_PIPELINE_ERROR",
+            "error_type": error_type, "acquired_sources": 0,
+            "message": "Unable to retrieve evidence because the research pipeline failed before completion. "
+                       "This does not mean no information exists about the brand.",
+        }}}
         research_res = None
 
     evidence_items: List[Dict[str, Any]] = []

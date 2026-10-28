@@ -1,0 +1,40 @@
+{
+  "mode": "OFFLINE_REPLAY_NOT_LIVE",
+  "network_calls": 0,
+  "model_calls": 0,
+  "supplemental_body_hash": "692428c09035bbd570eebfd54ebaed464c4066585aec1c8e5859635fa4d90ccb",
+  "runs": [
+    {
+      "scope": "OFFLINE_OBSERVED_OUTCOMES_ONLY_UNREAD_OUTCOMES_UNKNOWN",
+      "requested_read_urls": [
+        "https://bioengineer.org",
+        "https://bioengineer.org/feed/",
+        "https://bioengineer.org/?s=Battery+Recycling",
+        "https://bioengineer.org/advancing-safer-metal-recycling-technologies-in-the-battery-industry/",
+        "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+        "https://bioengineer.org/electrochemical-recycling-transforms-lithium-battery-cathodes/",
+        "https://bioengineer.org/leicester-expert-leads-ground-breaking-invention-on-battery-recycling/",
+        "https://bioengineer.org/harnessing-inner-potential-the-role-of-lithium-battery-recycling-in-sustainable-innovation/"
+      ],
+      "ECS_read_requested": true,
+      "qualified": 0,
+      "selected_words": 0
+    },
+    {
+      "scope": "OFFLINE_SUPPLEMENTED_GENUINE_BODY",
+      "requested_read_urls": [
+        "https://bioengineer.org",
+        "https://bioengineer.org/feed/",
+        "https://bioengineer.org/?s=Battery+Recycling",
+        "https://bioengineer.org/advancing-safer-metal-recycling-technologies-in-the-battery-industry/",
+        "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+        "https://bioengineer.org/electrochemical-recycling-transforms-lithium-battery-cathodes/",
+        "https://bioengineer.org/leicester-expert-leads-ground-breaking-invention-on-battery-recycling/",
+        "https://bioengineer.org/harnessing-inner-potential-the-role-of-lithium-battery-recycling-in-sustainable-innovation/"
+      ],
+      "ECS_read_requested": true,
+      "qualified": 1,
+      "selected_words": 100
+    }
+  ]
+}

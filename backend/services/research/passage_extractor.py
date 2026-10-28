@@ -10,6 +10,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import EvidenceItem
 from backend.services.research.content_roles import NON_EVENT_ROLES, document_role, matches_objective, paragraph_role, local_prose_predicate
+from backend.services.research.clause_predicates import has_finite_predicate
 from backend.infrastructure.acquisition.adapters.web.page_extraction import recovered_span_allowed
 
 # High-signal action verbs and investigative indicators
@@ -61,7 +62,7 @@ def has_usable_passage(item) -> bool:
         return False
     if (value("metadata", {}) or {}).get("layer2_eligible") is False:
         return False
-    if value("extraction_status") in {"EMPTY", "NO_RELEVANT_PASSAGE", "METADATA_ONLY", "FALLBACK", "TEMPORAL_INELIGIBLE", "LAYER2_REJECTED"}:
+    if value("extraction_status") in {"EMPTY", "NO_RELEVANT_PASSAGE", "METADATA_ONLY", "FALLBACK", "TEMPORAL_INELIGIBLE", "LAYER2_REJECTED", "SOURCE_PERMISSION_REQUIRED"}:
         return False
     if document_role(item) in NON_EVENT_ROLES:
         return False
@@ -69,7 +70,7 @@ def has_usable_passage(item) -> bool:
     lower = text.lower()
     return (paragraph_role(text) not in NON_EVENT_ROLES and len(text.strip()) >= 40 and not _bare_label(text)
             and sum(marker in lower for marker in NAVIGATION_MARKERS) < 2
-            and bool(re.search(r"\b(?:is|are|was|were|has|have|allows|contains|includes|limits|rated)\b", lower)
+            and bool(has_finite_predicate(text)
                      or any(re.search(r"\b" + marker + r"\b", lower) for marker in SIGNAL_MARKERS)
                      or local_prose_predicate(text)))
 
@@ -148,6 +149,16 @@ class PassageExtractor:
             item.metadata.pop("evidence_passages", None)
             item.metadata.pop("evidence_passage_accounting", None)
             item.excerpt_start = item.excerpt_end = -1
+            from backend.services.research.source_registry import source_registry
+            permission = (source_registry.excerpt_decision(item.canonical_url, item.metadata.get('page_metadata'))
+                          if item.metadata.get('topic_source_controlled') or source_registry.match_url(item.canonical_url)
+                          or (item.metadata.get('page_metadata') or {}).get('rights_exception_observed') else {'eligible': True})
+            if permission.get('source_family'):
+                item.metadata['source_use_permission'] = permission
+            if not permission['eligible']:
+                item.metadata['post_read_qualification_reason'] = permission.get('reason', 'PERMISSION_REQUIRED')
+                item.extraction_status = 'SOURCE_PERMISSION_REQUIRED'
+                continue
             if item.metadata.get("temporal_required") and not item.metadata.get("temporal_eligible"):
                 item.extraction_status = "TEMPORAL_INELIGIBLE"
                 continue

@@ -3,7 +3,7 @@
 Capability-aware discovery adapter for global news and narrative tracking:
 - Topic searches and exact subject phrase queries
 - Publication window filtering (timespan parameter)
-- Article URLs and observed timestamps (seendate)
+- Article URLs and GDELT's first-seen index time (``gdelt_seen_at``; never a publication time)
 - Graceful provider throttling, failures, and timeout boundaries
 - Discovery-only candidate emission for standard secured reading
 
@@ -31,9 +31,15 @@ from backend.services.url_validator import validate_url_safe
 
 logger = logging.getLogger(__name__)
 
+GDELT_SEEN_AT_BASIS = "GDELT_INDEX_OBSERVATION_NOT_PUBLICATION"
+PUBLICATION_TIME_UNKNOWN = "UNKNOWN_UNTIL_PUBLISHER_CONTENT"
+
 
 def parse_gdelt_timestamp(val: Optional[str]) -> Optional[str]:
-    """Parse GDELT seendate (e.g. 20261025T120000Z or 20261025120000) to ISO 8601 UTC string."""
+    """Parse GDELT ``seendate`` (e.g. 20261025T120000Z) to an ISO 8601 UTC string.
+
+    The result is an index-observation time (``gdelt_seen_at``), never a publication time.
+    """
     if not val or not isinstance(val, str):
         return None
     val = val.strip()
@@ -135,22 +141,30 @@ class GdeltDocAdapter(PlatformAdapter):
 
             title = (item.get("title") or "").strip()[:500]
             seendate_raw = item.get("seendate")
-            published_iso = parse_gdelt_timestamp(seendate_raw)
+            seen_at = parse_gdelt_timestamp(seendate_raw)
             domain = item.get("domain", "")
 
+            # GDELT's ``seendate`` is when GDELT's crawler first indexed the URL, not
+            # when the publisher published it; an old article can be indexed today.
+            # It is kept only as an index observation. No ``published``/``published_at``
+            # is emitted, so publication time stays unknown until the captured
+            # publisher page itself establishes it.
             candidates.append(
                 CandidateSource(
                     url=article_url,
                     canonical_url=article_url,
                     platform="gdelt",
                     title=title,
-                    snippet=f"Observed via GDELT from {domain} on {published_iso or seendate_raw or 'recent'}",
+                    snippet=(f"Indexed by GDELT (source domain: {domain or 'unknown'}; "
+                             f"first seen by GDELT: {seen_at or seendate_raw or 'not reported'})"),
                     search_engine="gdelt_doc_api",
                     search_rank=idx + 1,
                     metadata={
                         "discovery_only": True,
-                        "published": published_iso,
-                        "published_at": published_iso,
+                        "gdelt_seen_at": seen_at,
+                        "gdelt_seen_at_raw": seendate_raw if isinstance(seendate_raw, str) else None,
+                        "gdelt_seen_at_basis": GDELT_SEEN_AT_BASIS,
+                        "publication_time_basis": PUBLICATION_TIME_UNKNOWN,
                         "gdelt_domain": domain,
                         "gdelt_language": item.get("language", ""),
                         "gdelt_country": item.get("sourcecountry", ""),

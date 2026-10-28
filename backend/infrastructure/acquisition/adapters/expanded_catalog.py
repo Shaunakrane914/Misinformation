@@ -21,6 +21,7 @@ ADAPTERS = {
     "telegram": ("social.telegram", "TelegramPublicAdapter"),
     "news_wires": ("news.wires_adapter", "NewswireAdapter"),
     "gdelt": ("news.gdelt", "GdeltDocAdapter"),
+    "cpsc_recalls": ("consumer.cpsc_recalls", "CpscRecallsAdapter"),
 }
 DOMAIN_DISCOVERY = {"financial": "yahoo_finance", "trending": "gdelt", "brand": "news_wires", "personal": "substack"}
 
@@ -56,15 +57,56 @@ class ExpandedSourceChannel(Channel):
                 endpoint="", network_observed=any("http_status" in row for row in observations), attempts=len(observations))
         return [EvidenceFragment(platform=key, channel_name=self.name, url=candidate.canonical_url or candidate.url,
             title=candidate.title, snippet=candidate.snippet, content="", content_depth="INDEX_SNIPPET",
+            published=_publisher_observation(key, candidate.metadata).get('discovery_published_at', ''),
+            author=_publisher_observation(key, candidate.metadata).get('discovery_author', ''),
             query_id=kwargs.get("query_id", ""), query_class=kwargs.get("query_class", "expanded_discovery"),
             query_text=query, native_backend_id=adapter.backend_id, retrieval_mode="direct_api",
             raw_metadata={"expanded_adapter": key, "linked_article_retrieved": False,
                           "discovery_only": True, "primary_source": False, "official_source": False,
-                          "adapter_fetch_observations": observations[:12]})
+                          "adapter_fetch_observations": observations[:12],
+                          **_index_provenance(candidate.metadata),
+                          **_publisher_observation(key, candidate.metadata)})
                 for candidate in candidates]
 
 
-def expanded_query(request):
+def _publisher_observation(adapter, metadata):
+    """Retain an explicit publisher date, never an index/creation timestamp.
+
+    These are discovery hints. The acquired body must still pass its own date,
+    subject and task gates. GDELT first-seen and CPSC issue observations keep
+    their existing distinct provenance and never enter this publication field.
+    """
+    if adapter != 'news_wires' or not isinstance(metadata, dict):
+        return {}
+    publication = metadata.get('published')
+    if (metadata.get('publication_time_basis') != 'PUBLISHER_FEED_DECLARATION'
+            or not isinstance(publication, str) or not publication.strip()):
+        return {}
+    author = metadata.get('author')
+    return {'discovery_published_at': publication[:100],
+            'discovery_publication_basis': 'PUBLISHER_FEED_DECLARATION',
+            'discovery_author': author[:300] if isinstance(author, str) else '',
+            'discovery_date_requires_body_recheck': True}
+
+
+def _index_provenance(metadata):
+    """Carry an index's own observation provenance, never a publication date.
+
+    The temporal guard reads ``published``/``published_at`` from item metadata, so
+    those names (and any other date-like key) are deliberately not forwarded. A
+    first-seen index time is retained only under its explicit ``gdelt_*`` name.
+    """
+    return {key: value for key, value in (metadata or {}).items()
+            if key.startswith("gdelt_") or key == "publication_time_basis"} | {
+        key: value for key, value in (metadata or {}).items()
+        if key in {"cpsc_recall_id", "cpsc_api_url", "cpsc_record_index", "cpsc_issue_date"}}
+
+
+def expanded_query(request, research_context=None):
+    topics = set((research_context or {}).get('topics', []))
+    if request.domain == 'personal' and topics & {'bollywood', 'regional_cinema', 'film', 'hollywood', 'cricket', 'sports', 'politics', 'elections'}:
+        # A generic newsletter adapter is not a default celebrity/sports source.
+        return None
     key = DOMAIN_DISCOVERY.get(request.domain)
     if not key:
         return None
@@ -80,7 +122,7 @@ def read_expanded_url(url, max_chars=20_000):
     recognized access failure is terminal here, never a reason to bypass it.
     """
     selected = next(((key, adapter) for key, adapter in get_expanded_adapters().items()
-                     if adapter.can_handle(CandidateSource(url=url))), None)
+                     if key != 'cpsc_recalls' and adapter.can_handle(CandidateSource(url=url))), None)
     if selected is None:
         return None
     key, adapter = selected

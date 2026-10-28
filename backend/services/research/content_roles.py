@@ -8,7 +8,7 @@ from urllib.parse import urlsplit
 
 NON_EVENT_ROLES = {"AUTHOR_BIO", "NAVIGATION", "SOURCE_METADATA", "CMS_METADATA", "ASSET_METADATA", "LEGAL_DISCLOSURE", "LEGAL_NOTICE", "DOCUMENT_INDEX", "NEWS_INDEX", "LANDING_PAGE", "PROFILE"}
 NON_EVENT_ROLES.add("BACKGROUND_REFERENCE")
-NON_EVENT_ROLES.update({"QUESTION_PROMPT", "INSTRUCTIONAL_PROMPT"})
+NON_EVENT_ROLES.update({"QUESTION_PROMPT", "INSTRUCTIONAL_PROMPT", "TRANSCRIPT_INTRODUCTION"})
 OBJECTIVE_TERMS = {
     "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator|appoint|chief.executive|\bCEO\b|executive.chair|leadership.transition|board.of.directors",
     "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|\bclone\b|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
@@ -41,6 +41,8 @@ def local_prose_predicate(text):
 
 def paragraph_role(text):
     lower = text.casefold().strip()
+    if re.match(r"^(?:here is|following is|below is|this is)\s+(?:the\s+)?full transcript\b", lower):
+        return "TRANSCRIPT_INTRODUCTION"
     # An interrogative/quiz prompt is not an assertion, even when it contains a
     # target, financial numbers or words such as "declined". Do not reject a
     # reported quotation, an incident report containing a question, or a full

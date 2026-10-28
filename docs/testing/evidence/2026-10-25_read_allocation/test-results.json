@@ -1,0 +1,176 @@
+{
+  "closeout_date": "2026-10-26",
+  "final_python_and_lint": [
+    {
+      "name": "focused-release",
+      "exit_code": 0,
+      "seconds": 12.78,
+      "tail": [
+        "============================= 18 passed in 6.30s =============================="
+      ]
+    },
+    {
+      "name": "full-release",
+      "exit_code": 0,
+      "seconds": 129.09,
+      "tail": [
+        "====================== 2574 passed in 119.76s (0:01:59) ======================="
+      ]
+    },
+    {
+      "name": "fast-release",
+      "exit_code": 0,
+      "seconds": 112.26,
+      "tail": [
+        "====================== 2366 passed in 103.67s (0:01:43) ======================="
+      ]
+    },
+    {
+      "name": "lint-release",
+      "exit_code": 0,
+      "seconds": 5.01,
+      "tail": [
+        "0"
+      ]
+    }
+  ],
+  "preceding_validation": [
+    {
+      "name": "focused-closeout",
+      "exit_code": 0,
+      "seconds": 29.03,
+      "tail": [
+        "============================= 57 passed in 19.96s ============================="
+      ]
+    },
+    {
+      "name": "full-closeout",
+      "exit_code": 0,
+      "seconds": 127.76,
+      "tail": [
+        "====================== 2573 passed in 120.34s (0:02:00) ======================="
+      ]
+    },
+    {
+      "name": "fast-closeout",
+      "exit_code": 0,
+      "seconds": 108.22,
+      "tail": [
+        "====================== 2365 passed in 101.13s (0:01:41) ======================="
+      ]
+    },
+    {
+      "name": "lint-closeout",
+      "exit_code": 0,
+      "seconds": 5.13,
+      "tail": [
+        "0"
+      ]
+    },
+    {
+      "name": "smoke-closeout",
+      "exit_code": 0,
+      "seconds": 10.51,
+      "tail": [
+        "}"
+      ]
+    },
+    {
+      "name": "rollback-closeout",
+      "exit_code": 0,
+      "seconds": 12.56,
+      "tail": [
+        "}"
+      ]
+    },
+    {
+      "name": "frozen-closeout",
+      "exit_code": 0,
+      "seconds": 0.14,
+      "tail": [
+        "Frozen benchmark content hashes verified"
+      ]
+    },
+    {
+      "name": "node-closeout-test_agent_research_client",
+      "exit_code": 0,
+      "seconds": 0.23,
+      "tail": [
+        "AGENT RESEARCH CLIENT CONTRACTS PASSED"
+      ]
+    },
+    {
+      "name": "node-closeout-test_agent_ui_truth",
+      "exit_code": 0,
+      "seconds": 0.16,
+      "tail": [
+        "AGENT UI TRUTH CONTRACTS PASSED"
+      ]
+    },
+    {
+      "name": "node-closeout-test_claim_ui_truth",
+      "exit_code": 0,
+      "seconds": 0.2,
+      "tail": [
+        "CLAIM UI TRUTH CONTRACTS PASSED"
+      ]
+    },
+    {
+      "name": "node-closeout-test_cloudflare_api_routing",
+      "exit_code": 0,
+      "seconds": 0.09,
+      "tail": [
+        "CLOUDFLARE DIRECT API AND LEDGER EMPTY STATES PASSED"
+      ]
+    },
+    {
+      "name": "node-closeout-test_evidence_workbench",
+      "exit_code": 0,
+      "seconds": 0.1,
+      "tail": [
+        "EVIDENCE WORKBENCH PASSED"
+      ]
+    },
+    {
+      "name": "node-closeout-test_forensic_explorer_truth",
+      "exit_code": 0,
+      "seconds": 0.08,
+      "tail": [
+        "FORENSIC EXPLORER TRUTH CONTRACTS PASSED"
+      ]
+    },
+    {
+      "name": "node-closeout-test_operation_health",
+      "exit_code": 0,
+      "seconds": 0.19,
+      "tail": [
+        "ALL FRONTEND OPERATION HEALTH TESTS PASSED (8/8)!"
+      ]
+    },
+    {
+      "name": "node-closeout-test_phase8e_frontend_intelligence",
+      "exit_code": 0,
+      "seconds": 0.14,
+      "tail": [
+        "ALL PHASE 8E FRONTEND INTELLIGENCE TESTS PASSED!"
+      ]
+    },
+    {
+      "name": "node-closeout-test_security_and_health_regressions",
+      "exit_code": 0,
+      "seconds": 0.38,
+      "tail": [
+        "FRONTEND SECURITY AND HEALTH REGRESSIONS PASSED"
+      ]
+    },
+    {
+      "name": "node-closeout-test_unified_report_renderer",
+      "exit_code": 0,
+      "seconds": 0.17,
+      "tail": [
+        "UNIFIED REPORT RENDERER PASSED"
+      ]
+    }
+  ],
+  "scope_note": "Preceding checks predate final generic article-feedback regression. Frontend unchanged. Isolated persistence does not verify historical archive or deployed rollback."
+}

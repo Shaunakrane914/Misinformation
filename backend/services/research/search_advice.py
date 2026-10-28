@@ -40,7 +40,7 @@ def expand_with_advice(request, candidates, service, timeout, *, capture_feedbac
                                  for row in capture_feedback if not row.get("usable_passage")})[:4]
             context += "; acquired-source gaps: " + ", ".join(categories)
         advice = source_planning_engine._get_llm_suggestions(
-            context, request.target[:200], request.domain, request.agent_name)
+            context, request.target[:200], request.domain, request.agent_name, allowed_channels={"news", "web"})
         actions, rejected = source_planning_engine._validate_llm_actions(advice.actions[:1], request.target, {"news", "web"})
         trace.update(status="SUGGESTED", rejected=rejected, query_count=len(actions))
         if not actions or timeout - (time.monotonic() - started) <= 0:

@@ -1,0 +1,4727 @@
+{
+  "mode": "OFFLINE_PLANNER_ABLATION",
+  "network_calls": 0,
+  "model_calls": 0,
+  "baseline_planner_sha256": "6a2be75e449fe5ee461744b3f0a90f836981340bd167a6c997fdb514513cfcc4",
+  "cases_sha256": "f70901a4af269305519a531175164b3fb9f8c8d66c5726ae045f1d1da4f95ec7",
+  "routing_matrix": [
+    {
+      "case": "bollywood",
+      "before": {
+        "intent": "trend_discovery",
+        "context": {},
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_37e9b47aa0",
+            "query_class": "primary_discovery",
+            "query_text": "Bollywood actor Kavya Rao film announcement official source",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_16b5416a18",
+            "query_class": "contradiction_probe",
+            "query_text": "Kavya Rao debunked false rumor Bollywood actor Kavya Rao film announcement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_ca68939e3b",
+            "query_class": "independent_reporting",
+            "query_text": "Bollywood actor Kavya Rao film announcement latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_10f41e2bb8",
+            "query_class": "trend_signal",
+            "query_text": "Bollywood actor Kavya Rao film announcement",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "trend_discovery",
+        "context": {
+          "subject": "Kavya Rao",
+          "agent": "trending",
+          "tasks": [
+            "TOPIC_DISCOVERY"
+          ],
+          "topics": [
+            "bollywood",
+            "film"
+          ],
+          "subject_type": "person",
+          "aliases": [],
+          "jurisdiction": "IN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "bollywood": 0.8,
+            "film": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_fcc70e0012",
+            "query_class": "topic_source_discovery",
+            "query_text": "Bollywood actor Kavya Rao film announcement site:globalvoices.org",
+            "operation": "search",
+            "source_family": "global_voices"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_37e9b47aa0",
+            "query_class": "primary_discovery",
+            "query_text": "Bollywood actor Kavya Rao film announcement official source",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_16b5416a18",
+            "query_class": "contradiction_probe",
+            "query_text": "Kavya Rao debunked false rumor Bollywood actor Kavya Rao film announcement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_ca68939e3b",
+            "query_class": "independent_reporting",
+            "query_text": "Bollywood actor Kavya Rao film announcement latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_10f41e2bb8",
+            "query_class": "trend_signal",
+            "query_text": "Bollywood actor Kavya Rao film announcement",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [
+          "global_voices"
+        ],
+        "source_decisions": [
+          {
+            "source_family": "bollywood_hungama",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 11,
+            "matched_topics": [
+              "bollywood",
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "global_voices",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": true,
+            "status": "UNVERIFIED",
+            "review_basis": "SERVER_REVIEW_APPROVED",
+            "channel_decision": "ELIGIBLE_UNVERIFIED",
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 11,
+            "matched_topics": [
+              "bollywood",
+              "film"
+            ],
+            "selection": "SELECTED"
+          },
+          {
+            "source_family": "yrf",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 11,
+            "matched_topics": [
+              "bollywood",
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "filmfare",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 7,
+            "matched_topics": [
+              "bollywood",
+              "interviews"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "hindustan_times",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "bollywood"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "indian_express",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "bollywood"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "live_hindustan",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "bollywood"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "ndtv",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "bollywood"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "deadline",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "variety",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "youtube",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "interviews"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "bollywood",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "regional_entertainment",
+      "before": {
+        "intent": "identity_attribution",
+        "context": {},
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_0141db97c8",
+            "query_class": "quotation_verification",
+            "query_text": "\"Vela Raman\" statement interview transcript",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_60c0fdc15e",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Vela Raman\" statement interview",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_c6ecc49ecc",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Vela Raman\" speech remarks announcement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_3abed41017",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Vela Raman\" statement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_89fdb44bd1",
+            "query_class": "identity_corroboration",
+            "query_text": "Tamil cinema actor Vela Raman public statement",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_69dc7dd8c5",
+            "query_class": "verified_profile",
+            "query_text": "Vela Raman",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "identity_attribution",
+        "context": {
+          "subject": "Vela Raman",
+          "agent": "personal_watch",
+          "tasks": [
+            "PUBLIC_STATEMENT"
+          ],
+          "topics": [
+            "regional_cinema",
+            "film"
+          ],
+          "subject_type": "person",
+          "aliases": [],
+          "jurisdiction": "IN",
+          "language": "ta",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "regional_cinema": 0.8,
+            "film": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_0141db97c8",
+            "query_class": "quotation_verification",
+            "query_text": "\"Vela Raman\" statement interview transcript",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_01430185ee",
+            "query_class": "topic_source_discovery",
+            "query_text": "Tamil cinema actor Vela Raman public statement statement interview site:globalvoices.org",
+            "operation": "search",
+            "source_family": "global_voices"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_60c0fdc15e",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Vela Raman\" statement interview",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_3abed41017",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Vela Raman\" statement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_89fdb44bd1",
+            "query_class": "identity_corroboration",
+            "query_text": "Tamil cinema actor Vela Raman public statement",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_69dc7dd8c5",
+            "query_class": "verified_profile",
+            "query_text": "Vela Raman",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [
+          "global_voices"
+        ],
+        "source_decisions": [
+          {
+            "source_family": "global_voices",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": true,
+            "status": "UNVERIFIED",
+            "review_basis": "SERVER_REVIEW_APPROVED",
+            "channel_decision": "ELIGIBLE_UNVERIFIED",
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 12,
+            "matched_topics": [
+              "film",
+              "regional_cinema"
+            ],
+            "selection": "SELECTED"
+          },
+          {
+            "source_family": "filmfare",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 7,
+            "matched_topics": [
+              "interviews",
+              "regional_cinema"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "bollywood_hungama",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "indian_express",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "regional_cinema"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "yrf",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "deadline",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "variety",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "film"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "live_hindustan",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 2,
+            "matched_topics": [
+              "hindi"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "youtube",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "interviews"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "regional_cinema",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "cricket",
+      "before": {
+        "intent": "identity_attribution",
+        "context": {},
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_ce7d5fbeae",
+            "query_class": "quotation_verification",
+            "query_text": "\"Aarav Malik\" statement interview transcript",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_963a2f6eff",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Aarav Malik\" statement interview",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_8e76fbe2ec",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Aarav Malik\" speech remarks announcement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_a721d32513",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Aarav Malik\" statement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_7a48ebc393",
+            "query_class": "identity_corroboration",
+            "query_text": "Cricketer Aarav Malik public statement",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_78405b51ef",
+            "query_class": "verified_profile",
+            "query_text": "Aarav Malik",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "identity_attribution",
+        "context": {
+          "subject": "Aarav Malik",
+          "agent": "personal_watch",
+          "tasks": [
+            "PUBLIC_STATEMENT"
+          ],
+          "topics": [
+            "cricket"
+          ],
+          "subject_type": "person",
+          "aliases": [],
+          "jurisdiction": "UNKNOWN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [
+            "JURISDICTION_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "cricket": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_ce7d5fbeae",
+            "query_class": "quotation_verification",
+            "query_text": "\"Aarav Malik\" statement interview transcript",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_b882c59880",
+            "query_class": "topic_source_discovery",
+            "query_text": "Cricketer Aarav Malik public statement statement interview site:globalvoices.org",
+            "operation": "search",
+            "source_family": "global_voices"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_963a2f6eff",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Aarav Malik\" statement interview",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_a721d32513",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Aarav Malik\" statement",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_7a48ebc393",
+            "query_class": "identity_corroboration",
+            "query_text": "Cricketer Aarav Malik public statement",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_78405b51ef",
+            "query_class": "verified_profile",
+            "query_text": "Aarav Malik",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [
+          "global_voices"
+        ],
+        "source_decisions": [
+          {
+            "source_family": "bcci",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "cricket",
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "global_voices",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": true,
+            "status": "UNVERIFIED",
+            "review_basis": "SERVER_REVIEW_APPROVED",
+            "channel_decision": "ELIGIBLE_UNVERIFIED",
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "cricket",
+              "sports"
+            ],
+            "selection": "SELECTED"
+          },
+          {
+            "source_family": "icc",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "cricket",
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "business_standard",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "hindustan_times",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "indian_express",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "live_hindustan",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "ndtv",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "youtube",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "sports"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "cricket",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "politics",
+      "before": {
+        "intent": "trend_discovery",
+        "context": {},
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_6d4f5b17db",
+            "query_class": "primary_discovery",
+            "query_text": "Indian election parliament policy debate official source",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_98414209f2",
+            "query_class": "contradiction_probe",
+            "query_text": "Indian electoral policy debunked false rumor Indian election parliament policy debate",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_ffc78fef09",
+            "query_class": "independent_reporting",
+            "query_text": "Indian election parliament policy debate latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_3b7860b7a9",
+            "query_class": "trend_signal",
+            "query_text": "Indian election parliament policy debate",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "trend_discovery",
+        "context": {
+          "subject": "Indian electoral policy",
+          "agent": "trending",
+          "tasks": [
+            "TOPIC_DISCOVERY"
+          ],
+          "topics": [
+            "politics",
+            "elections"
+          ],
+          "subject_type": "topic",
+          "aliases": [],
+          "jurisdiction": "IN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "politics": 0.8,
+            "elections": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_ab5c684099",
+            "query_class": "topic_source_discovery",
+            "query_text": "Indian election parliament policy debate site:gov.uk",
+            "operation": "search",
+            "source_family": "govuk"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_40cfb3224d",
+            "query_class": "topic_source_discovery",
+            "query_text": "Indian election parliament policy debate site:globalvoices.org",
+            "operation": "search",
+            "source_family": "global_voices"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_6d4f5b17db",
+            "query_class": "primary_discovery",
+            "query_text": "Indian election parliament policy debate official source",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_ffc78fef09",
+            "query_class": "independent_reporting",
+            "query_text": "Indian election parliament policy debate latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_3b7860b7a9",
+            "query_class": "trend_signal",
+            "query_text": "Indian election parliament policy debate",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [
+          "global_voices",
+          "govuk"
+        ],
+        "source_decisions": [
+          {
+            "source_family": "eci",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 11,
+            "matched_topics": [
+              "elections",
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "global_voices",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": true,
+            "status": "UNVERIFIED",
+            "review_basis": "SERVER_REVIEW_APPROVED",
+            "channel_decision": "ELIGIBLE_UNVERIFIED",
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 11,
+            "matched_topics": [
+              "elections",
+              "politics"
+            ],
+            "selection": "SELECTED"
+          },
+          {
+            "source_family": "pib",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 7,
+            "matched_topics": [
+              "politics",
+              "public_policy"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "prs",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 7,
+            "matched_topics": [
+              "politics",
+              "public_policy"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "business_standard",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "hindustan_times",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "indian_express",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "ndtv",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "full_fact",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "guardian",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "govuk",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": true,
+            "status": "UNVERIFIED",
+            "review_basis": "SERVER_REVIEW_APPROVED",
+            "channel_decision": "ELIGIBLE_UNVERIFIED",
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "public_policy"
+            ],
+            "selection": "SELECTED"
+          },
+          {
+            "source_family": "who",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "public_policy"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "elections",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "semiconductors",
+      "before": {
+        "intent": "technical_product",
+        "context": {},
+        "actions": [
+          {
+            "channel": "arxiv",
+            "query_id": "spa_f7416666d4",
+            "query_class": "scientific_preprint",
+            "query_text": "semiconductor manufacturing",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_643aa22586",
+            "query_class": "official_product",
+            "query_text": "semiconductor manufacturing capacity research product announcement",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_c48915a401",
+            "query_class": "contradiction_probe",
+            "query_text": "semiconductor manufacturing rumor debunked false announcement semiconductor manufacturing capacity research",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_d1680e33af",
+            "query_class": "specialist_reporting",
+            "query_text": "semiconductor manufacturing capacity research hardware reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_2e693207cc",
+            "query_class": "trend_signal",
+            "query_text": "semiconductor manufacturing capacity research",
+            "operation": "search"
+          },
+          {
+            "channel": "youtube",
+            "query_id": "spa_51a898ed47",
+            "query_class": "technical_video",
+            "query_text": "semiconductor manufacturing capacity research technical analysis",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "technical_product",
+        "context": {
+          "subject": "semiconductor manufacturing",
+          "agent": "trending",
+          "tasks": [
+            "TOPIC_DISCOVERY"
+          ],
+          "topics": [
+            "semiconductors",
+            "research"
+          ],
+          "subject_type": "topic",
+          "aliases": [],
+          "jurisdiction": "UNKNOWN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [
+            "JURISDICTION_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "semiconductors": 0.8,
+            "research": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "arxiv",
+            "query_id": "spa_f7416666d4",
+            "query_class": "scientific_preprint",
+            "query_text": "semiconductor manufacturing",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_643aa22586",
+            "query_class": "official_product",
+            "query_text": "semiconductor manufacturing capacity research product announcement",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_c48915a401",
+            "query_class": "contradiction_probe",
+            "query_text": "semiconductor manufacturing rumor debunked false announcement semiconductor manufacturing capacity research",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_d1680e33af",
+            "query_class": "specialist_reporting",
+            "query_text": "semiconductor manufacturing capacity research hardware reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_2e693207cc",
+            "query_class": "trend_signal",
+            "query_text": "semiconductor manufacturing capacity research",
+            "operation": "search"
+          },
+          {
+            "channel": "youtube",
+            "query_id": "spa_51a898ed47",
+            "query_class": "technical_video",
+            "query_text": "semiconductor manufacturing capacity research technical analysis",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [
+          {
+            "source_family": "mit_news",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 7,
+            "matched_topics": [
+              "materials",
+              "research",
+              "technology"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "nist_news",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 7,
+            "matched_topics": [
+              "manufacturing",
+              "semiconductors",
+              "technology"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "nsf",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "research",
+              "technology"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "the_register",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "semiconductors",
+              "technology"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "crossref",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "research"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "europe_pmc",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "research"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "economic_times",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "technology"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "mint",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "technology"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "techcrunch",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "technology"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "semiconductors",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "financial_company",
+      "before": {
+        "intent": "financial_integrity",
+        "context": {},
+        "actions": [
+          {
+            "channel": "sec_edgar",
+            "query_id": "spa_c2f26c2c83",
+            "query_class": "regulatory_filing",
+            "query_text": "Northstar Company",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_862ec1aac9",
+            "query_class": "regulatory_filing",
+            "query_text": "Northstar Company quarterly revenue quarterly results filing SEC",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_e6ceed714e",
+            "query_class": "contradiction_probe",
+            "query_text": "Northstar Company denied rumor false report Northstar Company quarterly revenue",
+            "operation": "search"
+          },
+          {
+            "channel": "rss",
+            "query_id": "spa_a18f9da589",
+            "query_class": "official_disclosure",
+            "query_text": "Northstar Company quarterly revenue results press release",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_27c03c99de",
+            "query_class": "financial_reporting",
+            "query_text": "Northstar Company quarterly revenue financial report",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "financial_integrity",
+        "context": {
+          "subject": "Northstar Company",
+          "agent": "scout",
+          "tasks": [
+            "FINANCIAL_VERIFICATION"
+          ],
+          "topics": [
+            "finance"
+          ],
+          "subject_type": "company",
+          "aliases": [],
+          "jurisdiction": "UNKNOWN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [
+            "JURISDICTION_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "finance": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "sec_edgar",
+            "query_id": "spa_c2f26c2c83",
+            "query_class": "regulatory_filing",
+            "query_text": "Northstar Company",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_862ec1aac9",
+            "query_class": "regulatory_filing",
+            "query_text": "Northstar Company quarterly revenue quarterly results filing SEC",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_e6ceed714e",
+            "query_class": "contradiction_probe",
+            "query_text": "Northstar Company denied rumor false report Northstar Company quarterly revenue",
+            "operation": "search"
+          },
+          {
+            "channel": "rss",
+            "query_id": "spa_a18f9da589",
+            "query_class": "official_disclosure",
+            "query_text": "Northstar Company quarterly revenue results press release",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_27c03c99de",
+            "query_class": "financial_reporting",
+            "query_text": "Northstar Company quarterly revenue financial report",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [
+          {
+            "source_family": "rbi",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 7,
+            "matched_topics": [
+              "banking",
+              "finance",
+              "regulation"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "bse",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "filings",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "business_standard",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "business",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "economic_times",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "business",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "hkex",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "filings",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "mint",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "business",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "moneycontrol_hindi",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "business",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "nse",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "filings",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "sebi",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "finance",
+              "regulation"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "sec",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "filings",
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "apple_newsroom",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "fca",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "federal_reserve",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "finance"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "companies_house",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "filings"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "guardian",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "business"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "indian_express",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "business"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "ndtv",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "business"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "pib",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "business"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "finance",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "brand_risk",
+      "before": {
+        "intent": "general_verification",
+        "context": {},
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_a8c8bdac8d",
+            "query_class": "primary_discovery",
+            "query_text": "Oriole fake celebrity advertisement Bollywood official source",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_099e8a361d",
+            "query_class": "contradiction_probe",
+            "query_text": "Oriole debunked false rumor Oriole fake celebrity advertisement Bollywood",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_82a9f112ef",
+            "query_class": "brand_risk",
+            "query_text": "Oriole impersonation scam counterfeit complaint",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_bb9a9a7e01",
+            "query_class": "independent_reporting",
+            "query_text": "Oriole fake celebrity advertisement Bollywood latest independent reporting",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "general_verification",
+        "context": {
+          "subject": "Oriole",
+          "agent": "brandshield",
+          "tasks": [
+            "BRAND_RISK",
+            "ENDORSEMENT_CLAIM"
+          ],
+          "topics": [
+            "bollywood",
+            "scams"
+          ],
+          "subject_type": "unknown",
+          "aliases": [],
+          "jurisdiction": "IN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [
+            "SUBJECT_TYPE_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "bollywood": 0.8,
+            "scams": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_a8c8bdac8d",
+            "query_class": "primary_discovery",
+            "query_text": "Oriole fake celebrity advertisement Bollywood official source",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_099e8a361d",
+            "query_class": "contradiction_probe",
+            "query_text": "Oriole debunked false rumor Oriole fake celebrity advertisement Bollywood",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_82a9f112ef",
+            "query_class": "brand_risk",
+            "query_text": "Oriole impersonation scam counterfeit complaint",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_bb9a9a7e01",
+            "query_class": "independent_reporting",
+            "query_text": "Oriole fake celebrity advertisement Bollywood latest independent reporting",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [
+          {
+            "source_family": "ftc",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 17,
+            "matched_topics": [
+              "consumer_protection",
+              "enforcement",
+              "scams"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "doj",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 13,
+            "matched_topics": [
+              "enforcement",
+              "fraud",
+              "impersonation"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "boom",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 12,
+            "matched_topics": [
+              "fact_checks"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "sebi",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 12,
+            "matched_topics": [
+              "enforcement"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "afp_factcheck",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 11,
+            "matched_topics": [
+              "fact_checks"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "sec",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 11,
+            "matched_topics": [
+              "enforcement"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "indian_express",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "bollywood"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "scamwatch",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "impersonation",
+              "scams"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "reddit",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "scams"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "fca",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "impersonation"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "scams",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "public_figure_quote",
+      "before": {
+        "intent": "identity_attribution",
+        "context": {},
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_99a3436c7d",
+            "query_class": "quotation_verification",
+            "query_text": "\"Elena Iqbal\" statement interview transcript",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_b0f4e99866",
+            "query_class": "contradiction_probe",
+            "query_text": "Elena Iqbal denies false quote fabricated statement",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_9d150ff20d",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Elena Iqbal\" statement interview",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_a3420ebb27",
+            "query_class": "identity_corroboration",
+            "query_text": "Politician Elena Iqbal false quote",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_896a9e0b3b",
+            "query_class": "verified_profile",
+            "query_text": "Elena Iqbal",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "identity_attribution",
+        "context": {
+          "subject": "Elena Iqbal",
+          "agent": "personal_watch",
+          "tasks": [
+            "QUOTE_VERIFICATION"
+          ],
+          "topics": [
+            "politics",
+            "false_quotes"
+          ],
+          "subject_type": "person",
+          "aliases": [],
+          "jurisdiction": "UNKNOWN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.8,
+          "ambiguity": [
+            "JURISDICTION_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {
+            "politics": 0.8,
+            "false_quotes": 0.8
+          }
+        },
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_99a3436c7d",
+            "query_class": "quotation_verification",
+            "query_text": "\"Elena Iqbal\" statement interview transcript",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_b0f4e99866",
+            "query_class": "contradiction_probe",
+            "query_text": "Elena Iqbal denies false quote fabricated statement",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_83882107ce",
+            "query_class": "topic_source_discovery",
+            "query_text": "Politician Elena Iqbal false quote false quote original statement site:gov.uk",
+            "operation": "search",
+            "source_family": "govuk"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_a3420ebb27",
+            "query_class": "identity_corroboration",
+            "query_text": "Politician Elena Iqbal false quote",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_896a9e0b3b",
+            "query_class": "verified_profile",
+            "query_text": "Elena Iqbal",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [
+          "govuk"
+        ],
+        "source_decisions": [
+          {
+            "source_family": "full_fact",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 21,
+            "matched_topics": [
+              "fact_checks",
+              "false_quotes",
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "global_voices",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": true,
+            "status": "UNVERIFIED",
+            "review_basis": "SERVER_REVIEW_APPROVED",
+            "channel_decision": "ELIGIBLE_UNVERIFIED",
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 21,
+            "matched_topics": [
+              "elections",
+              "false_quotes",
+              "politics"
+            ],
+            "selection": "SELECTED"
+          },
+          {
+            "source_family": "afp_factcheck",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 17,
+            "matched_topics": [
+              "fact_checks",
+              "false_quotes",
+              "synthetic_media"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "boom",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 17,
+            "matched_topics": [
+              "fact_checks",
+              "false_quotes",
+              "synthetic_media"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "eci",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "elections",
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "pib",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "EXISTING_ROUTE_POLICY",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "politics",
+              "public_policy"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "prs",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 6,
+            "matched_topics": [
+              "politics",
+              "public_policy"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "business_standard",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "guardian",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "hindustan_times",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "indian_express",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "ndtv",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 5,
+            "matched_topics": [
+              "politics"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "federal_reserve",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "public_policy"
+            ],
+            "selection": "NOT_SELECTED"
+          },
+          {
+            "source_family": "govuk",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": true,
+            "status": "UNVERIFIED",
+            "review_basis": "SERVER_REVIEW_APPROVED",
+            "channel_decision": "ELIGIBLE_UNVERIFIED",
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "public_policy"
+            ],
+            "selection": "SELECTED"
+          },
+          {
+            "source_family": "who",
+            "scope": "discovery",
+            "capability": "DISCOVERY_ONLY",
+            "eligible_for_bounded_probe": false,
+            "status": "PERMISSION_REQUIRED",
+            "review_basis": "VERSIONED_PUBLIC_LICENCE_REVIEW",
+            "channel_decision": null,
+            "runtime_availability": "UNVERIFIED",
+            "runtime_observation": {},
+            "network_calls": 0,
+            "score": 1,
+            "matched_topics": [
+              "public_policy"
+            ],
+            "selection": "NOT_SELECTED"
+          }
+        ],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": "false_quotes",
+      "topic_calibration_match": true
+    },
+    {
+      "case": "ambiguous_name",
+      "before": {
+        "intent": "trend_discovery",
+        "context": {},
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_365438775d",
+            "query_class": "primary_discovery",
+            "query_text": "Asha Vale official source",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_9a3d4e6c7f",
+            "query_class": "independent_reporting",
+            "query_text": "Asha Vale latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_974ddcc62e",
+            "query_class": "trend_signal",
+            "query_text": "Asha Vale",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "trend_discovery",
+        "context": {
+          "subject": "Asha Vale",
+          "agent": "trending",
+          "tasks": [
+            "TOPIC_DISCOVERY"
+          ],
+          "topics": [],
+          "subject_type": "unknown",
+          "aliases": [],
+          "jurisdiction": "UNKNOWN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.0,
+          "ambiguity": [
+            "TOPIC_UNRESOLVED_NEUTRAL_DISCOVERY_REQUIRED",
+            "SUBJECT_TYPE_UNRESOLVED",
+            "JURISDICTION_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {}
+        },
+        "actions": [
+          {
+            "channel": "web",
+            "query_id": "spa_365438775d",
+            "query_class": "primary_discovery",
+            "query_text": "Asha Vale official source",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_9a3d4e6c7f",
+            "query_class": "independent_reporting",
+            "query_text": "Asha Vale latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_974ddcc62e",
+            "query_class": "trend_signal",
+            "query_text": "Asha Vale",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": null,
+      "topic_calibration_match": true
+    },
+    {
+      "case": "name_collision",
+      "before": {
+        "intent": "general_verification",
+        "context": {},
+        "actions": [
+          {
+            "channel": "news",
+            "query_id": "spa_6a022c35c9",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Recall Labs\" counterfeit",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_f5025d8297",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Recall Labs\" phishing",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_5d5a27d794",
+            "query_class": "independent_reporting",
+            "query_text": "Recall Labs latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_b94c692494",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Recall Labs\" impersonation",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_aabe8f557c",
+            "query_class": "brand_risk",
+            "query_text": "\"Recall Labs\" counterfeit",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_ef8a4d0b0e",
+            "query_class": "primary_discovery",
+            "query_text": "Recall Labs official source",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "general_verification",
+        "context": {
+          "subject": "Recall Labs",
+          "agent": "brandshield",
+          "tasks": [
+            "BRAND_RISK"
+          ],
+          "topics": [],
+          "subject_type": "unknown",
+          "aliases": [],
+          "jurisdiction": "UNKNOWN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.0,
+          "ambiguity": [
+            "TOPIC_UNRESOLVED_NEUTRAL_DISCOVERY_REQUIRED",
+            "SUBJECT_TYPE_UNRESOLVED",
+            "JURISDICTION_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {}
+        },
+        "actions": [
+          {
+            "channel": "news",
+            "query_id": "spa_6a022c35c9",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Recall Labs\" counterfeit",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_f5025d8297",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Recall Labs\" phishing",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_5d5a27d794",
+            "query_class": "independent_reporting",
+            "query_text": "Recall Labs latest independent reporting",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_b94c692494",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Recall Labs\" impersonation",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_aabe8f557c",
+            "query_class": "brand_risk",
+            "query_text": "\"Recall Labs\" counterfeit",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_ef8a4d0b0e",
+            "query_class": "primary_discovery",
+            "query_text": "Recall Labs official source",
+            "operation": "search"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": null,
+      "topic_calibration_match": true
+    },
+    {
+      "case": "no_evidence",
+      "before": {
+        "intent": "identity_attribution",
+        "context": {},
+        "actions": [
+          {
+            "channel": "news",
+            "query_id": "spa_58ec1b67fc",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Unresolved Subject\" deepfake",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_5f1d859e4c",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Unresolved Subject\" impersonation",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_64eac0acb4",
+            "query_class": "identity_corroboration",
+            "query_text": "\"Unresolved Subject\" (impersonation OR deepfake OR scam)",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_3b81269ce4",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Unresolved Subject\" statement interview",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_e55b37d007",
+            "query_class": "synthetic_media_reporting",
+            "query_text": "\"Unresolved Subject\" deepfake",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_a90c239ffe",
+            "query_class": "personal_watch",
+            "query_text": "\"Unresolved Subject\" impersonation scam",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_e2d781f0e5",
+            "query_class": "verified_profile",
+            "query_text": "Unresolved Subject",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "after": {
+        "intent": "identity_attribution",
+        "context": {
+          "subject": "Unresolved Subject",
+          "agent": "personal_watch",
+          "tasks": [
+            "IDENTITY_THREAT"
+          ],
+          "topics": [],
+          "subject_type": "unknown",
+          "aliases": [],
+          "jurisdiction": "UNKNOWN",
+          "language": "und",
+          "time_window": "unspecified",
+          "confidence": 0.0,
+          "ambiguity": [
+            "TOPIC_UNRESOLVED_NEUTRAL_DISCOVERY_REQUIRED",
+            "SUBJECT_TYPE_UNRESOLVED",
+            "JURISDICTION_UNRESOLVED"
+          ],
+          "basis": "DETERMINISTIC_REQUEST_CUES",
+          "topic_scores": {}
+        },
+        "actions": [
+          {
+            "channel": "news",
+            "query_id": "spa_58ec1b67fc",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Unresolved Subject\" deepfake",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_5f1d859e4c",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Unresolved Subject\" impersonation",
+            "operation": "search"
+          },
+          {
+            "channel": "news",
+            "query_id": "spa_64eac0acb4",
+            "query_class": "identity_corroboration",
+            "query_text": "\"Unresolved Subject\" (impersonation OR deepfake OR scam)",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_3b81269ce4",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Unresolved Subject\" statement interview",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_e55b37d007",
+            "query_class": "synthetic_media_reporting",
+            "query_text": "\"Unresolved Subject\" deepfake",
+            "operation": "search"
+          },
+          {
+            "channel": "web",
+            "query_id": "spa_a90c239ffe",
+            "query_class": "personal_watch",
+            "query_text": "\"Unresolved Subject\" impersonation scam",
+            "operation": "search"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "spa_e2d781f0e5",
+            "query_class": "verified_profile",
+            "query_text": "Unresolved Subject",
+            "operation": "profile"
+          }
+        ],
+        "selected_families": [],
+        "source_decisions": [],
+        "native_body_quality": "NOT_MEASURED_BY_ROUTING_CALIBRATION"
+      },
+      "expected_topic": null,
+      "topic_calibration_match": true
+    }
+  ],
+  "saved_input_hashes": {
+    "01-trending.json": "35e5f2169bd75786977893beef755d75a99949319b779dac83c6999c485639bb",
+    "02-trending.json": "99a9d963d151c23bf1508e407dc6b9f7463c943dd2a6111db09511c3e43f89ab",
+    "03-personal_watch.json": "1872ca83cf635413b3b7579a01f5f20743875ce32d44c22566653e590d0192c2",
+    "04-personal_watch.json": "c1e774faab24f522319c5b6691f946ddcd99ae15b172b3a6c915e5bd20673253"
+  },
+  "saved_world_replays": [
+    {
+      "id": "genuine-saved-01-trending-previous_planner/pipelined:r2:d1",
+      "agent": "trending",
+      "input": "Battery Recycling",
+      "research_target": "Battery Recycling",
+      "planner_version": "previous_planner",
+      "reconstructed_claim_from_recorded_command": "battery recycling",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T17:56:30.953936+00:00",
+        "qualified_source_records": 1,
+        "qualified_passages": 1,
+        "relevant_passage_words_before_dedup": 100,
+        "relevant_passage_words_unique": 100,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 2,
+        "all_passages_words_unique": 185,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 1,
+        "publisher_groups": {
+          "bioengineer.org": 1
+        },
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {
+          "NOT_ACQUIRED_AS_BODY": 23
+        },
+        "passages": [
+          {
+            "url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+            "words": 100,
+            "start": 3315,
+            "end": 4088,
+            "text_sha256": "cc3a560047ccd6bdd3c6c8464f9e7ac26afa9cc6301bb2084e1e4c8e47ece06d",
+            "text": "The third area covers battery recycling and failure diagnostics. The institute states that this research evaluates practical recycling processes and post-mortem protocols that can improve material recovery, produce more consistent failure data and support battery-lifecycle decisions. Research scientist Devashish Salpekar will present \u201cMulti-Use of Salt Solutions in the Recycling of Lithium-Ion Cylindrical and Pouch Cells,\u201d describing the reuse of salt solutions across recycling of cylindrical and pouch cell formats. Research scientist Frederick Gray will present \u201cImpact of Electrode Washing Protocols on Post-Mortem Diagnostics for Lithium-Ion Battery Failure Analysis,\u201d addressing how electrode washing procedures affect the quality of post-mortem failure analysis."
+          }
+        ]
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 44.3,
+        "nominal_total_seconds_ESTIMATE": 51.9,
+        "counts": {
+          "searches_unobserved": 5,
+          "ESTIMATED_UNKNOWN_QUERY_COST": 18,
+          "admissions_charged": 45,
+          "searches_replayed": 7,
+          "RECORDED_NOT_STARTED": 1,
+          "reads_replayed": 4,
+          "observed_links_restored": 22,
+          "reads_unobserved": 4
+        },
+        "continuations_regenerated_by_engine_not_served": 24,
+        "unobserved_read_urls": [
+          "https://bioengineer.org/advancing-safer-metal-recycling-technologies-in-the-battery-industry/",
+          "https://bioengineer.org/new-challenges-and-trends-shape-automotive-battery-recycling-efforts/",
+          "https://bioengineer.org/rice-researchers-develop-innovative-battery-recycling-method/",
+          "https://bioengineer.org/electrochemical-recycling-transforms-lithium-battery-cathodes/"
+        ],
+        "unobserved_queries": [
+          [
+            "news",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26"
+          ],
+          [
+            "web",
+            "battery recycling official source"
+          ],
+          [
+            "news",
+            "battery recycling latest independent reporting"
+          ],
+          [
+            "web",
+            "battery recycling official source (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)"
+          ],
+          [
+            "web",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.com OR site:apnews.com OR site:b"
+          ]
+        ],
+        "query_log": [
+          [
+            "news",
+            "harvest_recent",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26",
+            false
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Battery Recycling recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "primary_discovery",
+            "battery recycling official source",
+            false
+          ],
+          [
+            "news",
+            "independent_reporting",
+            "battery recycling latest independent reporting",
+            false
+          ],
+          [
+            "web",
+            "primary_discovery",
+            "battery recycling official source (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)",
+            false
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26 (site:nature.com OR site:sciencedaily.com O",
+            true
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.com OR site:",
+            false
+          ],
+          [
+            "rss",
+            "harvest_recent",
+            "Battery Recycling recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_industry",
+            "Battery Recycling industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_industry",
+            "Battery Recycling industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_industry",
+            "Battery Recycling industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_institution",
+            "Battery Recycling institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_institution",
+            "Battery Recycling institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_institution",
+            "Battery Recycling institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "gdelt|Battery Recycling",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:bioengineer.org Battery safety, sodium-ion and recycling research head to ECS meeting",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 96.8,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 0.5,
+          "wall_seconds_measured": 1.565,
+          "peak_threads": 23,
+          "cpu_fraction_of_one_core": 0.319,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 5.0,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "NO_FURTHER_USEFUL_WORK",
+          "reads_started": 9,
+          "reads_completed": 9,
+          "queries_dispatched": 18,
+          "queries_planned": 18,
+          "max_inflight_reads": 1,
+          "read_worker_utilization": 0.208,
+          "counters": {
+            "idle_no_selectable_candidate": 1,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 0
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {
+          "HOST_READ_BUDGET_EXHAUSTED": 15
+        }
+      }
+    },
+    {
+      "id": "genuine-saved-01-trending-topic_planner/pipelined:r2:d1",
+      "agent": "trending",
+      "input": "Battery Recycling",
+      "research_target": "Battery Recycling",
+      "planner_version": "topic_planner",
+      "reconstructed_claim_from_recorded_command": "battery recycling",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T17:56:30.953936+00:00",
+        "qualified_source_records": 1,
+        "qualified_passages": 1,
+        "relevant_passage_words_before_dedup": 100,
+        "relevant_passage_words_unique": 100,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 2,
+        "all_passages_words_unique": 185,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 1,
+        "publisher_groups": {
+          "bioengineer.org": 1
+        },
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {
+          "NOT_ACQUIRED_AS_BODY": 23
+        },
+        "passages": [
+          {
+            "url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+            "words": 100,
+            "start": 3315,
+            "end": 4088,
+            "text_sha256": "cc3a560047ccd6bdd3c6c8464f9e7ac26afa9cc6301bb2084e1e4c8e47ece06d",
+            "text": "The third area covers battery recycling and failure diagnostics. The institute states that this research evaluates practical recycling processes and post-mortem protocols that can improve material recovery, produce more consistent failure data and support battery-lifecycle decisions. Research scientist Devashish Salpekar will present \u201cMulti-Use of Salt Solutions in the Recycling of Lithium-Ion Cylindrical and Pouch Cells,\u201d describing the reuse of salt solutions across recycling of cylindrical and pouch cell formats. Research scientist Frederick Gray will present \u201cImpact of Electrode Washing Protocols on Post-Mortem Diagnostics for Lithium-Ion Battery Failure Analysis,\u201d addressing how electrode washing procedures affect the quality of post-mortem failure analysis."
+          }
+        ]
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 41.7,
+        "nominal_total_seconds_ESTIMATE": 48.7,
+        "counts": {
+          "searches_unobserved": 5,
+          "ESTIMATED_UNKNOWN_QUERY_COST": 18,
+          "admissions_charged": 45,
+          "searches_replayed": 7,
+          "RECORDED_NOT_STARTED": 1,
+          "reads_replayed": 4,
+          "observed_links_restored": 22,
+          "reads_unobserved": 4
+        },
+        "continuations_regenerated_by_engine_not_served": 24,
+        "unobserved_read_urls": [
+          "https://bioengineer.org/advancing-safer-metal-recycling-technologies-in-the-battery-industry/",
+          "https://bioengineer.org/new-challenges-and-trends-shape-automotive-battery-recycling-efforts/",
+          "https://bioengineer.org/rice-researchers-develop-innovative-battery-recycling-method/",
+          "https://bioengineer.org/electrochemical-recycling-transforms-lithium-battery-cathodes/"
+        ],
+        "unobserved_queries": [
+          [
+            "news",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26"
+          ],
+          [
+            "web",
+            "battery recycling official source"
+          ],
+          [
+            "news",
+            "battery recycling latest independent reporting"
+          ],
+          [
+            "web",
+            "battery recycling official source (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)"
+          ],
+          [
+            "web",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.com OR site:apnews.com OR site:b"
+          ]
+        ],
+        "query_log": [
+          [
+            "news",
+            "harvest_recent",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26",
+            false
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Battery Recycling recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "primary_discovery",
+            "battery recycling official source",
+            false
+          ],
+          [
+            "news",
+            "independent_reporting",
+            "battery recycling latest independent reporting",
+            false
+          ],
+          [
+            "web",
+            "primary_discovery",
+            "battery recycling official source (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)",
+            false
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26 (site:nature.com OR site:sciencedaily.com O",
+            true
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Battery Recycling general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.com OR site:",
+            false
+          ],
+          [
+            "rss",
+            "harvest_recent",
+            "Battery Recycling recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_research",
+            "Battery Recycling research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_industry",
+            "Battery Recycling industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_industry",
+            "Battery Recycling industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_industry",
+            "Battery Recycling industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_institution",
+            "Battery Recycling institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_institution",
+            "Battery Recycling institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_institution",
+            "Battery Recycling institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "gdelt|Battery Recycling",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:bioengineer.org Battery safety, sodium-ion and recycling research head to ECS meeting",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 97.3,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 0.469,
+          "wall_seconds_measured": 1.465,
+          "peak_threads": 23,
+          "cpu_fraction_of_one_core": 0.32,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 4.7,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "NO_FURTHER_USEFUL_WORK",
+          "reads_started": 9,
+          "reads_completed": 9,
+          "queries_dispatched": 18,
+          "queries_planned": 18,
+          "max_inflight_reads": 1,
+          "read_worker_utilization": 0.201,
+          "counters": {
+            "idle_no_selectable_candidate": 1,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 0
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {
+          "HOST_READ_BUDGET_EXHAUSTED": 15
+        }
+      }
+    },
+    {
+      "id": "genuine-saved-02-trending-previous_planner/pipelined:r2:d1",
+      "agent": "trending",
+      "input": "Semiconductor Manufacturing",
+      "research_target": "Semiconductor Manufacturing",
+      "planner_version": "previous_planner",
+      "reconstructed_claim_from_recorded_command": "semiconductor manufacturing",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T17:57:23.293986+00:00",
+        "qualified_source_records": 0,
+        "qualified_passages": 0,
+        "relevant_passage_words_before_dedup": 0,
+        "relevant_passage_words_unique": 0,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 0,
+        "all_passages_words_unique": 0,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 0,
+        "publisher_groups": {},
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {},
+        "passages": []
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 34.2,
+        "nominal_total_seconds_ESTIMATE": 34.7,
+        "counts": {
+          "searches_unobserved": 5,
+          "ESTIMATED_UNKNOWN_QUERY_COST": 17,
+          "admissions_charged": 32,
+          "searches_replayed": 6,
+          "RECORDED_NOT_STARTED": 1
+        },
+        "continuations_regenerated_by_engine_not_served": 18,
+        "unobserved_read_urls": [],
+        "unobserved_queries": [
+          [
+            "news",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26"
+          ],
+          [
+            "web",
+            "Semiconductor Manufacturing product announcement"
+          ],
+          [
+            "news",
+            "semiconductor manufacturing hardware reporting"
+          ],
+          [
+            "web",
+            "Semiconductor Manufacturing product announcement (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)"
+          ],
+          [
+            "web",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.com OR site:apnews.com"
+          ]
+        ],
+        "query_log": [
+          [
+            "news",
+            "harvest_recent",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26",
+            false
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Semiconductor Manufacturing recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "official_product",
+            "Semiconductor Manufacturing product announcement",
+            false
+          ],
+          [
+            "news",
+            "specialist_reporting",
+            "semiconductor manufacturing hardware reporting",
+            false
+          ],
+          [
+            "youtube",
+            "technical_video",
+            "semiconductor manufacturing technical analysis",
+            true
+          ],
+          [
+            "web",
+            "official_product",
+            "Semiconductor Manufacturing product announcement (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)",
+            false
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26 (site:nature.com OR site:scienced",
+            true
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.co",
+            false
+          ],
+          [
+            "rss",
+            "harvest_recent",
+            "Semiconductor Manufacturing recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_industry",
+            "Semiconductor Manufacturing industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_industry",
+            "Semiconductor Manufacturing industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_industry",
+            "Semiconductor Manufacturing industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_institution",
+            "Semiconductor Manufacturing institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_institution",
+            "Semiconductor Manufacturing institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "gdelt|Semiconductor Manufacturing",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 102.0,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 0.094,
+          "wall_seconds_measured": 1.045,
+          "peak_threads": 21,
+          "cpu_fraction_of_one_core": 0.09,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 0.9,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "NO_FURTHER_USEFUL_WORK",
+          "reads_started": 0,
+          "reads_completed": 0,
+          "queries_dispatched": 18,
+          "queries_planned": 18,
+          "max_inflight_reads": 0,
+          "read_worker_utilization": 0.0,
+          "counters": {
+            "idle_no_selectable_candidate": 1,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 0
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {}
+      }
+    },
+    {
+      "id": "genuine-saved-02-trending-topic_planner/pipelined:r2:d1",
+      "agent": "trending",
+      "input": "Semiconductor Manufacturing",
+      "research_target": "Semiconductor Manufacturing",
+      "planner_version": "topic_planner",
+      "reconstructed_claim_from_recorded_command": "semiconductor manufacturing",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T17:57:23.293986+00:00",
+        "qualified_source_records": 0,
+        "qualified_passages": 0,
+        "relevant_passage_words_before_dedup": 0,
+        "relevant_passage_words_unique": 0,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 0,
+        "all_passages_words_unique": 0,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 0,
+        "publisher_groups": {},
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {},
+        "passages": []
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 33.9,
+        "nominal_total_seconds_ESTIMATE": 34.4,
+        "counts": {
+          "searches_unobserved": 5,
+          "ESTIMATED_UNKNOWN_QUERY_COST": 17,
+          "admissions_charged": 32,
+          "searches_replayed": 6,
+          "RECORDED_NOT_STARTED": 1
+        },
+        "continuations_regenerated_by_engine_not_served": 18,
+        "unobserved_read_urls": [],
+        "unobserved_queries": [
+          [
+            "news",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26"
+          ],
+          [
+            "web",
+            "Semiconductor Manufacturing product announcement"
+          ],
+          [
+            "news",
+            "semiconductor manufacturing hardware reporting"
+          ],
+          [
+            "web",
+            "Semiconductor Manufacturing product announcement (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)"
+          ],
+          [
+            "web",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.com OR site:apnews.com"
+          ]
+        ],
+        "query_log": [
+          [
+            "news",
+            "harvest_recent",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26",
+            false
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Semiconductor Manufacturing recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "official_product",
+            "Semiconductor Manufacturing product announcement",
+            false
+          ],
+          [
+            "news",
+            "specialist_reporting",
+            "semiconductor manufacturing hardware reporting",
+            false
+          ],
+          [
+            "youtube",
+            "technical_video",
+            "semiconductor manufacturing technical analysis",
+            true
+          ],
+          [
+            "web",
+            "official_product",
+            "Semiconductor Manufacturing product announcement (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)",
+            false
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26 (site:nature.com OR site:scienced",
+            true
+          ],
+          [
+            "web",
+            "harvest_recent",
+            "Semiconductor Manufacturing general intelligence acquisition when:2d after:2026-10-23 before:2026-10-26 (site:reuters.co",
+            false
+          ],
+          [
+            "rss",
+            "harvest_recent",
+            "Semiconductor Manufacturing recent developments when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_research",
+            "Semiconductor Manufacturing research update when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_industry",
+            "Semiconductor Manufacturing industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_industry",
+            "Semiconductor Manufacturing industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "rss",
+            "harvest_industry",
+            "Semiconductor Manufacturing industry announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "news",
+            "harvest_institution",
+            "Semiconductor Manufacturing institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "web",
+            "harvest_institution",
+            "Semiconductor Manufacturing institution announcement when:2d after:2026-10-23 before:2026-10-26",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "gdelt|Semiconductor Manufacturing",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 102.0,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 0.281,
+          "wall_seconds_measured": 1.037,
+          "peak_threads": 21,
+          "cpu_fraction_of_one_core": 0.271,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 2.8,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "NO_FURTHER_USEFUL_WORK",
+          "reads_started": 0,
+          "reads_completed": 0,
+          "queries_dispatched": 18,
+          "queries_planned": 18,
+          "max_inflight_reads": 0,
+          "read_worker_utilization": 0.0,
+          "counters": {
+            "idle_no_selectable_candidate": 1,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 0
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {}
+      }
+    },
+    {
+      "id": "genuine-saved-03-personal_watch-previous_planner/pipelined:r2:d1",
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "research_target": "Mary Barra",
+      "planner_version": "previous_planner",
+      "reconstructed_claim_from_recorded_command": "Mary Barra public statement",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T17:59:06.307546+00:00",
+        "qualified_source_records": 0,
+        "qualified_passages": 0,
+        "relevant_passage_words_before_dedup": 0,
+        "relevant_passage_words_unique": 0,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 0,
+        "all_passages_words_unique": 0,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 0,
+        "publisher_groups": {},
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {
+          "NOT_ACQUIRED_AS_BODY": 32
+        },
+        "passages": []
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 105.8,
+        "nominal_total_seconds_ESTIMATE": 131.4,
+        "counts": {
+          "ESTIMATED_UNKNOWN_QUERY_COST": 18,
+          "admissions_charged": 47,
+          "searches_replayed": 11,
+          "RECORDED_NOT_STARTED": 1,
+          "reads_replayed": 11,
+          "observed_links_restored": 10,
+          "reads_unobserved": 1
+        },
+        "continuations_regenerated_by_engine_not_served": 20,
+        "unobserved_read_urls": [
+          "https://www.dailymail.com"
+        ],
+        "unobserved_queries": [],
+        "query_log": [
+          [
+            "news",
+            "harvest_original",
+            "Mary Barra original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_original",
+            "Mary Barra original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Mary Barra\" statement interview transcript",
+            true
+          ],
+          [
+            "news",
+            "public_statement_discovery",
+            "\"Mary Barra\" statement",
+            true
+          ],
+          [
+            "web",
+            "public_statement_discovery",
+            "\"Mary Barra\" statement interview",
+            true
+          ],
+          [
+            "news",
+            "identity_corroboration",
+            "Mary Barra public statement",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:www.wxyz.com GM CEO Mary Barra issues statement after President Trump disbands council",
+            true
+          ],
+          [
+            "web",
+            "public_statement_discovery",
+            "\"Mary Barra\" speech remarks announcement",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Mary Barra\" statement interview transcript (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:www.facebook.com GM CEO Mary Barra, who briefly served as Harry J. Pearce\u2019s executive assistant, said in an emailed",
+            true
+          ],
+          [
+            "rss",
+            "harvest_original",
+            "Mary Barra original statement transcript",
+            true
+          ],
+          [
+            "news",
+            "harvest_interview",
+            "Mary Barra interview quotation source",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "Matt Lauer Responds to Criticism Over \u2018Sexist\u2019 Interview With GM Chief Mary Barra",
+            true
+          ],
+          [
+            "web",
+            "harvest_interview",
+            "Mary Barra interview quotation source",
+            true
+          ],
+          [
+            "rss",
+            "harvest_interview",
+            "Mary Barra interview quotation source",
+            true
+          ],
+          [
+            "news",
+            "harvest_public",
+            "Mary Barra public speech transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_public",
+            "Mary Barra public speech transcript",
+            true
+          ],
+          [
+            "rss",
+            "harvest_public",
+            "Mary Barra public speech transcript",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "substack|Mary Barra",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 104.1,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 1.875,
+          "wall_seconds_measured": 3.949,
+          "peak_threads": 25,
+          "cpu_fraction_of_one_core": 0.475,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 18.8,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "NO_FURTHER_USEFUL_WORK",
+          "reads_started": 16,
+          "reads_completed": 16,
+          "queries_dispatched": 16,
+          "queries_planned": 16,
+          "max_inflight_reads": 2,
+          "read_worker_utilization": 0.413,
+          "counters": {
+            "reads_held_for_better_supply": 10,
+            "idle_no_selectable_candidate": 3,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 0
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 12,
+          "PERMISSION_REQUIRED": 1,
+          "HOST_READ_BUDGET_EXHAUSTED": 3
+        }
+      }
+    },
+    {
+      "id": "genuine-saved-03-personal_watch-topic_planner/pipelined:r2:d1",
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "research_target": "Mary Barra",
+      "planner_version": "topic_planner",
+      "reconstructed_claim_from_recorded_command": "Mary Barra public statement",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T17:59:06.307546+00:00",
+        "qualified_source_records": 0,
+        "qualified_passages": 0,
+        "relevant_passage_words_before_dedup": 0,
+        "relevant_passage_words_unique": 0,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 0,
+        "all_passages_words_unique": 0,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 0,
+        "publisher_groups": {},
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {
+          "NOT_ACQUIRED_AS_BODY": 28
+        },
+        "passages": []
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 103.5,
+        "nominal_total_seconds_ESTIMATE": 126.1,
+        "counts": {
+          "ESTIMATED_UNKNOWN_QUERY_COST": 18,
+          "admissions_charged": 47,
+          "searches_replayed": 10,
+          "searches_unobserved": 1,
+          "RECORDED_NOT_STARTED": 1,
+          "reads_replayed": 11,
+          "observed_links_restored": 10,
+          "reads_unobserved": 1
+        },
+        "continuations_regenerated_by_engine_not_served": 20,
+        "unobserved_read_urls": [
+          "https://www.dailymail.com"
+        ],
+        "unobserved_queries": [
+          [
+            "web",
+            "Mary Barra public statement statement interview site:globalvoices.org"
+          ]
+        ],
+        "query_log": [
+          [
+            "news",
+            "harvest_original",
+            "Mary Barra original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_original",
+            "Mary Barra original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Mary Barra\" statement interview transcript",
+            true
+          ],
+          [
+            "news",
+            "public_statement_discovery",
+            "\"Mary Barra\" statement",
+            true
+          ],
+          [
+            "web",
+            "topic_source_discovery",
+            "Mary Barra public statement statement interview site:globalvoices.org",
+            false
+          ],
+          [
+            "news",
+            "identity_corroboration",
+            "Mary Barra public statement",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:www.wxyz.com GM CEO Mary Barra issues statement after President Trump disbands council",
+            true
+          ],
+          [
+            "web",
+            "public_statement_discovery",
+            "\"Mary Barra\" speech remarks announcement",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Mary Barra\" statement interview transcript (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+            true
+          ],
+          [
+            "rss",
+            "harvest_original",
+            "Mary Barra original statement transcript",
+            true
+          ],
+          [
+            "news",
+            "harvest_interview",
+            "Mary Barra interview quotation source",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:www.facebook.com GM CEO Mary Barra, who briefly served as Harry J. Pearce\u2019s executive assistant, said in an emailed",
+            true
+          ],
+          [
+            "web",
+            "harvest_interview",
+            "Mary Barra interview quotation source",
+            true
+          ],
+          [
+            "rss",
+            "harvest_interview",
+            "Mary Barra interview quotation source",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "Matt Lauer Responds to Criticism Over \u2018Sexist\u2019 Interview With GM Chief Mary Barra",
+            true
+          ],
+          [
+            "news",
+            "harvest_public",
+            "Mary Barra public speech transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_public",
+            "Mary Barra public speech transcript",
+            true
+          ],
+          [
+            "rss",
+            "harvest_public",
+            "Mary Barra public speech transcript",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "substack|Mary Barra",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 104.1,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 1.625,
+          "wall_seconds_measured": 3.789,
+          "peak_threads": 25,
+          "cpu_fraction_of_one_core": 0.429,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 16.2,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "NO_FURTHER_USEFUL_WORK",
+          "reads_started": 16,
+          "reads_completed": 16,
+          "queries_dispatched": 16,
+          "queries_planned": 16,
+          "max_inflight_reads": 2,
+          "read_worker_utilization": 0.422,
+          "counters": {
+            "reads_held_for_better_supply": 7,
+            "idle_no_selectable_candidate": 3,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 0
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 8,
+          "PERMISSION_REQUIRED": 1,
+          "HOST_READ_BUDGET_EXHAUSTED": 3
+        }
+      }
+    },
+    {
+      "id": "genuine-saved-04-personal_watch-previous_planner/pipelined:r2:d1",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "research_target": "Tim Cook",
+      "planner_version": "previous_planner",
+      "reconstructed_claim_from_recorded_command": "Tim Cook public statement",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T18:00:01.301317+00:00",
+        "qualified_source_records": 0,
+        "qualified_passages": 0,
+        "relevant_passage_words_before_dedup": 0,
+        "relevant_passage_words_unique": 0,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 0,
+        "all_passages_words_unique": 0,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 0,
+        "publisher_groups": {},
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {
+          "NOT_ACQUIRED_AS_BODY": 53,
+          "NO_EXACT_USABLE_PASSAGE": 5
+        },
+        "passages": []
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 196.1,
+        "nominal_total_seconds_ESTIMATE": 640.1,
+        "counts": {
+          "ESTIMATED_UNKNOWN_QUERY_COST": 19,
+          "admissions_charged": 56,
+          "searches_replayed": 13,
+          "reads_replayed": 16,
+          "observed_links_restored": 19
+        },
+        "continuations_regenerated_by_engine_not_served": 24,
+        "unobserved_read_urls": [],
+        "unobserved_queries": [],
+        "query_log": [
+          [
+            "news",
+            "harvest_original",
+            "Tim Cook original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_original",
+            "Tim Cook original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Tim Cook\" statement interview transcript",
+            true
+          ],
+          [
+            "news",
+            "public_statement_discovery",
+            "\"Tim Cook\" statement",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:time.com Apple CEO Tim Cook on FBI, Security, Privacy: Transcript",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:www.computerworld.com Complete transcript, video of Apple CEO Tim Cook\u2019s EU privacy speech",
+            true
+          ],
+          [
+            "web",
+            "public_statement_discovery",
+            "\"Tim Cook\" statement interview",
+            true
+          ],
+          [
+            "news",
+            "identity_corroboration",
+            "Tim Cook public statement",
+            true
+          ],
+          [
+            "web",
+            "public_statement_discovery",
+            "\"Tim Cook\" speech remarks announcement",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Tim Cook\" statement interview transcript (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:qz.com Full transcript: Tim Cook delivers MIT\u2019S 2017 commencement speech",
+            true
+          ],
+          [
+            "rss",
+            "harvest_original",
+            "Tim Cook original statement transcript",
+            true
+          ],
+          [
+            "news",
+            "harvest_interview",
+            "Tim Cook interview quotation source",
+            true
+          ],
+          [
+            "web",
+            "harvest_interview",
+            "Tim Cook interview quotation source",
+            true
+          ],
+          [
+            "rss",
+            "harvest_interview",
+            "Tim Cook interview quotation source",
+            true
+          ],
+          [
+            "news",
+            "harvest_public",
+            "Tim Cook public speech transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_public",
+            "Tim Cook public speech transcript",
+            true
+          ],
+          [
+            "rss",
+            "harvest_public",
+            "Tim Cook public speech transcript",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "substack|Tim Cook",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 115.4,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 17.438,
+          "wall_seconds_measured": 19.21,
+          "peak_threads": 25,
+          "cpu_fraction_of_one_core": 0.908,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 174.4,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "READ_DEADLINE_EXHAUSTED",
+          "reads_started": 19,
+          "reads_completed": 18,
+          "queries_dispatched": 16,
+          "queries_planned": 16,
+          "max_inflight_reads": 2,
+          "read_worker_utilization": 0.439,
+          "counters": {
+            "reads_held_for_better_supply": 15,
+            "idle_no_selectable_candidate": 1,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 1
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {
+          "READ_DEADLINE_EXHAUSTED": 39
+        }
+      }
+    },
+    {
+      "id": "genuine-saved-04-personal_watch-topic_planner/pipelined:r2:d1",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "research_target": "Tim Cook",
+      "planner_version": "topic_planner",
+      "reconstructed_claim_from_recorded_command": "Tim Cook public statement",
+      "DERIVED": {
+        "requalified_with": "current clause predicate",
+        "alias_rescue_used": false,
+        "reference_time": "2026-10-25T18:00:01.301317+00:00",
+        "qualified_source_records": 0,
+        "qualified_passages": 0,
+        "relevant_passage_words_before_dedup": 0,
+        "relevant_passage_words_unique": 0,
+        "duplicate_or_contained_passages_removed": 0,
+        "all_passages_count_unique": 0,
+        "all_passages_words_unique": 0,
+        "all_passages_scope": "Every bounded paragraph passing the same gates, one winner per source plus others; exact-text deduplicated",
+        "distinct_publisher_groups": 0,
+        "publisher_groups": {},
+        "publisher_group_scope": "Observed registrable-domain groups; ownership and independence are NOT established",
+        "rejection_causes": {
+          "NOT_ACQUIRED_AS_BODY": 53,
+          "NO_EXACT_USABLE_PASSAGE": 5
+        },
+        "passages": []
+      },
+      "REPLAY": {
+        "configuration": "pipelined:r2:d1",
+        "time_scale": 0.03,
+        "nominal_harvest_seconds_ESTIMATE": 199.5,
+        "nominal_total_seconds_ESTIMATE": 583.4,
+        "counts": {
+          "ESTIMATED_UNKNOWN_QUERY_COST": 19,
+          "admissions_charged": 56,
+          "searches_replayed": 13,
+          "reads_replayed": 16,
+          "observed_links_restored": 19
+        },
+        "continuations_regenerated_by_engine_not_served": 24,
+        "unobserved_read_urls": [],
+        "unobserved_queries": [],
+        "query_log": [
+          [
+            "news",
+            "harvest_original",
+            "Tim Cook original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_original",
+            "Tim Cook original statement transcript",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Tim Cook\" statement interview transcript",
+            true
+          ],
+          [
+            "news",
+            "public_statement_discovery",
+            "\"Tim Cook\" statement",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:time.com Apple CEO Tim Cook on FBI, Security, Privacy: Transcript",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:www.computerworld.com Complete transcript, video of Apple CEO Tim Cook\u2019s EU privacy speech",
+            true
+          ],
+          [
+            "web",
+            "public_statement_discovery",
+            "\"Tim Cook\" statement interview",
+            true
+          ],
+          [
+            "news",
+            "identity_corroboration",
+            "Tim Cook public statement",
+            true
+          ],
+          [
+            "web",
+            "public_statement_discovery",
+            "\"Tim Cook\" speech remarks announcement",
+            true
+          ],
+          [
+            "web",
+            "quotation_verification",
+            "\"Tim Cook\" statement interview transcript (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+            true
+          ],
+          [
+            "web",
+            "publisher_url_resolution",
+            "site:qz.com Full transcript: Tim Cook delivers MIT\u2019S 2017 commencement speech",
+            true
+          ],
+          [
+            "rss",
+            "harvest_original",
+            "Tim Cook original statement transcript",
+            true
+          ],
+          [
+            "news",
+            "harvest_interview",
+            "Tim Cook interview quotation source",
+            true
+          ],
+          [
+            "web",
+            "harvest_interview",
+            "Tim Cook interview quotation source",
+            true
+          ],
+          [
+            "rss",
+            "harvest_interview",
+            "Tim Cook interview quotation source",
+            true
+          ],
+          [
+            "news",
+            "harvest_public",
+            "Tim Cook public speech transcript",
+            true
+          ],
+          [
+            "web",
+            "harvest_public",
+            "Tim Cook public speech transcript",
+            true
+          ],
+          [
+            "rss",
+            "harvest_public",
+            "Tim Cook public speech transcript",
+            true
+          ],
+          [
+            "expanded_sources",
+            "expanded_discovery",
+            "substack|Tim Cook",
+            true
+          ]
+        ],
+        "resource": {
+          "peak_rss_mb": 115.8,
+          "memory_measurement_status": "AVAILABLE_SAMPLED",
+          "memory_unavailable_reason": null,
+          "process_cpu_seconds": 16.578,
+          "wall_seconds_measured": 17.508,
+          "peak_threads": 27,
+          "cpu_fraction_of_one_core": 0.947,
+          "sample_interval_seconds": 0.05,
+          "render_free_projection_ESTIMATE": {
+            "minimum_cpu_bound_seconds": 165.8,
+            "assumes": "0.1 CPU share; network waits add to, not replace, this floor",
+            "peak_rss_within_ram_limit": true
+          },
+          "scope": "Whole Python process during the measured block (sampled); not an isolated container measurement"
+        },
+        "controller": {
+          "mode": "pipelined_v1",
+          "stop_reason": "READ_DEADLINE_EXHAUSTED",
+          "reads_started": 19,
+          "reads_completed": 18,
+          "queries_dispatched": 16,
+          "queries_planned": 16,
+          "max_inflight_reads": 2,
+          "read_worker_utilization": 0.431,
+          "counters": {
+            "reads_held_for_better_supply": 14,
+            "idle_no_selectable_candidate": 1,
+            "cancelled_in_flight_searches": 0,
+            "cancelled_in_flight_reads": 1
+          },
+          "config": {
+            "read_workers": 2,
+            "discovery_workers": 1,
+            "queries_per_task": 2,
+            "min_queries": 6,
+            "selector": "ranked_v2",
+            "futility": true,
+            "supply_factor": 1.5,
+            "tick_seconds": 0.05
+          }
+        },
+        "unread_by_reason": {
+          "READ_DEADLINE_EXHAUSTED": 39
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Synthetic routing cases do not prove acquisition or accuracy.",
+    "Saved replays share current controller/permission policy; only planner version differs.",
+    "Unobserved search/read outcomes remain unknown; replay admissions/latency are modeled.",
+    "Eight-topic genuine body acceptance is not established by this routing matrix."
+  ]
+}

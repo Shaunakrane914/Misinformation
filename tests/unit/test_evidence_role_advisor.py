@@ -6,6 +6,28 @@ import pytest
 from backend.services.research.research_models import EvidenceItem, ResearchRequest
 
 
+@pytest.fixture(autouse=True)
+def synthetic_advisory_source_permission(monkeypatch):
+    """Explicit offline-double grant; no real publisher model rights implied."""
+    from datetime import datetime, timezone
+    import backend.services.research.source_registry as module
+    synthetic = {
+        'id': 'synthetic_advisory_example', 'hosts': ['example.org'],
+        'permission_status': 'UNVERIFIED', 'agents': [], 'topics': ['synthetic'],
+        'discovery': {'channel': 'web', 'operation': 'search'},
+        'body': {'channel': 'web', 'operation': 'read'},
+    }
+    grant = {
+        'decision': 'APPROVED', 'reviewed_at': '2026-10-26',
+        'expires_at': '2027-01-01T00:00:00Z',
+        'basis_url': 'https://example.org/synthetic-offline-test-policy',
+        'scopes': ['discovery', 'body', 'excerpt', 'model_processing'],
+    }
+    value = module.SourceRegistry(sources=[*module.definitions(), synthetic],
+        reviews={synthetic['id']: grant}, clock=lambda: datetime(2026, 10, 26, tzinfo=timezone.utc))
+    monkeypatch.setattr(module, 'source_registry', value)
+
+
 def evidence(text, **kwargs):
     return EvidenceItem(id="ev_sample", content=text, content_depth="PARTIAL_CONTENT",
                         canonical_url="https://example.org/article", **kwargs)

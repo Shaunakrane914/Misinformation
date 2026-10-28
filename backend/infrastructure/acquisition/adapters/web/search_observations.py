@@ -58,6 +58,26 @@ def result_fit(query, title, snippet, url, query_class=""):
             return 0.0, "INVALID_URL"
     except ValueError:
         return 0.0, "INVALID_URL"
+    # Providers can ignore a site operator and return an otherwise matching
+    # name/profile. Such results must not suppress bounded secondary discovery.
+    # Multiple positive scopes are alternatives; negative scopes exclude hosts.
+    scopes = re.findall(r'(?<![\w-])(-?site:)([^\s()]+)', str(query), re.I)
+    positive, negative = [], []
+    for operator, value in scopes:
+        try:
+            scope = urlsplit('https://' + value.rstrip(',;').removeprefix('*.'))
+            valid = bool(scope.hostname and not scope.username and not scope.password and not scope.port)
+        except ValueError:
+            valid = False
+        if not valid:
+            return 0.0, 'INVALID_SITE_SCOPE'
+        match = ((parsed.hostname or '').casefold().rstrip('.') == scope.hostname.casefold().rstrip('.')
+                 or (parsed.hostname or '').casefold().rstrip('.').endswith('.' + scope.hostname.casefold().rstrip('.')))
+        if scope.path and scope.path != '/':
+            match = match and (parsed.path == scope.path.rstrip('/') or parsed.path.startswith(scope.path.rstrip('/') + '/'))
+        (negative if operator.startswith('-') else positive).append(match)
+    if any(negative) or (positive and not any(positive)):
+        return 0.0, 'SITE_SCOPE_MISMATCH'
     if query_class == "publisher_url_resolution":
         # A perfectly matching opaque feed wrapper still does not resolve an
         # article. Otherwise it suppresses the next bounded search provider,

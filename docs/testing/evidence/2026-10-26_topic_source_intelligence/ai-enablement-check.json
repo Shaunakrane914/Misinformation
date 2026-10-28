@@ -1,0 +1,34 @@
+{
+  "mode": "SINGLE_LIVE_ADVISORY_CHECK",
+  "source_acquisition_calls": 0,
+  "model": "gemini-3.5-flash-lite",
+  "maximum_generation_attempts": 1,
+  "output_token_cap": 48,
+  "admission": {
+    "status": "ENABLED",
+    "model": "gemini-3.5-flash-lite",
+    "reason": "STRICT_DAILY_RUNTIME_SCOPE",
+    "capability_cached": false,
+    "capability_http_status": 200,
+    "calls_reserved": 0,
+    "daily_request_cap": 3
+  },
+  "suggestion_valid_json": true,
+  "status": "GENERATED",
+  "generation_reservations": 1,
+  "observations": [
+    {
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "search_suggestion",
+      "http_status": 200,
+      "status": "GENERATED",
+      "latency_ms": 931.23,
+      "investigation_id": "enable-check-20261026",
+      "provider_model": "gemini-3.5-flash-lite",
+      "usage_source": "provider",
+      "prompt_tokens": 22,
+      "completion_tokens": 18,
+      "total_tokens": 40
+    }
+  ]
+}

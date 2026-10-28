@@ -66,6 +66,8 @@ class QueryPlanningStage:
             domain=request.domain,
             agent=request.agent_name,
             use_llm=False,
+            routing_hints={**request.extra_params, 'time_scope': request.time_scope},
+            allowed_channels=request.extra_params.get('allowed_channels'),
         )
         planned_queries = source_plan.to_channel_queries()
 

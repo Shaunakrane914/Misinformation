@@ -92,8 +92,13 @@ def safe_fetch(url, *, headers=None, timeout=5.0, max_bytes=1_000_000, **kwargs)
         headers["User-Agent"] = os.environ["SEC_USER_AGENT"].strip()
     if matches_host(url, ("arctic-shift.photon-reddit.com", "reddit.com")) and policy_status("reddit_deep"):
         raise PermissionError("POLICY_BLOCKED: Reddit access")
-    safe, _ = validate_url_safe(url)
+    safe, reason = validate_url_safe(url)
     if not safe:
+        from backend.infrastructure.acquisition.security.url_validator import validation_failure_kind
+        observations = _FETCH_OBSERVATIONS.get()
+        if observations is not None:
+            observations.append({'failure_type': validation_failure_kind(reason),
+                                 'stage': 'URL_VALIDATION', 'network_observed': False})
         raise PermissionError("URL_POLICY_REJECTED")
     # Initial-host access/config checks do not authorize another redirect host.
     # Fail before any follow-up transmission until adapters support per-hop
@@ -117,7 +122,10 @@ def safe_fetch(url, *, headers=None, timeout=5.0, max_bytes=1_000_000, **kwargs)
     except Exception as error:
         observations = _FETCH_OBSERVATIONS.get()
         if observations is not None:
-            observations.append({"failure_type": type(error).__name__})
+            from backend.infrastructure.acquisition.network.http import transport_failure_kind
+            observations.append({'failure_type': type(error).__name__,
+                                 'failure_kind': transport_failure_kind(error),
+                                 'network_observed': getattr(error, 'network_observed', False)})
         raise RuntimeError("Bounded adapter transport failed: " + type(error).__name__) from None
 
 

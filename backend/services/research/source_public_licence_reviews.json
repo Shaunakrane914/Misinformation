@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "reviews": {
+    "global_voices": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt"
+      ],
+      "reviewed_at": "2026-10-26",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://globalvoices.org/about/global-voices-attribution-policy/",
+      "licence_url": "https://creativecommons.org/licenses/by/3.0/",
+      "scope_note": "Text excerpts with author/source/licence attribution; contrary notices and third-party media excluded. Permission is not live-provider proof."
+    },
+    "govuk": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt"
+      ],
+      "reviewed_at": "2026-10-26",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://www.gov.uk/help/reuse-govuk-content",
+      "licence_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "scope_note": "Text excerpts with author/source/licence attribution; contrary notices and third-party media excluded. Permission is not live-provider proof."
+    },
+    "pib": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt"
+      ],
+      "reviewed_at": "2026-10-26",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://www.pib.gov.in/content/3622_2_CopyrightPolicy.aspx?lang=6&reg=17",
+      "conditions": [
+        "Exact attributed text, without misleading context.",
+        "Third-party content, logos, images, audio and video excluded.",
+        "Robots/access checks remain required; no independent-corroboration assertion."
+      ]
+    },
+    "yas": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt"
+      ],
+      "reviewed_at": "2026-10-26",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://yas.gov.in/en/copyright-policy",
+      "conditions": [
+        "Exact attributed text, without misleading context.",
+        "Third-party content, logos, images, audio and video excluded.",
+        "Robots/access checks remain required; no independent-corroboration assertion."
+      ]
+    },
+    "doj": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt",
+        "model_processing"
+      ],
+      "reviewed_at": "2026-10-26",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://www.justice.gov/legalpolicies",
+      "conditions": [
+        "Only versioned allowed host/path scopes and agency-authored text or specified recall JSON fields.",
+        "No third-party works, public comments, court filings, logos, photos, audio, video or contrary rights notices.",
+        "Attributed source assertions, not independently established truth. Normal SSRF, access, robots and shared budget controls remain.",
+        "External model processing allowed only for these scoped public-domain text fields; no general publisher AI grant."
+      ],
+      "scope_note": "Agency-authored OPA press text only. Court filings, FOIA, media, attachments and contrary rights notices excluded."
+    },
+    "ftc": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt",
+        "model_processing"
+      ],
+      "reviewed_at": "2026-10-26",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://www.ftc.gov/policy-notices/website-policy",
+      "conditions": [
+        "Only versioned allowed host/path scopes and agency-authored text or specified recall JSON fields.",
+        "No third-party works, public comments, court filings, logos, photos, audio, video or contrary rights notices.",
+        "Attributed source assertions, not independently established truth. Normal SSRF, access, robots and shared budget controls remain.",
+        "External model processing allowed only for these scoped public-domain text fields; no general publisher AI grant."
+      ],
+      "scope_note": "Agency-authored press text only. Public comments, filings, attachments, media and third-party notices excluded."
+    },
+    "cpsc": {
+      "decision": "APPROVED",
+      "scopes": [
+        "discovery",
+        "body",
+        "excerpt",
+        "model_processing"
+      ],
+      "reviewed_at": "2026-10-26",
+      "expires_at": "2027-01-01T00:00:00Z",
+      "basis_url": "https://catalog.data.gov/dataset/recalls-api",
+      "conditions": [
+        "Only versioned allowed host/path scopes and agency-authored text or specified recall JSON fields.",
+        "No third-party works, public comments, court filings, logos, photos, audio, video or contrary rights notices.",
+        "Attributed source assertions, not independently established truth. Normal SSRF, access, robots and shared budget controls remain.",
+        "External model processing allowed only for these scoped public-domain text fields; no general publisher AI grant."
+      ],
+      "scope_note": "Documented recall JSON fields only; no agency-wide webpage/media grant. Dataset catalogue search metadata declares public-domain terms; direct catalogue fetch returned 404."
+    }
+  }
+}

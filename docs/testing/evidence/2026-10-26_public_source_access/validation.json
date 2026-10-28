@@ -1,0 +1,78 @@
+{
+  "base_commit": "7ad13a59f86a78802e45685ecfd1fd4999a2e5ce",
+  "branch": "release/specialist-task-20261024",
+  "execution_mode": "OFFLINE_CLOSEOUT_WITH_SEPARATE_BOUNDED_NATIVE_SOURCE_CHECKS",
+  "checks": {
+    "full": {
+      "exit_code": 0,
+      "passed": 2746,
+      "seconds": 64.02
+    },
+    "fast": {
+      "exit_code": 0,
+      "passed": 2538,
+      "seconds": 55.35
+    },
+    "fatal_lint": {
+      "exit_code": 0,
+      "fatal_findings": 0
+    },
+    "frontend": {
+      "exit_code": 0,
+      "scripts": 10
+    },
+    "frozen": {
+      "exit_code": 0
+    },
+    "protected_git_diff": {
+      "exit_code": 0
+    },
+    "release_smoke": {
+      "exit_code": 0,
+      "verdict": "OFFLINE_SMOKE_PASS"
+    },
+    "original_archive": {
+      "exit_code": 1,
+      "verdict": "HISTORICAL_ARCHIVE_FAIL",
+      "counts": {
+        "VERIFIED": 11,
+        "LEGACY_UNSEALED": 2445,
+        "FAILED": 55
+      }
+    },
+    "isolated_persistence": {
+      "exit_code": 0,
+      "verdict": "OFFLINE_PERSISTENCE_PASS",
+      "historical_archive": "NOT_VERIFIED",
+      "deployed_rollback": "NOT_VERIFIED"
+    }
+  },
+  "model_calls": 0,
+  "native_http_admissions": 7,
+  "acquired_article_bodies": 0,
+  "recall_records": 0,
+  "published_evidence_words": 0,
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "offline_closeout_file_hashes": {
+    "backend/services/research/source_registry.py": "d3882a0e4bd65d84067d3b88e8d17cd71eab78b04db40857bee59e3a47e8819b",
+    "backend/services/research/source_registry_data.json": "2abe4dcec226945477ed694dc0305c611d158bb0f6eb09603115c01e456f69b7",
+    "backend/services/research/source_public_licence_reviews.json": "59b12f8cc1b3dfc55e3f63994837896521b4a7c6b26baec1ed5d730b2ccf39b0",
+    "backend/services/research/evidence_advisor.py": "e2e764dd3bd02c37583a1e0e8bcf78f5af08ed1ec42f42abaebd5b25f4a2b6be",
+    "backend/services/research/passage_extractor.py": "879b2fbd70dbe1a926d479d9dc00e0da6801c3e7afa45ccf4ba9320e613576ec",
+    "backend/infrastructure/acquisition/adapters/consumer/cpsc_recalls.py": "256cb8a3248d47d0b0f0c62c8844a6b74a83e04531d6b0d69e6bcee682e3562d",
+    "backend/infrastructure/acquisition/adapters/expanded_catalog.py": "316b7f4f7100c39b69279738218917b0e7f637d928847c76656cceb3a5b5f4c3",
+    "backend/infrastructure/acquisition/adapters/expansion_safety.py": "8630f1e71f22d2861151881c958fa5962be2977ad8d462756b6cb996971a0b42",
+    "backend/infrastructure/acquisition/adapters/web/jina.py": "72840af242ad6dc3735526c2230bcf3e8e9661e47cf73c8bf09e4319eef9cbd3",
+    "backend/infrastructure/acquisition/adapters/web/page_extraction.py": "6530c03b04b69377e1a9e4125014361fad774f2ee6042e9054b1907e3f81fd9e",
+    "backend/services/research/deep_reader.py": "b53ed61151c6ea22e34a340d79c1b981fcce9414739a985e7c08b089837cca5f",
+    "scripts/audits/probe_source_families.py": "5af9d1573e517a69bc14da82c8bdc4edb0ea64606fd3bb109b35176dff045d5b"
+  },
+  "limitations": [
+    "These hashes describe final offline validation bytes, not a reconstructed fingerprint of earlier live runs.",
+    "FTC feed words are discovery-only; zero research findings were generated in site checks.",
+    "Private publishers remain gated and automatic CPSC API-to-agent-report wiring is incomplete.",
+    "Original archive still fails; no production rollback or research-quality acceptance."
+  ]
+}

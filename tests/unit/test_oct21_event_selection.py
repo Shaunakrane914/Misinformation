@@ -12,6 +12,23 @@ from backend.services.research.trend_context import classify_source_context
 CAPTURE = json.loads((Path(__file__).parent / "fixtures/oct21_trending_captured_prefixes.json").read_text(encoding="utf-8"))
 
 
+@pytest.fixture(autouse=True)
+def synthetic_saved_prefix_permission(monkeypatch):
+    """Isolate saved-event predicates, not live access or publisher approval.
+
+    This injected test-only excerpt grant leaves the genuine capture unchanged;
+    production's unreviewed-publisher gate is tested separately.
+    """
+    from datetime import datetime, timezone
+    import backend.services.research.source_registry as module
+    value = module.SourceRegistry(reviews={'techcrunch': {
+        'decision': 'APPROVED', 'scopes': ['excerpt'],
+        'reviewed_at': '2026-10-26', 'expires_at': '2027-01-01T00:00:00Z',
+        'basis_url': 'https://fixture.example/synthetic-saved-prefix-control',
+    }}, clock=lambda: datetime(2026, 10, 26, tzinfo=timezone.utc))
+    monkeypatch.setattr(module, 'source_registry', value)
+
+
 @pytest.mark.parametrize("record", CAPTURE["records"][:2], ids=["observed-google-lead", "observed-aws-lead"])
 def test_genuine_simple_past_announcement_beats_keyword_rich_history(record):
     body = "\n\n".join(record["paragraphs"])
@@ -53,6 +70,19 @@ def test_primary_target_report_not_demoted_just_for_competition_vocabulary():
     result = classify_source_context("Aster faces pressure over delayed filings",
         "Aster faces mounting pressure to publish its delayed filings. A rival announced a product last week.", "Aster")
     assert result["classification"] == "PRIMARY_TOPIC"
+
+
+def test_unknown_compound_topic_challenges_are_not_corporate_competition():
+    result = classify_source_context('Eligibility rules for local elections',
+        'The report examines challenges in community election participation. '
+        'Residents can vote earlier than they can stand for office.', 'community election participation')
+    assert result['classification'] == 'PRIMARY_TOPIC'
+
+
+def test_unrelated_competition_sentence_does_not_demote_target_coverage():
+    result = classify_source_context('Research update about Aster',
+        'Aster published its complete study. Elsewhere, Rival challenges Cedar with a new product.', 'Aster')
+    assert result['classification'] == 'PRIMARY_TOPIC'
 
 
 def test_negated_announcement_qualification_is_not_removed():

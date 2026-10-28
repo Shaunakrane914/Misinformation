@@ -1,0 +1,17 @@
+{
+  "scope": "OFFLINE_COMBINED_SAVED_OBSERVED_LINKS_AND_PRIOR_GENUINE_BODY_NOT_LIVE_NOT_LATENCY_PROOF",
+  "supplemental_body_sha256": "692428c09035bbd570eebfd54ebaed464c4066585aec1c8e5859635fa4d90ccb",
+  "qualified": 1,
+  "selected_words": 100,
+  "sources": [
+    {
+      "url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+      "start": 3315,
+      "end": 4088,
+      "text_sha256": "cc3a560047ccd6bdd3c6c8464f9e7ac26afa9cc6301bb2084e1e4c8e47ece06d"
+    }
+  ],
+  "new_network_calls": 0,
+  "model_calls": 0,
+  "limitation": "Earlier genuine saved body supplied as an offline outcome for a link observed by the new live run; not a new live acquisition"
+}

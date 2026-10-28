@@ -1,0 +1,159 @@
+{
+ "schema_version": "raw-acquisition-pool-v1",
+ "investigation_id": "3837fda2611d4ba5ba03d51bba779e52",
+ "created_at": "2026-10-25T14:20:59.741338+00:00",
+ "limits": {
+  "max_bytes": 20000000,
+  "max_records": 300,
+  "max_source_bytes": 1000000
+ },
+ "sources": [
+  {
+   "source_id": "ev_hv_8e2c55b68e233fd73753",
+   "aliases": [],
+   "source_url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+   "canonical_url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+   "source_urls": [
+    "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/"
+   ],
+   "query_id": "",
+   "query_ids": [],
+   "publisher": "",
+   "publisher_host": "bioengineer.org",
+   "title": "Battery safety, sodium-ion and recycling research head to ECS meeting",
+   "source_type": "ARTICLE_BODY",
+   "published_at": "2026-10-24T15:38:21+01:00",
+   "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+   "acquired_at": "2026-10-25T14:20:59.818079+00:00",
+   "discovered_at": "2026-10-25T14:20:59.766322+00:00",
+   "raw_content_hash": "692428c09035bbd570eebfd54ebaed464c4066585aec1c8e5859635fa4d90ccb",
+   "readable_text": "Share on Facebook Share on Twitter Share on Linkedin Share on Reddit Share on Telegram\n\nResearchers from UL Research Institutes’ Electrochemical Safety Research Institute will present work on lithium-ion thermal-runaway mitigation, sodium-ion battery safety and emissions, and battery recycling diagnostics at the 250th Meeting of The Electrochemical Society, taking place Oct. 25-29 in Calgary, Canada. The institute’s team, including its vice president and executive director Chao-Yang Wang, vice president and distinguished scientific advisor Judy Jeevarajan, and several research scientists, will share studies aimed at challenges facing battery manufacturers, integrators and end users as electrification scales across vehicles and stationary storage.\n\n“Scaling electrification requires batteries that deliver not only higher performance but also predictable safety across their full lifecycle,” Wang said in the announcement. “At the ECS Meeting, our researchers will share data, methods, and insights that can help the industry evaluate emerging chemistries, reduce failure risk, and accelerate the development of safer, more reliable energy-storage systems.” The ECS Meeting convenes battery scientists, engineers, manufacturers and technology developers to exchange research with direct implications for cell design, testing, scale-up and commercialization, and the institute positions its work as relevant to cell manufacturers, energy storage system developers, automakers, hydrogen technology providers, safety engineers, policymakers, standards organizations and recyclers.\n\nThe first presentation area addresses thermal-runaway mitigation in high-energy lithium-ion batteries. According to the institute, these studies examine materials, designs and cell conditions that can reduce propagation risk while supporting higher energy density and faster charging for electric vehicle and stationary-storage applications. Wang will give an invited talk titled “Safety of Energy-Dense Lithium Batteries,” and Jeevarajan will deliver an invited presentation, “Materials and Designs Studied to Prevent Propagation of Thermal Runaway in Small Lithium-Ion Modules.” Lead research scientist Vallabha Rao Rikka will present “Rapid SEI Formation Enabled by Flame-Retardant Ionic Salts for Fast-Charging Ni-Rich NMC Lithium-Ion Cells,” covering work on the solid-electrolyte interphase formed with flame-retardant ionic salts in nickel-rich NMC cells designed for fast charging.\n\nThe second area focuses on sodium-ion battery safety and emissions characterization. As sodium-ion technology moves toward broader commercial use, the institute says this research provides data on cell and module behavior, thermal-runaway emissions and the influence of state of charge, which it describes as key inputs for product design, testing and risk management. Jeevarajan will present “Safety of Commercial and Custom-Made Sodium-Ion Cells and Small Modules,” while Vinay Premnath, director of safety research, will present “Characterization of Particulate and Gaseous Emissions from Thermal Runaway of Sodium-Ion Cells.” Research scientist Avijit Karmakar will present “State-of-Charge Implications on Thermal Runaway of Sodium-Ion Cells and Modules,” examining how a cell’s charge state affects its thermal-runaway behavior.\n\nThe third area covers battery recycling and failure diagnostics. The institute states that this research evaluates practical recycling processes and post-mortem protocols that can improve material recovery, produce more consistent failure data and support battery-lifecycle decisions. Research scientist Devashish Salpekar will present “Multi-Use of Salt Solutions in the Recycling of Lithium-Ion Cylindrical and Pouch Cells,” describing the reuse of salt solutions across recycling of cylindrical and pouch cell formats. Research scientist Frederick Gray will present “Impact of Electrode Washing Protocols on Post-Mortem Diagnostics for Lithium-Ion Battery Failure Analysis,” addressing how electrode washing procedures affect the quality of post-mortem failure analysis.\n\nThe Electrochemical Safety Research Institute, part of UL Research Institutes, works on the science and engineering of electrochemical energy storage and conversion, combining first-principles science, advanced characterization, accelerated testing and system-level modeling to understand how energy technologies fail and to anticipate their limits. UL Research Institutes is a nonprofit research organization dedicated to advancing public safety through safety science, building on the UL legacy dating to 1894, conducting independent research across fire safety, electrochemical safety, chemical insights, materials discovery, digital safety, and research experiences and education, and publishing its findings openly to guide standards bodies, policymakers and communities. The presentations at the Calgary meeting are scheduled talks within the society’s technical program; the detailed data and findings behind each talk will be those presented by the researchers during the session itself.\n\nSubject of Research: Battery safety, sodium-ion characterization and recycling research presentations at the 250th Electrochemical Society Meeting\n\nArticle Title: UL Research Institutes to present battery safety, sodium-ion, and recycling research at the 250th Electrochemical Society Meeting\n\nArticle References: UL Research Institutes to present battery safety, sodium-ion, and recycling research at the 250th Electrochemical Society Meeting. Original publication (Bibliographic details unavailable.)\n\nImage Credits: AI Generated\n\nDOI: Not provided\n\nKeywords: battery safety, thermal runaway, lithium-ion, sodium-ion batteries, battery recycling, failure analysis, Electrochemical Society, UL Research Institutes, energy storage, electric vehicles, emissions characterization, post-mortem diagnostics\n\nNews Source: Faith Mcneil. (October 24, 2026). Battery safety, sodium-ion and recycling research head to ECS meeting. Scienmag.\n\nTags: battery recycling battery safety electric vehicles Electrochemical Society emissions characterization Energy storage failure analysis lithium-ion post-mortem diagnostics Sodium-ion batteries thermal runaway UL Research Institutes",
+   "raw_text": "Battery safety, sodium-ion and recycling research head to ECS meeting HOME NEWS EXPLORE CAREER Companies Jobs EVENTS iGEM News Team PHOTOS VIDEO WIKI BLOG COMMUNITY FACEBOOK INSTAGRAM TWITTER Saturday, October 24, 2026 No Result View All Result Login HOME NEWS EXPLORE CAREER Companies Jobs Lecturer PhD Studentship Postdoc Research Assistant EVENTS iGEM News Team PHOTOS VIDEO WIKI BLOG COMMUNITY FACEBOOK INSTAGRAM TWITTER HOME NEWS EXPLORE CAREER Companies Jobs Lecturer PhD Studentship Postdoc Research Assistant EVENTS iGEM News Team PHOTOS VIDEO WIKI BLOG COMMUNITY FACEBOOK INSTAGRAM TWITTER No Result View All Result No Result View All Result Home NEWS Science News Technology Battery safety, sodium-ion and recycling research head to ECS meeting by October 24, 2026 in Technology Reading Time: 3 mins read 0 Battery safety, sodium-ion and recycling research head to ECS meeting Share on Facebook Share on Twitter Share on Linkedin Share on Reddit Share on Telegram Researchers from UL Research Institutes’ Electrochemical Safety Research Institute will present work on lithium-ion thermal-runaway mitigation, sodium-ion battery safety and emissions, and battery recycling diagnostics at the 250th Meeting of The Electrochemical Society, taking place Oct. 25-29 in Calgary, Canada. The institute’s team, including its vice president and executive director Chao-Yang Wang, vice president and distinguished scientific advisor Judy Jeevarajan, and several research scientists, will share studies aimed at challenges facing battery manufacturers, integrators and end users as electrification scales across vehicles and stationary storage. “Scaling electrification requires batteries that deliver not only higher performance but also predictable safety across their full lifecycle,” Wang said in the announcement. “At the ECS Meeting, our researchers will share data, methods, and insights that can help the industry evaluate emerging chemistries, reduce failure risk, and accelerate the development of safer, more reliable energy-storage systems.” The ECS Meeting convenes battery scientists, engineers, manufacturers and technology developers to exchange research with direct implications for cell design, testing, scale-up and commercialization, and the institute positions its work as relevant to cell manufacturers, energy storage system developers, automakers, hydrogen technology providers, safety engineers, policymakers, standards organizations and recyclers. The first presentation area addresses thermal-runaway mitigation in high-energy lithium-ion batteries. According to the institute, these studies examine materials, designs and cell conditions that can reduce propagation risk while supporting higher energy density and faster charging for electric vehicle and stationary-storage applications. Wang will give an invited talk titled “Safety of Energy-Dense Lithium Batteries,” and Jeevarajan will deliver an invited presentation, “Materials and Designs Studied to Prevent Propagation of Thermal Runaway in Small Lithium-Ion Modules.” Lead research scientist Vallabha Rao Rikka will present “Rapid SEI Formation Enabled by Flame-Retardant Ionic Salts for Fast-Charging Ni-Rich NMC Lithium-Ion Cells,” covering work on the solid-electrolyte interphase formed with flame-retardant ionic salts in nickel-rich NMC cells designed for fast charging. The second area focuses on sodium-ion battery safety and emissions characterization. As sodium-ion technology moves toward broader commercial use, the institute says this research provides data on cell and module behavior, thermal-runaway emissions and the influence of state of charge, which it describes as key inputs for product design, testing and risk management. Jeevarajan will present “Safety of Commercial and Custom-Made Sodium-Ion Cells and Small Modules,” while Vinay Premnath, director of safety research, will present “Characterization of Particulate and Gaseous Emissions from Thermal Runaway of Sodium-Ion Cells.” Research scientist Avijit Karmakar will present “State-of-Charge Implications on Thermal Runaway of Sodium-Ion Cells and Modules,” examining how a cell’s charge state affects its thermal-runaway behavior. The third area covers battery recycling and failure diagnostics. The institute states that this research evaluates practical recycling processes and post-mortem protocols that can improve material recovery, produce more consistent failure data and support battery-lifecycle decisions. Research scientist Devashish Salpekar will present “Multi-Use of Salt Solutions in the Recycling of Lithium-Ion Cylindrical and Pouch Cells,” describing the reuse of salt solutions across recycling of cylindrical and pouch cell formats. Research scientist Frederick Gray will present “Impact of Electrode Washing Protocols on Post-Mortem Diagnostics for Lithium-Ion Battery Failure Analysis,” addressing how electrode washing procedures affect the quality of post-mortem failure analysis. The Electrochemical Safety Research Institute, part of UL Research Institutes, works on the science and engineering of electrochemical energy storage and conversion, combining first-principles science, advanced characterization, accelerated testing and system-level modeling to understand how energy technologies fail and to anticipate their limits. UL Research Institutes is a nonprofit research organization dedicated to advancing public safety through safety science, building on the UL legacy dating to 1894, conducting independent research across fire safety, electrochemical safety, chemical insights, materials discovery, digital safety, and research experiences and education, and publishing its findings openly to guide standards bodies, policymakers and communities. The presentations at the Calgary meeting are scheduled talks within the society’s technical program; the detailed data and findings behind each talk will be those presented by the researchers during the session itself. Subject of Research: Battery safety, sodium-ion characterization and recycling research presentations at the 250th Electrochemical Society Meeting Article Title: UL Research Institutes to present battery safety, sodium-ion, and recycling research at the 250th Electrochemical Society Meeting Article References: UL Research Institutes to present battery safety, sodium-ion, and recycling research at the 250th Electrochemical Society Meeting. Original publication (Bibliographic details unavailable.) Image Credits: AI Generated DOI: Not provided Keywords: battery safety, thermal runaway, lithium-ion, sodium-ion batteries, battery recycling, failure analysis, Electrochemical Society, UL Research Institutes, energy storage, electric vehicles, emissions characterization, post-mortem diagnostics News Source: Faith Mcneil. (October 24, 2026). Battery safety, sodium-ion and recycling research head to ECS meeting. Scienmag. Tags: battery recycling battery safety electric vehicles Electrochemical Society emissions characterization Energy storage failure analysis lithium-ion post-mortem diagnostics Sodium-ion batteries thermal runaway UL Research Institutes Share 12 Tweet 7 Share 2 Share Share Share 1 Related Posts New Clustering Method Learns Continually from Streams of Kernel Matrices October 24, 2026 EquiChain framework slashes PBFT communication overhead by up to 98% in permissioned blockchains October 24, 2026 Uncertainty-aware Bayesian neural network brings confidence scores to breast cancer AI October 24, 2026 Federated Learning Lets IoT Devices Cluster Time Series Without Sharing Raw Data October 24, 2026 POPULAR NEWS CT Scans Reveal First Brain Ventricular Norms for Healthy Bangladeshi Adults 29 shares Share 12 Tweet 7 Battery safety, sodium-ion and recycling research head to ECS meeting 29 shares Share 12 Tweet 7 TRIM27 Protein Drives Airway Inflammation in Asthma by Destroying TRAF3 29 shares Share 12 Tweet 7 Cryptic MERS-CoV Cases in Saudi Arabia Raise Exposure Ascertainment Concerns 29 shares Share 12 Tweet 7 About We bring you the latest biotechnology news from best research centers and universities around the world. Check our website. Follow us Recent News CT Scans Reveal First Brain Ventricular Norms for Healthy Bangladeshi Adults Battery safety, sodium-ion and recycling research head to ECS meeting TRIM27 Protein Drives Airway Inflammation in Asthma by Destroying TRAF3 Subscribe to Blog via Email Enter your email address to subscribe to this blog and receive notifications of new posts by email. Email Address Subscribe Join 85 other subscribers Contact Us Bioengineer.org © Copyright 2023 All Rights Reserved. Welcome Back! Login to your account below Remember Me Forgotten Password? Retrieve your password Please enter your username or email address to reset your password. Log In No Result View All Result Homepages Home Page 1 Home Page 2 News National Business Health Lifestyle Science Bioengineer.org © Copyright 2023 All Rights Reserved.",
+   "word_count": 801,
+   "utf8_bytes": 6303,
+   "char_count": 6255,
+   "discovery_snippet": "",
+   "extraction_status": "SUCCESS",
+   "qualification_status": "REJECTED",
+   "qualification_reasons": [
+    "NO_RELEVANT_PASSAGE"
+   ],
+   "useful_words": 0,
+   "acquisition_method": "DOM_SEMANTIC_TEXT",
+   "content_depth": "PARTIAL_CONTENT",
+   "read_attempts": 1,
+   "errors": [],
+   "observations": [
+    {
+     "query_id": "",
+     "acquired_at": "2026-10-25T14:20:59.818079+00:00",
+     "source_id": "ev_hv_8e2c55b68e233fd73753",
+     "raw_content_hash": "692428c09035bbd570eebfd54ebaed464c4066585aec1c8e5859635fa4d90ccb",
+     "method": "DOM_SEMANTIC_TEXT"
+    }
+   ],
+   "prior_captures": [],
+   "duplicate_of": null,
+   "duplicate_reason": null,
+   "raw_capture_sha256": "c6097945d13d7348e13a1a83e0e2dbecbb4644619249f388d829c6399548341c",
+   "acquired_at_basis": "CAPTURE_SNAPSHOT_UTC",
+   "read_status": "SUCCESS",
+   "acquisition_objective": null,
+   "http_status": 200,
+   "provider_truncated": false,
+   "transport": {
+    "endpoint": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+    "requested_endpoint": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+    "redirect_chain": [
+     "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/"
+    ],
+    "http_status": 200,
+    "raw_body_bytes": 217554,
+    "decoded_body_bytes": 217554,
+    "network_latency_ms": 1571,
+    "raw_body_sha256": "9210d6b8ba00b67278865b355ab7dc8106e4dd8b7b57321e38018a2260a6c777",
+    "content_type": "text/html; charset=UTF-8",
+    "cache_status": "UNKNOWN",
+    "network_observed_this_attempt": true
+   },
+   "actual_final_url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+   "page_metadata": {
+    "title": "Battery safety, sodium-ion and recycling research head to ECS meeting",
+    "author": "",
+    "published": "2026-10-24T15:38:21+01:00",
+    "publication_time_source": "HTML_META:article:published_time;JSONLD:datePublished",
+    "content_scope": "publisher_article_container",
+    "extraction_method": "DOM_SEMANTIC_TEXT",
+    "publication_observations": [
+     {
+      "value": "2026-10-24T15:38:21+01:00",
+      "source": "HTML_META:article:published_time"
+     },
+     {
+      "value": "2026-10-24T15:38:21+01:00",
+      "source": "JSONLD:datePublished"
+     },
+     {
+      "value": "2026-10-24 14:38:21Europe/London",
+      "source": "JSONLD:datePublished"
+     }
+    ],
+    "declared_structured_data": [
+     {
+      "@type": "NewsArticle",
+      "datePublished": "2026-10-24T15:38:21+01:00",
+      "dateModified": "2026-10-24T15:38:21+01:00"
+     },
+     {
+      "@type": "BreadcrumbList"
+     },
+     {
+      "@type": "WebPage"
+     },
+     {
+      "@type": "Organization"
+     },
+     {
+      "@type": "WebSite"
+     },
+     {
+      "@type": "NewsArticle",
+      "datePublished": "2026-10-24 14:38:21Europe/London",
+      "dateModified": "2026-10-24 13:38:21Europe/London"
+     },
+     {
+      "@type": "WebPage"
+     },
+     {
+      "@type": "hentry"
+     },
+     {
+      "@type": "BreadcrumbList"
+     }
+    ],
+    "body_quality": {
+     "body_kind": "ARTICLE_BODY",
+     "paragraph_count": 13,
+     "link_text_ratio": 0.0513,
+     "basis": "OBSERVED_DOCUMENT_STRUCTURE",
+     "evidence_qualified": false
+    },
+    "text_blocks": [],
+    "date_observations": []
+   },
+   "redirect_chain": [
+    "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/"
+   ]
+  }
+ ],
+ "_fixture_provenance": {
+  "origin": "Saved native Trending report, request 'battery recycling', local ASGI route, AI disabled",
+  "saved_report": "aegis-trending-fixed/01-trending.json (system temp; may expire)",
+  "captured_at": "2026-10-25T14:20:59.818079+00:00",
+  "source_url": "https://bioengineer.org/battery-safety-sodium-ion-and-recycling-research-head-to-ecs-meeting/",
+  "source_id": "ev_hv_8e2c55b68e233fd73753",
+  "readable_text_sha256": "692428c09035bbd570eebfd54ebaed464c4066585aec1c8e5859635fa4d90ccb",
+  "raw_capture_sha256": "c6097945d13d7348e13a1a83e0e2dbecbb4644619249f388d829c6399548341c",
+  "note": "Third-party article text retained verbatim as a regression capture. A single source extracted from a 51-source pool; the capture itself is unmodified."
+ }
+}

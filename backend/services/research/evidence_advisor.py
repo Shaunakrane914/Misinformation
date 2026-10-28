@@ -86,8 +86,13 @@ class EvidenceAdvisor:
             return dict(result, status="SKIPPED_PRIVACY")
         options, allowed = [], {}
         option_chars = 0
+        permission_skips = 0
+        from backend.services.research.source_registry import source_registry
         for item in items[:6]:
             if item.is_authenticated or document_role(item) in NON_EVENT_ROLES:
+                continue
+            if not source_registry.model_decision(item.canonical_url, item.metadata.get('page_metadata'))['eligible']:
+                permission_skips += 1
                 continue
             body = item.content or ""
             if private_or_secret_text(body):
@@ -108,7 +113,7 @@ class EvidenceAdvisor:
             if len(options) >= MAX_ADVISORY_PARAGRAPHS:
                 break
         if not options:
-            return result
+            return dict(result, status='SKIPPED_SOURCE_PERMISSION', source_permission_skips=permission_skips) if permission_skips else result
         if all(item.relevant_excerpt and sum(o["evidence_id"] == item.id for o in options) <= 1 for item in items):
             return result
         gateway = self.gateway

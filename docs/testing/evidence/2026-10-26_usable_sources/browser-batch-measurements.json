@@ -1,0 +1,84 @@
+{
+  "mode": "OFFLINE_SAVED_API_REPORT_RENDERING",
+  "new_provider_calls": 0,
+  "model_calls": 0,
+  "external_browser_traffic": "BLOCKED",
+  "states": [
+    {
+      "agent": "trending",
+      "width": 320,
+      "expected_passages": 0,
+      "visited_passages": 0,
+      "all_passages_accessible_by_keyboard_pagination": true,
+      "search_filter": true,
+      "role_filter": true,
+      "publisher_filter": true,
+      "horizontal_overflow": false,
+      "page_errors": []
+    },
+    {
+      "agent": "trending",
+      "width": 390,
+      "expected_passages": 0,
+      "visited_passages": 0,
+      "all_passages_accessible_by_keyboard_pagination": true,
+      "search_filter": true,
+      "role_filter": true,
+      "publisher_filter": true,
+      "horizontal_overflow": false,
+      "page_errors": []
+    },
+    {
+      "agent": "trending",
+      "width": 1440,
+      "expected_passages": 0,
+      "visited_passages": 0,
+      "all_passages_accessible_by_keyboard_pagination": true,
+      "search_filter": true,
+      "role_filter": true,
+      "publisher_filter": true,
+      "horizontal_overflow": false,
+      "page_errors": []
+    },
+    {
+      "agent": "personal_watch",
+      "width": 320,
+      "expected_passages": 0,
+      "visited_passages": 0,
+      "all_passages_accessible_by_keyboard_pagination": true,
+      "search_filter": true,
+      "role_filter": true,
+      "publisher_filter": true,
+      "horizontal_overflow": false,
+      "page_errors": []
+    },
+    {
+      "agent": "personal_watch",
+      "width": 390,
+      "expected_passages": 0,
+      "visited_passages": 0,
+      "all_passages_accessible_by_keyboard_pagination": true,
+      "search_filter": true,
+      "role_filter": true,
+      "publisher_filter": true,
+      "horizontal_overflow": false,
+      "page_errors": []
+    },
+    {
+      "agent": "personal_watch",
+      "width": 1440,
+      "expected_passages": 0,
+      "visited_passages": 0,
+      "all_passages_accessible_by_keyboard_pagination": true,
+      "search_filter": true,
+      "role_filter": true,
+      "publisher_filter": true,
+      "horizontal_overflow": false,
+      "page_errors": []
+    }
+  ],
+  "limitations": [
+    "Shared report rendering, not native form submission or fresh acquisition.",
+    "External fonts/resources blocked; no screen-reader or contrast certification."
+  ]
+}

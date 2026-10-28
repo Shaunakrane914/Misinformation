@@ -313,6 +313,8 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001
         target = urllib.parse.urljoin(req.full_url, newurl)
+        from backend.services.research.source_registry import enforce_scoped_body_access
+        enforce_scoped_body_access(target)
         safe, reason = is_safe_url(target)
         if not safe:
             kind = validation_failure_kind(reason)
@@ -370,6 +372,11 @@ def _fetch_public_http(
         raise ValueError("HTTP bounds must be positive")
     if method not in {"GET", "POST"} or (method == "POST" and (max_attempts != 1 or max_redirects != 0)):
         raise ValueError("POST requires one attempt and no redirects")
+    from backend.services.research.source_registry import enforce_scoped_body_access, scoped_user_agent
+    enforce_scoped_body_access(url)
+    source_agent = scoped_user_agent(url)
+    if source_agent:
+        headers = {**{k: v for k, v in (headers or {}).items() if k.lower() != 'user-agent'}, 'User-Agent': source_agent}
     remaining_timeout(timeout)
     safe, reason = is_safe_url(url)
     if not safe:
@@ -534,10 +541,15 @@ def fetch_public_http(
     """Share one original wall-clock allowance across DNS, retries and redirects."""
     if not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("HTTP bounds must be positive")
-    with acquisition_deadline(time.monotonic() + remaining_timeout(timeout)):
-        return _fetch_public_http(
-            url, headers=headers, timeout=timeout, max_bytes=max_bytes,
-            max_redirects=max_redirects, max_attempts=max_attempts,
-            retry_base_seconds=retry_base_seconds,
-            max_retry_sleep_seconds=max_retry_sleep_seconds, sleep=sleep, jitter=jitter,
-        )
+    from backend.services.research.source_registry import paced_source_request
+    with paced_source_request(url) as paced:
+        with acquisition_deadline(time.monotonic() + remaining_timeout(timeout)):
+            return _fetch_public_http(
+                url, headers=headers, timeout=timeout, max_bytes=max_bytes,
+                # Multi-hop/retry pacing would need a separate admission per
+                # transfer. Fail on redirects and make one attempt for these
+                # sources; never silently follow or retry inside the spacing.
+                max_redirects=0 if paced else max_redirects, max_attempts=1 if paced else max_attempts,
+                retry_base_seconds=retry_base_seconds,
+                max_retry_sleep_seconds=max_retry_sleep_seconds, sleep=sleep, jitter=jitter,
+            )

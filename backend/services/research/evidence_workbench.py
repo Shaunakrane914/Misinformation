@@ -194,6 +194,17 @@ def select_source_passages(item, scored, winner, domain, target="", intent=""):
             continue
         role = classify_passage(paragraph, domain=domain)
         context = {}
+        attribution = "SOURCE_ASSERTION"
+        if domain == "personal":
+            from backend.services.research.passage_records import public_statement_attribution
+            observed_speaker = public_statement_attribution(item, paragraph, target)
+            if observed_speaker:
+                attribution = observed_speaker
+                context["identity_authenticated"] = False
+                if role == "ARTICLE_CONTENT":
+                    role = "PUBLIC_STATEMENT"
+            elif role == "PUBLIC_STATEMENT":
+                role = "ARTICLE_CONTENT"
         if re.search(r"\b(?:correction|headline was amended|article has been updated|clarification)\b", paragraph, re.I):
             role = "CORRECTION_OR_RESPONSE"
         elif domain == "brand" and role == "PUBLIC_STATEMENT":
@@ -218,7 +229,7 @@ def select_source_passages(item, scored, winner, domain, target="", intent=""):
             "evidence_id": item.id, "start": start, "end": end, "text": paragraph,
             "captured_text_sha256": digest, "content_role": role,
             "relevance": "DIRECTLY_RELEVANT", "claim_status": "UNVERIFIED",
-            "attribution": "SOURCE_ASSERTION", "source_url": item.canonical_url,
+            "attribution": attribution, "source_url": item.canonical_url,
             "published_at": item.published_at or None, "scope": "HEURISTIC_PASSAGE_SELECTION_NOT_ENTAILMENT",
             "context_labels": context})
         chars += len(paragraph)
@@ -263,7 +274,11 @@ def build_evidence_workbench(evidence):
                 overlapping_spans += 1
                 continue
             valid.append({**row, "claim_status": "UNVERIFIED", "source_url": item.get("url"),
-                          "publisher_host": publisher_host(item.get("url")), "source_title": item.get("title")})
+                          "publisher_host": publisher_host(item.get("url")), "source_title": item.get("title"),
+                          **({'source_permission': extraction['source_observations']['source_permission']}
+                             if (extraction.get('source_observations') or {}).get('source_permission') else {}),
+                          **({'content_language': extraction['source_observations']['content_language'], 'translation': 'NOT_GENERATED'}
+                             if (extraction.get('source_observations') or {}).get('content_language') else {})})
         accounting = extraction.get("evidence_passage_accounting") or {}
         omitted = accounting.get("omitted_by_source_budget", 0)
         source_omitted += omitted if type(omitted) is int and omitted >= 0 else 0

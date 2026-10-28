@@ -98,6 +98,8 @@ class BrandShieldAgent:
 
         # 2. Multi-Channel Evidence Retrieval via Agent Reach
         evidence_items, channel_health, plan, syndicated_count = self.search_brand_evidence(brand_info)
+        acquisition = plan.get("trace", {}).get("acquisition", {})
+        acquisition_failed = acquisition.get("status") == "ACQUISITION_FAILED"
 
         # 3. Grounded Threat & Claim Reasoning
         synthesis = self._synthesize_brand_threats(brand_info, evidence_items)
@@ -174,6 +176,8 @@ class BrandShieldAgent:
         safe_count = 0
 
         return {
+            **({"status": "ACQUISITION_FAILED"} if acquisition_failed else {}),
+            "investigation_status": acquisition.get("status"),
             # Brand & Entity Resolution
             "brand": brand_info["brand"],
             "brand_name": brand_info["brand"],
@@ -230,7 +234,8 @@ class BrandShieldAgent:
             "review_intel": review_intel,
             "source_assessments": synthesis.get("source_assessments", []),
             "advisories": synthesis.get("advisories", []),
-            "assessment_status": synthesis.get("assessment_status", "INSUFFICIENT_EVIDENCE"),
+            "assessment_status": ("ACQUISITION_FAILED" if acquisition_failed else
+                                  synthesis.get("assessment_status", "INSUFFICIENT_EVIDENCE")),
             "evidence": evidence_items,
             "sources": evidence_items,
             "timeline": timeline,

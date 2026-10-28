@@ -35,6 +35,7 @@ SOURCE_FIELDS = (
     "observed_body_marker", "content_status", "content_role", "passage_selection_method", "content_completeness",
     "body_author", "discovery_author_or_source", "attribution_conflict",
     "discovery_title", "discovery_published_at", "publication_time_basis",
+    "topic_source_controlled", "source_family",
 )
 
 
@@ -130,6 +131,14 @@ def inspect_evidence(item: Any) -> dict:
         key: (meta[key][:300] if isinstance(meta[key], str) else meta[key])
         for key in SOURCE_FIELDS if key in meta and isinstance(meta[key], (str, bool, int, float))
     }
+    permission = meta.get('source_use_permission')
+    if isinstance(permission, dict):
+        source_observations['source_permission'] = {key: permission[key][:500] if isinstance(permission[key], str) else permission[key]
+            for key in ('eligible', 'basis', 'reason', 'source_family', 'licence_url', 'author', 'source_url', 'usage', 'translation')
+            if key in permission and isinstance(permission[key], (str, bool))}
+    if isinstance(page.get('language'), str):
+        source_observations['content_language'] = page['language'][:35]
+        source_observations['language_basis'] = 'CAPTURED_HTML_LANG'
     tables = page.get("tables")
     if isinstance(tables, list):
         observations["tables"] = [
@@ -247,9 +256,14 @@ def public_capture_metadata(item, max_chars=20_000):
     if isinstance(page, dict):
         observed = inspect_evidence(item)
         public_page = dict(observed["page_observations"])
-        for key in ("title", "author", "published", "content_scope", "extraction_method", "pdf_source_sha256"):
+        for key in ("title", "author", "published", "content_scope", "extraction_method", "pdf_source_sha256", "language", "language_basis"):
             if isinstance(page.get(key), str):
                 public_page[key] = page[key][:300]
+        if isinstance(page.get('licence_urls'), list):
+            public_page['licence_urls'] = [s[:200] for s in page['licence_urls'][:4]
+                if isinstance(s, str) and s.startswith('https://creativecommons.org/licenses/')]
+        if page.get('rights_exception_observed') is True:
+            public_page['rights_exception_observed'] = True
         for key in ("pdf_page_count", "pdf_truncated", "table_structure_verified"):
             if type(page.get(key)) in (int, bool):
                 public_page[key] = page[key]

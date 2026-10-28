@@ -134,8 +134,11 @@ def test_all_agent_plans_include_bounded_different_publisher_families(domain):
     before = copy.deepcopy(original)
     rows = diversify_search_plan(original, "Quartz Tools", domain, 12)
     scoped = [row for row in rows if row.get("source_family")]
-    assert len(rows) == 12 and len(scoped) == 3
-    assert len({host for row in scoped for host in SOURCE_FAMILIES[row["source_family"]]}) == 9
+    expected = 1 if domain in {'trending', 'personal'} else 3
+    assert len(rows) == 12 and len(scoped) == expected
+    if domain in {'trending', 'personal'}:
+        assert {row['source_family'] for row in scoped} == {'general_reporting'}
+    assert len({host for row in scoped for host in SOURCE_FAMILIES[row["source_family"]]}) == expected * 3
     assert all(row["channel"] == "web" and "Quartz Tools" in row["query_text"] for row in scoped)
     assert original == before
     assert not any("reddit.com" in row["query_text"] or "sec.gov" in row["query_text"] for row in scoped)

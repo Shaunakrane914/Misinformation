@@ -91,11 +91,19 @@ def _semantic_root(soup):
         return articles[0], "article"
     # Common static publishing containers are structural observations. Require
     # a unique container with paragraphs so a list of story cards cannot win.
-    containers = (main or soup).select('.article-body, .article-content, .story-body, .story-content, .entry-content, .post-content, .artText, .article_body, .storyContent, .articleWrap')
+    containers = (main or soup).select('.article-body, .article-content, .story-body, .story-content, .entry-content, .post-content, .field--name-body, .artText, .article_body, .storyContent, .articleWrap')
     containers = [node for node in containers if len(node.find_all("p")) >= 2]
     containers = [node for node in containers if not any(parent in containers for parent in node.parents)]
     if len(containers) == 1:
         return containers[0], "publisher_article_container"
+    # WordPress themes may use an explicit hentry document with an inner
+    # .entry body instead of <article>. Require one document and one heading;
+    # an archive containing several story cards must never select one at random.
+    entries = (main or soup).select('.hentry')
+    if len(entries) == 1 and len(soup.find_all('h1')) == 1:
+        bodies = entries[0].select('.entry')
+        if len(bodies) == 1 and len(bodies[0].find_all('p')) >= 2:
+            return bodies[0], "publisher_article_container"
     if main is not None:
         return main, "main"
     return soup.body or soup, "body_fallback"
@@ -147,7 +155,14 @@ def extract_readable_page(soup) -> dict:
         text = "\n\n".join(" ".join(value.split()) for value in re.split(r"\n\s*\n", body.get_text(" ")) if value.strip())
         scope, method = "declared_article_body", "PUBLISHER_JSONLD_ARTICLE_BODY"
     structure = observe_text_structure(text, [_text(node, 6000) for node in root.find_all(("h1", "h2", "h3", "h4"), limit=100)])
+    language = str((soup.find('html') or {}).get('lang') or '')[:35]
+    licences = list(dict.fromkeys(str(node.get('href')) for node in soup.select('a[rel~="license"], link[rel~="license"]')
+                                  if str(node.get('href') or '').startswith('https://creativecommons.org/licenses/')))[:4]
+    rights_exception = bool(re.search(r'\b(?:not covered by (?:the |this )?(?:creative commons|licen[sc]e)|all rights reserved|republished with permission)\b', raw, re.I))
     return {"raw_text": raw, "text": text, **structure, "content_scope": scope,
+            **({'language': language, 'language_basis': 'CAPTURED_HTML_LANG'} if language else {}),
+            **({'licence_urls': licences} if licences else {}),
+            **({'rights_exception_observed': True} if rights_exception else {}),
             "selection_method": method, "extraction_method": method,
             "readable_word_count": len(text.split()), "readable_character_count": len(text),
             "readable_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
@@ -412,20 +427,29 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
                 "declared_open_graph": _declared_open_graph(soup)}
     origin = (urlsplit(endpoint).hostname or "").lower()
     links: list[dict] = []
-    seen: set[str] = set()
+    by_url: dict[str, dict] = {}
     for anchor in root.find_all("a", href=True, limit=500):
         if anchor.find_parent(("nav", "footer")) or anchor.find_parent(attrs={"role": "navigation"}):
             continue
         href = _http_link(endpoint, str(anchor.get("href") or ""))
-        if not href or href in seen:
+        if not href:
             continue
-        seen.add(href)
-        links.append({
+        text = _text(anchor, 160)
+        if href in by_url:
+            # Search cards commonly put an image-only anchor before the
+            # headline anchor for the same URL. Keep the observed headline,
+            # rather than freezing its first empty label into every child.
+            if text and not by_url[href]["text"]:
+                by_url[href]["text"] = text
+            continue
+        row = {
             "url": href,
-            "text": _text(anchor, 160),
+            "text": text,
             "external_domain": (urlsplit(href).hostname or "").lower() != origin,
             "verification": "UNVERIFIED_PAGE_LINK",
-        })
+        }
+        links.append(row)
+        by_url[href] = row
     # Document links often follow a large issuer menu. Preserve observed text
     # and URLs, but prioritize substantive documents within this bounded sample
     # rather than spending every slot on Home/Careers/contact links.

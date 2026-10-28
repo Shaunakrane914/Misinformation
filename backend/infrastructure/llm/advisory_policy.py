@@ -25,6 +25,14 @@ class AdvisoryPolicyError(RuntimeError):
     pass
 
 
+def daily_request_limit():
+    """Server-only admission setting; invalid values cannot open the budget."""
+    raw = os.getenv('AEGIS_AI_DAILY_REQUEST_LIMIT', '3').strip()
+    if not re.fullmatch(r'[0-9]{1,2}', raw) or not 1 <= int(raw) <= 20:
+        raise AdvisoryPolicyError('AEGIS_AI_DAILY_REQUEST_LIMIT must be an integer from 1 to 20')
+    return int(raw)
+
+
 def _connect(path):
     connection = sqlite3.connect(path, timeout=2, isolation_level=None)
     connection.execute("CREATE TABLE IF NOT EXISTS runs (id TEXT PRIMARY KEY, calls INTEGER NOT NULL)")
@@ -44,6 +52,7 @@ def advisory_budget_status(*, identity, database=None):
     This is a preflight observation, never a reservation. The provider still
     performs the existing atomic check immediately before generation.
     """
+    limit = daily_request_limit()
     path = _database_path(database)
     path.parent.mkdir(parents=True, exist_ok=True)
     with closing(_connect(path)) as connection:
@@ -52,16 +61,16 @@ def advisory_budget_status(*, identity, database=None):
         cooldown, busy = connection.execute("SELECT cooldown,busy FROM provider WHERE id=1").fetchone()
         used = (_investigation.get() is not None and connection.execute(
             "SELECT 1 FROM investigations WHERE run=? AND id=?", (identity, _investigation.get())).fetchone())
-    reason = ("DAILY_REQUEST_BUDGET" if calls >= 3 else "PROVIDER_COOLDOWN" if cooldown > time.time()
+    reason = ("DAILY_REQUEST_BUDGET" if calls >= limit else "PROVIDER_COOLDOWN" if cooldown > time.time()
               else "PROVIDER_BUSY" if busy else "INVESTIGATION_REQUEST_BUDGET" if used else None)
-    return {"allowed": reason is None, "calls": calls, "reason": reason}
+    return {"allowed": reason is None, "calls": calls, "reason": reason, "daily_request_limit": limit}
 
 
 @contextmanager
 def advisory_run(*, verified_models=(), database=None, identity=None):
     """Explicitly authorized development run. Model support must be established
     separately without generation; tests supply offline account observations.
-    Nesting cannot reset an existing run's hard three-request budget.
+    Nesting cannot reset an existing run's configured shared request budget.
     """
     if _run.get() is not None:
         yield _run.get()
@@ -102,6 +111,7 @@ def require_advisory(purpose):
 @contextmanager
 def reserve_request(purpose):
     state = require_advisory(purpose)
+    limit = daily_request_limit()
     if state.get("expires_at") is not None and time.time() >= state["expires_at"]:
         raise AdvisoryPolicyError("Runtime advisory day has expired")
     reservation = uuid.uuid4().hex
@@ -111,7 +121,7 @@ def reserve_request(purpose):
         cooldown, busy = connection.execute("SELECT cooldown,busy FROM provider WHERE id=1").fetchone()
         calls = connection.execute("SELECT calls FROM runs WHERE id=?", (state["id"],)).fetchone()[0]
         used = connection.execute("SELECT 1 FROM investigations WHERE run=? AND id=?", (state["id"], _investigation.get())).fetchone()
-        if cooldown > time.time() or busy or calls >= 3 or used:
+        if cooldown > time.time() or busy or calls >= limit or used:
             raise AdvisoryPolicyError("Advisory cooldown, in-flight reservation or hard request budget blocks this call")
         connection.execute("UPDATE runs SET calls=calls+1 WHERE id=?", (state["id"],))
         connection.execute("INSERT INTO investigations VALUES (?,?)", (state["id"], _investigation.get()))

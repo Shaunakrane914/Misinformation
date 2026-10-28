@@ -1,0 +1,1178 @@
+{
+  "mode": "INDIVIDUAL_SOURCE_DIAGNOSTIC",
+  "model_calls": 0,
+  "source_families": 60,
+  "rows": [
+    {
+      "family": "bollywood_hungama",
+      "name": "Bollywood Hungama",
+      "hosts": [
+        "bollywoodhungama.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "filmfare",
+      "name": "Filmfare",
+      "hosts": [
+        "filmfare.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "hindustan_times",
+      "name": "Hindustan Times",
+      "hosts": [
+        "hindustantimes.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "indian_express",
+      "name": "Indian Express",
+      "hosts": [
+        "indianexpress.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "ndtv",
+      "name": "NDTV",
+      "hosts": [
+        "ndtv.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "live_hindustan",
+      "name": "Live Hindustan",
+      "hosts": [
+        "livehindustan.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "yrf",
+      "name": "Yash Raj Films",
+      "hosts": [
+        "yashrajfilms.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "variety",
+      "name": "Variety",
+      "hosts": [
+        "variety.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "deadline",
+      "name": "Deadline",
+      "hosts": [
+        "deadline.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "bcci",
+      "name": "BCCI",
+      "hosts": [
+        "bcci.tv"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "icc",
+      "name": "ICC",
+      "hosts": [
+        "icc-cricket.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "techcrunch",
+      "name": "TechCrunch",
+      "hosts": [
+        "techcrunch.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "the_register",
+      "name": "The Register",
+      "hosts": [
+        "theregister.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "who",
+      "name": "WHO",
+      "hosts": [
+        "who.int"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "eci",
+      "name": "Election Commission of India",
+      "hosts": [
+        "eci.gov.in"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "prs",
+      "name": "PRS Legislative Research",
+      "hosts": [
+        "prsindia.org"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "pib",
+      "name": "PIB",
+      "hosts": [
+        "pib.gov.in"
+      ],
+      "configured_permission": "PUBLIC_LICENSE_REVIEWED",
+      "body_permission_status": "REVIEW_APPROVED",
+      "review_basis": "SERVER_REVIEW_APPROVED",
+      "probe_status": "NOT_SELECTED_NOT_PROBED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "govuk",
+      "name": "GOV.UK",
+      "hosts": [
+        "gov.uk"
+      ],
+      "configured_permission": "PUBLIC_LICENSE_REVIEWED",
+      "body_permission_status": "REVIEW_APPROVED",
+      "review_basis": "SERVER_REVIEW_APPROVED",
+      "probe_status": "NOT_SELECTED_NOT_PROBED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "mit_news",
+      "name": "MIT News",
+      "hosts": [
+        "news.mit.edu"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "nist_news",
+      "name": "NIST News",
+      "hosts": [
+        "nist.gov"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "nsf",
+      "name": "NSF",
+      "hosts": [
+        "nsf.gov"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "crossref",
+      "name": "Crossref",
+      "hosts": [
+        "crossref.org"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "europe_pmc",
+      "name": "Europe PMC",
+      "hosts": [
+        "europepmc.org"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "sec",
+      "name": "SEC EDGAR",
+      "hosts": [
+        "sec.gov"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "rbi",
+      "name": "RBI",
+      "hosts": [
+        "rbi.org.in"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "sebi",
+      "name": "SEBI",
+      "hosts": [
+        "sebi.gov.in"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "nse",
+      "name": "NSE",
+      "hosts": [
+        "nseindia.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "bse",
+      "name": "BSE",
+      "hosts": [
+        "bseindia.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "hkex",
+      "name": "HKEXnews",
+      "hosts": [
+        "hkexnews.hk"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "economic_times",
+      "name": "Economic Times",
+      "hosts": [
+        "economictimes.indiatimes.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "mint",
+      "name": "Mint",
+      "hosts": [
+        "livemint.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "business_standard",
+      "name": "Business Standard",
+      "hosts": [
+        "business-standard.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "moneycontrol_hindi",
+      "name": "Moneycontrol Hindi",
+      "hosts": [
+        "hindi.moneycontrol.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "companies_house",
+      "name": "Companies House",
+      "hosts": [
+        "company-information.service.gov.uk"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "fca",
+      "name": "FCA",
+      "hosts": [
+        "fca.org.uk"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "ftc",
+      "name": "FTC",
+      "hosts": [
+        "ftc.gov"
+      ],
+      "configured_permission": "PUBLIC_LICENSE_REVIEWED",
+      "body_permission_status": "REVIEW_APPROVED",
+      "review_basis": "SERVER_REVIEW_APPROVED",
+      "probe_status": "NOT_SELECTED_NOT_PROBED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "doj",
+      "name": "US DOJ",
+      "hosts": [
+        "justice.gov"
+      ],
+      "configured_permission": "PUBLIC_LICENSE_REVIEWED",
+      "body_permission_status": "REVIEW_APPROVED",
+      "review_basis": "SERVER_REVIEW_APPROVED",
+      "probe_status": "NOT_SELECTED_NOT_PROBED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "cpsc",
+      "name": "CPSC",
+      "hosts": [
+        "cpsc.gov",
+        "www.saferproducts.gov"
+      ],
+      "configured_permission": "PUBLIC_LICENSE_REVIEWED",
+      "body_permission_status": "REVIEW_APPROVED",
+      "review_basis": "SERVER_REVIEW_APPROVED",
+      "probe_status": "NO_STRUCTURED_RECORD_ACQUIRED",
+      "network_access": "FAILED_OR_EMPTY_SEE_OBSERVATIONS",
+      "reads": [
+        {
+          "failure_type": "ProviderHTTPError",
+          "failure_kind": "TIMEOUT",
+          "network_observed": false
+        }
+      ],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0,
+      "initial_url": "https://www.saferproducts.gov/RestWebServices/Recall?format=json&Title=battery",
+      "probe_kind": "DIRECT_CPSC_API_RECORD_DIAGNOSTIC",
+      "records": [],
+      "candidate_records": 0,
+      "seconds": 5.4,
+      "native_http_admissions": 2,
+      "native_http_by_host": {
+        "www.saferproducts.gov": 2
+      }
+    },
+    {
+      "family": "fda",
+      "name": "FDA",
+      "hosts": [
+        "fda.gov"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "eu_safety_gate",
+      "name": "EU Safety Gate",
+      "hosts": [
+        "ec.europa.eu"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "cisa",
+      "name": "CISA",
+      "hosts": [
+        "cisa.gov"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "cert_in",
+      "name": "CERT-In",
+      "hosts": [
+        "cert-in.org.in"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "scamwatch",
+      "name": "Scamwatch",
+      "hosts": [
+        "scamwatch.gov.au"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "asa",
+      "name": "ASA",
+      "hosts": [
+        "asa.org.uk"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "securityweek",
+      "name": "SecurityWeek",
+      "hosts": [
+        "securityweek.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "bleepingcomputer",
+      "name": "BleepingComputer",
+      "hosts": [
+        "bleepingcomputer.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "boom",
+      "name": "BOOM",
+      "hosts": [
+        "boomlive.in"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "afp_factcheck",
+      "name": "AFP Fact Check",
+      "hosts": [
+        "factcheck.afp.com"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "full_fact",
+      "name": "Full Fact",
+      "hosts": [
+        "fullfact.org"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "apple_newsroom",
+      "name": "Apple Newsroom family",
+      "hosts": [
+        "apple.com"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "microsoft_source",
+      "name": "Microsoft Source",
+      "hosts": [
+        "news.microsoft.com"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "federal_reserve",
+      "name": "Federal Reserve",
+      "hosts": [
+        "federalreserve.gov"
+      ],
+      "configured_permission": "UNVERIFIED",
+      "body_permission_status": "UNVERIFIED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_UNVERIFIED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "youtube",
+      "name": "YouTube original recordings",
+      "hosts": [
+        "youtube.com"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "reddit",
+      "name": "Reddit",
+      "hosts": [
+        "reddit.com"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "x",
+      "name": "X",
+      "hosts": [
+        "x.com"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "bluesky",
+      "name": "Bluesky",
+      "hosts": [
+        "bsky.app"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "guardian",
+      "name": "Guardian",
+      "hosts": [
+        "theguardian.com"
+      ],
+      "configured_permission": "PERMISSION_REQUIRED",
+      "body_permission_status": "PERMISSION_REQUIRED",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "NOT_PROBED_PERMISSION_REQUIRED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "trustpilot",
+      "name": "Trustpilot and current review family",
+      "hosts": [
+        "trustpilot.com"
+      ],
+      "configured_permission": "EXISTING_ROUTE_POLICY",
+      "body_permission_status": "EXISTING_ROUTE_POLICY",
+      "review_basis": "NO_REVIEW",
+      "probe_status": "EXISTING_ROUTE_NOT_RETESTED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "global_voices",
+      "name": "Global Voices",
+      "hosts": [
+        "globalvoices.org"
+      ],
+      "configured_permission": "PUBLIC_LICENSE_REVIEWED",
+      "body_permission_status": "REVIEW_APPROVED",
+      "review_basis": "SERVER_REVIEW_APPROVED",
+      "probe_status": "NOT_SELECTED_NOT_PROBED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    },
+    {
+      "family": "yas",
+      "name": "Ministry of Youth Affairs and Sports",
+      "hosts": [
+        "yas.gov.in"
+      ],
+      "configured_permission": "PUBLIC_LICENSE_REVIEWED",
+      "body_permission_status": "REVIEW_APPROVED",
+      "review_basis": "SERVER_REVIEW_APPROVED",
+      "probe_status": "NOT_SELECTED_NOT_PROBED",
+      "network_access": "NOT_TESTED",
+      "reads": [],
+      "body_words": 0,
+      "article_body_words": 0,
+      "structured_records": 0,
+      "structured_words": 0,
+      "published_evidence_words": 0,
+      "findings_generated": 0
+    }
+  ],
+  "limits": {
+    "selected_families": [
+      "cpsc"
+    ],
+    "seconds_per_family": 90.0,
+    "reads_per_family": 2,
+    "native_http_admissions_per_family": 6
+  },
+  "limitations": [
+    "Directory text is not necessarily article content or topic evidence.",
+    "CPSC records are structured issuing-agency assertions, not acquired publisher articles or fraud verdicts.",
+    "No query-based investigation, finding synthesis, independent corroboration or relevance acceptance.",
+    "Unselected sources were not fetched; their network access is unknown. Existing native routes were not rerun.",
+    "Body/structured words are retained extraction words, not published evidence. No raw source text is exported."
+  ]
+}

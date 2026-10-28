@@ -1,0 +1,235 @@
+{
+  "mode": "TWO_AUTHORIZED_LOCAL_NATIVE_INVESTIGATIONS",
+  "bounds": {
+    "cases": 2,
+    "seconds_per_case": 180,
+    "read_selections_per_case": 16,
+    "native_http_admissions_per_case": 80,
+    "body_allowlist": [
+      "global_voices",
+      "govuk"
+    ]
+  },
+  "ai_generation_reservations": 0,
+  "stable_application": true,
+  "application_sha256": "b6ba0fbd1ab23ff6d41575f35af0eda39cb24115fd803493e8770aa37c44b680",
+  "cases": [
+    {
+      "case_id": "01-trending",
+      "agent": "trending",
+      "input": "Bollywood cinema",
+      "http_status": 200,
+      "seconds": 98.99,
+      "investigation_status": "ACQUISITION_FAILED",
+      "queries_generated": 18,
+      "queries_recorded": 18,
+      "query_status_counts": {
+        "TIMEOUT": 9,
+        "SUCCESS": 4,
+        "FAILED": 1,
+        "NOT_SUBMITTED": 4
+      },
+      "candidate_urls": 4,
+      "read_eligible_relevance_candidates": 4,
+      "reader_selections": 4,
+      "read_service_starts": 0,
+      "failure_categories": {
+        "BLOCKED": 2,
+        "PUBLISHER_UNRESOLVED": 2
+      },
+      "native_http_admissions": 39,
+      "native_http_by_host": {
+        "www.bing.com": 14,
+        "search.yahoo.com": 8,
+        "news.google.com": 17
+      },
+      "body_records": 0,
+      "retained_words": 0,
+      "retained_kb": 0.0,
+      "research_context": {
+        "subject": "Bollywood Cinema",
+        "agent": "trending",
+        "tasks": [
+          "TOPIC_DISCOVERY"
+        ],
+        "topics": [
+          "bollywood",
+          "film"
+        ],
+        "subject_type": "topic",
+        "aliases": [],
+        "jurisdiction": "IN",
+        "language": "und",
+        "time_window": "recent",
+        "confidence": 0.8,
+        "ambiguity": [],
+        "basis": "DETERMINISTIC_REQUEST_CUES",
+        "topic_scores": {
+          "bollywood": 0.8,
+          "film": 0.8
+        }
+      },
+      "scoped_queries": [
+        {
+          "query_id": "hv_q_001",
+          "query_text": "Bollywood cinema site:globalvoices.org",
+          "status": "TIMEOUT",
+          "result_count_raw": 0,
+          "result_count_normalized": 0,
+          "error": "Acquisition chain deadline exhausted",
+          "provider_started": true
+        }
+      ],
+      "blocked_before_network": 2,
+      "all_access_denial_reasons": {
+        "SOURCE_OUTSIDE_SERVER_ALLOWLIST": 2
+      },
+      "controller_stop_reason": "NO_FURTHER_USEFUL_WORK",
+      "controller_queries_dispatched": 14,
+      "core_funnel": {
+        "queries_planned": 18,
+        "queries_submitted": 14,
+        "queries_started": 14,
+        "queries_succeeded": 4,
+        "queries_failed": 1,
+        "queries_timed_out": 9,
+        "queries_auth_required": 0,
+        "queries_skipped": 0,
+        "queries_executed": 14,
+        "candidates_found": 4,
+        "candidates_accepted": 4,
+        "candidates_rejected": 0,
+        "unique_candidates": 0,
+        "deep_reads_count": 0,
+        "acquired_record_count": 0,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 0,
+        "contradictions_count": 0,
+        "findings_count": 0,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 0,
+        "article_body_count": 0,
+        "qualified_source_count": 0,
+        "publisher_link_decision_count": 0,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "first_loss": "Approved-family discovery: scoped query timed out; available direct candidates outside pilot allowlist.",
+      "qualified_source_count": 0,
+      "displayed_evidence_words": 0
+    },
+    {
+      "case_id": "02-personal_watch",
+      "agent": "personal_watch",
+      "input": "Jasprit Bumrah",
+      "http_status": 200,
+      "seconds": 13.02,
+      "investigation_status": "ACQUISITION_FAILED",
+      "queries_generated": 16,
+      "queries_recorded": 16,
+      "query_status_counts": {
+        "SUCCESS": 4,
+        "UNRECORDED": 2,
+        "NOT_SUBMITTED": 10
+      },
+      "candidate_urls": 20,
+      "read_eligible_relevance_candidates": 17,
+      "reader_selections": 16,
+      "read_service_starts": 0,
+      "failure_categories": {
+        "BLOCKED": 15,
+        "READER_NOT_SELECTED": 1
+      },
+      "native_http_admissions": 6,
+      "native_http_by_host": {
+        "www.bing.com": 6
+      },
+      "body_records": 0,
+      "retained_words": 0,
+      "retained_kb": 0.0,
+      "research_context": {
+        "subject": "Jasprit Bumrah",
+        "agent": "personal_watch",
+        "tasks": [
+          "PUBLIC_STATEMENT"
+        ],
+        "topics": [
+          "cricket"
+        ],
+        "subject_type": "unknown",
+        "aliases": [],
+        "jurisdiction": "UNKNOWN",
+        "language": "und",
+        "time_window": "unspecified",
+        "confidence": 0.55,
+        "ambiguity": [
+          "SUBJECT_TYPE_UNRESOLVED",
+          "JURISDICTION_UNRESOLVED"
+        ],
+        "basis": "REQUEST_AND_OBSERVED_TITLE_CUES",
+        "topic_scores": {
+          "cricket": 0.55
+        }
+      },
+      "scoped_queries": [
+        {
+          "query_id": "hv_q_001",
+          "query_text": "Jasprit Bumrah public statement statement interview site:globalvoices.org",
+          "status": "SUCCESS",
+          "result_count_raw": 9,
+          "result_count_normalized": 9,
+          "error": null,
+          "provider_started": true
+        }
+      ],
+      "blocked_before_network": 15,
+      "all_access_denial_reasons": {
+        "SOURCE_OUTSIDE_SERVER_ALLOWLIST": 15
+      },
+      "controller_stop_reason": "SHARED_READ_ATTEMPT_CAP",
+      "controller_queries_dispatched": 6,
+      "core_funnel": {
+        "queries_planned": 16,
+        "queries_submitted": 4,
+        "queries_started": 4,
+        "queries_succeeded": 4,
+        "queries_failed": 0,
+        "queries_timed_out": 0,
+        "queries_auth_required": 0,
+        "queries_skipped": 0,
+        "queries_executed": 4,
+        "candidates_found": 20,
+        "candidates_accepted": 17,
+        "candidates_rejected": 3,
+        "unique_candidates": 0,
+        "deep_reads_count": 0,
+        "acquired_record_count": 0,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 0,
+        "contradictions_count": 0,
+        "findings_count": 1,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 0,
+        "article_body_count": 0,
+        "qualified_source_count": 0,
+        "publisher_link_decision_count": 0,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "first_loss": "Scoped search returned out-of-family URLs; denied leads then consumed the shared read-selection allowance.",
+      "qualified_source_count": 0,
+      "displayed_evidence_words": 0
+    }
+  ],
+  "postfix_live_reruns": 0,
+  "limitations": [
+    "Pipeline corpus funnel counts deep-read sources/captures, whereas harvesting counts selections, including pre-access denials. Do not call zero captures zero selections.",
+    "The pre-access allocation fix was made after these captures; its proof is offline only.",
+    "No relevant article, licence extraction or topic-specific live success was established.",
+    "The separate later AI enablement check made one model call; see ai-enablement-check.json."
+  ]
+}

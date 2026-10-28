@@ -25,4 +25,16 @@ assert(!mount.innerHTML.includes('href="javascript:'));
 assert(!mount.innerHTML.includes('Exact paragraph 24.'));
 assert(mount.innerHTML.includes('20× depth target has not been evaluated'));
 assert(mount.innerHTML.includes('<label>Search captured passages'));
+const licensed = {...passages[1], content_language: 'mr', source_permission: {
+  author: '<script>author</script>', licence_url: 'https://creativecommons.org/licenses/by/3.0/'}};
+renderUnifiedReport(mount, {evidence_workbench: {...workbench, passages: [licensed]}});
+assert(mount.innerHTML.includes('Source language: mr'));
+assert(mount.innerHTML.includes('no generated translation'));
+assert(mount.innerHTML.includes('Source licence'));
+assert(mount.innerHTML.includes('&lt;script&gt;author&lt;/script&gt;'));
+assert(mount.innerHTML.indexOf('Source credit:') < mount.innerHTML.indexOf('<blockquote>'));
+renderUnifiedReport(mount, {evidence_workbench: {...workbench, passages: [{...licensed,
+  source_permission: {author: 'Observed author', licence_url: 'javascript:alert(1)'}}]}});
+assert(!mount.innerHTML.includes('href="javascript:'));
+assert(!mount.innerHTML.includes('Source licence'));
 console.log('EVIDENCE WORKBENCH PASSED');

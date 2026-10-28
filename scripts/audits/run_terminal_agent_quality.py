@@ -20,6 +20,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+from scripts.audits.resource_sampler import ResourceSampler  # noqa: E402
 CASES = [(agent, query) for agent, queries in (
     ("scout", ("TATAMOTORS.NS", "INFY.NS", "AAPL")),
     ("trending", ("OpenAI", "NVIDIA", "electric vehicles")),
@@ -70,7 +71,7 @@ def main():
     parser.add_argument("--max-deep-reads", type=int, help="Total deep-reader attempt allowance per case")
     parser.add_argument("--research-profile", choices=("QUICK", "STANDARD", "DEEP"), default="STANDARD")
     parser.add_argument("--max-http-admissions", type=int, help="Optional lower native HTTP cap; includes retries and redirects")
-    parser.add_argument("--acquisition-controller", choices=("legacy", "interleaved_v1"), default="legacy",
+    parser.add_argument("--acquisition-controller", choices=("legacy", "interleaved_v1", "pipelined_v1"), default="legacy",
                         help="Explicit local experiment; preserves existing read/HTTP caps")
     args = parser.parse_args()
     profile_limits = {"QUICK": (60, 6), "STANDARD": (150, 14), "DEEP": (240, 24)}
@@ -83,8 +84,8 @@ def main():
         parser.error("Audit reads exceed selected research profile")
     if args.capture_from and args.allow_live_ai:
         parser.error("Saved-capture processing never permits live AI")
-    if args.acquisition_controller == "interleaved_v1" and args.capture_from:
-        parser.error("Historical capture mode does not exercise the interleaved controller")
+    if args.acquisition_controller != "legacy" and args.capture_from:
+        parser.error("Historical capture mode does not exercise an experimental acquisition controller")
     cases = []
     for value in args.case:
         agent, _, query = value.partition(":")
@@ -102,7 +103,7 @@ def main():
     values = dotenv_values(args.env_file)
     allowed = ("GEMINI_API_KEY", "GEMINI_KEY_", "GROQ_API_KEY", "YF_API_KEY", "AGENT_REACH_", "REDDIT_",
                "AEGIS_REDDIT_", "EXA_API_KEY", "TAVILY_API_KEY", "BRAVE_API_KEY", "FACTCHECK_API_KEY",
-               "SEC_USER_AGENT", "YOUTUBE_API_KEY", "GITHUB_TOKEN", "JINA_API_KEY", "AEGIS_AI_POLICY_DB")
+               "SEC_USER_AGENT", "YOUTUBE_API_KEY", "GITHUB_TOKEN", "JINA_API_KEY", "AEGIS_AI_POLICY_DB", "AEGIS_AI_DAILY_REQUEST_LIMIT", "LLM_ADVISORY_MODEL")
     ai_prefixes = ("GEMINI_", "GROQ_", "OPENAI_", "ANTHROPIC_")
     if not args.allow_live_ai:
         for key in list(os.environ):
@@ -158,7 +159,7 @@ def main():
     assert not settings.is_mock_llm and not settings.supabase_write_key and not settings.supabase_url
     if not args.allow_live_ai:
         assert not settings.gemini_api_keys
-    from backend.infrastructure.llm.advisory_policy import MODEL, advisory_run, call_count, observations
+    from backend.infrastructure.llm.advisory_policy import call_count, observations
     run_stack = ExitStack()
     if os.name == "nt":
         # Keep this audit thread awake without changing the machine's power
@@ -168,24 +169,15 @@ def main():
         run_stack.callback(ctypes.windll.kernel32.SetThreadExecutionState, 0x80000000)
     model_check = {"status": "DISABLED", "model": settings.llm_advisory_model}
     if args.allow_live_ai:
-        # One non-generation capability lookup, first credential, no rotation.
-        # Never declare a model verified from its configured name alone.
-        model_check["status"] = "UNAVAILABLE"
-        if settings.llm_advisory_model == MODEL and settings.gemini_api_keys:
-            try:
-                import requests
-                response = requests.get("https://generativelanguage.googleapis.com/v1beta/models/" + MODEL,
-                    headers={"x-goog-api-key": settings.gemini_api_keys[0]}, timeout=5.0)
-                model_check["http_status"] = response.status_code
-                metadata = response.json() if response.status_code == 200 and len(response.content) < 100_000 else {}
-                if metadata.get("name") == "models/" + MODEL and "generateContent" in metadata.get("supportedGenerationMethods", []):
-                    run_stack.enter_context(advisory_run(verified_models=(MODEL,)))
-                    os.environ["AEGIS_SEARCH_ADVISOR_ENABLED"] = "true"
-                    os.environ["AEGIS_EVIDENCE_ADVISOR_ENABLED"] = "false"
-                    model_check["status"] = "PROVIDER_DECLARED_SUPPORTED"
-            except Exception as error:
-                model_check["error_type"] = type(error).__name__
+        # Reuse the production runtime's bounded model check and persisted
+        # UTC-day quota. A new audit must not open a fresh random quota bucket.
+        from backend.infrastructure.llm.runtime_advisory import runtime_advisory_scope
+        os.environ["AEGIS_LIVE_ADVISORY_ENABLED"] = "true"
+        model_check = run_stack.enter_context(runtime_advisory_scope(settings))
+        os.environ["AEGIS_SEARCH_ADVISOR_ENABLED"] = "true" if model_check["status"] == "ENABLED" else "false"
+        os.environ["AEGIS_EVIDENCE_ADVISOR_ENABLED"] = "false"
         print(json.dumps({"advisory_model_check": model_check}), flush=True)
+    initial_ai_count = call_count()
     # Deliberately no context manager: do not run app lifespan ingestion jobs.
     client = TestClient(app)
     routes = {"scout": ("scout/analyze", "ticker"), "trending": ("trending/scan", "query"),
@@ -217,7 +209,9 @@ def main():
                 payload["query"] = args.query[number - 1]
             print("START " + case_id + " " + query, flush=True)
             started = time.perf_counter()
+            sampler = ResourceSampler()
             with ExitStack() as stack:
+                stack.enter_context(sampler)
                 if args.capture_from:
                     saved = json.loads((args.capture_from / (case_id + ".json")).read_text(encoding="utf-8"))
                     from backend.services.agent_reach.channels import EvidenceFragment, RetrievalResult, QueryExecutionRecord
@@ -302,7 +296,8 @@ def main():
                    "kb": round(sum(len(t.encode("utf-8")) for t in texts) / 1000, 3),
                    "findings": report.get("findings", []), "summary": report.get("summary"),
                    "source_titles": [e.get("title") for e in records],
-                   "background_evidence_ids": native.get("background_evidence_ids", [])}
+                   "background_evidence_ids": native.get("background_evidence_ids", []),
+                   "resource_usage": sampler.result()}
             summary["cases"].append(row)
             print(redact(json.dumps(row, ensure_ascii=True)), flush=True)
             save("summary.json", summary)
@@ -310,7 +305,9 @@ def main():
         client.close()
         summary["final_application_sha256"] = fingerprint()
         summary["stable_application"] = initial == summary["final_application_sha256"]
-        summary["live_ai_calls_reserved"] = call_count()
+        summary["live_ai_calls_reserved"] = max(0, call_count() - initial_ai_count)
+        summary["shared_ai_calls_reserved_before_batch"] = initial_ai_count
+        summary["shared_ai_calls_reserved_after_batch"] = call_count()
         summary["live_ai_observations"] = observations()
         save("summary.json", summary)
         run_stack.close()

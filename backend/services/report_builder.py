@@ -297,6 +297,9 @@ class ReportBuilder:
 
         # ── Agent Intelligence (Trending) ────────────────────────────────────
         t_intel: Dict[str, Any] = {}
+        background = (trend_data.get('retrieval_trace') or {}).get('historical_background')
+        if isinstance(background, dict):
+            t_intel['historical_background'] = background
         if trend_data.get("bot_amplification"):
             t_intel["bot_amplification"] = trend_data["bot_amplification"]
         if trend_data.get("narrative_velocity"):

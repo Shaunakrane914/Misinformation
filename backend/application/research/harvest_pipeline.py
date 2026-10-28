@@ -203,6 +203,9 @@ def run_harvest_pipeline(request, budget, profile_name):
         }
     assembled.telemetry["acquisition_metrics"]["findings"] = len(analysis.findings)
     assembled.telemetry["acquisition_metrics"]["publisher_independence_verified"] = False
+    if request.domain == 'trending' and len(read.investigated) < 2:
+        from backend.services.research.trending_background import historical_background
+        assembled.telemetry['historical_background'] = historical_background(harvest.captures, request.target)
     measured = assembled.telemetry["acquisition_metrics"]
     funnel = assembled.telemetry["discovery_funnel"]
     from backend.services.research.discovery_funnel import summarize_qualification_decisions

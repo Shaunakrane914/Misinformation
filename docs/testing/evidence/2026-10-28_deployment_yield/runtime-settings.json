@@ -1,0 +1,15 @@
+{
+  "previous": {
+    "AEGIS_ACQUISITION_CONTROLLER": null,
+    "AEGIS_LIVE_ADVISORY_ENABLED": null,
+    "AEGIS_SEARCH_ADVISOR_ENABLED": null,
+    "AEGIS_AI_DAILY_REQUEST_LIMIT": null
+  },
+  "applied": {
+    "AEGIS_ACQUISITION_CONTROLLER": "pipelined_v1",
+    "AEGIS_LIVE_ADVISORY_ENABLED": "true",
+    "AEGIS_SEARCH_ADVISOR_ENABLED": "true",
+    "AEGIS_AI_DAILY_REQUEST_LIMIT": "3"
+  },
+  "credentials_modified": false
+}

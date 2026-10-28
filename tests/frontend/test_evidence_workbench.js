@@ -38,3 +38,12 @@ renderUnifiedReport(mount, {evidence_workbench: {...workbench, passages: [{...li
 assert(!mount.innerHTML.includes('href="javascript:'));
 assert(!mount.innerHTML.includes('Source licence'));
 console.log('EVIDENCE WORKBENCH PASSED');
+renderUnifiedReport(mount, {agent_intelligence: {historical_background: {sources: [{
+  title: '<script>Older source</script>', url: 'javascript:alert(1)', published_at: '2020-01-01',
+  publisher: 'Observed publisher', evidence_id: 'captured-source', passage: 'Older battery recycling information.'
+}]}}});
+assert(mount.innerHTML.includes('OLDER BACKGROUND'));
+assert(mount.innerHTML.includes('2020-01-01'));
+assert(mount.innerHTML.includes('not current developments'));
+assert(mount.innerHTML.includes('&lt;script&gt;Older source&lt;/script&gt;'));
+assert(!mount.innerHTML.includes('href="javascript:'));

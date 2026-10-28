@@ -80,6 +80,7 @@ class RelevanceGate:
         window_hours: Optional[float] = None,
         allow_updated: Optional[bool] = None,
         provisional_read: bool = False,
+        historical_context: bool = False,
     ) -> RelevanceAssessment:
         """
         Evaluate a single candidate EvidenceItem or dict.
@@ -264,7 +265,9 @@ class RelevanceGate:
                 item["temporal_status"] = temporal_assessment.status
                 item["recency_score"] = temporal_assessment.recency_score
 
-            if not temporal_assessment.is_eligible and not (provisional_read and temporal_assessment.status == "MISSING_TIMESTAMP"):
+            background_date = historical_context and temporal_assessment.status in {
+                "STALE", "SYNDICATED_STALE", "UPDATED_HISTORICAL_REJECTED"}
+            if not temporal_assessment.is_eligible and not background_date and not (provisional_read and temporal_assessment.status == "MISSING_TIMESTAMP"):
                 return RelevanceAssessment(
                     evidence_id=e_id,
                     relevance_score=0.0,

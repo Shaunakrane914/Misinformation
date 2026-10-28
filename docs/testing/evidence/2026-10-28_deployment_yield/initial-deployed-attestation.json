@@ -1,0 +1,57 @@
+{
+  "expected_commit": "24bf73d069329fba63c84fb061e8a42fc7472c23",
+  "backend_live_commit": "24bf73d069329fba63c84fb061e8a42fc7472c23",
+  "backend_deploy_id": "dep-dbgm81cs728c7390kop0",
+  "frontend_assets": [
+    {
+      "name": "aegis-nav.js",
+      "matches_commit": true,
+      "sha256": "e7f177da10ab33a3d6aa55e678387f8b5ac71af38485b4ed88ec0983f7f50dd7"
+    },
+    {
+      "name": "agent-research-client.js",
+      "matches_commit": true,
+      "sha256": "73267dba951b51ab131b9bfa9558c22b8750336a429bc54270afb62819ef72ad"
+    },
+    {
+      "name": "unified-report-renderer.js",
+      "matches_commit": true,
+      "sha256": "37749a868400877e72225377bd84657a0efb4fa7c554ae05698e6fae3c8470dd"
+    },
+    {
+      "name": "benchmark.html",
+      "matches_commit": true,
+      "sha256": "fe9c22efbd5ce5c914eb042739de2ec729a2b9d3a04d32bae802086d551bb88d"
+    },
+    {
+      "name": "index.html",
+      "matches_commit": true,
+      "sha256": "91413dae400d88dc6bfe4457179e699bb06f11dd8974a8a253565e6a45af8021"
+    },
+    {
+      "name": "scout-agent.html",
+      "matches_commit": true,
+      "sha256": "8d010118e950a6e5ff1683060cb99e56c6eb687e6e91cb36e37b9d30b45bc915"
+    },
+    {
+      "name": "trending-agent.html",
+      "matches_commit": true,
+      "sha256": "64f8bed4799d8a9729b1c395f26788080d4887d3cc611885e8afd8c0f1d2f00a"
+    },
+    {
+      "name": "brandshield-agent.html",
+      "matches_commit": true,
+      "sha256": "7f9bd4b1a37dee561b48ce17429945fe75beeb34a44aa763ab61aa0aa2372e30"
+    },
+    {
+      "name": "personal-watch-agent.html",
+      "matches_commit": true,
+      "sha256": "c631a6c2681ea3e4dff3a55f17a497b859fdb4fd288193dae45d0e1a0734ac62"
+    }
+  ],
+  "cases": [],
+  "scope": "Actual deployment transport/rendering, not research accuracy acceptance",
+  "ai_generation_requested": false,
+  "upstream_ai_usage_accounting": "NOT_OBSERVED",
+  "status": "EXACT_DEPLOYED_CODE_OBSERVED_NO_RESEARCH"
+}

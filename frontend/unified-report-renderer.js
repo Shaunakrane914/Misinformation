@@ -624,6 +624,17 @@ function renderAgentIntelligence(report) {
   }
 
   // A current article set is a development briefing, not measured popularity.
+  const background = intel.historical_background;
+  if (background && Array.isArray(background.sources)) {
+    modules.push(`<div class="ur-intel-card" data-ur-historical-background><h3 class="ur-intel-head">Trending // Older background reading</h3>
+      <p class="ur-ev-note">Relevant older articles, shown because current evidence is limited. These are not current developments or measured trends.</p>
+      <ul class="ur-list">${background.sources.slice(0, 6).map(row => {
+        const href = safeEvidenceUrl(row.url);
+        return `<li><strong>OLDER BACKGROUND</strong> · ${esc(row.published_at || 'Date unknown')}
+          <h4>${href ? `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(row.title)}</a>` : esc(row.title)}</h4>
+          <p>${esc(row.publisher)} · ${esc(row.evidence_id)}</p><blockquote>${esc(row.passage)}</blockquote></li>`;
+      }).join('')}</ul>${background.sources.length ? '' : '<p>No permitted relevant historical article was acquired. Discovery leads remain inspectable separately.</p>'}</div>`);
+  }
   for (const [key, heading, description] of [
     ['recent_developments', 'Trending // Recent source-reported developments', 'Observed article publication timing; not measured audience growth, reach or independent corroboration.'],
     ['competitive_context', 'Trending // Competitive context — not primary-topic announcements', 'Other actors’ developments and reported competitive impact. This does not establish a new action by the target or measured virality.'],

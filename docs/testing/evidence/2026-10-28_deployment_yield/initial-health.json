@@ -1,0 +1,13 @@
+{
+  "status": 200,
+  "allow_origin": "https://aegis-protocol-110.pages.dev",
+  "body": {
+    "status": "ok",
+    "system": "Aegis Protocol",
+    "version": "4.1.0",
+    "response_generated_at": "2026-10-28T02:57:53.335904Z",
+    "registered_modules": 7,
+    "active_agents": null,
+    "active_agent_count_status": "NOT_APPLICABLE_ON_DEMAND_EXECUTION"
+  }
+}

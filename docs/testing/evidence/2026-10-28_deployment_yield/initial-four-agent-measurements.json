@@ -1,0 +1,455 @@
+{
+  "mode": "READ_ONLY_MEASUREMENT_OF_SAVED_LIVE_PRODUCTION_RESULTS",
+  "application_commit": "24bf73d069329fba63c84fb061e8a42fc7472c23",
+  "measurement_correction": "Harvest query_records is a count; query statuses use actual corpus/trace query rows. No research repeated.",
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "subject": "Adobe",
+      "seconds": 72.44,
+      "http_status": 200,
+      "result_event": true,
+      "status": "COMPLETED",
+      "observation": "LIVE_PRODUCTION",
+      "local_measurement_error": "'int' object is not iterable",
+      "error_events": [],
+      "progress_events": 44,
+      "acquisition_metrics": {
+        "source_count": 31,
+        "candidate_urls": 31,
+        "by_type": {
+          "ARTICLE_BODY": 7,
+          "DISCOVERY_LEAD": 11,
+          "BLOCKED_OR_FAILED": 5,
+          "FEED_ENTRY": 2,
+          "PUBLISHER_HOMEPAGE": 6
+        },
+        "reads_attempted": 14,
+        "successful_captures": 9,
+        "article_bodies": 7,
+        "raw_article_words": 7933,
+        "raw_source_words": 10430,
+        "duplicate_captures": 0,
+        "qualified_source_count": 2,
+        "relevant_words": 96,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 226402,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 1,
+          "AUTH_REQUIRED": 1,
+          "ACCESS_DENIED": 2,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {},
+        "findings": 2,
+        "publisher_independence_verified": false
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 2,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 11,
+        "published_passages": 11,
+        "published_unique_words": 603,
+        "published_text_utf8_bytes": 3875,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 4,
+          "ARTICLE_CONTENT": 4,
+          "FINANCIAL_STATEMENT": 3
+        },
+        "independence_verified": false
+      },
+      "query_statuses": {
+        "TIMEOUT": 2,
+        "SUCCESS": 13,
+        "AUTH_REQUIRED": 1,
+        "NOT_SUBMITTED": 2
+      },
+      "queries_generated": 18,
+      "reads_attempted": 14,
+      "native_http_admissions": 58,
+      "native_http_cap": 120,
+      "native_http_by_phase": {
+        "discovery": 37,
+        "reading": 21
+      },
+      "failure_categories": {
+        "PUBLISHER_UNRESOLVED": 1,
+        "AUTH_REQUIRED": 1,
+        "ACCESS_DENIED": 2,
+        "PROVIDER_FAILURE": 1
+      },
+      "discarded_by_reason": {
+        "DUPLICATE_URL": 8
+      },
+      "stop_reason": "SHARED_READ_ATTEMPT_CAP",
+      "advisory": {
+        "status": "SKIPPED_ADEQUATE_CAPTURED_PASSAGES",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 2
+      },
+      "runtime_advisory": null,
+      "findings": [
+        "Adobe’s Q2 FY2026 revenue was a record $6.62 billion, up 13%, with AI-first annual recurring revenue (ARR) tripling year over year to exceed $500 million and total ARR of $27.10 billion. Full-year Adobe guidance calls for $26.50 billion to $26.60 billion in revenue.",
+        "The valuation has shifted accordingly. Adobe trades at a forward P/E of roughly 10x, historically cheap for a software franchise of this quality. The analyst consensus target sits at $328.19, with 20 buy ratings against 15 holds and 4 sells. Insiders have been net buyers. Even Ray Dalio’s Bridgewater has been adding shares."
+      ],
+      "sources": [
+        {
+          "id": "ev_hv_04d231119fbf9a1f0638",
+          "title": "Oracle or Adobe: Which Earnings Report Will Reveal the True Growth Story?",
+          "url": "https://247wallst.com/investing/2026/09/09/oracle-or-adobe-which-earnings-report-will-reveal-the-true-growth-story/",
+          "words": 1162,
+          "content_depth": "PARTIAL_CONTENT",
+          "published_at": "2026-09-09T12:05:15+00:00",
+          "body_sha256": "1668538539ed07d4d5ca2b0b945c7d7321fa37ffc19e0ef4b79874e54c91b345"
+        },
+        {
+          "id": "ev_hv_10732b006807d4851686",
+          "title": "Semianalysis CEO: Adobe faces existential threat from AI commoditization",
+          "url": "https://247wallst.com/investing/2026/04/02/semianalysis-ceo-adobe-faces-existential-threat-from-ai-commoditization/",
+          "words": 761,
+          "content_depth": "PARTIAL_CONTENT",
+          "published_at": "2026-04-02T10:47:52+00:00",
+          "body_sha256": "b24b2d003e806c9290f237de1b1a6bfc78e7c834690991726320e5b117f06dd2"
+        }
+      ],
+      "returned_records": 2,
+      "returned_record_words": 1923
+    },
+    {
+      "case_id": "02-brandshield",
+      "agent": "brandshield",
+      "subject": "Dyson",
+      "seconds": 55.07,
+      "http_status": 200,
+      "result_event": true,
+      "status": "COMPLETED",
+      "observation": "LIVE_PRODUCTION",
+      "local_measurement_error": "'int' object is not iterable",
+      "error_events": [],
+      "progress_events": 41,
+      "acquisition_metrics": {
+        "source_count": 36,
+        "candidate_urls": 36,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 6,
+          "DISCOVERY_LEAD": 17,
+          "ARTICLE_BODY": 8,
+          "PUBLISHER_HOMEPAGE": 4,
+          "BACKGROUND_REFERENCE": 1
+        },
+        "reads_attempted": 14,
+        "successful_captures": 8,
+        "article_bodies": 8,
+        "raw_article_words": 12300,
+        "raw_source_words": 12300,
+        "duplicate_captures": 0,
+        "qualified_source_count": 3,
+        "relevant_words": 168,
+        "unique_publishers": 3,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 246506,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 1,
+          "AUTH_REQUIRED": 4,
+          "ACCESS_DENIED": 1
+        },
+        "dropped_by_limit": {},
+        "findings": 3,
+        "publisher_independence_verified": false
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 3,
+        "observed_publisher_hosts": 3,
+        "available_unique_passages": 10,
+        "published_passages": 10,
+        "published_unique_words": 353,
+        "published_text_utf8_bytes": 2192,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "UNVERIFIED_ALLEGATION": 8,
+          "REPORTED_ENFORCEMENT": 1,
+          "ARTICLE_CONTENT": 1
+        },
+        "independence_verified": false
+      },
+      "query_statuses": {
+        "SUCCESS": 10,
+        "NOT_SUBMITTED": 8
+      },
+      "queries_generated": 18,
+      "reads_attempted": 14,
+      "native_http_admissions": 66,
+      "native_http_cap": 120,
+      "native_http_by_phase": {
+        "discovery": 33,
+        "reading": 33
+      },
+      "failure_categories": {
+        "PUBLISHER_UNRESOLVED": 1,
+        "ACCESS_DENIED": 1,
+        "AUTH_REQUIRED": 4
+      },
+      "discarded_by_reason": {
+        "BACKGROUND_REFERENCE_NOT_CURRENT_ACQUISITION": 1,
+        "DUPLICATE_URL": 2
+      },
+      "stop_reason": "SHARED_READ_ATTEMPT_CAP",
+      "advisory": {
+        "status": "SKIPPED_ADEQUATE_CAPTURED_PASSAGES",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 2
+      },
+      "runtime_advisory": null,
+      "findings": [
+        "A spokesman for Dyson said: “We’re sorry to hear that Mr and Mrs Black were duped by unscrupulous counterfeiters who sold them a ­dangerous product.",
+        "Dyson said it faces a significant challenge 'given the number of counterfeit products available on online marketplaces' and that counterfeit products 'may cause harm and be inefficient'.",
+        "La suite est une espèce de « mini-jeu », que l’on retrouve très souvent dans les campagnes de phishing : il faut cliquer sur le bon paquet cadeau afin de remporter l’aspirateur (ou, en fonction des versions du phishing, des iPhone , des vélos , etc.). Nous cliquons au hasard sur l’un d’entre eux, et, manque de chance, ce n’est pas le bon. Nous sélectionnons à nouveau, au hasard, un autre paquet et cette fois, miracle : nous avons cliqué sur le bon. Les aspirateurs Dyson ne sont plus qu’à quelques clics de nous, nous informe le site. Il ne nous reste plus qu’à « le réclamer ». Or, c’est là que commence la véritable arnaque.",
+        "The captured source publishes preventive guidance. A warning is not an observed active scam, counterfeit seller or confirmed threat.",
+        "The captured source reports earlier enforcement or legal action; current activity and any actor endpoint are not established."
+      ],
+      "sources": [
+        {
+          "id": "ev_hv_05b4faf28130fd6a6724",
+          "title": "Shoppers warned as fake £299 Dyson hairdryers sold on Amazon could be lethal",
+          "url": "https://www.mirror.co.uk/money/shoppers-warned-fake-299-dyson-26277200",
+          "words": 434,
+          "content_depth": "PARTIAL_CONTENT",
+          "published_at": "2022-02-19T18:03:48Z",
+          "body_sha256": "8ce2cde77a8b1404d2d6eac8f0a29cbaf60916c8b360d426a51f19ec0c2e452a"
+        },
+        {
+          "id": "ev_hv_232905d9e657f33e94fe",
+          "title": "Dyson warns of fake products on online marketplaces - Which?",
+          "url": "https://www.which.co.uk/news/article/dyson-warns-of-fake-products-on-online-marketplaces-averd8q7dY3K",
+          "words": 640,
+          "content_depth": "PARTIAL_CONTENT",
+          "published_at": "2020-08-07T16:57:03.000Z",
+          "body_sha256": "f5be4da0ba9779626cfad8db5b7b015adfd48733a6bdcfef2a97210bac2a0b9e"
+        },
+        {
+          "id": "ev_hv_ce2c2b3bb29c51b395c3",
+          "title": "Darty vous offre un aspirateur Dyson dernier cri ? Ne cliquez pas : il s'agit d'un phishing",
+          "url": "https://www.numerama.com/cyberguerre/743537-darty-vous-offre-un-aspirateur-dyson-dernier-cri-ne-cliquez-pas-il-sagit-dun-phishing.html",
+          "words": 2007,
+          "content_depth": "PARTIAL_CONTENT",
+          "published_at": "2021-09-29T14:23:08+00:00",
+          "body_sha256": "2549cca282a7cdcc15f29230c0989be7b0522bcd451b4d76b80395a552ffd2be"
+        }
+      ],
+      "returned_records": 3,
+      "returned_record_words": 3081
+    },
+    {
+      "case_id": "03-trending",
+      "agent": "trending",
+      "subject": "battery recycling",
+      "seconds": 86.79,
+      "http_status": 200,
+      "result_event": true,
+      "status": "INSUFFICIENT_EVIDENCE",
+      "observation": "LIVE_PRODUCTION",
+      "local_measurement_error": "'int' object is not iterable",
+      "error_events": [],
+      "progress_events": 45,
+      "acquisition_metrics": {
+        "source_count": 48,
+        "candidate_urls": 48,
+        "by_type": {
+          "FEED_ENTRY": 6,
+          "BLOCKED_OR_FAILED": 3,
+          "ARTICLE_BODY": 6,
+          "DISCOVERY_LEAD": 26,
+          "PUBLISHER_HOMEPAGE": 4,
+          "SOURCE_INDEX": 3
+        },
+        "reads_attempted": 14,
+        "successful_captures": 11,
+        "article_bodies": 6,
+        "raw_article_words": 6489,
+        "raw_source_words": 12963,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 336117,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {},
+        "findings": 0,
+        "publisher_independence_verified": false
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "query_statuses": {
+        "SUCCESS": 17,
+        "FAILED": 1
+      },
+      "queries_generated": 18,
+      "reads_attempted": 14,
+      "native_http_admissions": 79,
+      "native_http_cap": 120,
+      "native_http_by_phase": {
+        "discovery": 57,
+        "reading": 22
+      },
+      "failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3
+      },
+      "discarded_by_reason": {
+        "DUPLICATE_URL": 12
+      },
+      "stop_reason": "SHARED_READ_ATTEMPT_CAP",
+      "advisory": {
+        "status": "UNAVAILABLE",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "error_type": "AdvisoryPolicyError",
+        "latency_ms": 0.02
+      },
+      "runtime_advisory": null,
+      "findings": [],
+      "sources": [],
+      "returned_records": 0,
+      "returned_record_words": 0
+    },
+    {
+      "case_id": "04-personal_watch",
+      "agent": "personal_watch",
+      "subject": "Mary Barra",
+      "seconds": 75.26,
+      "http_status": 200,
+      "result_event": true,
+      "status": "INSUFFICIENT_EVIDENCE",
+      "observation": "LIVE_PRODUCTION",
+      "local_measurement_error": "'int' object is not iterable",
+      "error_events": [],
+      "progress_events": 45,
+      "acquisition_metrics": {
+        "source_count": 27,
+        "candidate_urls": 27,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 8,
+          "FEED_ENTRY": 6,
+          "DISCOVERY_LEAD": 7,
+          "PUBLISHER_HOMEPAGE": 2,
+          "SOURCE_INDEX": 2,
+          "ARTICLE_BODY": 2
+        },
+        "reads_attempted": 14,
+        "successful_captures": 6,
+        "article_bodies": 2,
+        "raw_article_words": 1855,
+        "raw_source_words": 6143,
+        "duplicate_captures": 1,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 188387,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "READER_NOT_SELECTED": 1,
+          "AUTH_REQUIRED": 3,
+          "ACCESS_DENIED": 1
+        },
+        "dropped_by_limit": {},
+        "findings": 0,
+        "publisher_independence_verified": false
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "query_statuses": {
+        "SUCCESS": 18
+      },
+      "queries_generated": 18,
+      "reads_attempted": 14,
+      "native_http_admissions": 87,
+      "native_http_cap": 120,
+      "native_http_by_phase": {
+        "discovery": 60,
+        "reading": 27
+      },
+      "failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "AUTH_REQUIRED": 3,
+        "READER_NOT_SELECTED": 1,
+        "ACCESS_DENIED": 1
+      },
+      "discarded_by_reason": {
+        "DUPLICATE_URL": 7
+      },
+      "stop_reason": "SHARED_READ_ATTEMPT_CAP",
+      "advisory": {
+        "status": "UNAVAILABLE",
+        "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+        "advisory_only": true,
+        "trigger": "CAPTURED_PASSAGE_FEEDBACK",
+        "usable_capture_observations": 0,
+        "error_type": "AdvisoryPolicyError",
+        "latency_ms": 0.01
+      },
+      "runtime_advisory": null,
+      "findings": [],
+      "sources": [],
+      "returned_records": 0,
+      "returned_record_words": 0
+    }
+  ]
+}

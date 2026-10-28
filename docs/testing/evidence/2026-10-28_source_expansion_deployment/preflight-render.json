@@ -1,0 +1,47 @@
+{
+  "service": {
+    "id": "srv-d716v3dactks738os7d0",
+    "name": "Misinformation",
+    "repo": "https://github.com/Shaunakrane914/Misinformation",
+    "branch": "main",
+    "autoDeploy": "yes",
+    "suspended": "not_suspended"
+  },
+  "details": {
+    "url": "https://misinformation-1ouh.onrender.com",
+    "healthCheckPath": "/api/healthz",
+    "plan": "free"
+  },
+  "deploys": [
+    {
+      "id": "dep-dbgn2i7b9u1s7393pcgg",
+      "status": "live",
+      "commit": "ec5bef19ff701d62fc10546a4a9bcc7b569f95f8",
+      "finishedAt": "2026-10-28T03:54:10.394696Z"
+    },
+    {
+      "id": "dep-dbgm81cs728c7390kop0",
+      "status": "deactivated",
+      "commit": "24bf73d069329fba63c84fb061e8a42fc7472c23",
+      "finishedAt": "2026-10-28T02:57:41.558106Z"
+    },
+    {
+      "id": "dep-dbe3r12jnfac73c1nc3g",
+      "status": "deactivated",
+      "commit": "443652ec551caf44f2bf90e01f81bd317364a3b7",
+      "finishedAt": "2026-10-24T05:11:58.441716Z"
+    },
+    {
+      "id": "dep-dbabh79srm7s73a93jl0",
+      "status": "deactivated",
+      "commit": "725f4e251e3cb4cfbd97be90cf39c27811be556b",
+      "finishedAt": "2026-10-18T12:19:07.194008Z"
+    },
+    {
+      "id": "dep-db8qn8rncjis73f0lr00",
+      "status": "deactivated",
+      "commit": "8c8ecf2b0074f658916a11688b21bdaad3544cd3",
+      "finishedAt": "2026-10-16T04:47:22.009987Z"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "name": "health",
+      "http_status": 200,
+      "allow_origin": "https://aegis-protocol-110.pages.dev",
+      "response": {
+        "status": "ok",
+        "system": "Aegis Protocol",
+        "version": "4.1.0",
+        "response_generated_at": "2026-10-28T16:46:43.700962Z",
+        "registered_modules": 7,
+        "active_agents": null,
+        "active_agent_count_status": "NOT_APPLICABLE_ON_DEMAND_EXECUTION"
+      }
+    },
+    {
+      "name": "readiness",
+      "http_status": 200,
+      "allow_origin": null,
+      "response": {
+        "status": "ready",
+        "mode": "READY_UNVERIFIED",
+        "version": "4.1.0",
+        "operation_summary": {
+          "total": 74,
+          "eligible": 44,
+          "verified": 0,
+          "auth_required": 6,
+          "policy_blocked": 3,
+          "not_implemented": 21
+        },
+        "note": "Readiness does not imply that unprobed third-party providers are healthy.",
+        "response_generated_at": "2026-10-28T16:46:43.983469Z"
+      }
+    },
+    {
+      "name": "cors",
+      "http_status": 200,
+      "allow_origin": "https://aegis-protocol-110.pages.dev",
+      "response_type": "NON_JSON"
+    },
+    {
+      "name": "frontend_home",
+      "http_status": 200,
+      "allow_origin": "*",
+      "response_type": "NON_JSON"
+    }
+  ],
+  "additional_assets": [
+    {
+      "name": "aegis-theme.css",
+      "matches_commit": true,
+      "sha256": "f86bd219856d623117ba5e9c3e2e1ed9b353dc867c58e14875d024ce676f5d47"
+    },
+    {
+      "name": "forensic-explorer.js",
+      "matches_commit": true,
+      "sha256": "ea4112e89e0260bcd6bee64b5109c16c53064ffe7854e0f25f03ed900ec9eca8"
+    }
+  ],
+  "investigation_requests": 0,
+  "model_requests": 0,
+  "scope": "Read-only process readiness/CORS/assets; no provider probing or research"
+}

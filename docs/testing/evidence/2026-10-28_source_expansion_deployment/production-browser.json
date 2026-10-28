@@ -1,0 +1,22 @@
+[
+  {
+    "width": 1440,
+    "http_status": 200,
+    "page_errors": [],
+    "horizontal_overflow": false,
+    "scan_field_visible": true,
+    "scan_button_visible": true,
+    "nonhealth_api_requests_blocked": 0,
+    "scope": "Actual production page; no form submission, provider/model call or production investigation"
+  },
+  {
+    "width": 390,
+    "http_status": 200,
+    "page_errors": [],
+    "horizontal_overflow": false,
+    "scan_field_visible": true,
+    "scan_button_visible": true,
+    "nonhealth_api_requests_blocked": 0,
+    "scope": "Actual production page; no form submission, provider/model call or production investigation"
+  }
+]

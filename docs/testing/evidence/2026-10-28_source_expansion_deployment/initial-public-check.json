@@ -1,0 +1,6 @@
+{
+  "status": "CHECK_ENDPOINT_ASSUMPTION_CORRECTED",
+  "request": "https://aegis-protocol-110.pages.dev/api/healthz",
+  "http_status": 404,
+  "cause": "Pages is static. The documented getAegisApiUrl path calls Render directly; no Pages API proxy is configured. Corrected verification endpoint, no application change."
+}

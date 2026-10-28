@@ -1,0 +1,88 @@
+{
+  "preview_url": "https://8c13246d.aegis-protocol-110.pages.dev",
+  "commit": "63c62a87f5ef9ff7f1d262f18b280ae9418e0c40",
+  "assets": [
+    {
+      "name": "unified-report-renderer.js",
+      "matches_commit": true,
+      "sha256": "a771a54f1f110140ed76a9ac55f83e3ac8b61e136edcb503db2c4d2d3cbe846a"
+    },
+    {
+      "name": "forensic-explorer.js",
+      "matches_commit": true,
+      "sha256": "ea4112e89e0260bcd6bee64b5109c16c53064ffe7854e0f25f03ed900ec9eca8"
+    },
+    {
+      "name": "aegis-theme.css",
+      "matches_commit": true,
+      "sha256": "f86bd219856d623117ba5e9c3e2e1ed9b353dc867c58e14875d024ce676f5d47"
+    },
+    {
+      "name": "scout-agent.html",
+      "matches_commit": true,
+      "sha256": "8d010118e950a6e5ff1683060cb99e56c6eb687e6e91cb36e37b9d30b45bc915"
+    },
+    {
+      "name": "brandshield-agent.html",
+      "matches_commit": true,
+      "sha256": "7f9bd4b1a37dee561b48ce17429945fe75beeb34a44aa763ab61aa0aa2372e30"
+    },
+    {
+      "name": "personal-watch-agent.html",
+      "matches_commit": true,
+      "sha256": "c631a6c2681ea3e4dff3a55f17a497b859fdb4fd288193dae45d0e1a0734ac62"
+    },
+    {
+      "name": "trending-agent.html",
+      "matches_commit": true,
+      "sha256": "64f8bed4799d8a9729b1c395f26788080d4887d3cc611885e8afd8c0f1d2f00a"
+    }
+  ],
+  "views": [
+    {
+      "page": "scout-agent",
+      "width": 1440,
+      "status": 200,
+      "page_errors": [],
+      "horizontal_overflow": false,
+      "api_requests_blocked": 1,
+      "scope": "Real preview assets; API intentionally blocked; no investigation, provider or model request"
+    },
+    {
+      "page": "brandshield-agent",
+      "width": 1440,
+      "status": 200,
+      "page_errors": [],
+      "horizontal_overflow": false,
+      "api_requests_blocked": 0,
+      "scope": "Real preview assets; API intentionally blocked; no investigation, provider or model request"
+    },
+    {
+      "page": "personal-watch-agent",
+      "width": 1440,
+      "status": 200,
+      "page_errors": [],
+      "horizontal_overflow": false,
+      "api_requests_blocked": 0,
+      "scope": "Real preview assets; API intentionally blocked; no investigation, provider or model request"
+    },
+    {
+      "page": "trending-agent",
+      "width": 1440,
+      "status": 200,
+      "page_errors": [],
+      "horizontal_overflow": false,
+      "api_requests_blocked": 1,
+      "scope": "Real preview assets; API intentionally blocked; no investigation, provider or model request"
+    },
+    {
+      "page": "personal-watch-agent",
+      "width": 390,
+      "status": 200,
+      "page_errors": [],
+      "horizontal_overflow": false,
+      "api_requests_blocked": 0,
+      "scope": "Real preview assets; API intentionally blocked; no investigation, provider or model request"
+    }
+  ]
+}

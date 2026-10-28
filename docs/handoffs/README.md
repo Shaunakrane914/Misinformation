@@ -2,7 +2,7 @@
 
 ## Source expansion deployment - 2026-10-28
 
-- [Deployment authorization, release candidate and observed rollout](2026-10-28_SOURCE_EXPANSION_DEPLOYMENT.md). Exact hosted CI and public attestation required; research acceptance remains unmet.
+- [Deployed source/body/background repairs](2026-10-28_SOURCE_EXPANSION_DEPLOYMENT.md): application `63c62a8`, both hosts live, five-job release/main CI passed; eleven public assets and health/CORS verified. No fresh research/model calls. Research acceptance remains unmet.
 
 
 ## Source expansion and reference fallback - 2026-10-28

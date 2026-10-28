@@ -1,0 +1,142 @@
+{
+  "commit": "63c62a87f5ef9ff7f1d262f18b280ae9418e0c40",
+  "files": [
+    {
+      "path": "frontend/12.png",
+      "sha256": "94009280c75da1d6c98196077a6479c3893beeb74d3c8f9e24c8c6598d90e4f8"
+    },
+    {
+      "path": "frontend/2.png",
+      "sha256": "78452598340d52532cd062c0cc4aaad6140cee86633465a74bd92d5acd9dac49"
+    },
+    {
+      "path": "frontend/404.html",
+      "sha256": "732e52ad807fe53a80d456924062fbe13dcbd83e2cdbdadbb9da1f68362792be"
+    },
+    {
+      "path": "frontend/about.html",
+      "sha256": "ac21e67a815d319ae7f58091f526888247a27edee777f566409518c8dc2e21cb"
+    },
+    {
+      "path": "frontend/aegis-logo.svg",
+      "sha256": "296e6fc53cfd3bed656b4c868fdfbada0ca57a722cfd149430228efd52b3b0c8"
+    },
+    {
+      "path": "frontend/aegis-nav.js",
+      "sha256": "e7f177da10ab33a3d6aa55e678387f8b5ac71af38485b4ed88ec0983f7f50dd7"
+    },
+    {
+      "path": "frontend/aegis-theme.css",
+      "sha256": "f86bd219856d623117ba5e9c3e2e1ed9b353dc867c58e14875d024ce676f5d47"
+    },
+    {
+      "path": "frontend/agent-research-client.js",
+      "sha256": "73267dba951b51ab131b9bfa9558c22b8750336a429bc54270afb62819ef72ad"
+    },
+    {
+      "path": "frontend/agents.html",
+      "sha256": "2ccbcf9f8419a3fdac85e7e2613c06a54339d9fa6ecd3d2ff28c401c7cf8e286"
+    },
+    {
+      "path": "frontend/benchmark.html",
+      "sha256": "fe9c22efbd5ce5c914eb042739de2ec729a2b9d3a04d32bae802086d551bb88d"
+    },
+    {
+      "path": "frontend/brandshield-agent.html",
+      "sha256": "7f9bd4b1a37dee561b48ce17429945fe75beeb34a44aa763ab61aa0aa2372e30"
+    },
+    {
+      "path": "frontend/brandshield_logo.jpg",
+      "sha256": "c72e5fe3dfe41ca28abb123fb2ea39b00c28e0c821c0630dcc1d18da4b6a6054"
+    },
+    {
+      "path": "frontend/changelog.html",
+      "sha256": "b7a0817e02d0cbfa1dc046cfa8de72040fafa74e9481c2a098bb8cb817bb9330"
+    },
+    {
+      "path": "frontend/dashboard.html",
+      "sha256": "0d15f9c0a0d4147da8e66fbf2acb37a26c163fa8a84c497e8e3361c2dd756352"
+    },
+    {
+      "path": "frontend/dashboard.js",
+      "sha256": "3129328a98365f30fb1c80419b42896c1efae688f69ab1a69cd46e75b8cafb2a"
+    },
+    {
+      "path": "frontend/forensic-explorer.js",
+      "sha256": "ea4112e89e0260bcd6bee64b5109c16c53064ffe7854e0f25f03ed900ec9eca8"
+    },
+    {
+      "path": "frontend/gemini-client.js",
+      "sha256": "974985294f2f3a2a09262ae728cd8d651f60be690f62ae1401e7ec38893bd56c"
+    },
+    {
+      "path": "frontend/index.html",
+      "sha256": "91413dae400d88dc6bfe4457179e699bb06f11dd8974a8a253565e6a45af8021"
+    },
+    {
+      "path": "frontend/investigator-agent.html",
+      "sha256": "d14cb3bf5e35fb9d4dc804dd0ebdaa15eebfc105a8ab613b6d67a201e6a1ac80"
+    },
+    {
+      "path": "frontend/lab.html",
+      "sha256": "9f5d724412f89056dbb9a18181d33d4aa9a16dafe4c5277ae2d30f4cdbbf2b78"
+    },
+    {
+      "path": "frontend/operation-health.js",
+      "sha256": "8dbc65b8644c18a28523b52c8344a615d34e883459ab2a154ee1383770fb0671"
+    },
+    {
+      "path": "frontend/personal-watch-agent.html",
+      "sha256": "c631a6c2681ea3e4dff3a55f17a497b859fdb4fd288193dae45d0e1a0734ac62"
+    },
+    {
+      "path": "frontend/README.md",
+      "sha256": "67d8650e319b90c6ffab3ec8491c5e905f72a9348d00c6029cb8fe97ff19d7c8"
+    },
+    {
+      "path": "frontend/research-agent.html",
+      "sha256": "4a86fc184a812f2e9ec3b274f6c5bc950322e9c1c65dd2c92520828a8e8389c0"
+    },
+    {
+      "path": "frontend/safe-source-url.js",
+      "sha256": "22b633aa2f47f4a19f5aad9ac46541b6d6d3b78e0049376015e3a49660c77c11"
+    },
+    {
+      "path": "frontend/scout-agent.html",
+      "sha256": "8d010118e950a6e5ff1683060cb99e56c6eb687e6e91cb36e37b9d30b45bc915"
+    },
+    {
+      "path": "frontend/scout_logo.jpg",
+      "sha256": "9b3e4989de7e1c15c4b9e8182ba858c37f489e9be54dfebbaec3275b6d50aa06"
+    },
+    {
+      "path": "frontend/status.html",
+      "sha256": "6b1bac8a3bc386546e5c1e01a7683f858b5ceab3fe41b45d1c6a876b30ea3f96"
+    },
+    {
+      "path": "frontend/submit.html",
+      "sha256": "67f7db03d556b43aa904647b8a23671bb7d42dd63a61523c576d6832be7a9817"
+    },
+    {
+      "path": "frontend/trending-agent.html",
+      "sha256": "64f8bed4799d8a9729b1c395f26788080d4887d3cc611885e8afd8c0f1d2f00a"
+    },
+    {
+      "path": "frontend/trending_logo.jpg",
+      "sha256": "4936396d2cfc7334c4f561dad91e03f86cdba1dbfaa6cd4c734bba0509a7feab"
+    },
+    {
+      "path": "frontend/unified-report-renderer.js",
+      "sha256": "a771a54f1f110140ed76a9ac55f83e3ac8b61e136edcb503db2c4d2d3cbe846a"
+    },
+    {
+      "path": "frontend/_headers",
+      "sha256": "87d65859c5fb1dc6ff2aae140405d8c94a6eea3310cf95fb16ac2db78e1c9cd0"
+    },
+    {
+      "path": "frontend/_redirects",
+      "sha256": "18de4b3d11ede7fce7a8eec0eac617466d97b57c13edd366d224463525f0aacb"
+    }
+  ],
+  "all_git_blobs_match": true
+}

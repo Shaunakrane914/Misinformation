@@ -630,9 +630,14 @@ function renderAgentIntelligence(report) {
       <p class="ur-ev-note">Relevant older articles, shown because current evidence is limited. These are not current developments or measured trends.</p>
       <ul class="ur-list">${background.sources.slice(0, 6).map(row => {
         const href = safeEvidenceUrl(row.url);
+        const credit = row.source_permission || {};
+        const licence = safeEvidenceUrl(credit.licence_url);
         return `<li><strong>OLDER BACKGROUND</strong> · ${esc(row.published_at || 'Date unknown')}
           <h4>${href ? `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(row.title)}</a>` : esc(row.title)}</h4>
-          <p>${esc(row.publisher)} · ${esc(row.evidence_id)}</p><blockquote>${esc(row.passage)}</blockquote></li>`;
+          <p>${esc(row.publisher)} · ${esc(row.evidence_id)}</p>
+          ${credit.author ? `<p class="ur-ev-note">Source credit: ${esc(credit.author)}</p>` : ''}
+          ${licence ? `<p><a href="${esc(licence)}" target="_blank" rel="noopener noreferrer">Source licence</a></p>` : ''}
+          <blockquote>${esc(row.passage)}</blockquote></li>`;
       }).join('')}</ul>${background.sources.length ? '' : '<p>No permitted relevant historical article was acquired. Discovery leads remain inspectable separately.</p>'}</div>`);
   }
   for (const [key, heading, description] of [

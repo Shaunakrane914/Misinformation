@@ -24,7 +24,8 @@ def historical_background(captures, target, *, reference_time=None, gate=None):
         temporal = temporal_guard.evaluate(original, reference_time=reference_time)
         if temporal.status not in {'STALE', 'SYNDICATED_STALE', 'UPDATED_HISTORICAL_REJECTED'}:
             continue
-        if not source_registry.excerpt_decision(original.canonical_url, page)['eligible']:
+        permission = source_registry.excerpt_decision(original.canonical_url, page)
+        if not permission['eligible']:
             continue
         item = deepcopy(original)
         assessed = gate.evaluate_item(item, target, domain='trending', intent=target,
@@ -57,6 +58,8 @@ def historical_background(captures, target, *, reference_time=None, gate=None):
             'publisher': item.source_domain or item.source_name, 'published_at': temporal.published_at_utc,
             'passage': '\n\n'.join(retained), 'freshness': 'OLDER_BACKGROUND',
             'word_count': sum(len(text.split()) for text in retained),
+            'source_permission': {'author': permission.get('author') or page.get('author') or '',
+                                  'licence_url': permission.get('licence_url') or ''},
             'observation_scope': 'HISTORICAL_SOURCE_PASSAGES_NOT_CURRENT_TREND',
             'source_body_sha256': hashlib.sha256(item.content.encode()).hexdigest()})
     rows.sort(key=lambda row: row['published_at'] or '', reverse=True)

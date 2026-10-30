@@ -1,0 +1,18 @@
+{
+  "application_commit": "5ffb6acaf3ebbe3e23d8390cf45f767690c27408",
+  "main_remote_observed": "5ffb6acaf3ebbe3e23d8390cf45f767690c27408",
+  "push": "SUCCESS_FAST_FORWARD",
+  "commit_skip_ci": true,
+  "commit_skip_render": true,
+  "full_fast_suites": "NOT_RUN_USER_INSTRUCTION",
+  "hosted_ci": "NOT_RUN",
+  "deployment": "NOT_TRIGGERED_MANUALLY_NOT_ATTESTED",
+  "model_calls": 0,
+  "new_source_http_admissions": 1,
+  "source_http_cap": 3,
+  "qualified_and_local_frontend_words": 1885,
+  "focused_publication_checks": 91,
+  "fatal_lint": "PASS_ZERO_FATAL",
+  "protected_git_paths": "UNCHANGED_FROM_ORIGIN_MAIN_BASE",
+  "original_dirty_worktrees": "PRESERVED"
+}

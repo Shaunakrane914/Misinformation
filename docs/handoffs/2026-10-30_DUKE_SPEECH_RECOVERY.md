@@ -53,3 +53,12 @@ metadata before attributing personal speech; no new GOV.UK capture or gain is
 claimed. Apple/Microsoft/PIB still need observed speaker evidence, not ownership.
 Private originals/processing: temp basename
 `aegis-duke-speech-20261030-1cd61425e9c4427fb4e904e14e0d7b2c`; may expire.
+
+## Observed publication
+
+Application commit `5ffb6acaf3ebbe3e23d8390cf45f767690c27408` fast-forwarded main and was pushed to
+GitHub; `ls-remote` confirmed the exact SHA. No force push/history rewrite.
+Fatal lint on the 21 application files and new speech controls: exit0/zero fatal
+findings; protected-path diff and whitespace checks pass. Full/fast suites/hosted
+CI were not run; skip markers retained. No deployment/production result is claimed.
+This documentation-only closeout is pushed separately after the application.

@@ -263,6 +263,13 @@ def select_source_passages(item, scored, winner, domain, target="", intent=""):
             if observed_speaker:
                 attribution = observed_speaker
                 context["identity_authenticated"] = False
+                from backend.services.research.address_provenance import project_address, GOVUK_BASIS
+                address = project_address((item.metadata.get('page_metadata') or {}).get('published_address'), body)
+                if address and address['basis'] == GOVUK_BASIS:
+                    context.update(speaker='Speaker: ' + address['speaker'], publisher='Publisher: GOV.UK',
+                        issuing_organisation='Issued by: ' + '; '.join(address.get('issuing_organisations') or []),
+                        delivery_date='Delivered: ' + (address.get('delivered_on') or 'not observed'),
+                        publication_date='First published: ' + (address.get('first_published_at') or 'not observed'))
                 if role == "ARTICLE_CONTENT":
                     role = "PUBLIC_STATEMENT"
             elif role == "PUBLIC_STATEMENT":

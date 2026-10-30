@@ -120,8 +120,9 @@ def _published_address_speaker(record, paragraph, target):
     meta = get('metadata', {}) or get('raw_metadata', {}) or {}
     body = get('content', '') or ''
     page = meta.get('page_metadata') or {}
-    address = page.get('published_address')
-    if not isinstance(address, dict) or address.get('basis') != 'OBSERVED_AUTHOR_AND_EDITORIAL_ADDRESS_INTRODUCTION':
+    from backend.services.research.address_provenance import project_address, speaker_matches
+    address = project_address(page.get('published_address'), body)
+    if not address:
         return None
     offset = body.find(paragraph)
     if (not (get('acquired_id') or meta.get('read_success') is True)
@@ -134,9 +135,59 @@ def _published_address_speaker(record, paragraph, target):
             or not 0 <= address['start'] <= offset < offset + len(paragraph) <= address['end'] <= len(body)
             or not recovered_span_allowed(body, page, offset, offset + len(paragraph))):
         return None
-    if str(address.get('speaker', '')).casefold() != target.casefold():
+    if not speaker_matches(address['speaker'], target):
         return None
     return 'OBSERVED_PUBLISHER_ADDRESS_SECTION'
+
+
+def other_voice_in_address(paragraph, body=''):
+    if re.search(r'\b(?:said|says|wrote|writes)(?:[^.!?\n:“"]{0,80})?:?\s*[“"]', paragraph, re.I):
+        return True
+    if re.search(r'\b(?:said|says|wrote|writes):\s*$',paragraph,re.I):
+        return True
+    start = body.find(paragraph) if body else -1
+    if start > 0 and paragraph.startswith(('“','"')):
+        previous = body[:start].rstrip().rsplit('\n\n',1)[-1]
+        if re.search(r'\b(?:said|says|wrote|writes):\s*$',previous,re.I):
+            return True
+    return False
+
+
+def address_paragraph_candidates(record, target):
+    """Group adjacent short GOV.UK speech fragments within original bounds.
+
+    Exact contiguous spans only; headings, separators and quoted other voices
+    terminate a group. This uses the same source byte/paragraph limits and
+    never joins unrelated text across an omitted paragraph.
+    """
+    from backend.services.research.address_provenance import project_address, GOVUK_BASIS, speaker_matches
+    body = record.content or ''
+    page = record.metadata.get('page_metadata') or {}
+    address = project_address(page.get('published_address'), body)
+    if not address or address['basis'] != GOVUK_BASIS or not speaker_matches(address['speaker'], target):
+        return None
+    rows, pending, words = [], [], 0
+    headings = {(row.get('start'),row.get('end')) for row in page.get('text_blocks', [])
+                if isinstance(row,dict) and row.get('role')=='HEADING'}
+    def flush():
+        if pending:
+            rows.append(body[pending[0].start():pending[-1].start()+len(pending[-1].group().rstrip())])
+    for match in re.finditer(r'\S[^\n]*(?:\n(?!\s*\n)[^\n]+)*', body):
+        text = match.group().rstrip()
+        if (not re.search(r'\w',text) or (match.start(),match.start()+len(text)) in headings
+                or paragraph_role(text) in NON_EVENT_ROLES or other_voice_in_address(text,body)
+                or len(text.split())<30 and re.match(r'^(?:I want to start by thanking\b|thank you\b|good morning\b|your royal highness\b)',text,re.I)
+                or not _published_address_speaker(record,text,target)):
+            flush(); pending=[]; words=0
+            continue
+        count = len(text.split())
+        if pending and (words+count>120 or count>=60):
+            flush(); pending=[]; words=0
+        pending.append(match);words+=count
+        if words>=60:
+            flush();pending=[];words=0
+    flush()
+    return rows
 
 
 def usable_published_address_paragraph(record, paragraph, target):
@@ -148,9 +199,13 @@ def usable_published_address_paragraph(record, paragraph, target):
     """
     if not _published_address_speaker(record, paragraph, target):
         return False
+    get = record.get if isinstance(record,dict) else lambda key,default=None:getattr(record,key,default)
+    meta = get('metadata',{}) or get('raw_metadata',{}) or {}
+    from backend.services.research.address_provenance import GOVUK_BASIS
+    api_speech = ((meta.get('page_metadata') or {}).get('published_address') or {}).get('basis') == GOVUK_BASIS
     if (len(paragraph.split()) < 10 or len(paragraph) > 6000 or paragraph.isupper()
-            or not re.search(r'[.!?]["”’\s]*$', paragraph)
-            or re.match(r'^(?:#\d|thank you\b|good morning\b|congratulations\b|as the proud mom\b|this is a very special moment\b)', paragraph, re.I)):
+            or not api_speech and not re.search(r'[.!?]["”’\s]*$', paragraph)
+            or re.match(r'^(?:#\d|thank you\b|good morning\b|congratulations\b|as the proud mom\b|this is a very special moment\b|I want to start by thanking\b)', paragraph, re.I)):
         return False
     return paragraph_role(paragraph) not in NON_EVENT_ROLES
 
@@ -206,6 +261,19 @@ def public_statement_attribution(record, paragraph, target):
     if denial:
         return None
     address = _published_address_speaker(record, paragraph, target)
+    from backend.services.research.address_provenance import project_address, GOVUK_BASIS
+    captured_address = project_address(page.get('published_address'), get('content','') or '')
+    raw_address = page.get('published_address') or {}
+    statement_metadata = page.get('official_statement') or {}
+    if not isinstance(raw_address,dict):
+        raw_address = {}
+    if not isinstance(statement_metadata,dict):
+        statement_metadata = {}
+    if not captured_address and (raw_address.get('basis') == GOVUK_BASIS or statement_metadata.get('publisher')=='GOV.UK'):
+        return None  # Damaged/missing speech provenance cannot fall back to an author shortcut.
+    if captured_address and captured_address['basis'] == GOVUK_BASIS:
+        if not address or other_voice_in_address(paragraph,get('content','') or '') or not usable_published_address_paragraph(record, paragraph, target):
+            return None  # No author/department fallback can override this captured speaker boundary.
     if address and usable_published_address_paragraph(record, paragraph, target):
         return address
     statement_scope = ((get("query_class") or meta.get("query_class")) in {"public_statement_discovery", "explicit_url"}

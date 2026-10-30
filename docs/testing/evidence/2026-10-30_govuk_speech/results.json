@@ -1,0 +1,896 @@
+{
+  "decision": "TWO_NEW_GOVUK_SPEECHES_ACQUIRED_AND_SPEAKER_ATTRIBUTED_EXACT_WORDS_DELIVERED_TO_LOCAL_FRONTEND",
+  "base_main": "51a12e285a76c1a34d19504cce1e264e9c8ef5ac",
+  "branch": "fix/govuk-speech-20261030",
+  "budget": {
+    "native_http_admissions": 4,
+    "native_http_by_host": {
+      "www.gov.uk": 4
+    },
+    "native_http_cap": 4,
+    "native_http_per_host_cap": 4,
+    "native_http_budget_rejections": 0,
+    "complete_network_accounting": false,
+    "native_http_by_phase": {
+      "reading": 4
+    },
+    "discovery_http_cap": 4,
+    "discovery_http_per_host_cap": 4,
+    "discovery_http_reserve_rejections": 0
+  },
+  "http_operations": [
+    {
+      "operation_id": "bc9589377cd44e45813685c02fc305fa",
+      "requested_url": "https://www.gov.uk/api/search.json?q=leadership&count=2&fields=title%2Clink%2Cdescription%2Cpublic_timestamp%2Cformat&filter_format=speech",
+      "started_at": "2026-10-30T18:23:47.239531+00:00",
+      "http_status": 200,
+      "final_url": "https://www.gov.uk/api/search.json?q=leadership&count=2&fields=title%2Clink%2Cdescription%2Cpublic_timestamp%2Cformat&filter_format=speech",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1280,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.gov.uk/api/search.json?q=leadership&count=2&fields=title%2Clink%2Cdescription%2Cpublic_timestamp%2Cformat&filter_format=speech"
+      ],
+      "duration_ms": 891.944
+    },
+    {
+      "operation_id": "6ed7cbfbf9d04f419392b9bbcffed516",
+      "requested_url": "https://www.gov.uk/robots.txt",
+      "started_at": "2026-10-30T18:23:48.342427+00:00",
+      "http_status": 200,
+      "final_url": "https://www.gov.uk/robots.txt",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 1097,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.gov.uk/robots.txt"
+      ],
+      "duration_ms": 110.094
+    },
+    {
+      "operation_id": "6f8d57858f1f45f0b74dfb070cccf90c",
+      "requested_url": "https://www.gov.uk/api/content/government/speeches/amanda-spielmans-speech-at-the-church-of-england-foundation-for-education-leadership",
+      "started_at": "2026-10-30T18:23:48.453773+00:00",
+      "http_status": 200,
+      "final_url": "https://www.gov.uk/api/content/government/speeches/amanda-spielmans-speech-at-the-church-of-england-foundation-for-education-leadership",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 25199,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.gov.uk/api/content/government/speeches/amanda-spielmans-speech-at-the-church-of-england-foundation-for-education-leadership"
+      ],
+      "duration_ms": 448.174
+    },
+    {
+      "operation_id": "7144f99772db4e92a29661e360956551",
+      "requested_url": "https://www.gov.uk/api/content/government/speeches/the-new-normal-leadership-in-the-climate-crisis",
+      "started_at": "2026-10-30T18:23:48.921906+00:00",
+      "http_status": 200,
+      "final_url": "https://www.gov.uk/api/content/government/speeches/the-new-normal-leadership-in-the-climate-crisis",
+      "outcome": "RECEIVED",
+      "failure_kind": null,
+      "wire_bytes": 29369,
+      "transport_attempts": 1,
+      "redirect_chain": [
+        "https://www.gov.uk/api/content/government/speeches/the-new-normal-leadership-in-the-climate-crisis"
+      ],
+      "duration_ms": 428.991
+    }
+  ],
+  "live_latency_seconds": 2.186,
+  "model_calls": 0,
+  "paid_services": 0,
+  "retries": 0,
+  "redirects": 0,
+  "network_closed": true,
+  "cases": [
+    {
+      "case": 1,
+      "source_url": "https://www.gov.uk/government/speeches/amanda-spielmans-speech-at-the-church-of-england-foundation-for-education-leadership",
+      "observed_parent_url": "https://www.gov.uk/api/search.json?q=leadership&count=2&fields=title%2Clink%2Cdescription%2Cpublic_timestamp%2Cformat&filter_format=speech",
+      "actual_api_url": "https://www.gov.uk/api/content/government/speeches/amanda-spielmans-speech-at-the-church-of-england-foundation-for-education-leadership",
+      "http_status": 200,
+      "body_reads": 1,
+      "source_id": "ev_page_4af800016708",
+      "body_sha256": "75edaac9e4a6bcfc1aaaf0ea5c512c4eb5d99eba0dbdac4561987c40ac36b174",
+      "speaker": "Amanda Spielman",
+      "speaker_basis": "links.speaker",
+      "speaker_profile_url": "https://www.gov.uk/government/people/amanda-spiel-man",
+      "issuing_organisations": [
+        "Ofsted"
+      ],
+      "publisher": "GOV.UK",
+      "delivered_on": "2018-02-01T00:00:00+00:00",
+      "first_published_at": "2018-02-01T11:25:00+00:00",
+      "api_response_sha256": "c25f605d9abb67085e458eb1700d42ae8f2222d1dd7738044d21599ea137b843",
+      "raw_speech_words": 2477,
+      "published_words_before": 0,
+      "qualified_cited_words": 2462,
+      "frontend_words": 2462,
+      "passages": 26,
+      "native_public_statements": 16,
+      "identity_authenticated": false,
+      "display_budget_omissions": 0,
+      "retained_words_not_published": 15,
+      "same_source_identity_date_body_hash_before_after": true,
+      "passage_checks": [
+        {
+          "start": 76,
+          "end": 369,
+          "words": 45,
+          "sha256": "73caebc5bb705fb6a0985de67faaafcf49fd14e42035760d4cdcd5bf4ba1daeb",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 371,
+          "end": 799,
+          "words": 74,
+          "sha256": "bb092d91da5411adbe20ef2706f1653e3974507c7ff92fa6c53d9d23464f47d7",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 801,
+          "end": 1080,
+          "words": 40,
+          "sha256": "264f072a47eced90df1c476c56edbdea269ba6abc4d3c18c30479b5e07de5571",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 1082,
+          "end": 1858,
+          "words": 129,
+          "sha256": "8e61f816d63ec6e15e311dc558447f5465085550f8a1f03eca7a3b76839b1e3f",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 1860,
+          "end": 2429,
+          "words": 101,
+          "sha256": "c00cdabe9749f355aa2829aab847ec3e0ac88b985c185008d6ea43870f17bc5e",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 2431,
+          "end": 2860,
+          "words": 69,
+          "sha256": "52ed5fe376ead8ad1fa20702b7ff8c5347dc7f847a930916ef215afbfe613e35",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 2862,
+          "end": 3521,
+          "words": 104,
+          "sha256": "b218b777e1475ad5589ba9628ac8e97785428a7a5072742b11c5951bb48eab05",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 3523,
+          "end": 3893,
+          "words": 68,
+          "sha256": "1c288ba7853a9cdf8c97e1b8a8e8285881520ae539e31a091dbf35ad112ca8aa",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 3895,
+          "end": 4608,
+          "words": 123,
+          "sha256": "65f77e779bc9c442d620482d543f0bc653db6cb60a53be7750e2e93e8eb80d22",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 4610,
+          "end": 5162,
+          "words": 88,
+          "sha256": "f79200a9269e568a2f6668dfea741c109ba3443f192b2ae502ff5a07828a6b64",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 5164,
+          "end": 5512,
+          "words": 61,
+          "sha256": "2157b07a0c59104dc72c4897ef3f193b51a8823e634fe85529b8279030677c8f",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 5514,
+          "end": 5715,
+          "words": 35,
+          "sha256": "967fefab5f884b55eaddbf6000a38cee3861c5acf5f3ec12f8d92b8fa4a3c7f4",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 5717,
+          "end": 6337,
+          "words": 108,
+          "sha256": "9ef4aa9f743430ea7be373545c07e626030e0fcb05255be5aa0f4d00a9e01e89",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 6339,
+          "end": 7073,
+          "words": 131,
+          "sha256": "db6bd85d8788ba5a88b7a2bdde27b5256dd60171252143dd9195f18942e55609",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 7075,
+          "end": 7525,
+          "words": 86,
+          "sha256": "e0e4b221d810780ba1a710eafa251fba3ef338c0c7072c4cca847e2cdc9adf5b",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 7527,
+          "end": 8518,
+          "words": 179,
+          "sha256": "62cdb76cacd816900f935f23b1ea11aa5c2748eee239fc57457b8a3f96c98ea5",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 8520,
+          "end": 9075,
+          "words": 95,
+          "sha256": "259db59cfb4f34cf2e67f884bf45b9fba318110b3c9fb11d9f8ca1658afd0ba0",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 9077,
+          "end": 9711,
+          "words": 96,
+          "sha256": "e066764729fc7e7f8ad6e1dc14c2a3a56d3a22009833504ec256ef26506dae22",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 9713,
+          "end": 10467,
+          "words": 115,
+          "sha256": "092feec27ff9b44b80657d77554b4ddb37727a387e61e91191f0aae20aaa6550",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 10469,
+          "end": 11068,
+          "words": 97,
+          "sha256": "8205e380c8691100222d6039b4e39ce65ad1a0540caf9a0abe202b791e113f81",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 11070,
+          "end": 12027,
+          "words": 172,
+          "sha256": "8e87bd268c25bd3f1d1d599212ff030e1e19eac4bc64a294a5de7835b5a08157",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 12029,
+          "end": 12515,
+          "words": 83,
+          "sha256": "6b9b3728bb3a02ccc38b7bd7b0ebc739d433b156d87ed1269c04448d43648b7a",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 12517,
+          "end": 13509,
+          "words": 160,
+          "sha256": "d1fa04e611640359847c7455a47f0346399b06d486517175b8d1849ac6aa29d0",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 13511,
+          "end": 14043,
+          "words": 98,
+          "sha256": "7fbb5ed225f8a381e53f1a45c7546373195d094063acf62da4f5d0bbaba82edb",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 14045,
+          "end": 14561,
+          "words": 84,
+          "sha256": "5ce5e77d057cfea9db92b6a5d13c49ae95a54dce94b348478976f3f412ad7485",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        },
+        {
+          "start": 14563,
+          "end": 14660,
+          "words": 21,
+          "sha256": "6e571168b8b1971387168caf793f1419a56dfcf4b3c7c76392528270da0503a2",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2018-02-01T00:00:00+00:00",
+          "publication_label": "First published: 2018-02-01T11:25:00+00:00"
+        }
+      ]
+    },
+    {
+      "case": 2,
+      "source_url": "https://www.gov.uk/government/speeches/the-new-normal-leadership-in-the-climate-crisis",
+      "observed_parent_url": "https://www.gov.uk/api/search.json?q=leadership&count=2&fields=title%2Clink%2Cdescription%2Cpublic_timestamp%2Cformat&filter_format=speech",
+      "actual_api_url": "https://www.gov.uk/api/content/government/speeches/the-new-normal-leadership-in-the-climate-crisis",
+      "http_status": 200,
+      "body_reads": 1,
+      "source_id": "ev_page_c09815a7d14c",
+      "body_sha256": "96c684989e7b1350f81091e50eca034f146c69e6f303cfe3877fe4d8a9b7dd92",
+      "speaker": "Emma Howard Boyd",
+      "speaker_basis": "links.speaker",
+      "speaker_profile_url": "https://www.gov.uk/government/people/emma-howard-boyd",
+      "issuing_organisations": [
+        "Environment Agency"
+      ],
+      "publisher": "GOV.UK",
+      "delivered_on": "2019-10-31T18:00:00+00:00",
+      "first_published_at": "2019-10-31T18:38:50+00:00",
+      "api_response_sha256": "ee5311c33e9466a6251b9e5bb5686a806c8c913be4483fc41d034ea26da022c3",
+      "raw_speech_words": 3023,
+      "published_words_before": 0,
+      "qualified_cited_words": 2388,
+      "frontend_words": 2388,
+      "passages": 45,
+      "native_public_statements": 16,
+      "identity_authenticated": false,
+      "display_budget_omissions": 0,
+      "retained_words_not_published": 635,
+      "same_source_identity_date_body_hash_before_after": true,
+      "passage_checks": [
+        {
+          "start": 59,
+          "end": 130,
+          "words": 14,
+          "sha256": "f0481f8745ef710e719aa7d35555d29bb23621fd7efa7b9298715ec8e777e075",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 135,
+          "end": 598,
+          "words": 75,
+          "sha256": "6f62212af0da66d9fae95cbb110c2f595b7a4f26d5128def240b2787f8778103",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 603,
+          "end": 969,
+          "words": 61,
+          "sha256": "540db850b139746649dbf2ae87a7f1d67abca0b0ede8e655eb6790b186a3c902",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 971,
+          "end": 1252,
+          "words": 46,
+          "sha256": "4ffc5eb107640cba185dda509f40c4a34f2094c649656c3804da36db908b9338",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 1257,
+          "end": 1614,
+          "words": 63,
+          "sha256": "db1b62d19fe99cbc46630744ec414c0c149f184925b2f33055acf15e21abb53e",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 1616,
+          "end": 1674,
+          "words": 10,
+          "sha256": "77a4b84b7e634112c61a3509558bdd44ce4847b8e7523f3b6df178507b2d07ca",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 1679,
+          "end": 2078,
+          "words": 69,
+          "sha256": "1439d68290ed2281275177808ac31d7af11173609dc03f6f8acf59367db974d9",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 2083,
+          "end": 2471,
+          "words": 63,
+          "sha256": "83e16c9757571b1ccf52914503666cbfe3dc87585ba296fa76aa7d383faa4bdf",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 2473,
+          "end": 2672,
+          "words": 35,
+          "sha256": "677e964ed13379a1171103398a5a7eb63a91bbdac157b85eb68ce1f69d4961a8",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 2677,
+          "end": 3037,
+          "words": 59,
+          "sha256": "a5407127703a4f1349fc169456de46a68dc88203dc8fbf3994b63e033f09142e",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 3042,
+          "end": 3487,
+          "words": 75,
+          "sha256": "a8cb096188a0df2989083e22f11eaeb35fe84766b8bfb8968671aa8e97c933f6",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 3492,
+          "end": 3886,
+          "words": 68,
+          "sha256": "272e5d327ed3f4d112348321dd88b9495ce5d6d38fb2cf80562ce215d64c758e",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 3888,
+          "end": 4339,
+          "words": 80,
+          "sha256": "b63b68edcd75792f7ec26f2e87567fba7903b9d0b0b1049f0476cd3093c50162",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 4341,
+          "end": 4763,
+          "words": 65,
+          "sha256": "b03e9d38bfb0b254e2d06a4244ffeab7fc407fd80f87e385040d3905760feb3a",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 4765,
+          "end": 4892,
+          "words": 22,
+          "sha256": "461825ca298d065753b1103d0bbf44abaa1ddb1134ce9bf39277bc3ebe4b399c",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 4897,
+          "end": 5201,
+          "words": 50,
+          "sha256": "d575957b1083744163fd0c58ddbe0ace3b7b34679718326fd44c383b128a7810",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 5206,
+          "end": 5628,
+          "words": 72,
+          "sha256": "c0b7c2afe540c88e25258ca1a69b26d7e2029be0661149d2809595f209a40354",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 6183,
+          "end": 6414,
+          "words": 41,
+          "sha256": "8ff1dac09ba4ea856e98c8c90cfad11e9f8d22c2f9181f1ab50af95fb17a0660",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 6419,
+          "end": 6861,
+          "words": 67,
+          "sha256": "86328061e87e3765194454a38cbae74b4abe38dbe9354563ba0c5ceaf1700cee",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 6866,
+          "end": 7237,
+          "words": 62,
+          "sha256": "b0b1da4ba333ccb2270cb8acc266c729180ea8d62bb02544b86c4b740f9a306f",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 7316,
+          "end": 7450,
+          "words": 19,
+          "sha256": "1f69edc80b0406415b87f43c982dc8a6cc7efcc00d768062368f8b8a88bae1a6",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 7455,
+          "end": 7935,
+          "words": 77,
+          "sha256": "f8a2c67f1432bf11fbb650b880c91d9821d3dddb91cf3941c48155ce35899a7b",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 7940,
+          "end": 8228,
+          "words": 50,
+          "sha256": "2a34bb7e7bcb88ac06f7dacc77259668d09999b4c844b183df0b4c8f4df21d48",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 8484,
+          "end": 8682,
+          "words": 37,
+          "sha256": "ebcc9cdecaf1a421ce3eda7fc7771753cda467c031cd92639c84c15029ac2cd3",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 8687,
+          "end": 9011,
+          "words": 52,
+          "sha256": "5a4ebf323095df961c2c3a9c6d555beab193a80307aa1180aa47327f53aaf74b",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 9632,
+          "end": 10039,
+          "words": 72,
+          "sha256": "863690142e3354c77ade23e40a54b4227206fe8a29e2e2572f0fd68f2a7691b8",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 10041,
+          "end": 10618,
+          "words": 92,
+          "sha256": "b83f694985611c0c3f8e2a10511d2203679114a0d96f5bbc508cc0aeb77e878c",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 10623,
+          "end": 10986,
+          "words": 65,
+          "sha256": "9ced08f7414868f875e7a2c6a05364720fc962363c08b950a7207033ee6f44ce",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 10988,
+          "end": 11415,
+          "words": 70,
+          "sha256": "37109bc39d16623c69df619d5eaea96e83ff9f9f93540f981a83e62b6989d496",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 11420,
+          "end": 11532,
+          "words": 19,
+          "sha256": "c589b8b7fc4d5e432280f0fae46f63014032ace7880b370740e35c620129854b",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 11537,
+          "end": 11809,
+          "words": 41,
+          "sha256": "f0a550ebc3edde23470b99a6b971ece622810de44cd4526d9b2070531724df44",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 11814,
+          "end": 12235,
+          "words": 69,
+          "sha256": "990b70fd2ea270fbd2c28ef0dbe11973c0bb6d2c0baca27b5fbf0d30b1428a92",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 12240,
+          "end": 12714,
+          "words": 71,
+          "sha256": "19593dde6b904652ea571fbc427e3895921162f6c5b2ff2dc827960106417e9d",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 12802,
+          "end": 13116,
+          "words": 50,
+          "sha256": "75fac2fcef30f925902be3b023cc1bff17c6dfaba8ed5d45b0d140e8e71d7cad",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 13254,
+          "end": 13390,
+          "words": 21,
+          "sha256": "18a37bbcda12d95db934e80319940b3133015ef905fe59c2821075399e00acea",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 13787,
+          "end": 13963,
+          "words": 28,
+          "sha256": "86d0a7d6121e2cdae13823e385e2d5f27a790664dfdf3826bc55368b2af41249",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 13968,
+          "end": 14328,
+          "words": 60,
+          "sha256": "3ee0c94649fc9d7aced18a8983493a3b9f4cbbf3d7b7c7e850aec8b14f9f3520",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 14330,
+          "end": 14579,
+          "words": 35,
+          "sha256": "cd2038dc140035609bfa4fd797eac071b9c026675ccf9657b51cb7366f187fbc",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 14584,
+          "end": 14721,
+          "words": 23,
+          "sha256": "dbc38a526f1b9ec282762f6077c0b74d0a0cda948f7c9c88edd4b73e94af3392",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 14962,
+          "end": 15307,
+          "words": 60,
+          "sha256": "5a8a39a3bf65347f4a1fcbf9b36d1aee7fcd9e680d66b212a0dfab084bf5ba3b",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 15312,
+          "end": 15440,
+          "words": 22,
+          "sha256": "b968e50923e0d8f0785426df1d64e046f14684776b79b98b0061887097a7d8a7",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 15635,
+          "end": 16049,
+          "words": 66,
+          "sha256": "977d4833b806f384b9971abc92347b6a5107d242871ebf152c3258551c5e1830",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 16255,
+          "end": 16706,
+          "words": 69,
+          "sha256": "d83f172a233453b307e1f75a26835018a0c6930c122a9f5d096f7364fbbce57f",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 17369,
+          "end": 17710,
+          "words": 56,
+          "sha256": "083eac8eb0fa610902d09517cd9a3874a99a7cf4758679982b6395a703b15a64",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        },
+        {
+          "start": 17715,
+          "end": 18123,
+          "words": 67,
+          "sha256": "0c04fa30126b099b7425699cee05914aede7c03a02f8055eeb9c77f33e383285",
+          "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+          "delivery_label": "Delivered: 2019-10-31T18:00:00+00:00",
+          "publication_label": "First published: 2019-10-31T18:38:50+00:00"
+        }
+      ]
+    }
+  ],
+  "frontend": {
+    "scope": "ONE_LOCAL_RENDERER_SESSION_TWO_NEW_GOVUK_SPEECHES_NOT_A_BROWSER_MATRIX",
+    "cases": [
+      {
+        "case": 1,
+        "source_url": "https://www.gov.uk/government/speeches/amanda-spielmans-speech-at-the-church-of-england-foundation-for-education-leadership",
+        "speaker": "Amanda Spielman",
+        "issuing_organisations": [
+          "Ofsted"
+        ],
+        "delivery": "2018-02-01T00:00:00+00:00",
+        "publication": "2018-02-01T11:25:00+00:00",
+        "body_words": 2477,
+        "qualified_words": 2462,
+        "frontend_words": 2462,
+        "passages": 26,
+        "exact_hash_offsets_text_and_links": true,
+        "distinct_dates_issuer_speaker_visible": true,
+        "identity_authenticated": false
+      },
+      {
+        "case": 2,
+        "source_url": "https://www.gov.uk/government/speeches/the-new-normal-leadership-in-the-climate-crisis",
+        "speaker": "Emma Howard Boyd",
+        "issuing_organisations": [
+          "Environment Agency"
+        ],
+        "delivery": "2019-10-31T18:00:00+00:00",
+        "publication": "2019-10-31T18:38:50+00:00",
+        "body_words": 3023,
+        "qualified_words": 2388,
+        "frontend_words": 2388,
+        "passages": 45,
+        "exact_hash_offsets_text_and_links": true,
+        "distinct_dates_issuer_speaker_visible": true,
+        "identity_authenticated": false
+      }
+    ],
+    "page_errors": [],
+    "external_requests_allowed": 0,
+    "blocked_requests": 0,
+    "production_browser": false
+  },
+  "before_definition": "Same newly captured source pools processed offline by a read-only export of main 51a12e2. This is paired interpretation proof, not an earlier production request or paired live acquisition measurement. Input IDs/URLs/titles/publication dates/body hashes/text unchanged.",
+  "wrong_subject_control": {
+    "original_speaker": "Amanda Spielman",
+    "requested_subject": "Emma Howard Boyd",
+    "source_retained": true,
+    "speaker_attributed_statements": 0,
+    "qualified_passage_words": 0,
+    "rejection_reason": [
+      "Insufficient entity match confidence (0.0 < 0.35)"
+    ]
+  },
+  "focused_checks": {
+    "passed": 33,
+    "seconds": 0.67,
+    "exit_code": 0,
+    "command": "python -m pytest tests/unit/test_govuk_speech_provenance.py tests/unit/test_published_address_recovery.py tests/unit/test_source_expansion_fallback.py::test_govuk_saved_search_guidance_paths_and_identity_gate tests/unit/test_source_expansion_fallback.py::test_govuk_rights_exception_is_terminal -q",
+    "full_project_suites": "NOT_RUN_USER_INSTRUCTION",
+    "fatal_lint": "PASS_ZERO_FATAL",
+    "protected_paths": "UNCHANGED",
+    "whitespace": "PASS",
+    "terminal_api_denials": "401/403/429 preserve typed status; one attempt/zero redirects; no alternate reader"
+  },
+  "limitations": [
+    "Both sources are historical; publication, delivery, update and acquisition clocks remain distinct.",
+    "Both live captures use links.speaker; speaker_without_profile is covered by an explicitly synthetic regression only.",
+    "Local current API/SSE/renderer proof; no deployment or production investigation.",
+    "Publisher attribution is not independently authenticated identity or independent corroboration.",
+    "Legacy Inspect research-task placeholders may appear as unsupported task cards; they are not source-supported findings and are excluded from all passage word counts."
+  ],
+  "private_storage_basename": "aegis-govuk-speech-20261030-3d266ca0c01d4ca280080f81988059e6",
+  "private_captures_sha256": {
+    "api-0.json": "48a5a7e358c1d4051f589f35b89d573cbd568732e67bd40821a5af3b0c18d99e",
+    "api-1.json": "c25f605d9abb67085e458eb1700d42ae8f2222d1dd7738044d21599ea137b843",
+    "api-2.json": "ee5311c33e9466a6251b9e5bb5686a806c8c913be4483fc41d034ea26da022c3",
+    "api-1-metadata.json": "95842ebcc37317a1cd8175cfb22a1a98be6baeef6c297f004d2fed3bf35e55e5",
+    "api-2-metadata.json": "1f3e1d03e9afa0258ba0ded975042187825a2fac9eaa8491e64e3d1e1023401c",
+    "case-1-payload.json": "1fd6135ff880d209fc03703e1eb0a641e7b5026ae0b3dc1a42928b88d89e0957",
+    "case-2-payload.json": "8eec39b63f88fc504bba6eb7066974ee0e26b36124dc12f890bb197627a0a75a",
+    "accounting.json": "0a569c6d8cea46e152d24cdb9234127e1eb0a74f236f8458ea0a73ebd375138b",
+    "probe.py": "0edc0b78a93911ce96c71a5b3fb5135cf07d15d79cfd96c7045deabfecf21d41"
+  },
+  "private_persistent_captures": {
+    "relative_to_original_repository": ".scratch/acquisition-captures/2026-10-30_govuk_speech",
+    "git_ignored": true,
+    "manifest_sha256": "e20e8ce4b00d4cb2436e6e062561a738ef4c9c117f7b36a8aca8a52e72056a2a"
+  },
+  "application_sha256": {
+    "backend/agents/personal_watch/monitoring.py": "8a99fa4a36aec422b63178f02188568572d9b507fa0301436fa9e95590355f5a",
+    "backend/infrastructure/acquisition/adapters/authoritative/govuk_public.py": "2f21b9100e8d87efea0b25f990a44015525644594f569b4c243dacef17285a30",
+    "backend/infrastructure/acquisition/adapters/expanded_catalog.py": "cf902f1deb89f808ecd137e5be58625556a58c7cc5b8309c3adb1bc9e59cde0c",
+    "backend/infrastructure/acquisition/adapters/expansion_safety.py": "c303df147775165f6a2145afcfbab210f83b8b4e100ff632467a0d175fdb92d0",
+    "backend/schemas/evidence_inspection.py": "57d20c1e8dc108e0027c5f3df43f80480ac584d400ea7d99b2bb258f0400b48a",
+    "backend/services/research/evidence_workbench.py": "e57b4b21e3700d50cff9da5ee0ab1b3f74349d9b81099ff2dc90e5ada9caec50",
+    "backend/services/research/passage_extractor.py": "b832fd5610c32f81840fbc9f731e7b35f22534b1b341386a2e57af43629a6a67",
+    "backend/services/research/passage_records.py": "df3033cf22f4cc728b3249ced4653612bdbeaaf74d8d5ca18249b78638992430",
+    "backend/services/research/raw_pool.py": "4d3a302b7afb1fdabf0253ac4bdf356f193636d472f54770acd537e8c581b144",
+    "backend/services/research/relevance_gate.py": "2d1d471279c5ce920e75c14ebeb5de9568c1051cdad3e4ecde0891e24e2570c1",
+    "backend/services/research/address_provenance.py": "5c8d15b740c2c2eb2e285cd91581a635b59b697872b864edfba7299c1f5f00e9"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "scope": "ONE_LOCAL_RENDERER_SESSION_TWO_NEW_GOVUK_SPEECHES_NOT_A_BROWSER_MATRIX",
+  "cases": [
+    {
+      "case": 1,
+      "source_url": "https://www.gov.uk/government/speeches/amanda-spielmans-speech-at-the-church-of-england-foundation-for-education-leadership",
+      "speaker": "Amanda Spielman",
+      "issuing_organisations": [
+        "Ofsted"
+      ],
+      "delivery": "2018-02-01T00:00:00+00:00",
+      "publication": "2018-02-01T11:25:00+00:00",
+      "body_words": 2477,
+      "qualified_words": 2462,
+      "frontend_words": 2462,
+      "passages": 26,
+      "exact_hash_offsets_text_and_links": true,
+      "distinct_dates_issuer_speaker_visible": true,
+      "identity_authenticated": false
+    },
+    {
+      "case": 2,
+      "source_url": "https://www.gov.uk/government/speeches/the-new-normal-leadership-in-the-climate-crisis",
+      "speaker": "Emma Howard Boyd",
+      "issuing_organisations": [
+        "Environment Agency"
+      ],
+      "delivery": "2019-10-31T18:00:00+00:00",
+      "publication": "2019-10-31T18:38:50+00:00",
+      "body_words": 3023,
+      "qualified_words": 2388,
+      "frontend_words": 2388,
+      "passages": 45,
+      "exact_hash_offsets_text_and_links": true,
+      "distinct_dates_issuer_speaker_visible": true,
+      "identity_authenticated": false
+    }
+  ],
+  "page_errors": [],
+  "external_requests_allowed": 0,
+  "blocked_requests": 0,
+  "production_browser": false
+}

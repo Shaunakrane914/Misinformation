@@ -197,6 +197,11 @@ class PassageExtractor:
             # A following sentence can negate or qualify the first. Select
             # complete source paragraphs, never isolated affirmative sentences.
             paragraphs = [p.strip() for p in re.split(r'\n\s*\n', raw_text) if len(p.strip()) >= 40]
+            if domain == 'personal':
+                from backend.services.research.passage_records import address_paragraph_candidates
+                address_rows = address_paragraph_candidates(item, clean_target)
+                if address_rows is not None:
+                    paragraphs = [p for p in address_rows if len(p)>=40]
 
             if not paragraphs:
                 # Preserve a bounded display-only fallback for compatibility;

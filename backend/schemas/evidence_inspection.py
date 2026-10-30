@@ -203,7 +203,8 @@ def _validated_evidence_passages(meta, body, fingerprint):
               "claim_status", "attribution", "source_url", "published_at", "scope", "captured_text_sha256"}
     return [{**{key: row[key] for key in fields if key in row},
              "context_labels": {key: str(value)[:100] for key, value in (row.get("context_labels") or {}).items()
-                 if key in {"publication_scope", "result_scope", "content_kind", "period_alignment", "subject_context"} and isinstance(value, str)}
+                 if key in {"publication_scope", "result_scope", "content_kind", "period_alignment", "subject_context",
+                            "speaker", "publisher", "issuing_organisation", "delivery_date", "publication_date"} and isinstance(value, str)}
                  if isinstance(row.get("context_labels"), dict) else {}}
             for row in values[:80]
             if isinstance(row, dict) and type(row.get("start")) is int and type(row.get("end")) is int

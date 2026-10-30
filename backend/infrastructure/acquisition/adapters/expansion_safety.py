@@ -83,7 +83,7 @@ def parse_bounded_xml(data):
     return ET.fromstring(data)
 
 
-def safe_fetch(url, *, headers=None, timeout=5.0, max_bytes=1_000_000, **kwargs):
+def safe_fetch(url, *, headers=None, timeout=5.0, max_bytes=1_000_000, preserve_http_errors=False, **kwargs):
     headers = dict(headers or {})
     if matches_host(url, ("sec.gov",)):
         if policy_status("sec_edgar"):
@@ -126,6 +126,10 @@ def safe_fetch(url, *, headers=None, timeout=5.0, max_bytes=1_000_000, **kwargs)
             observations.append({'failure_type': type(error).__name__,
                                  'failure_kind': transport_failure_kind(error),
                                  'network_observed': getattr(error, 'network_observed', False)})
+        if preserve_http_errors:
+            from backend.infrastructure.acquisition.network.http import ProviderHTTPError
+            if isinstance(error, ProviderHTTPError):
+                raise  # Keep terminal denial status at explicitly migrated API boundaries.
         raise RuntimeError("Bounded adapter transport failed: " + type(error).__name__) from None
 
 

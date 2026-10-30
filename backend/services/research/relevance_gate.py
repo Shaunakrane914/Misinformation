@@ -110,6 +110,11 @@ class RelevanceGate:
                 # An acquired statement may name its speaker after the preview.
                 # Discovery snippets are never upgraded to acquired body text.
                 combined_text += " " + str(value("content", "") or "")[:8000]
+                from backend.services.research.address_provenance import project_address
+                metadata = value('metadata', {}) or {}
+                address = project_address((metadata.get('page_metadata') or {}).get('published_address'), value('content', '') or '')
+                if address and (metadata.get('read_success') is True or value('acquired_id')):
+                    combined_text += ' ' + address['speaker']
         if domain == "trending":
             # Specialist projection shortens the display snippet. Rechecking
             # that preview alone can lose a topic modifier present in the

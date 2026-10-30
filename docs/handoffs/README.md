@@ -1,5 +1,10 @@
 # Coding-agent handoffs
 
+## GOV.UK original speeches - 2026-10-31
+
+- [Real two-speaker reuse](2026-10-31_GOVUK_SPEECH_REUSE.md): four approved admissions; two new speeches, 5,500 raw /4,850 exact local frontend words; original speaker/issuer/delivery/publication preserved. Focused checks only; no deployment.
+
+
 ## Original Duke speech ? 2026-10-30
 
 - [Actual original-speech recovery](2026-10-30_DUKE_SPEECH_RECOVERY.md): one fresh HTTP-200 capture, 2,327 body words/1,885 exact local frontend words; May 8, 2022 preserved; focused checks only. Main publication recorded in closeout.

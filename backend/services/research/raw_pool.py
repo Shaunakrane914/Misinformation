@@ -408,15 +408,14 @@ class RawAcquisitionPool:
             if isinstance(page.get('licence_urls'), list):
                 record['page_metadata']['licence_urls'] = [s[:200] for s in page['licence_urls'][:4]
                     if isinstance(s, str) and s.startswith('https://creativecommons.org/licenses/')]
-            address = page.get('published_address')
-            if (isinstance(address, dict) and address.get('basis') == 'OBSERVED_AUTHOR_AND_EDITORIAL_ADDRESS_INTRODUCTION'
-                    and address.get('source_text_sha256') == digest
-                    and isinstance(address.get('speaker'), str) and 1 <= len(address['speaker']) <= 150
-                    and all(type(address.get(k)) is int for k in ('start', 'end', 'intro_start', 'intro_end'))
-                    and 0 <= address['intro_start'] < address['intro_end'] <= address['start'] < address['end'] == len(content)):
-                record['page_metadata']['published_address'] = {
-                    key: address[key] for key in ('speaker', 'start', 'end', 'intro_start', 'intro_end', 'source_text_sha256', 'basis')}
-                record['page_metadata']['published_address']['identity_authenticated'] = False
+            from backend.services.research.address_provenance import project_address
+            address = project_address(page.get('published_address'), content)
+            if address:
+                record['page_metadata']['published_address'] = address
+            from backend.services.research.address_provenance import project_statement_metadata
+            statement = project_statement_metadata(page.get('official_statement'))
+            if statement:
+                record['page_metadata']['official_statement'] = statement
             if page.get('rights_exception_observed') is True:
                 record['page_metadata']['rights_exception_observed'] = True
             if page.get('rights_notice_observed') is True:

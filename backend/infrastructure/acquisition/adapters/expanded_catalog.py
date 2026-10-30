@@ -141,7 +141,8 @@ def read_expanded_url(url, max_chars=20_000):
     recognized access failure is terminal here, never a reason to bypass it.
     """
     selected = next(((key, adapter) for key, adapter in get_expanded_adapters().items()
-                     if key not in {'cpsc_recalls', 'govuk'} and adapter.can_handle(CandidateSource(url=url))), None)
+                     if key != 'cpsc_recalls' and (key != 'govuk' or urlsplit(url).path.startswith('/government/speeches/'))
+                     and adapter.can_handle(CandidateSource(url=url))), None)
     if selected is None:
         return None
     key, adapter = selected
@@ -179,7 +180,8 @@ def read_expanded_url(url, max_chars=20_000):
             if len(content.split()) >= 40 and "<p" in html:
                 page["body_quality"] = {"body_kind": "ARTICLE_BODY", "basis": "CAPTURED_POST_BODY_HTML"}
     if key == 'govuk':
-        page.update(published=document.raw_metadata.get('published'), author='GOV.UK issuing department',
+        page.update(document.raw_metadata.get('page_metadata') or {})
+        page.update(published=document.raw_metadata.get('published'), author='',
                     licence_urls=['https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'])
     if fragment.content_depth in {"REFERENCE_TEXT", "PROFILE_METADATA"}:
         page.update(content_scope="PROFILE" if key == "wikidata_exec" else "BACKGROUND_REFERENCE",
@@ -189,9 +191,13 @@ def read_expanded_url(url, max_chars=20_000):
         page["content_scope"] = "COMMUNITY_REVIEW_COLLECTION"
     original_length = len(content)
     content = content[:max(0, min(25_000, max_chars))]
+    if key == 'govuk' and isinstance(page.get('published_address'), dict) and len(content) != original_length:
+        import hashlib
+        page['published_address'] = {**page['published_address'], 'start':0, 'end':len(content),
+            'source_text_sha256':hashlib.sha256(content.encode('utf-8')).hexdigest()}
     if not content.strip():
         return {"status": "failed", "url": url, "failure_kind": "EMPTY_CONTENT", "content": ""}
     return {"status": "success", "url": url, "title": fragment.title, "content": content, "markdown": content,
             "content_depth": fragment.content_depth, "page_metadata": page, "backend": adapter.backend_id,
-            "truncated": original_length > len(content),
+            "truncated": original_length > len(content) or document.raw_metadata.get('body_truncated', False),
             "source_completeness": "BOUNDED_CAPTURE_NOT_COMPLETE_WEBSITE"}

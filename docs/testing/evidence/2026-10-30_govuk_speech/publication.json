@@ -1,0 +1,18 @@
+{
+  "application_commit": "6971bc447efe6c04cc98ebee9a7dfdcc95584c20",
+  "remote_main_confirmed": "6971bc447efe6c04cc98ebee9a7dfdcc95584c20",
+  "push": "SUCCESS_FAST_FORWARD",
+  "native_source_http_admissions": 4,
+  "native_source_http_cap": 4,
+  "new_speeches": 2,
+  "raw_speech_words": 5500,
+  "qualified_and_local_frontend_words": 4850,
+  "focused_checks": 33,
+  "full_project_suites": "NOT_RUN",
+  "model_calls": 0,
+  "paid_services": 0,
+  "skip_ci": true,
+  "skip_render": true,
+  "deployment": "NOT_REQUESTED_NOT_ATTESTED",
+  "private_captures": "PRESERVED_IN_IGNORED_WORKSPACE_WITH_HASH_MANIFEST"
+}

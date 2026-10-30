@@ -54,3 +54,10 @@ with a hash manifest, so future offline reuse does not depend on temp retention.
 The migrated GOV.UK boundary opts into preserving original typed HTTP errors:
 401/403/429 remain terminal, one attempt and zero redirects. Other adapters keep
 their existing exception contract. Focused denial controls pass.
+
+## Observed Git publication
+
+Application `6971bc447efe6c04cc98ebee9a7dfdcc95584c20` fast-forwarded main and was pushed;
+GitHub main ref confirmed the exact SHA. No force push/history rewrite.
+CI/deployment skip markers retained; no deployment, production investigation or
+hosted CI result is claimed. This small documentation closeout is pushed next.

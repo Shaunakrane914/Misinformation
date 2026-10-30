@@ -15,13 +15,19 @@ from backend.services.research.source_quality import source_quality_engine
 
 def _observed_issuer_documents(parent: EvidenceItem, *, html_only: bool = False) -> list[EvidenceItem]:
     """Bounded leads from a fetched issuer index, never invented body evidence."""
-    from backend.services.research.source_quality import canonical_hostname, hostname_matches
+    from backend.services.research.source_quality import canonical_hostname, hostname_matches, VERIFIED_CORPORATE_DOMAINS
     from backend.infrastructure.acquisition.adapters.web.page_extraction import document_link_priority
     from urllib.parse import urlsplit
     if (parent.query_class not in {"issuer_documents", "observed_issuer_document"}
             or not parent.metadata.get("read_success") or parent.metadata.get("document_hop", 0) >= 3):
         return []
     origin = canonical_hostname(parent.metadata.get("observed_final_endpoint") or parent.canonical_url)
+    requested_host = canonical_hostname(parent.canonical_url)
+    # A permitted reader endpoint is transport, not the issuing publisher.
+    if origin == "r.jina.ai":
+        origin = requested_host
+    issuer_roots = {root for roots in VERIFIED_CORPORATE_DOMAINS.values() for root in roots
+                    if hostname_matches(origin, root) and hostname_matches(requested_host, root)}
     links = (parent.metadata.get("page_metadata") or {}).get("observed_links") or []
     documents = []
     seen = {parent.canonical_url}
@@ -29,7 +35,9 @@ def _observed_issuer_documents(parent: EvidenceItem, *, html_only: bool = False)
         url, title = str(link.get("url") or ""), str(link.get("text") or "")
         if html_only and not urlsplit(url).path.lower().endswith((".html", ".htm")):
             continue
-        if (url in seen or not hostname_matches(canonical_hostname(url), origin)
+        child_host = canonical_hostname(url)
+        same_issuer = hostname_matches(child_host, origin) or any(hostname_matches(child_host, root) for root in issuer_roots)
+        if (url in seen or not same_issuer
                 or not re.search(r"quarter|results|filing|earnings|annual.report", title + " " + url, re.I)):
             continue
         seen.add(url)
@@ -37,10 +45,14 @@ def _observed_issuer_documents(parent: EvidenceItem, *, html_only: bool = False)
         documents.append(EvidenceItem(
             id=item_id, canonical_url=url, channel="web", title=title,
             snippet=title, content="", content_depth="INDEX_SNIPPET",
+            published_at=link.get("published") or "",
             query_class="observed_issuer_document", query_text=parent.query_text,
             metadata={"discovered_on_url": parent.canonical_url,
                       "discovered_on_candidate_id": parent.id, "link_text": title,
                       "document_hop": parent.metadata.get("document_hop", 0) + 1,
+                      "publication_time_source": link.get("publication_time_source") or "",
+                      "feed_url": link.get("feed_url") or "",
+                      "feed_identity": link.get("feed_identity") or "",
                       "linked_article_retrieved": False},
         ))
         if len(documents) >= 4:

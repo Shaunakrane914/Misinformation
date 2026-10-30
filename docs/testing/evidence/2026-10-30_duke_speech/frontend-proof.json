@@ -1,0 +1,14 @@
+{
+  "scope": "ONE_LOCAL_SHARED_RENDERER_SESSION_NEW_LIVE_BODIES_API_SSE_PROJECTION",
+  "passages": 80,
+  "frontend_words": 1885,
+  "exact_source_and_frontend_text": true,
+  "exact_offsets_and_hashes": true,
+  "source_links_present": true,
+  "page_errors": [],
+  "external_requests_allowed": 0,
+  "external_requests_blocked": 0,
+  "production_browser": false,
+  "visible_original_date": "2022-05-08",
+  "date_count": 80
+}

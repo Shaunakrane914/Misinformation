@@ -46,6 +46,8 @@ class ProviderHTTPError(RuntimeError):
         rate_limit_remaining: Optional[int] = None,
         rate_limit_reset_at: Optional[str] = None,
         failure_kind: Optional[str] = None,
+        reader_fallback_attempted: bool = False,
+        response_diagnostics: Optional[dict] = None,
     ) -> None:
         super().__init__(message)
         self.endpoint = endpoint
@@ -53,6 +55,8 @@ class ProviderHTTPError(RuntimeError):
         self.retry_after_seconds = retry_after_seconds
         self.network_observed = network_observed
         self.attempts = attempts
+        self.reader_fallback_attempted = reader_fallback_attempted
+        self.response_diagnostics = response_diagnostics or {}
         self.rate_limit_remaining = rate_limit_remaining
         self.rate_limit_reset_at = rate_limit_reset_at
         self.failure_kind = failure_kind or (
@@ -71,6 +75,8 @@ def transport_failure_kind(error: Exception) -> str:
     if isinstance(error, urllib.error.URLError) and isinstance(error.reason, Exception):
         return transport_failure_kind(error.reason)
     if isinstance(error, TimeoutError):
+        if str(error) in {"Public HTTP connection deadline expired", "Public HTTP response deadline expired"}:
+            return "TIMEOUT"
         return "BUDGET_EXHAUSTED" if "budget" in str(error).lower() or "deadline" in str(error).lower() else "TIMEOUT"
     return "CONNECTION_FAILURE" if isinstance(error, OSError) else "PROVIDER_FAILURE"
 

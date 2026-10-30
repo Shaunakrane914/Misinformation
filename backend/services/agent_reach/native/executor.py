@@ -147,6 +147,8 @@ class NativeExecutor:
         page_metadata: Dict[str, Any] = {}
         raw_capture: Dict[str, Any] = {}
         primary_http_error: Optional[ProviderHTTPError] = None
+        reader_fallback_attempted = False
+        response_diagnostics = {}
 
         # Primary: shared bounded HTTP.  Redirect targets are validated before
         # they are followed and the body cannot exceed MAX_OUTPUT_BYTES.
@@ -170,6 +172,9 @@ class NativeExecutor:
             decoded_limit = MAX_HTML_DECODED_BYTES if media_type in {'text/html', 'application/xhtml+xml'} else MAX_OUTPUT_BYTES
             decoded_body = decode_bounded_http_body(response, max_bytes=decoded_limit)
             decoded_body_bytes = len(decoded_body)
+            from backend.infrastructure.acquisition.adapters.web.response_diagnostics import diagnose_response
+            response_diagnostics = diagnose_response(decoded_body, response.endpoint, response.content_type,
+                                                     status=response.status_code)
             if (response.content_type or "").split(";", 1)[0].lower().strip() == "application/pdf" or decoded_body.startswith(b"%PDF-"):
                 from backend.infrastructure.acquisition.adapters.web.pdf_text import extract_pdf_text
                 pdf = extract_pdf_text(decoded_body, timeout=min(2.5, max(0.0, timeout - (time.perf_counter() - t0))))
@@ -197,7 +202,18 @@ class NativeExecutor:
                 raise ValueError("HTTP response is not a text document")
             observed_endpoint = response.endpoint
 
-            if (
+            from backend.infrastructure.acquisition.adapters.web.discovery_document import drupal_search_document
+            ajax_search = drupal_search_document(raw_text, response.endpoint)
+            if ajax_search is not None:
+                page_metadata = ajax_search
+                markdown_text = '\n\n'.join(row['text'] for row in ajax_search['observed_links'])
+                raw_capture = {'text': raw_text[:100_000], 'truncated': len(raw_text) > 100_000,
+                    'selection_method': 'DRUPAL_AJAX_SEARCH_DISCOVERY_ONLY',
+                    'source_text_chars': len(raw_text),
+                    'source_text_sha256': hashlib.sha256(raw_text.encode('utf-8')).hexdigest()}
+                response_diagnostics = diagnose_response(decoded_body, response.endpoint, response.content_type,
+                    extracted={**page_metadata, 'text': markdown_text}, status=response.status_code)
+            elif (
                 "html" in (content_type or "").lower()
                 or raw_text.lstrip().lower().startswith(("<!doctype html", "<html"))
             ):
@@ -238,12 +254,14 @@ class NativeExecutor:
                     page_metadata["declared_canonical_verified"] = False
                 page_metadata.update(extract_observed_page_details(soup, response.endpoint))
                 extracted = extract_readable_page(soup)
+                response_diagnostics = diagnose_response(decoded_body, response.endpoint, response.content_type,
+                    soup=soup, extracted=extracted, status=response.status_code)
                 markdown_text = extracted["text"]
                 page_metadata["content_scope"] = extracted["content_scope"]
                 page_metadata["text_blocks"] = extracted["text_blocks"]
                 page_metadata["date_observations"] = extracted["date_observations"]
                 for key in ("body_quality", "extraction_method", "readable_word_count", "readable_character_count",
-                            "readable_text_sha256", "language", "language_basis", "licence_urls", "rights_exception_observed", "rights_notice_observed"):
+                            "readable_text_sha256", "language", "language_basis", "licence_urls", "rights_exception_observed", "rights_notice_observed", "published_address"):
                     if key in extracted:
                         page_metadata[key] = extracted[key]
                 raw_text = extracted["raw_text"]
@@ -259,9 +277,13 @@ class NativeExecutor:
                 index = discovery_document(raw_text, response.endpoint)
                 if index is not None:
                     page_metadata = index
+                response_diagnostics = diagnose_response(decoded_body, response.endpoint, response.content_type,
+                    extracted={**page_metadata, 'text': markdown_text}, status=response.status_code)
             selected_response = response
+            page_metadata['native_response_diagnostics'] = response_diagnostics
 
         except ProviderHTTPError as error:
+            error.response_diagnostics = response_diagnostics
             primary_http_error = error
             logger.debug("[NativeExecutor] Bounded HTTP read failed for %s: %s", clean_url, error)
             raise
@@ -269,22 +291,25 @@ class NativeExecutor:
             from backend.services.research.source_registry import SourcePermissionError
             if isinstance(error, SourcePermissionError):
                 raise  # A source policy denial is never an extraction failure.
+            if response_diagnostics and response_diagnostics.get('classification') != 'UNSUPPORTED_CONTENT_TYPE':
+                response_diagnostics = {**response_diagnostics, 'classification': 'EXTRACTION_FAILURE'}
             logger.debug("[NativeExecutor] HTTP parsing failed for %s: %s", clean_url, error)
 
         # News about a CDN/security challenge is not itself a challenge page.
         # Require a challenge-shaped page opening, not an incidental body word.
         opening = re.sub(r"\s+", " ", markdown_text[:250]).strip().lower()
         is_challenge = bool(re.match(r"^(?:#{1,3}\s*)?(?:just a moment|verify (?:that )?you are human|attention required|access denied|403 forbidden|checking your browser)", opening))
-        if is_challenge:
+        if is_challenge or response_diagnostics.get('classification') == 'CHALLENGE_OR_RESTRICTED':
             raise ProviderHTTPError("Publisher challenge page; alternate-route retrieval is not allowed",
                                     endpoint=observed_endpoint or clean_url, status_code=status_code,
-                                    network_observed=True)
+                                    network_observed=True, response_diagnostics=response_diagnostics)
 
         # Browser rescue is intentionally disabled: hostname interception alone
         # cannot pin Chromium's destination DNS or bound all subresource I/O.
         # A genuinely empty non-challenge response may use the existing bounded
         # reader. Access denials/challenges above never trigger another route.
         if len(markdown_text) < 100:
+            reader_fallback_attempted = True
             try:
                 jina_url = f"https://r.jina.ai/{clean_url}"
                 response = fetch_public_http(
@@ -311,18 +336,32 @@ class NativeExecutor:
                     decoded_body_bytes = len(decoded_body)
                     observed_endpoint = response.endpoint
                     selected_response = response
-            except Exception as e_jina:
-                logger.debug(f"[NativeExecutor] Emergency Jina fallback error: {e_jina}")
+            except ProviderHTTPError as error:
+                error.reader_fallback_attempted = True
+                error.response_diagnostics = response_diagnostics
+                raise
+            except Exception as error:
+                from backend.services.research.source_registry import SourcePermissionError
+                if isinstance(error, (SourcePermissionError, SecurityPolicyViolation)):
+                    raise
+                from backend.infrastructure.acquisition.network.http import transport_failure_kind
+                raise ProviderHTTPError("Failed to retrieve content via bounded HTTP/Jina", endpoint=jina_url,
+                    failure_kind=transport_failure_kind(error), reader_fallback_attempted=True,
+                    response_diagnostics=response_diagnostics) from error
 
         latency_ms = int((time.perf_counter() - t0) * 1000)
         if not markdown_text:
             if primary_http_error is not None:
                 raise primary_http_error
-            raise BackendExecutionError("web", active_backend, clean_url, 1, "Failed to retrieve content via bounded HTTP/Jina")
+            raise ProviderHTTPError("Failed to retrieve content via bounded HTTP/Jina", endpoint=clean_url,
+                failure_kind="EMPTY_EXTRACTION", reader_fallback_attempted=reader_fallback_attempted,
+                response_diagnostics=response_diagnostics)
 
         return {
             "platform": "web",
             "backend": active_backend,
+            "reader_fallback_attempted": reader_fallback_attempted,
+            "native_response_diagnostics": response_diagnostics,
             "operation": "web.read",
             "status": "SUCCESS",
             "url": clean_url,

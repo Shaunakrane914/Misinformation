@@ -11,12 +11,17 @@ import json
 import hashlib
 import re
 from datetime import datetime, timezone
-from urllib.parse import urljoin, urlsplit, urlunsplit
+from urllib.parse import parse_qs, urljoin, urlsplit, urlunsplit
 
 
 _CORRECTION_PATTERN = re.compile(r"\b(?:correction|editor['’]s note|updated on)\b", re.I)
 _DECLARED_FIELDS = ("@type", "headline", "datePublished", "dateModified", "description")
 _ARTICLE_TYPES = {"Article", "NewsArticle", "ReportageNewsArticle", "AnalysisNewsArticle", "BlogPosting", "ScholarlyArticle"}
+
+# Retain leads for subject-aware ranking without enlarging any request/read
+# budget. Dense newsroom menus must not consume the entire pre-ranking pool.
+MAX_OBSERVED_LINKS = 600
+MAX_OBSERVED_ANCHORS = 3000
 
 
 def extract_reader_markdown(raw: str) -> dict:
@@ -58,6 +63,27 @@ def extract_reader_markdown(raw: str) -> dict:
     result["page_metadata"] = {"title": title[:500], "content_scope": scope,
                                "reader_declared_metadata_verified": False,
                                "reader_source_start": start}
+    # Reader indexes still contain observed document links. Preserve them
+    # before display truncation, as leads only; never infer body dates or trust.
+    links, seen = [], set()
+    for match in re.finditer(r"(?<!!)\[([^\]\r\n]{0,300})\]\((https?://[^\s)]+)\)", raw[marker.end():][:100_000]):
+        url = _http_link("", match.group(2))
+        if not url or url in seen:
+            continue
+        seen.add(url)
+        row = {"url": url, "text": match.group(1)[:160],
+               "verification": "UNVERIFIED_READER_LINK"}
+        parsed = urlsplit(url)
+        if (re.search(r"(?:^|/)search(?:-results)?/?$", parsed.path, re.I)
+                and set(parse_qs(parsed.query)) & {"q", "s", "query", "search"}):
+            row.update(kind="FEED_INDEX", basis="OBSERVED_READER_GET_SEARCH_LINK")
+            if not row['text']:
+                row['text'] = 'Observed publisher search results'
+        links.append(row)
+        if len(links) >= MAX_OBSERVED_ANCHORS:
+            break
+    links.sort(key=document_link_priority)
+    result["page_metadata"]["observed_links"] = links[:MAX_OBSERVED_LINKS]
     if published:
         result["page_metadata"]["published"] = published.group(1).strip()[:100]
     result["raw_capture"]["selection_method"] = scope.upper()
@@ -91,7 +117,7 @@ def _semantic_root(soup):
         return articles[0], "article"
     # Common static publishing containers are structural observations. Require
     # a unique container with paragraphs so a list of story cards cannot win.
-    containers = (main or soup).select('.article-body, .article-content, .story-body, .story-content, .entry-content, .post-content, .field--name-body, .artText, .article_body, .storyContent, .articleWrap')
+    containers = (main or soup).select('.article-body, .article-content, .story-body, .story-content, .story-main-content, .entry-content, .post-content, .field--name-body, .artText, .article_body, .storyContent, .articleWrap')
     containers = [node for node in containers if len(node.find_all("p")) >= 2]
     containers = [node for node in containers if not any(parent in containers for parent in node.parents)]
     if len(containers) == 1:
@@ -155,6 +181,7 @@ def extract_readable_page(soup) -> dict:
         text = "\n\n".join(" ".join(value.split()) for value in re.split(r"\n\s*\n", body.get_text(" ")) if value.strip())
         scope, method = "declared_article_body", "PUBLISHER_JSONLD_ARTICLE_BODY"
     structure = observe_text_structure(text, [_text(node, 6000) for node in root.find_all(("h1", "h2", "h3", "h4"), limit=100)])
+    speech = observe_published_address(soup, root, text, scope)
     language = str((soup.find('html') or {}).get('lang') or '')[:35]
     licences = list(dict.fromkeys(str(node.get('href')) for node in soup.select('a[rel~="license"], link[rel~="license"]')
                                   if str(node.get('href') or '').startswith('https://creativecommons.org/licenses/')))[:4]
@@ -165,6 +192,7 @@ def extract_readable_page(soup) -> dict:
     rights_exception = bool(re.search(r'\b(?:not covered by (?:the |this )?(?:creative commons|licen[sc]e)|republished with permission)\b', raw, re.I)
         or re.search(r'\bthird.party (?:content|text|material|article).{0,180}\ball rights reserved\b', raw, re.I))
     return {"raw_text": raw, "text": text, **structure, "content_scope": scope,
+            **({'published_address': speech} if speech else {}),
             **({'language': language, 'language_basis': 'CAPTURED_HTML_LANG'} if language else {}),
             **({'licence_urls': licences} if licences else {}),
             **({'rights_exception_observed': True} if rights_exception else {}),
@@ -174,6 +202,45 @@ def extract_readable_page(soup) -> dict:
             "readable_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
             "body_quality": _body_quality(root, text, scope, declared_article=any(
                 node.get("@type") in _ARTICLE_TYPES for node in declarations))}
+
+
+def observe_published_address(soup, root, text, scope):
+    """Bind a publisher's explicit author + editorial speech introduction.
+
+    Title/name presence alone cannot attribute prose. Require one author, one
+    editorial note explicitly identifying that author as the speaker of the
+    following address, and a substantive body after that note. This retains
+    source observations, not authenticated identity or independent truth.
+    """
+    if scope not in {'article_body', 'article', 'publisher_article_container'}:
+        return None
+    authors = soup.select('.story-author-name, [rel="author"], [itemprop="author"] [itemprop="name"]')
+    authors = list(dict.fromkeys(node.get_text(' ', strip=True) for node in authors))
+    notes = root.select('aside.editors-note')
+    if len(authors) != 1 or len(notes) != 1 or not re.fullmatch(r"[^\W\d_]+(?:[ .'-]+[^\W\d_]+){1,5}", authors[0]):
+        return None
+    paragraphs = notes[0].find_all('p', recursive=False)
+    if len(paragraphs) != 1:
+        return None
+    intro = paragraphs[0].get_text(' ', strip=True)
+    if (len(intro) > 1000 or not re.match(r'^' + re.escape(authors[0]) + r'\b', intro, re.I)
+            or not re.search(r'\b(?:she|he|they|'+re.escape(authors[0])+r')\s+delivered the following (?:address|speech)\b', intro, re.I)
+            or re.search(r'\b(?:excerpt|abridged|adapted|fictional|fabricated)\b', intro, re.I)):
+        return None
+    offset = text.find(intro)
+    if offset < 0 or text.find(intro, offset + 1) >= 0:
+        return None
+    start = offset + len(intro)
+    while start < len(text) and text[start].isspace():
+        start += 1
+    if len(text[start:].split()) < 100:
+        return None
+    if root.select('article.story-card') or re.search(r"(?m)^[A-Z][\w.'-]+(?:[ \t]+[A-Z][\w.'-]+){1,4}:\s", text[start:]):
+        return None  # A mixed document or explicit second speaker needs turn boundaries.
+    return {'speaker': authors[0], 'start': start, 'end': len(text),
+            'intro_start': offset, 'intro_end': offset + len(intro),
+            'source_text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+            'basis': 'OBSERVED_AUTHOR_AND_EDITORIAL_ADDRESS_INTRODUCTION', 'identity_authenticated': False}
 
 
 def _body_quality(root, text, scope, *, declared_article=False):
@@ -260,6 +327,15 @@ def observe_anchored_article_body(text, page):
 
 def recovered_span_allowed(text, page, start, end):
     """Apply one exact captured-body boundary to all downstream consumers."""
+    if (isinstance(page, dict) and isinstance(text, str)
+            and type(start) is int and type(end) is int):
+        blocks = page.get('text_blocks')
+        for row in (blocks if isinstance(blocks, list) else [])[:100]:
+            if (isinstance(row, dict) and row.get('role') == 'RELATED_LINK'
+                    and type(row.get('start')) is int and type(row.get('end')) is int
+                    and 0 <= row['start'] < row['end'] <= len(text)
+                    and start < row['end'] and end > row['start']):
+                return False  # A related headline remains a lead, never body evidence.
     if not isinstance(page, dict) or "article_body_recovery" not in page:
         return True
     recovery = page["article_body_recovery"]
@@ -289,6 +365,36 @@ def observe_text_structure(text, headings=()):
             dates.append({"text": value, "start": match.start(), "end": match.start() + len(value),
                 "meaning": meaning, "independently_verified": False})
     return {"text_blocks": blocks, "date_observations": dates}
+
+
+def observe_related_link_spans(text, page):
+    """Retain exact link-label spans in an explicitly observed related widget.
+
+    This preserves navigation structure through the raw pool without copying
+    arbitrary page metadata or treating a linked headline as article prose.
+    """
+    if not isinstance(text, str) or not isinstance(page, dict):
+        return []
+    links, blocks = page.get('observed_links'), page.get('text_blocks')
+    links = links if isinstance(links, list) else []
+    blocks = blocks if isinstance(blocks, list) else []
+    labels = {row.get('text') for row in links[:MAX_OBSERVED_LINKS]
+              if isinstance(row, dict) and isinstance(row.get('text'), str) and row['text']}
+    headings = {row.get('start') for row in blocks[:100]
+                if isinstance(row, dict) and row.get('role') == 'HEADING' and type(row.get('start')) is int}
+    spans, remaining = [], 0
+    for match in re.finditer(r'\S[^\n]*(?:\n(?!\s*\n)[^\n]+)*', text):
+        value = match.group().rstrip()
+        if value in {'Related Stories', 'Related Articles'} and match.start() in headings:
+            remaining = 6
+        elif remaining and value in labels:
+            spans.append({'start': match.start(), 'end': match.start() + len(value), 'role': 'RELATED_LINK'})
+            remaining -= 1
+            if len(spans) >= 30:
+                break
+        else:
+            remaining = 0
+    return spans
 
 
 def _text(node, limit: int) -> str:
@@ -398,6 +504,44 @@ def _publication_observations(soup, declarations):
     for declaration in declarations:
         if declaration.get("@type") in _ARTICLE_TYPES and declaration.get("datePublished"):
             observations.append({"value": declaration["datePublished"][:100], "source": "JSONLD:datePublished"})
+    if not observations:
+        # One original story header, explicitly labeled PUBLISHED, supplies a
+        # calendar date only. Ignore sidebar time elements and update labels;
+        # never invent a timezone for its publisher-local datetime.
+        headers = soup.select('article > .row .story-header')
+        if len(headers) == 1 and len(headers[0].find_all('h1')) == 1:
+            labels = headers[0].select('.story-published-info')
+            if len(labels) == 1 and re.match(r'^PUBLISHED\b', labels[0].get_text(' ', strip=True), re.I):
+                times = labels[0].select('time[datetime]')
+                if len(times) == 1:
+                    try:
+                        day = datetime.strptime(times[0].get_text(' ', strip=True), '%B %d, %Y').date().isoformat()
+                        if str(times[0]['datetime'])[:10] == day:
+                            observations.append({'value': day, 'source': 'HTML_PUBLISHED_HEADER:calendar_date'})
+                    except ValueError:
+                        pass
+    if not observations:
+        # Observed newsroom layout: one article title, a sibling date and a
+        # substantive sibling body. Do not promote arbitrary date lines,
+        # related-card dates, update labels or footer clocks to publication.
+        articles = soup.select('.article')
+        if len(articles) == 1:
+            article = articles[0]
+            headings = article.select('h1.article-title')
+            dates = article.select('.article-date')
+            bodies = article.select('.article-body')
+            if (len(headings) == len(dates) == len(bodies) == 1
+                    and all(node.parent is article for node in [headings[0], dates[0], bodies[0]])
+                    and len(bodies[0].find_all('p')) >= 2):
+                children = list(article.children)
+                value = dates[0].get_text(' ', strip=True)
+                if (children.index(headings[0]) < children.index(dates[0]) < children.index(bodies[0])
+                        and re.fullmatch(r'[A-Z][a-z]+ \d{1,2}, \d{4}', value)):
+                    try:
+                        day = datetime.strptime(value, '%B %d, %Y').date().isoformat()
+                        observations.append({'value': day, 'source': 'HTML_ARTICLE_HEADER:article-date'})
+                    except ValueError:
+                        pass
     return observations[:12]
 
 
@@ -434,7 +578,7 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
     origin = (urlsplit(endpoint).hostname or "").lower()
     links: list[dict] = []
     by_url: dict[str, dict] = {}
-    for anchor in root.find_all("a", href=True, limit=500):
+    for anchor in root.find_all("a", href=True, limit=MAX_OBSERVED_ANCHORS):
         if anchor.find_parent(("nav", "footer")) or anchor.find_parent(attrs={"role": "navigation"}):
             continue
         href = _http_link(endpoint, str(anchor.get("href") or ""))
@@ -460,7 +604,7 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
     # and URLs, but prioritize substantive documents within this bounded sample
     # rather than spending every slot on Home/Careers/contact links.
     links.sort(key=document_link_priority)
-    links = links[:120]
+    links = links[:MAX_OBSERVED_LINKS]
     # Keep a separate, small navigation-discovery sample. These are hub leads,
     # not article text or verified ownership. A bounded same-publisher reader
     # may inspect them; never inject navigation into extracted body passages.
@@ -539,7 +683,11 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
                 parsed_dts.append(p)
             except Exception:
                 pass
-        if len(parsed_dts) == len(identities) and len(parsed_dts) >= 2:
+        # A naive local declaration has no observed offset. Comparing it to an
+        # aware timestamp raises TypeError; assigning UTC would invent metadata.
+        # Keep the conflict and readable body instead of failing the whole read.
+        comparable = len({p.tzinfo is not None for p in parsed_dts}) == 1
+        if len(parsed_dts) == len(identities) and len(parsed_dts) >= 2 and comparable:
             if (max(parsed_dts) - min(parsed_dts)).total_seconds() <= 3 * 3600:
                 result["published"] = unique_dates[0]
                 result["publication_time_source"] = ";".join(dict.fromkeys(row["source"] for row in dates))

@@ -42,6 +42,16 @@ def attribution_metadata(item):
     kind = page.get("body_kind") or (page.get("body_quality") or {}).get("body_kind")
     if kind in {"ARTICLE_BODY", "SOURCE_INDEX", "PUBLISHER_HOMEPAGE", "BACKGROUND_REFERENCE"}:
         result.setdefault("page_metadata", {})["body_kind"] = kind
+    address = page.get('published_address')
+    content = item.get('content', '') if isinstance(item, dict) else getattr(item, 'content', '')
+    if (isinstance(address, dict) and address.get('basis') == 'OBSERVED_AUTHOR_AND_EDITORIAL_ADDRESS_INTRODUCTION'
+            and address.get('source_text_sha256') == hashlib.sha256(content.encode('utf-8')).hexdigest()
+            and isinstance(address.get('speaker'), str) and len(address['speaker']) <= 150
+            and all(type(address.get(key)) is int for key in ('start', 'end', 'intro_start', 'intro_end'))
+            and 0 <= address['intro_start'] < address['intro_end'] <= address['start'] < address['end'] == len(content)):
+        result.setdefault('page_metadata', {})['published_address'] = {
+            key: address[key] for key in ('speaker', 'start', 'end', 'intro_start', 'intro_end', 'source_text_sha256', 'basis')}
+        result['page_metadata']['published_address']['identity_authenticated'] = False
     return result
 
 

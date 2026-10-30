@@ -411,6 +411,10 @@ class DeepReader:
                 logger.debug("[DeepReader] Read failed (%s)", kind)
                 observation = {"status": "error", "failure_kind": kind}
                 if isinstance(e, ProviderHTTPError):
+                    from backend.infrastructure.acquisition.adapters.web.response_diagnostics import safe_diagnostics
+                    diagnostic = safe_diagnostics(e.response_diagnostics)
+                    if diagnostic:
+                        observation['native_response_diagnostics'] = diagnostic
                     observation.update(network_observed=e.network_observed,
                         transport={'http_status': e.status_code,
                                    'network_observed_this_attempt': e.network_observed})
@@ -484,6 +488,11 @@ class DeepReader:
                         }
                         if isinstance(read_res.get('provider_failures'), list):
                             attempt_record['provider_failures'] = read_res['provider_failures'][:3]
+                        from backend.infrastructure.acquisition.adapters.web.response_diagnostics import safe_diagnostics
+                        diagnostic = safe_diagnostics(read_res.get('native_response_diagnostics') or
+                            (read_res.get('page_metadata') or {}).get('native_response_diagnostics'))
+                        if diagnostic:
+                            attempt_record['native_response_diagnostics'] = diagnostic
                         if read_res.get("wrapper_resolution"):
                             attempt_record["wrapper_resolution"] = read_res["wrapper_resolution"]
                         if isinstance(read_res.get('robots_access'), dict):

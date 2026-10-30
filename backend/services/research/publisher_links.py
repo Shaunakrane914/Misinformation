@@ -77,7 +77,9 @@ def observed_publisher_articles(parent, domain, audit, target="", *, max_childre
         child_limit = min(child_limit, 4)
     children, seen = [], {parent.canonical_url}
     origin = canonical_hostname(parent.canonical_url)
-    links = (([] if article_parent else page.get("discovery_links", [])) + page.get("observed_links", []))[:200]
+    from backend.infrastructure.acquisition.adapters.web.page_extraction import MAX_OBSERVED_LINKS
+    links = (([] if article_parent else page.get("discovery_links", []))[:6]
+             + page.get("observed_links", [])[:MAX_OBSERVED_LINKS])
     if not article_parent and target and parent.metadata.get("publisher_hop", 0) == 0:
         for form in page.get("search_forms", [])[:1]:
             parsed = urlsplit(form.get("action", ""))
@@ -85,9 +87,19 @@ def observed_publisher_articles(parent, domain, audit, target="", *, max_childre
                     or canonical_hostname(form.get("action", "")) != origin):
                 continue
             params = dict(parse_qsl(parsed.query))
-            params[form["parameter"]] = target[:100]
+            search_text = target
+            if domain in {"brand", "personal"}:
+                from backend.services.research.research_objectives import discovery_objective
+                task_query = discovery_objective(parent.query_text or "", target)
+                subject_words = set(re.findall(r"\w+", target.casefold()))
+                if (task_query and len(task_query) <= 100 and subject_words
+                        and subject_words <= set(re.findall(r"\w+", task_query.casefold()))
+                        and matches_objective(task_query, domain)):
+                    search_text = task_query
+            params[form["parameter"]] = search_text[:100]
             links.insert(0, {"url": urlunsplit((parsed.scheme, parsed.netloc, parsed.path, urlencode(params), "")),
-                "text": "Observed public publisher search", "kind": "FEED_INDEX"})
+                "text": "Observed public publisher search", "kind": "FEED_INDEX",
+                "basis": "OBSERVED_PUBLIC_GET_FORM"})
     from backend.services.research.passage_extractor import _topic_token_keys
     tokens = set(re.findall(r"[a-z0-9]{3,}", target.lower()))
     issuer_host_hint = (domain == "financial" and bool(tokens)
@@ -115,7 +127,16 @@ def observed_publisher_articles(parent, domain, audit, target="", *, max_childre
     def lead_priority(row):
         # A concrete observed subject article outranks another discovery hop.
         # Hostname presence alone is not title/topic relevance.
-        return (-subject_hits(row), row.get("kind") == "FEED_INDEX")
+        hits = subject_hits(row)
+        context = str(row.get("text", "")) + " " + str(row.get("url", ""))
+        statement_lead = domain == "personal" and bool(re.search(
+            r"\b(?:said|says|tells|told|speeches?|interviews?|remarks?|statements?)\b", context, re.I))
+        task_article = (hits > 0 and row.get("kind") != "FEED_INDEX"
+                        and (matches_objective(context, domain) or statement_lead))
+        # A subject label in a menu must not displace the only observed search
+        # form when no task-specific article is visible on the current index.
+        priority = (0 if task_article else 1 if row.get("basis") == "OBSERVED_PUBLIC_GET_FORM" else 2)
+        return (priority, -hits, row.get("kind") == "FEED_INDEX")
     links.sort(key=lead_priority)
     for link in links:
         url, title = str(link.get("url") or ""), str(link.get("text") or "")

@@ -51,7 +51,7 @@ def _bare_label(text):
         return False
     predicate = re.search(r"\b(?:is|are|was|were|has|have|had|will|can|could|may|must|did|does|do|said|says|wrote|writes|reported|reports|announced|announces|confirmed|confirms|denied|denies|warned|warns|seized|charged|arrested|filed|rose|fell|grew|increased|decreased|appointed|joined|tested|found|shows|offers|offered|sold|allows|contains|includes|limits|rated|received|ordered|launched|released|endorsed|claimed|claims)\b", text, re.I)
     measurement = re.search(r"(?:[$€£₹]|\b(?:USD|INR|EUR|GBP)\b)\s*\d|\d+(?:\.\d+)?\s*(?:%|(?:percent|million|billion|crore)\b)", text, re.I)
-    return not predicate and not measurement and not local_prose_predicate(text)
+    return not predicate and not measurement and not local_prose_predicate(text) and not has_finite_predicate(text)
 
 
 def has_usable_passage(item) -> bool:
@@ -224,20 +224,28 @@ class PassageExtractor:
                 if (structural_heading or p in page.get("headings", [])
                         or p in {item.title, page.get("title")}):
                     continue
-                from backend.services.research.passage_records import public_statement_attribution, _transcript_speaker_section
+                from backend.services.research.passage_records import public_statement_attribution, _transcript_speaker_section, reported_person_context
                 if domain == "personal" and _transcript_speaker_section(raw_text, start, clean_target, start + len(p)) == "OTHER_OBSERVED_TRANSCRIPT_SPEAKER":
                     continue
                 attributed_statement = domain == "personal" and bool(public_statement_attribution(item, p, clean_target))
-                if not matches_objective(p, domain) and not attributed_statement:
+                reported_context = domain == 'personal' and reported_person_context(item, p, clean_target)
+                if not matches_objective(p, domain) and not attributed_statement and not reported_context:
                     continue
-                if not has_usable_passage({"content": p, "content_depth": item.content_depth}):
+                from backend.services.research.passage_records import usable_published_address_paragraph
+                address_paragraph = (domain == 'personal' and usable_published_address_paragraph(item, p, clean_target))
+                if not has_usable_passage({"content": p, "content_depth": item.content_depth}) and not address_paragraph:
                     continue
+                if attributed_statement and public_statement_attribution(item, p, clean_target) == 'OBSERVED_PUBLISHER_ADDRESS_SECTION' and not address_paragraph:
+                    continue
+                if (address_paragraph and len(p) > 2 and p[0] in {'"', '“'} and p[-1] in {'"', '”'}
+                        and raw_text.count(p[1:-1]) > 1):
+                    continue  # A repeated pull quote is not additional speech evidence.
                 p_lower = p.lower()
                 present = target_tokens & set(re.findall(r"[a-z0-9]{3,}", p_lower))
                 if domain == "trending" and profile.entity_type in {"topic", "concept", "product", "general"}:
                     present = _topic_token_keys(" ".join(target_tokens)) & _topic_token_keys(p_lower)
                 topic_match = any(re.search(r"\b" + re.escape(alias.casefold()) + r"\b", p_lower) for alias in topic_aliases)
-                if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower and not topic_match and not attributed_statement:
+                if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower and not topic_match and not attributed_statement and not reported_context:
                     continue
                 score = 0.0
                 if attributed_statement:
@@ -363,7 +371,7 @@ class PassageExtractor:
             # Keep the compatibility winner for verdict engines, while exposing
             # all bounded paragraphs that passed these same subject/objective/
             # structural gates. These are source assertions, never extra verdicts.
-            if has_usable_passage(item):
+            if has_usable_passage(item) or (domain == 'personal' and usable_published_address_paragraph(item, clean_excerpt, clean_target)):
                 from backend.services.research.evidence_workbench import select_source_passages
                 item.metadata["evidence_passages"], item.metadata["evidence_passage_accounting"] = select_source_passages(
                     item, eligible_paragraphs, clean_excerpt, domain, clean_target, intent)

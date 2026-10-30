@@ -1,0 +1,788 @@
+{
+  "scope": "NEW_AUTHORIZED_ORIGINAL_DUKE_SPEECH_CAPTURE_WITH_OFFLINE_EXTRACTION_AND_API_FRONTEND_REPAIR",
+  "base_branch": "release/source-expansion-20261028",
+  "base_sha": "cc6eba99b9ff9f5196646fdaa61f69e2ba3e4db1",
+  "source_url": "https://today.duke.edu/2022/05/mary-barra-five-lessons-kitchen-table",
+  "actual_final_url": "https://today.duke.edu/2022/05/mary-barra-five-lessons-kitchen-table",
+  "provenance": {
+    "parent_url": "https://today.duke.edu/dt-custom/search-results?query=Mary+Barra",
+    "child_url": "https://today.duke.edu/2022/05/mary-barra-five-lessons-kitchen-table",
+    "saved_parent_response_sha256": "76ae063cfde98552cbbee62eaef2bfb330c9e07378c3d4b0bcea0c87c040393a",
+    "link_proof_sha256": "37c9eebb902eea157c0ea0be6c3b14e064fd96bfd4e8babee221f756ba7b4573"
+  },
+  "http": {
+    "status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "native_admissions": 1,
+    "cap": 3,
+    "wall_seconds": 2.57,
+    "retries": 0,
+    "alternate_readers": 0,
+    "model_calls": 0,
+    "paid_readers": 0,
+    "live_activity_closed": true,
+    "wire_sha256": "4bebec63724b02e7a89000599d5493fdf2e8b4503adafa7a581ef7c1f6884625",
+    "wire_bytes": 20247
+  },
+  "extraction_before": {
+    "classification": "DISCOVERY_LEAD",
+    "raw_source_words": 2445,
+    "article_bodies": 0,
+    "qualified_cited_words": 0,
+    "frontend_words": 0
+  },
+  "extraction_after": {
+    "new_article_bodies": 1,
+    "article_body_words": 2327,
+    "source_id": "ev_page_13ca377f463e",
+    "body_sha256": "9b5893309a064b8163c42b418e1f5d618e490980931bb82becacfce13e31b18b",
+    "content_depth": "PARTIAL_CONTENT",
+    "publication_date": "2022-05-08",
+    "publication_basis": "HTML_PUBLISHED_HEADER:calendar_date",
+    "publication_precision": "CALENDAR_DATE_NO_TIMEZONE_ASSIGNED",
+    "speaker": "Mary Barra",
+    "identity_authenticated": false,
+    "task_qualified_cited_words": 1885,
+    "frontend_words": 1885,
+    "published_passages": 80,
+    "native_statement_projection_records": 15,
+    "native_statement_projection_cap": 16,
+    "independent_publishers": 1,
+    "publisher_independence_verified": false
+  },
+  "content_loss": {
+    "chrome_words_removed_from_original_main_scope": 118,
+    "article_body_words_not_published": 442,
+    "published_words_omitted_by_display_budget": 0,
+    "basis": "Exact original speech is retained; section labels, greetings, short fragments, repeated pull quote and prose selection exclusions are not all asserted relevant. Native statement enumeration is bounded separately from the complete 80-passage workbench."
+  },
+  "passages": [
+    {
+      "start": 16,
+      "end": 210,
+      "words": 32,
+      "sha256": "78d64b1b85f0c3d4110b52ef0bb6bf50bb5a387d0a111d9cdb013c96e3f7f2c7",
+      "attribution": "SOURCE_ASSERTION",
+      "role": "ARTICLE_CONTENT"
+    },
+    {
+      "start": 431,
+      "end": 533,
+      "words": 17,
+      "sha256": "143bad1d11e29c8ebf9aa0545f030d3e4043ca428474df8b46c1ea7aa453c6a2",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 689,
+      "end": 881,
+      "words": 37,
+      "sha256": "162a56ca60b38931f4830fb80f60e540a754be7e12e6c67311703dac1797f758",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 900,
+      "end": 968,
+      "words": 15,
+      "sha256": "7a66d593ebdf14750e3d397b2770dc3c64024901da511fdb51492471f0eea406",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 1177,
+      "end": 1354,
+      "words": 33,
+      "sha256": "d0e028a906898df0af3ec04090a58a755d4cb6ad2429eba487fd6df414589803",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 1356,
+      "end": 1425,
+      "words": 13,
+      "sha256": "6e4a413bde30fc179e4d203d14e9638554a61a346f96ce31072def07e902312b",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 1460,
+      "end": 1570,
+      "words": 20,
+      "sha256": "4b25d54b374be8b807fa1090f1c626cb40db1e6c00ff6f9241f46132a6ad8113",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 1645,
+      "end": 1711,
+      "words": 13,
+      "sha256": "425449244560cd260a4f37d7f86257bd079efdb3f39e2d1a1830cd847571e5bd",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 1713,
+      "end": 1814,
+      "words": 22,
+      "sha256": "20cde690a5d42327c92b647f67d7a91ae6b1798edb9b6322e289222bfaa56fd9",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 1816,
+      "end": 1870,
+      "words": 11,
+      "sha256": "1448494f7402ad926c9105575bb1a4f937b626a325a74fc12427368666077c82",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 1873,
+      "end": 2096,
+      "words": 41,
+      "sha256": "fc0f8eb7c042f619310fe448b65cfaf2038e9ffd39d06dc11e9d434f12e01e03",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 2099,
+      "end": 2416,
+      "words": 63,
+      "sha256": "db8527a870b85bbc6a4a7fe52479eaa06ebd5f9bc89235762fcc254abacc90a5",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 2418,
+      "end": 2567,
+      "words": 24,
+      "sha256": "9ee670af71eec5d314ef202acc8f146d104342cf081da12aa7c6aca8864cdf9e",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 2569,
+      "end": 2640,
+      "words": 14,
+      "sha256": "baefff0dab8ef13a535f761e7a9b1b0a3d11455b0f672c44bb0b828a8e8edbd4",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 2642,
+      "end": 2720,
+      "words": 15,
+      "sha256": "570140a5c415a64118db0ad4ff1ed47d12cb47235a395654a5e3eb67469b9a06",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 2722,
+      "end": 2853,
+      "words": 26,
+      "sha256": "18a1d181afe09de16c8360eb4fec9bfc526ee70c8b0c72afd03f962c73f5d0fe",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 2855,
+      "end": 2964,
+      "words": 20,
+      "sha256": "3b003dc55bb191f5a32e34582761073abd46829db9faf032562aecc0f8444695",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 3057,
+      "end": 3230,
+      "words": 37,
+      "sha256": "186e2d03e07ab27aa0e1146b94a4a4f822cfc6e02f920a3a2622f37290cf3ef5",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 3442,
+      "end": 3531,
+      "words": 15,
+      "sha256": "455cb2324fcae590793d9d3b919ac9fb963abf1bcacb69afc929887dd4ad8dca",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 3619,
+      "end": 3802,
+      "words": 34,
+      "sha256": "09180db6cce85b940868941f82f7a4875c596042f10e523758d23b954d4c0fc6",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 3804,
+      "end": 3919,
+      "words": 20,
+      "sha256": "e0cf2d40dc8f98c6b6b48bb5f38aa3a1a90c3fa114e224d3f1948b41d9a837f0",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 3921,
+      "end": 4061,
+      "words": 29,
+      "sha256": "27d7d0017af40802ff148ccb703e0fcc4ca1f092aedac138d561344bb31bceeb",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4063,
+      "end": 4112,
+      "words": 10,
+      "sha256": "c8052f7326e732c94ecad29c94c9f0ebc257b9590f865bb06566696ad6e345fd",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4114,
+      "end": 4228,
+      "words": 25,
+      "sha256": "9ca1ac6fa3601a82e0665c2681ed48292a4dbcce8ae7f2ea8aee23373e387e90",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4230,
+      "end": 4304,
+      "words": 14,
+      "sha256": "c8052cbb5aebe3e9942c69ce0fa22da3c7a0ad9c5f743fd9ac363f874aa10fd7",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4306,
+      "end": 4388,
+      "words": 14,
+      "sha256": "225b3ca52f5920d4d3628b415c4594ced6e0578175b1619e2ea910562246d44b",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4390,
+      "end": 4502,
+      "words": 24,
+      "sha256": "c4591ff3f61bc696fefaa900d7eb024a248089bc7a379c000e45b885a1e9221c",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4504,
+      "end": 4611,
+      "words": 20,
+      "sha256": "b4bb18fcf2730b24c3db086150a5cfb096d63d005c851fa26ca921df99c27c04",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4613,
+      "end": 4701,
+      "words": 18,
+      "sha256": "d096a2479bf2f75140ebd2bc60d7d1d94559da8fce0c07d5cc24e4b0e7a434bc",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4703,
+      "end": 4768,
+      "words": 17,
+      "sha256": "c324bc20b35b9def80fe3334a2b27687d9d6606ea36b62ac809dad6dc4752dcc",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4770,
+      "end": 4826,
+      "words": 12,
+      "sha256": "8943f22618019211ed1b709418c8bdd9eca74ce959245ddae68b1f2e75e31d10",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4828,
+      "end": 4913,
+      "words": 14,
+      "sha256": "0e45bd49794a8687ca6d432a9eb44f5dea0c717ebff54618c61a5b2701e537ad",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 4915,
+      "end": 5016,
+      "words": 20,
+      "sha256": "b904dacb9f494c07299710bf3cd71c95b766b75ee05cf7fec30ac956b17c44bf",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 5114,
+      "end": 5316,
+      "words": 44,
+      "sha256": "90f9f06757e9b8ff33f3edff7b619e5accb82d106413fbe6b68908c2c11d60d0",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 5318,
+      "end": 5592,
+      "words": 49,
+      "sha256": "212a38850ffeb3d3bcabcfa917e37c0309a339da9b859dddc49fe0fc0e74ea46",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 5594,
+      "end": 5720,
+      "words": 23,
+      "sha256": "aa2e4b6f5d806e2909fc5071a22c56d583e37252cb44e2412a64f64411dc7498",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 5722,
+      "end": 6010,
+      "words": 52,
+      "sha256": "3fa01f67933b6640a525dc54ffed5362dffd98dd09e6056f556fdfcc7c9ab4af",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6012,
+      "end": 6135,
+      "words": 20,
+      "sha256": "80edad4a66f817a142d0e156c6455d3964ba7977970d176b4f342f3a3fe45967",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6137,
+      "end": 6305,
+      "words": 28,
+      "sha256": "8e4bfee00851eafd69e2e210d13189d16b3e46ca0e6d9096a66e812afe563867",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6307,
+      "end": 6459,
+      "words": 28,
+      "sha256": "737ddac2724bd23dbeab428148194ce08fe95976446999130e0e4a473a029f1e",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6461,
+      "end": 6597,
+      "words": 28,
+      "sha256": "d638377d238ba45bdec0e5edfb4836e2a4035ac1400ee5fb563e7bc4e5b07565",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6599,
+      "end": 6719,
+      "words": 22,
+      "sha256": "5520da495812046649f0f68a7a1f0ce0dba3d5500c72bd57ba7f74322bff3901",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6721,
+      "end": 6777,
+      "words": 10,
+      "sha256": "0e364bd5fe271f70c3e7724e5781ba75e4e5ffbe0cec408bdf22359bfdfb2e50",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6779,
+      "end": 6898,
+      "words": 21,
+      "sha256": "6d3feb8e0aa86ee4d72113ab3b6982371fa28c5fd0e03c8d89804423ccf49e5c",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 6954,
+      "end": 7033,
+      "words": 16,
+      "sha256": "ce0e83b89f0180555d3e529ef4593a9f50e4a5af525ba79a00385ff87482f58c",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7035,
+      "end": 7120,
+      "words": 17,
+      "sha256": "490ff6efb86a53af4cef7be99dbdb79443140d1649a3a1371f0ee0f3da11523e",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7122,
+      "end": 7232,
+      "words": 24,
+      "sha256": "ee56c2e77f63e1f1de4a7cf1b8fc65a638e6c43342505b708e275b718285abd1",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7284,
+      "end": 7398,
+      "words": 17,
+      "sha256": "71bae11072f8b1634a4d337e2d047d21c51f1ca1dd572d5c4a6fbd9657f7a6dc",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7400,
+      "end": 7535,
+      "words": 21,
+      "sha256": "1edce3e35b913329d8da7a95d4d37004613fa6e2a21bfe9a4e06b7ca60a9f4f6",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7537,
+      "end": 7704,
+      "words": 32,
+      "sha256": "f8ff7a5d6dfbe69cf26a67119f29e1a6ca870c46faab885cacd78b003a35d1fd",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7706,
+      "end": 7848,
+      "words": 23,
+      "sha256": "fb614b28078e671bc7cc9cb1bade3a42865b6e3f8de140ff32f2341f60a8a09e",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7850,
+      "end": 7953,
+      "words": 18,
+      "sha256": "116e667851e6bba864d760b5b7b573b673624092376a880e627f176eeac2c845",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 7955,
+      "end": 8090,
+      "words": 26,
+      "sha256": "dc2ca6c7988fe97303493058c5004e1f572a4334262b1d31c8b01472e4eadde1",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8092,
+      "end": 8159,
+      "words": 16,
+      "sha256": "c021f0bce86d8eed291fd68b50bdf4147afc08004030916fa78b46459c6b8908",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8183,
+      "end": 8325,
+      "words": 29,
+      "sha256": "516d3855af93ad2140efb82e38791b00069a50f45be4cb48ad5635f7b714a15d",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8327,
+      "end": 8395,
+      "words": 13,
+      "sha256": "4cb533f91f760a5c0c78b4e023b6885e6aefe1102fe876f1441f4f572352fbd2",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8397,
+      "end": 8673,
+      "words": 45,
+      "sha256": "1b472f3916b81ecf3aa6c0124c99c5678194e08f427c4fe53b5038f9f1821282",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8675,
+      "end": 8767,
+      "words": 20,
+      "sha256": "5960ccd9205dfd9094f0127396968a0ec6884a4c0cdd2a03a1143a243897357c",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8769,
+      "end": 8850,
+      "words": 12,
+      "sha256": "685795bda0d68763a0f38b17892a0c99359f7a495712ba0438445d413e8aed7e",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8852,
+      "end": 8919,
+      "words": 14,
+      "sha256": "25f3fa0756c22dda2c9b31d7c09871d75c3176baac443f62273dca8cbd1d911f",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 8921,
+      "end": 8987,
+      "words": 13,
+      "sha256": "465f0f383595ee868362ce217ed265dc528a479bfa6eba3ed965bada43747b8c",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 9036,
+      "end": 9287,
+      "words": 50,
+      "sha256": "c553ee689afd47b511a11301109895595c718756cfd51f19f1bd856d9c7e15de",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 9289,
+      "end": 9459,
+      "words": 34,
+      "sha256": "d57d5da8e5fbf3572dc2e1628d168866fbaef5a32615dbfcae51dc99662bd5c2",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 9461,
+      "end": 9620,
+      "words": 29,
+      "sha256": "aea52cf91c32e5f8986eaaa69a3915738eaf9bf9f78171e78c6f326a75923dca",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 9622,
+      "end": 9800,
+      "words": 30,
+      "sha256": "a2afb05ac10592e5b61124cc4f85f141b38a60080340ae48fe8431370e29567c",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 9802,
+      "end": 9936,
+      "words": 24,
+      "sha256": "82416f010a1a979375ba50995f0db08b3e1a533232f445b2b8b2c3ba0cc3ccbf",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 9976,
+      "end": 10129,
+      "words": 28,
+      "sha256": "b23de5e4770d2c7703b698e58686a4ea72f551e7a3462665e4d8d4224eadb98b",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 10227,
+      "end": 10373,
+      "words": 30,
+      "sha256": "490a408e07d688ed76d725927f74bccf09669d4d11f083f1f95f032cd7b0aec5",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 10375,
+      "end": 10576,
+      "words": 37,
+      "sha256": "909578f827c3d066dd5d6ed3f2dca2531b023fd26bf53a5e84b6f5bb6dfe138f",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 10695,
+      "end": 10762,
+      "words": 14,
+      "sha256": "ebd975d7ba2877b40b668e600bd65b6fadff67fa0ba7b2d6c008a331de560412",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 10764,
+      "end": 10869,
+      "words": 19,
+      "sha256": "5eb6a2f6344447c4a9f667eb4e47dd77627e8190d0aa0b81027493730ead876e",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 10871,
+      "end": 10966,
+      "words": 17,
+      "sha256": "60c2c72d51fb268af36e88fb2dec3d580de0819f6956c852ced16d8e1ca86967",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 10968,
+      "end": 11049,
+      "words": 17,
+      "sha256": "e348a00e1f2b4f77b67a3cd71e46771eb8f244bb8f14d77f776f37b2e00dbfa9",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 11169,
+      "end": 11230,
+      "words": 13,
+      "sha256": "2e8cb9ebf2a83d3db8ab0ff415ace7440a5ebe318ac12ed7648bad2ab4ca4df4",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 11232,
+      "end": 11294,
+      "words": 15,
+      "sha256": "0d325747e5b4dcf5e7dcd8baed6a1f07a40e933a1ee8c20e4b3df9e5d71de843",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 11296,
+      "end": 11464,
+      "words": 32,
+      "sha256": "56ba06f3872fe7ac37ec9329f3d5c968d64bdfe292f437090a79c863596c8ed2",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 11466,
+      "end": 11544,
+      "words": 15,
+      "sha256": "358f2ab3d8707bcea59e00dae6193159f48e09169c99f008f5cf6fe4f757f6d6",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 11771,
+      "end": 11864,
+      "words": 16,
+      "sha256": "a936b20b4a623527836f8631853a13a362dd363fd2f5355880acf41160d9177f",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 12006,
+      "end": 12123,
+      "words": 20,
+      "sha256": "1f7d818e240615e156921e6e3115d3647199074de1947775386adac302693dfd",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    },
+    {
+      "start": 12410,
+      "end": 12551,
+      "words": 25,
+      "sha256": "562737f4dc6015c44eb82198399b06836e5fe6721cc37030b36dd9d6bb82e40f",
+      "attribution": "OBSERVED_PUBLISHER_ADDRESS_SECTION",
+      "role": "PUBLIC_STATEMENT"
+    }
+  ],
+  "frontend": {
+    "scope": "ONE_LOCAL_SHARED_RENDERER_SESSION_NEW_LIVE_BODIES_API_SSE_PROJECTION",
+    "passages": 80,
+    "frontend_words": 1885,
+    "exact_source_and_frontend_text": true,
+    "exact_offsets_and_hashes": true,
+    "source_links_present": true,
+    "page_errors": [],
+    "external_requests_allowed": 0,
+    "external_requests_blocked": 0,
+    "production_browser": false,
+    "visible_original_date": "2022-05-08",
+    "date_count": 80
+  },
+  "tests": {
+    "command": "python -m pytest tests/unit/test_published_address_recovery.py tests/unit/test_live_probe_extraction.py tests/unit/test_observed_article_repairs.py tests/unit/test_mixed_publication_timestamps.py tests/security/test_oct28_acquisition_reconciliation.py::test_reader_denial_does_not_activate_firecrawl_or_jina -q",
+    "exit_code": 0,
+    "passed": 36,
+    "seconds": 0.86,
+    "full_fast_suites": "NOT_RUN_USER_INSTRUCTION"
+  },
+  "reuse": {
+    "implemented": "Shared observed article container and hash-bound original-address scope, no subject/URL hardcoding. Existing labeled transcript turns and reported-quotation paths retained.",
+    "next_existing_source": "GOV.UK original speeches: adapter already retains body and first_published_at, but issuing-department author is not the named speaker; next adapter improvement should preserve observed delivered-by/speaker fields from actual saved API data. No new GOV.UK request or tested yield claim.",
+    "other_existing_sources": "Apple/Microsoft/PIB original statements need their own observed attribution contract; corporate ownership or byline alone cannot confer personal speech attribution."
+  },
+  "private_storage_basename": "aegis-duke-speech-20261030-1cd61425e9c4427fb4e904e14e0d7b2c",
+  "private_file_hashes": {
+    "accounting.json": "f75f2adea718b619a593d7f4776a9935f15a7aaeab140d40c8f98ceabdfb6690",
+    "article-response.bin": "4bebec63724b02e7a89000599d5493fdf2e8b4503adafa7a581ef7c1f6884625",
+    "article-response.json": "4e110d899633b6eeedd1a789c6b834c427f7994c1a905e09bff903f40263ff0b",
+    "duke-speech-payload.json": "56df17c77f05474271061ddf441b2fd5829a42ad36bc55a09f5ea32a034c363e",
+    "duke-speech-reextracted.json": "8e7a7a58ab046485182cb0add5c7ffe0e308e79d71bba73b8eac23df9c6709ca",
+    "frontend-proof.json": "13f787c87adebc474118e1cbeb1979745dfece8623b51b5a0cd753012ab3acff",
+    "probe.py": "71fb955128cbc6fa108f4fd9b3d63c6fa24d7cad738b6476a30ce53b6bdea7b1",
+    "reextract_duke.py": "c1414473ec4bdfddaae16a52bc6d7eb67a7e919be8169b371c54f0b3ef405626",
+    "verify_frontend.py": "5c92451655fd9e2b8f3ee455e063d9ec016b6e38fa9e5b639ebe145d987e4925",
+    "pipeline-after\\02-personal_watch-events.json": "15567c2f1645b15a8eef3f0a2e04155a20e4032f082e2a3864a26e5fc727bf2b",
+    "pipeline-after\\02-personal_watch.json": "7c7afc19f0ae2648a0b4a008898aabd9880c4c5917269b137165700aea7904b9",
+    "pipeline-after\\manifest.json": "1da50022fe8179c89b162eefc6c72de9826fa946d83a4a4776e499bfaaf7d03f",
+    "pipeline-before\\02-personal_watch-events.json": "fb19150c8e1508e61a4d975ccc88f50518980cc87baa6f2b6c88d4e7a4dbbb9f",
+    "pipeline-before\\02-personal_watch.json": "1ba0563f9e22514742d1437069345be16990f4c35b0bf5b1e982a33cf0c08328",
+    "pipeline-before\\manifest.json": "97600e2e71027e74ce8cb35cebccc9867e51b67ae5876f5a4ef22e966b974206",
+    "pipeline-final\\02-personal_watch-events.json": "9d0f08c5b898acdb5067163682d499e551aec622da4fda03c1b90136dd329737",
+    "pipeline-final\\02-personal_watch.json": "d8ae412d7a6820e08427fb905f5430b673738f2a5273cc28b9a541445b7150a1",
+    "pipeline-final\\manifest.json": "838a228bc1eebfe807bd0a2010a52f7fa2fe3167016e95931db6d71d84ed3f14"
+  },
+  "limitations": [
+    "One new source, historical May 8 2022 publication; no recent-statement claim.",
+    "New bytes acquired once by Aegis; body re-extraction and pipeline/renderer validation were offline, with no refetch.",
+    "Local frontend proof, not a production investigation or independent speech authenticity adjudication.",
+    "All original captures retained; no protected dossiers/frozen data modified."
+  ],
+  "publication_validation": {
+    "branch": "fix/duke-speech-20261030",
+    "base": "cc6eba99b9ff9f5196646fdaa61f69e2ba3e4db1",
+    "focused_source_dependency_tests": 91,
+    "seconds": 1.79,
+    "exit_code": 0,
+    "full_fast_suites": "NOT_RUN",
+    "native_api_sse_words": 1885,
+    "public_statements": 15,
+    "identity_risk": "UNASSESSED",
+    "source_code_sha256": {
+      "backend/agents/personal_watch/assessment.py": "099b00be1b6145c2c8d7c752bdf2e012caf8f2d2ec3cda3d836141db3a4d0eaf",
+      "backend/agents/personal_watch/monitoring.py": "4a35d8c2b600c867645a6d98a2ae8dbab67a68f2aa5bd3d30de4ea7ab5e03c9b",
+      "backend/application/research/acquisition.py": "0ba842abe3b45db21b61f9526899a02e3dae7ed63bc8e0d59c73cb44a2281e4c",
+      "backend/application/research/harvest_pipeline.py": "534d15cd2c46435563c94aeb3ee5f25dd3ccca1303a4f6a688b39397a8c0ba81",
+      "backend/infrastructure/acquisition/adapters/web/discovery_document.py": "337a5d9868b3d6a79891ae93ff923fd1e898ae989e8918747f8e4eb380fcb020",
+      "backend/infrastructure/acquisition/adapters/web/jina.py": "53aff1038c21fa97d70030dab7a782fb2fd8211c2a58c89282a73d2312487652",
+      "backend/infrastructure/acquisition/adapters/web/page_extraction.py": "dfa28e9211948bfe1f37f5102b8aef2222c824aa9558a4ea58185edcbb4f0f05",
+      "backend/infrastructure/acquisition/network/http.py": "9fc385da3da8eef16716c30ca69f7d3fa1dc67c6e46f48702f12020819271eb9",
+      "backend/services/agent_reach/native/executor.py": "1869630bbcdd3bfb8fbac9f154bbe161ef8581934f714691197bf7e2bbc603d8",
+      "backend/services/agent_reach/source_planner.py": "d84a9f8237685ced6b0b44bcdff4a869ac344e003bb8da7ce5c9e9b19ee8fb92",
+      "backend/services/research/claim_intelligence.py": "6a64ed9c3ef2833aa64f20ee147fecf7050be20883422cadd1bcf3c1a8498325",
+      "backend/services/research/deep_reader.py": "0b8e1bc981fe46bb4f992eb44b08e2ebe13c139581da67382696d73742601ef8",
+      "backend/services/research/evidence_workbench.py": "045b1524fc4aae4030db6825e08f7ddfbc435492c9536e4a779e8f9fdb6d60eb",
+      "backend/services/research/harvesting.py": "6ae3e054e51a1bdf64b20ae7dae48b134dff0c5445769b40b7fc145cd4041b86",
+      "backend/services/research/passage_extractor.py": "838c88ce79484dd99684b1cba0c7bffe61014913703198a8124ec2aaf148b768",
+      "backend/services/research/passage_records.py": "554c7538c32a45b5b854d5a6f4f9a03e37f69cea8e543f1857798e11fdbe9c53",
+      "backend/services/research/publisher_links.py": "5dc36d5484f1544fa063d9864d918849bbba6f58809751f3c877f92118b04377",
+      "backend/services/research/raw_pool.py": "dde513a6ca0a3cbadff20e777944317a8e746cffe44b0dc65e8f56c5f54b2e36",
+      "backend/infrastructure/acquisition/adapters/web/response_diagnostics.py": "35db6c25fe73e5e6995249538b0815b20059a91c012fc6f2b257b0efea2ae913",
+      "backend/services/research/planned_source_reads.py": "44182abe94389cc54d683a9f0b37671574f165167b19b43f4ad1e6bb0e0a1e4e",
+      "backend/services/research/research_objectives.py": "57f0fecbdb45a9ce7c132e2e17fc1ce44d15f00d8d4a0be6bb7eaec38db40f1a"
+    }
+  }
+}

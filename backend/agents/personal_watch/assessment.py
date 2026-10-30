@@ -325,6 +325,7 @@ def synthesize_personal_threats(subject_info, evidence_list):
         result["claims"] = []
     observed_attributions = {"OBSERVED_FEED_AUTHOR", "OBSERVED_SPEAKER_SECTION", "OBSERVED_SPEAKER_LABEL",
                              "OBSERVED_TRANSCRIPT_SPEAKER_SECTION",
+                             "OBSERVED_PUBLISHER_ADDRESS_SECTION",
                              "REPORTED_QUOTATION", "REPORTED_QUOTATION_SURNAME_IN_CAPTURE"}
     result["public_statements"] = [copy.deepcopy(p) for record in records for p in record["passages"]
                                    if p["content_role"] == "PUBLIC_STATEMENT"

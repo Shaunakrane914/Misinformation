@@ -125,7 +125,8 @@ def _run_harvest_pipeline(request, budget, profile_name, http_budget):
     for attempt in harvest.read_telemetry.get("acquisition_attempts", []):
         if attempt.get("status") != "SUCCESS":
             pool.add_failure(by_id.get(attempt.get("candidate_id")) or attempt.get("url", ""),
-                             attempt.get("failure_kind") or "READ_FAILED", http_status=attempt.get("http_status"))
+                             attempt.get("failure_kind") or "READ_FAILED", http_status=attempt.get("http_status"),
+                             response_diagnostics=attempt.get('native_response_diagnostics'))
 
     rejected = list(harvest.rejected)
 

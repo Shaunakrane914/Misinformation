@@ -213,7 +213,8 @@ def _source_body_admissible(item):
 
 def _read_priority(item, target, domain, host_counts, publisher_counts):
     """Order observed leads; final body, subject and publication gates are later."""
-    ordinary = (item.metadata.get("harvest_temporal_priority", 0),
+    ordinary = (not bool(item.metadata.get('planned_source_read')),
+                item.metadata.get("harvest_temporal_priority", 0),
                 not bool(item.metadata.get("source_citation")),
                 not matches_objective(item.title + " " + item.snippet, domain),
                 _is_index(item), _is_wrapper(item), publisher_counts[_observed_publisher(item)],
@@ -471,7 +472,8 @@ class HarvestingEngine:
         core_channels = {"web", "news", "rss"}
         extra_queries = []
         if query_plan:
-            provided_core = [row for row in query_plan if row.get("channel", "web") in core_channels]
+            provided_core = [row for row in query_plan if row.get("channel", "web") in core_channels
+                             and not (source_plan is not None and row.get('operation') == 'read')]
             generated = provided_core + generated
             # Only explicitly planned, already registered source categories.
             # Native capability/access assessment still authorizes each action.
@@ -826,6 +828,13 @@ class HarvestingEngine:
                           "autonomously_discovered": False}))
         for item in initial_candidates:
             add(copy.deepcopy(item))
+        from backend.services.research.planned_source_reads import planned_source_reads
+        seeds = [] if source_url else planned_source_reads(source_plan, params.get('allowed_channels'))
+        for item in seeds:
+            add(item)
+        output.retrieval_trace['planned_source_reads'] = [
+            {'action_id': item.metadata['source_plan_action_id'], 'candidate_id': item.id,
+             'status': 'CANDIDATE_ONLY_READER_GATES_PENDING'} for item in seeds]
         emit("HARVEST_DISCOVERY")
         try:
             # Small provider-bulkheaded waves rather than one giant worker queue.
@@ -1074,6 +1083,14 @@ class HarvestingEngine:
         """Use one admission path for observed index links and source citations."""
         page = parent.metadata.get("page_metadata") or {}
         kind = page.get("body_kind") or (page.get("body_quality") or {}).get("body_kind")
+        if parent.metadata.get('read_success') and parent.query_class in {'issuer_documents', 'observed_issuer_document'}:
+            from backend.application.research.acquisition import _observed_issuer_documents
+            children = _observed_issuer_documents(parent)
+            for child in children:
+                child.metadata.update(observed_parent_id=parent.id,
+                    publisher_hop=child.metadata.get('document_hop', 1))
+                _merge_task_lineage(child.metadata, parent.metadata)
+            return children
         if (not parent.metadata.get("read_success") or parent.metadata.get("publisher_hop", 0) >= 3
                 or not (_is_index(parent) or kind == "ARTICLE_BODY")):
             return []

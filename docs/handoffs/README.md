@@ -1,5 +1,10 @@
 # Coding-agent handoffs
 
+## Original Duke speech ? 2026-10-30
+
+- [Actual original-speech recovery](2026-10-30_DUKE_SPEECH_RECOVERY.md): one fresh HTTP-200 capture, 2,327 body words/1,885 exact local frontend words; May 8, 2022 preserved; focused checks only. Main publication recorded in closeout.
+
+
 ## Source expansion deployment - 2026-10-28
 
 - [Deployed source/body/background repairs](2026-10-28_SOURCE_EXPANSION_DEPLOYMENT.md): application `63c62a8`, both hosts live, five-job release/main CI passed; eleven public assets and health/CORS verified. No fresh research/model calls. Research acceptance remains unmet.

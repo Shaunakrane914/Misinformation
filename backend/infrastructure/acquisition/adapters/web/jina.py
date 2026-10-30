@@ -49,12 +49,18 @@ def _failure_observation(stage, result):
     status = transport.get('http_status', result.get('status_code'))
     status = status if type(status) is int and 100 <= status <= 599 else None
     observed = transport.get('network_observed_this_attempt', result.get('network_observed'))
+    from backend.infrastructure.acquisition.adapters.web.response_diagnostics import safe_diagnostics
+    diagnostic = safe_diagnostics(result.get('native_response_diagnostics'))
     return {'stage': stage, 'failure_kind': kind, 'http_status': status,
-            'network_observed': observed if type(observed) is bool else None}
+            'network_observed': observed if type(observed) is bool else None,
+            **({'native_response_diagnostics': diagnostic} if diagnostic else {})}
 
 
 def _with_failures(result, failures):
-    return {**result, **({'provider_failures': failures[:3]} if failures else {})}
+    diagnostic = next((row['native_response_diagnostics'] for row in failures
+                       if row.get('native_response_diagnostics')), None)
+    return {**result, **({'native_response_diagnostics': diagnostic} if diagnostic else {}),
+            **({'provider_failures': failures[:3]} if failures else {})}
 
 
 def _failed_read(url, failures):
@@ -206,17 +212,23 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
         }
 
     failures = []
+    jina_attempted = False
 
     # 1. Primary: Native executor web read
     if executor is not None and hasattr(executor, "execute_web_read"):
         try:
             res = executor.execute_web_read(url)
+            jina_attempted = res.get("reader_fallback_attempted") is True
             if _terminal_failure(res):
                 failures.append(_failure_observation('NATIVE_READER', res))
                 return _with_failures(res, failures)
             content = res.get("content", "")
             if content and len(content.strip()) > 50:
                 page_metadata = res.get("page_metadata") or {}
+                from backend.infrastructure.acquisition.adapters.web.response_diagnostics import safe_diagnostics
+                diagnostic = safe_diagnostics(res.get('native_response_diagnostics'))
+                if diagnostic:
+                    page_metadata = {**page_metadata, 'native_response_diagnostics': diagnostic}
                 return {
                     "status": "success",
                     "title": page_metadata.get("title") or "",
@@ -240,6 +252,7 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
         except SecurityPolicyViolation:
             return {"status": "blocked_ssrf", "failure_kind": "SSRF_BLOCKED", "error": "URL failed security validation", "url": url}
         except ProviderHTTPError as error:
+            jina_attempted = error.reader_fallback_attempted
             kind = "CHALLENGE_PAGE" if "challenge page" in str(error).lower() else error.failure_kind
             # Access denials and publisher challenges never trigger alternate scrapers
             failure = {
@@ -247,11 +260,12 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
                     (f" (HTTP {error.status_code})" if type(error.status_code) is int and 100 <= error.status_code <= 599 else "")),
                 "url": url,
                 "failure_kind": kind or ("ACCESS_DENIED" if error.status_code in (401, 403) else "FAILED"),
+                "native_response_diagnostics": error.response_diagnostics,
                 "transport": {"http_status": error.status_code,
                               "retry_after_seconds": error.retry_after_seconds,
                               "network_observed_this_attempt": error.network_observed},
             }
-            failures.append(_failure_observation('NATIVE_READER', failure))
+            failures.append(_failure_observation('JINA_READER' if jina_attempted else 'NATIVE_READER', failure))
             if _terminal_failure(failure):
                 return _with_failures(failure, failures)
         except Exception as error:
@@ -310,6 +324,11 @@ def _execute_web_read(url, max_chars, executor, legacy_scraper, firecrawl_adapte
                 raise
             failures.append(_failure_observation('FIRECRAWL', {'failure_kind': transport_failure_kind(error)}))
             logger.debug("[JinaWebReader] Firecrawl fallback failed; proceeding to bounded reader")
+
+    # The native executor may already have used this same bounded endpoint.
+    # Trying it again spends admissions/time without adding a source path.
+    if jina_attempted:
+        return _failed_read(url, failures)
 
     # 3. Tertiary Fallback: Jina Reader (bounded public endpoint)
     try:

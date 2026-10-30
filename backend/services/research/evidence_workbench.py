@@ -121,7 +121,63 @@ def _adjacent_issuer_paragraphs(item, target):
     return selected
 
 
-def _adjacent_brand_paragraphs(item, target):
+def _incident_followup_paragraphs(item, target, winner):
+    """Keep at most two same-actor qualifications of an already selected event.
+
+    This is publication context only. One explicitly observed related-links
+    widget may intervene; no free prose, unrelated heading or new event is
+    skipped. It neither qualifies a source nor changes the winning finding.
+    """
+    from backend.services.research.content_roles import matches_objective, NON_EVENT_ROLES, paragraph_role
+    from backend.services.research.passage_extractor import has_usable_passage
+    from backend.infrastructure.acquisition.adapters.web.page_extraction import recovered_span_allowed
+    body, page = item.content or "", item.metadata.get('page_metadata') or {}
+    start = body.find(winner) if winner else -1
+    if (start < 0 or len(winner) > 2000 or not re.search(r'\b' + re.escape(target) + r'\b', winner, re.I)
+            or not matches_objective(winner, 'brand')
+            or not re.search(r'\b(?:seized|arrested|charged|uncovered|unearthed|raided|confiscated|intercepted)\b', winner, re.I)):
+        return []
+    actors = set(re.findall(r'\(([A-Z][A-Z]{1,7})\)', winner))
+    if not actors:
+        return []
+    actor = '(?:' + '|'.join(re.escape(value) for value in sorted(actors)) + ')'
+    actor_prefix = (r'^(?:(?:the\s+)?' + actor + r'\b|according to (?:a |the )?'
+                    r'(?:report|statement) (?:from|by) ' + actor + r'\b)')
+    linked_labels = {str(row.get('text') or '').strip() for row in page.get('observed_links', [])
+                     if isinstance(row, dict)}
+    observed_headings = set(page.get('headings', []))
+    for row in page.get('text_blocks', [])[:100]:
+        if (isinstance(row, dict) and type(row.get('start')) is int and type(row.get('end')) is int
+                and 0 <= row['start'] < row['end'] <= len(body)):
+            if row.get('role') == 'RELATED_LINK':
+                linked_labels.add(body[row['start']:row['end']])
+            elif row.get('role') == 'HEADING':
+                observed_headings.add(body[row['start']:row['end']])
+    selected, skipped, related_widget = [], 0, False
+    for match in re.finditer(r'\S[^\n]*(?:\n(?!\s*\n)[^\n]+)*', body[start + len(winner):]):
+        text = match.group().rstrip()
+        offset = start + len(winner) + match.start()
+        if not related_widget and not selected and text in {'Related Stories', 'Related Articles'} and text in observed_headings:
+            related_widget = True
+            continue
+        if related_widget and not selected and text in linked_labels and skipped < 6:
+            skipped += 1
+            continue
+        if (not re.search(actor_prefix, text, re.I)
+                or re.search(r'\b(?:separate|unrelated|elsewhere|another (?:case|operation|investigation))\b', text, re.I)
+                or not (matches_objective(text, 'brand') or re.search(
+                    r'\b(?:arrests?|search|seizure|investigation|warrants?|proceedings)\b', text, re.I))
+                or len(text) > 2000 or paragraph_role(text) in NON_EVENT_ROLES
+                or not recovered_span_allowed(body, page, offset, offset + len(text))
+                or not has_usable_passage({'content': text, 'content_depth': item.content_depth})):
+            break
+        selected.append((1.5, text))
+        if len(selected) >= 2:
+            break
+    return selected
+
+
+def _adjacent_brand_paragraphs(item, target, winner=""):
     """Bounded article context only, not new observed attackers or findings."""
     from backend.services.research.content_roles import matches_objective, NON_EVENT_ROLES, paragraph_role
     from backend.services.research.passage_extractor import has_usable_passage
@@ -129,10 +185,11 @@ def _adjacent_brand_paragraphs(item, target):
     body, page = item.content or "", item.metadata.get("page_metadata") or {}
     kind = page.get("body_kind") or (page.get("body_quality") or {}).get("body_kind")
     if (item.metadata.get("layer2_eligible") is False or kind != "ARTICLE_BODY" or not target
+            or item.metadata.get("temporal_required") and not item.metadata.get("temporal_eligible")
             or not item.acquired_id and not item.metadata.get("read_success")
             or not re.search(r"\b" + re.escape(target) + r"\b", item.title or "", re.I)):
         return []
-    remaining, selected = 0, []
+    remaining, recall_context, selected = 0, False, _incident_followup_paragraphs(item, target, winner)
     for match in re.finditer(r"\S[^\n]*(?:\n(?!\s*\n)[^\n]+)*", body):
         paragraph = match.group().rstrip()
         heading = paragraph in page.get("headings", []) or any(isinstance(row, dict)
@@ -142,16 +199,21 @@ def _adjacent_brand_paragraphs(item, target):
                 or not recovered_span_allowed(body, page, match.start(), match.start() + len(paragraph))
                 or not has_usable_passage({"content": paragraph, "content_depth": item.content_depth})):
             remaining = 0
+            recall_context = False
         elif re.search(r"\b" + re.escape(target) + r"\b", paragraph, re.I) and matches_objective(paragraph, "brand"):
             remaining = 2
-        elif (remaining and re.match(r"^(?:this (?:message|offer|website|page)|the (?:message|offer|website|page)|"
+            recall_context = bool(re.search(r'\brecall(?:s|ed)?\b', paragraph, re.I))
+        elif (remaining and (re.match(r"^(?:this (?:message|offer|website|page)|the (?:message|offer|website|page)|"
                 r"este|esta|el mensaje|la página|ce message|cette|le message|la page)\b", paragraph, re.I)
+                or recall_context and re.match(r'^[\"“]?(?:the|this) (?:counterfeit )?(?:product\b|notice\b|recall notice\b)', paragraph, re.I))
                 and (matches_objective(paragraph, "brand") or re.search(
-                    r"credential|password|personal data|credit card|datos personales|datos bancarios|tarjeta|formulario|formulaire|numéro de carte|mot de passe", paragraph, re.I))):
+                    r"credential|password|personal data|credit card|datos personales|datos bancarios|tarjeta|formulario|formulaire|numéro de carte|mot de passe", paragraph, re.I)
+                    or recall_context and re.search(r'\b(?:risk|shock|fire|wiring|counterfeit)\b', paragraph, re.I))):
             selected.append((1.5, paragraph))
             remaining -= 1
         else:
             remaining = 0
+            recall_context = False
     return selected
 
 
@@ -166,7 +228,7 @@ def select_source_passages(item, scored, winner, domain, target="", intent=""):
     digest = hashlib.sha256(body.encode("utf-8")).hexdigest()
     selected, seen, available, chars, omitted, excluded, overlaps = [], set(), 0, 0, 0, 0, 0
     adjacent = (_adjacent_issuer_paragraphs(item, target) if domain == "financial"
-                else _adjacent_brand_paragraphs(item, target) if domain == "brand" else [])
+                else _adjacent_brand_paragraphs(item, target, winner) if domain == "brand" else [])
     inherited = {text_key(paragraph) for _, paragraph in adjacent}
     for _, paragraph in [(float("inf"), winner), *sorted([*scored, *adjacent], key=lambda row: -row[0])]:
         if domain == "personal":
@@ -205,6 +267,10 @@ def select_source_passages(item, scored, winner, domain, target="", intent=""):
                     role = "PUBLIC_STATEMENT"
             elif role == "PUBLIC_STATEMENT":
                 role = "ARTICLE_CONTENT"
+            if not observed_speaker:
+                from backend.services.research.passage_records import reported_person_context
+                if reported_person_context(item, paragraph, target):
+                    role = 'SOURCE_REPORTED_CONTEXT'
         if re.search(r"\b(?:correction|headline was amended|article has been updated|clarification)\b", paragraph, re.I):
             role = "CORRECTION_OR_RESPONSE"
         elif domain == "brand" and role == "PUBLIC_STATEMENT":

@@ -4,6 +4,9 @@ The caller owns transport/SSRF validation. This parser makes no requests and
 only resolves references actually present in a fetched document. A sitemap's
 lastmod and Atom updated stay separate from publication declarations.
 """
+import hashlib
+import json
+import re
 from urllib.parse import urljoin, urlsplit, urlunsplit
 from xml.etree import ElementTree as ET
 
@@ -28,6 +31,59 @@ def _url(endpoint, value):
 def _summary(raw):
     from bs4 import BeautifulSoup
     return BeautifulSoup(raw[:20_000], "html.parser").get_text(" ", strip=True)[:2000]
+
+
+def drupal_search_document(raw, endpoint):
+    """Observe search-card links in a fetched Drupal AJAX textarea envelope.
+
+    Commands, scripts and settings are never executed. Only same-origin links
+    inside article cards in an explicit search-results insertion are retained.
+    This is discovery metadata, never article content or publication evidence.
+    """
+    if not isinstance(raw, str) or len(raw) > 1_000_000 or not raw.lstrip().startswith('<textarea>'):
+        return None
+    from bs4 import BeautifulSoup
+    envelope = re.fullmatch(r'\s*<textarea>(.*)</textarea>\s*', raw, re.S)
+    if not envelope:
+        return None
+    try:
+        commands = json.loads(envelope.group(1))
+    except (ValueError, TypeError, RecursionError):
+        return None
+    if not isinstance(commands, list) or not 1 <= len(commands) <= 100:
+        return None
+    origin, links, seen = urlsplit(endpoint), [], set()
+    for command in commands:
+        if (not isinstance(command, dict) or command.get('command') != 'insert'
+                or command.get('method') not in {'replaceWith', 'html'}
+                or not re.fullmatch(r'\.js-view-dom-id-search__[\w-]+', str(command.get('selector', '')))
+                or not isinstance(command.get('data'), str)):
+            continue
+        fragment = BeautifulSoup(command['data'], 'html.parser')
+        for card in fragment.select('article.story-card')[:100]:
+            for node in card.select('h2 a[href], h3 a[href], a[href]:has(h2), a[href]:has(h3)')[:2]:
+                url = _url(endpoint, node.get('href'))
+                parsed = urlsplit(url)
+                title = node.get_text(' ', strip=True)[:500]
+                if (not url or not title or url in seen
+                        or (parsed.scheme, parsed.netloc) != (origin.scheme, origin.netloc)):
+                    continue
+                seen.add(url)
+                links.append({'url': url, 'text': title, 'kind': 'ARTICLE_LEAD',
+                              'verification': 'OBSERVED_AJAX_SEARCH_LINK_UNVERIFIED'})
+                if len(links) >= 100:
+                    break
+            if len(links) >= 100:
+                break
+        if len(links) >= 100:
+            break
+    if not links:
+        return None
+    return {'content_scope': 'PUBLIC_DISCOVERY_INDEX', 'source_type': 'SOURCE_INDEX',
+            'title': 'Observed publisher search results', 'document_kind': 'DRUPAL_AJAX_SEARCH',
+            'observed_links': links, 'discovery_links': [], 'entry_count': len(links),
+            'body_quality': {'body_kind': 'UNCLASSIFIED_PAGE', 'evidence_qualified': False},
+            'response_text_sha256': hashlib.sha256(raw.encode('utf-8')).hexdigest()}
 
 
 def discovery_document(raw, endpoint, *, max_entries=100):

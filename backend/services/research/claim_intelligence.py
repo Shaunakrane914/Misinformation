@@ -156,9 +156,8 @@ class ClaimIntelligenceEngine:
         for idx, candidate in enumerate(candidates):
             # Search objectives are not propositions asserted by the caller.
             # Keep declarative research reporting and explicit factual claims.
-            directive = re.match(r"^(?:please\s+)?(?:research|investigate|find|analy[sz]e|compare|identify|prioritize|preserve|distinguish|separate|include|clearly distinguish|present|use)\b", candidate, re.I)
-            research_assertion = re.match(r"^research\s+(?:shows|showed|found|indicates|suggests|confirms|was|is|has|by|from|at)\b", candidate, re.I)
-            if directive and not research_assertion:
+            from backend.services.research.research_objectives import is_research_instruction
+            if is_research_instruction(candidate):
                 continue
             c_id = f"claim_{idx + 1:03d}"
             

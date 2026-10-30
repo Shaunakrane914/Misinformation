@@ -17,7 +17,16 @@ def _reported_quote_has_speaker(paragraph, speaker):
     name = r"\b(?:" + speaker + r")\b"
     after_quote = quote + r"[,\s]*(?:" + name + relative + r"\s+" + verb + r"|" + verb + r"\s+" + name + r")"
     before_quote = name + relative + r"\s+" + verb + r"(?:\s+(?:in a (?:statement|release|post)|that)){0,2}\s*[:,\-]?\s*" + quote
-    return bool(re.search(after_quote + "|" + before_quote, paragraph, re.I))
+    if re.search(after_quote + "|" + before_quote, paragraph, re.I):
+        return True
+    # Reporters can place a short explanatory clause between "Barra said"
+    # and her quotation. Require its explicit delimiter and exclude another
+    # reporting voice; preserve the complete paragraph, not a detached quote.
+    introduced = name + relative + r"\s+" + verb + r"\b([^\"“”\n]{1,180})[,\:]\s*" + quote
+    for match in re.finditer(introduced, paragraph, re.I):
+        if not re.search(r"\b(?:said|says|wrote|writes|told|according)\b", match.group(1), re.I):
+            return True
+    return False
 
 
 def _captured_surname_unambiguous(body, target):
@@ -26,12 +35,13 @@ def _captured_surname_unambiguous(body, target):
         return False
     roles = {"chief", "executive", "officer", "president", "chair", "chairman", "chairwoman", "ceo", "cfo", "cto", "coo",
              "director", "minister", "founder", "professor", "dr", "mr", "ms", "mrs"}
-    prefixes = re.findall(r"\b((?:[^\W\d_]+\.?[ \t]+){1,5})(?i:" + re.escape(names[-1]) + r")\b", body)
+    prefixes = list(re.finditer(r"\b((?:[^\W\d_]+\.?[ \t]+){1,5})(?i:" + re.escape(names[-1]) + r")\b", body))
     if not prefixes:
         return False
     expected = [part.casefold() for part in names[:-1]]
     named = 0
-    for prefix in prefixes:
+    for match in prefixes:
+        prefix = match.group(1)
         given = prefix.split()
         last_lower = max((i for i, part in enumerate(given) if not part[0].isupper()), default=-1)
         given = given[last_lower + 1:]
@@ -47,6 +57,20 @@ def _captured_surname_unambiguous(body, target):
             continue
         named += 1
         exact = [part.casefold() for part in given] == expected
+        # Role + organization introductions can lack punctuation, e.g.
+        # "Chairwoman of General Motors Mary Barra". An organization suffix
+        # immediately before the exact given name is not a competing person.
+        # Require the observed role/of relation and retain real middle-name
+        # ambiguity rather than accepting every prefix ending in the target.
+        org = given[:-len(expected)] if len(given) > len(expected) else []
+        org_suffixes = {'motors', 'corporation', 'company', 'inc', 'incorporated', 'llc', 'ltd',
+                        'limited', 'university', 'institute', 'bank', 'group', 'holdings', 'industries'}
+        if (org and org[-1].casefold().rstrip('.') in org_suffixes
+                and [part.casefold() for part in given[-len(expected):]] == expected):
+            intro = body[max(0, match.start() - 100):match.start(1) + len(prefix)]
+            if re.search(r"\b(?:chief|ceo|chairwoman|chairman|chair|president|director)\b[^.!?\n]{0,100}\b(?:of|at|for)\s+"
+                         + re.escape(' '.join(org)) + r"\s+" + re.escape(' '.join(expected)) + r"\s*$", intro, re.I):
+                exact = True
         middle_initial = (len(expected) == 1 and len(given) == 2 and given[0].casefold() == expected[0]
                           and re.fullmatch(r"[A-Z]\.", given[1]))
         if not exact and not middle_initial:
@@ -91,6 +115,73 @@ def _transcript_speaker_section(body, offset, target, end=None):
             else "OTHER_OBSERVED_TRANSCRIPT_SPEAKER")
 
 
+def _published_address_speaker(record, paragraph, target):
+    get = record.get if isinstance(record, dict) else lambda key, default=None: getattr(record, key, default)
+    meta = get('metadata', {}) or get('raw_metadata', {}) or {}
+    body = get('content', '') or ''
+    page = meta.get('page_metadata') or {}
+    address = page.get('published_address')
+    if not isinstance(address, dict) or address.get('basis') != 'OBSERVED_AUTHOR_AND_EDITORIAL_ADDRESS_INTRODUCTION':
+        return None
+    offset = body.find(paragraph)
+    if (not (get('acquired_id') or meta.get('read_success') is True)
+            or get('content_depth') in METADATA_DEPTHS
+            or (page.get('body_kind') or (page.get('body_quality') or {}).get('body_kind')) != 'ARTICLE_BODY'
+            or meta.get('layer2_eligible') is False
+            or meta.get('temporal_required') and not meta.get('temporal_eligible')
+            or address.get('source_text_sha256') != hashlib.sha256(body.encode('utf-8')).hexdigest()
+            or not all(type(address.get(k)) is int for k in ('start', 'end'))
+            or not 0 <= address['start'] <= offset < offset + len(paragraph) <= address['end'] <= len(body)
+            or not recovered_span_allowed(body, page, offset, offset + len(paragraph))):
+        return None
+    if str(address.get('speaker', '')).casefold() != target.casefold():
+        return None
+    return 'OBSERVED_PUBLISHER_ADDRESS_SECTION'
+
+
+def usable_published_address_paragraph(record, paragraph, target):
+    """Allow actual speech acts that a declarative-only news filter rejects.
+
+    Only the hash-bound, explicitly attributed acquired address can use this
+    path. Greetings, section labels, short fragments and navigation do not.
+    It never qualifies a source, infers truth or changes text/offsets.
+    """
+    if not _published_address_speaker(record, paragraph, target):
+        return False
+    if (len(paragraph.split()) < 10 or len(paragraph) > 6000 or paragraph.isupper()
+            or not re.search(r'[.!?]["”’\s]*$', paragraph)
+            or re.match(r'^(?:#\d|thank you\b|good morning\b|congratulations\b|as the proud mom\b|this is a very special moment\b)', paragraph, re.I)):
+        return False
+    return paragraph_role(paragraph) not in NON_EVENT_ROLES
+
+
+def reported_person_context(record, paragraph, target):
+    """Exact reported paraphrase with an unambiguous captured surname.
+
+    Publication context only: this does not create a quotation, authenticate a
+    speaker, inherit pronoun attribution, or admit an otherwise rejected source.
+    """
+    body, meta = record.content or '', record.metadata
+    page = meta.get('page_metadata') or {}
+    kind = page.get('body_kind') or (page.get('body_quality') or {}).get('body_kind')
+    start = body.find(paragraph)
+    names = target.split()
+    if (len(names) < 2 or len(names[-1]) < 3 or start < 0
+            or not (record.acquired_id or meta.get('read_success') is True)
+            or record.content_depth in METADATA_DEPTHS
+            or kind != 'ARTICLE_BODY' or meta.get('layer2_eligible') is False
+            or meta.get('temporal_required') and not meta.get('temporal_eligible')
+            or not recovered_span_allowed(body, page, start, start + len(paragraph))
+            or not _captured_surname_unambiguous(body, target)
+            or _transcript_speaker_section(body, start, target, start + len(paragraph))):
+        return False
+    if re.search(r'\b(?:fabricated|misattributed|debunked|falsely attributed|false quote|fake quote|false claim|never said|did not say)\b', paragraph, re.I):
+        return False
+    name = '(?:' + re.escape(target) + '|' + re.escape(names[-1]) + ')'
+    return bool(re.match(r'^' + name + r'\s+(?:(?:also|later|then)\s+){0,2}'
+                         r'(?:said|says|told|wrote|writes|stated|added|explained|made the comments)\b', paragraph, re.I))
+
+
 def public_statement_attribution(record, paragraph, target):
     """Observed speaker/author linkage only, never identity authentication.
 
@@ -114,6 +205,9 @@ def public_statement_attribution(record, paragraph, target):
     denial = re.search(r"\b(?:fabricated|misattributed|debunked|falsely attributed|false quote|fake quote|false claim)\b|\b(?:did not say|never said|never endorsed)\b", paragraph, re.I)
     if denial:
         return None
+    address = _published_address_speaker(record, paragraph, target)
+    if address and usable_published_address_paragraph(record, paragraph, target):
+        return address
     statement_scope = ((get("query_class") or meta.get("query_class")) in {"public_statement_discovery", "explicit_url"}
                        or meta.get("acquisition_objective") == "PUBLIC_STATEMENT")
     if not statement_scope:

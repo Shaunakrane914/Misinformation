@@ -251,8 +251,11 @@ class SourcePlanningEngine:
         allowed = set(EXECUTABLE_CAPABILITIES if allowed_channels is None else allowed_channels)
         allowed &= set(EXECUTABLE_CAPABILITIES)
         explicitly_allowed = allowed_channels is not None
+        from backend.services.research.research_objectives import discovery_objective
+        search_claim = discovery_objective(clean_claim, clean_entity)
         actions = self._deterministic_actions(
-            clean_claim, clean_entity, intent_class, agent, allowed, explicitly_allowed=explicitly_allowed
+            search_claim, clean_entity, intent_class, agent, allowed, explicitly_allowed=explicitly_allowed,
+            objective_request=search_claim != clean_claim
         )
         family_decisions = []
         if not re.search(r'https?://|\bsite:', clean_claim, re.I):
@@ -262,7 +265,7 @@ class SourcePlanningEngine:
                     suffix = (' statement interview' if 'PUBLIC_STATEMENT' in context.tasks else
                               ' false quote original statement' if 'QUOTE_VERIFICATION' in context.tasks else
                               ' reported incident' if context.agent == 'brandshield' else '')
-                    query = f'{clean_claim}{suffix} site:{family["hosts"][0]}'
+                    query = f'{search_claim}{suffix} site:{family["hosts"][0]}'
                     action = self._action(1, 'web', 'search', query, 'topic_source_discovery',
                         'SEARCH_INDEX_DISCOVERY', -1, 'Topic-matched source; explicit review permits bounded discovery, not claim acceptance.')
                     action.source_family = family['id']
@@ -399,6 +402,7 @@ class SourcePlanningEngine:
     def _deterministic_actions(
         self, claim: str, entity: str, intent_class: str, agent: str, allowed: Set[str],
         explicitly_allowed: bool = False,
+        objective_request: bool = False,
     ) -> List[SourceAction]:
         direct = self._direct_url_action(claim)
         if direct:
@@ -502,6 +506,11 @@ class SourcePlanningEngine:
         if agent.lower() in {"trending", "trending_agent"}:
             actions.append(self._action(2, "twitter", "search", claim, "trend_signal", "PROFILE_STATUS_OR_INDEX", 3, "Look for concrete public status URLs and recency signals.", limitations=["Profile metadata and index snippets are not tweet bodies."]))
         elif agent.lower() in {"brandshield", "brandshield_agent"}:
+            from backend.services.research.specialist_planning import _explicit_tasks
+            task_terms = {'COUNTERFEIT': 'counterfeit', 'PHISHING': 'phishing',
+                          'IMPERSONATION': 'impersonation', 'COMPLAINT': 'consumer complaints',
+                          'PRODUCT_SAFETY': 'product safety recall', 'BRAND_ABUSE': 'scam warning'}
+            requested = _explicit_tasks(claim, target, False)
             if entity_only:
                 actions.insert(0, self._action(1, "web", "search", f'"{target}" counterfeit',
                     "brand_risk", "SEARCH_INDEX_DISCOVERY", 0, "Find concrete suspect listings before generic company material."))
@@ -511,6 +520,19 @@ class SourcePlanningEngine:
                     actions.insert(0, self._action(1, "news", "search", f'"{target}" {term}',
                         "brand_abuse_reporting", "SYNDICATED_SUMMARY", 0,
                         "Discover attributable abuse reporting rather than generic stock or product headlines."))
+            elif objective_request and requested:
+                # An imperative research task is not a proposition to search
+                # verbatim. Spend existing slots on its explicit incident
+                # types, as observed in the successful bounded source probe.
+                # Literal claims/quotes/date-constrained requests retain the
+                # original path rather than losing their precise constraints.
+                for task in requested[:2]:
+                    if task not in task_terms:
+                        continue
+                    for channel in ('news', 'web'):
+                        actions.insert(0, self._action(1, channel, 'search',
+                            f'"{target}" {task_terms[task]}', 'brand_abuse_reporting',
+                            'SEARCH_INDEX_DISCOVERY', 0, 'Discover the explicitly requested incident type; read and qualify the source separately.'))
             else:
                 actions.append(self._action(2, "web", "search", f"{target} impersonation scam counterfeit complaint", "brand_risk", "SEARCH_INDEX_DISCOVERY", 3, "Search for impersonation, counterfeit, and scam indicators."))
         elif agent.lower() in {"personal", "personal_watch", "personal_watch_agent"}:

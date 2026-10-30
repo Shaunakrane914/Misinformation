@@ -251,6 +251,23 @@ class RawAcquisitionPool:
             resolution = meta.get("wrapper_resolution") or {}
             if not source_id and discovery_url and source_url_key(resolution.get("selected_url")) == canonical:
                 source_id = self._url_ids.get(source_url_key(discovery_url))
+            if not source_id and native_id in self._sources and meta.get("read_success") is True:
+                # A real redirect can change the capture locator while keeping
+                # the reserved candidate ID. Bind only the observed transport
+                # chain; a canonical tag or reused ID alone proves nothing.
+                transport = meta.get("transport") or {}
+                chain = transport.get("redirect_chain")
+                requested = transport.get("requested_endpoint")
+                previous = self._sources[native_id]
+                if (transport.get("network_observed_this_attempt") is True
+                        and type(transport.get("http_status")) is int and 200 <= transport["http_status"] < 300
+                        and isinstance(chain, list) and 2 <= len(chain) <= 10
+                        and all(isinstance(hop, str) and _public_url(hop) for hop in chain)
+                        and isinstance(requested, str) and source_url_key(chain[0]) == source_url_key(requested)
+                        and source_url_key(chain[-1]) == canonical
+                        and source_url_key(transport.get("endpoint") or "") == canonical
+                        and source_url_key(requested) == previous["canonical_url"]):
+                    source_id = native_id
             if not source_id:
                 if len(self._sources) >= self.max_records:
                     self._dropped["SOURCE_COUNT"] += 1
@@ -381,12 +398,25 @@ class RawAcquisitionPool:
                 record['source_permission'] = {key: value[:500] for key, value in permission.items()
                     if key in {'author', 'licence_url', 'source_url'} and isinstance(value, str)}
             record["page_metadata"] = {}
+            from backend.infrastructure.acquisition.adapters.web.response_diagnostics import safe_diagnostics
+            diagnostic = safe_diagnostics(page.get('native_response_diagnostics'))
+            if diagnostic:
+                record['page_metadata']['native_response_diagnostics'] = diagnostic
             for key in ("title", "author", "published", "publication_time_basis", "publication_time_source", "content_scope", "extraction_method", "body_kind", "language", "language_basis"):
                 if isinstance(page.get(key), str):
                     record["page_metadata"][key] = page[key][:2000]
             if isinstance(page.get('licence_urls'), list):
                 record['page_metadata']['licence_urls'] = [s[:200] for s in page['licence_urls'][:4]
                     if isinstance(s, str) and s.startswith('https://creativecommons.org/licenses/')]
+            address = page.get('published_address')
+            if (isinstance(address, dict) and address.get('basis') == 'OBSERVED_AUTHOR_AND_EDITORIAL_ADDRESS_INTRODUCTION'
+                    and address.get('source_text_sha256') == digest
+                    and isinstance(address.get('speaker'), str) and 1 <= len(address['speaker']) <= 150
+                    and all(type(address.get(k)) is int for k in ('start', 'end', 'intro_start', 'intro_end'))
+                    and 0 <= address['intro_start'] < address['intro_end'] <= address['start'] < address['end'] == len(content)):
+                record['page_metadata']['published_address'] = {
+                    key: address[key] for key in ('speaker', 'start', 'end', 'intro_start', 'intro_end', 'source_text_sha256', 'basis')}
+                record['page_metadata']['published_address']['identity_authenticated'] = False
             if page.get('rights_exception_observed') is True:
                 record['page_metadata']['rights_exception_observed'] = True
             if page.get('rights_notice_observed') is True:
@@ -434,8 +464,12 @@ class RawAcquisitionPool:
                             and 0 <= heading["start"] < heading["end"] <= len(content)):
                         safe_recovery["title_heading"] = {"start": heading["start"], "end": heading["end"], "role": "HEADING"}
                     record["page_metadata"]["article_body_recovery"] = safe_recovery
+            from backend.infrastructure.acquisition.adapters.web.page_extraction import observe_related_link_spans
+            related_spans = observe_related_link_spans(content, page)
             for key in ("text_blocks", "date_observations"):
                 observed_blocks = page.get(key)
+                if key == 'text_blocks' and related_spans:
+                    observed_blocks = [*(observed_blocks if isinstance(observed_blocks, list) else []), *related_spans]
                 if isinstance(observed_blocks, list):
                     record["page_metadata"][key] = []
                     for block in observed_blocks[:100 if key == "text_blocks" else 4]:
@@ -467,7 +501,7 @@ class RawAcquisitionPool:
                 self._refresh_duplicates()
             return source_id
 
-    def add_failure(self, item, error_type, detail="", query_id=None, *, http_status=None):
+    def add_failure(self, item, error_type, detail="", query_id=None, *, http_status=None, response_diagnostics=None):
         """Record an explicit failed attempt without discarding a prior body."""
         with self._lock:
             source_id = self.add_candidate(item, query_id)
@@ -485,6 +519,10 @@ class RawAcquisitionPool:
                 record["errors"].append({"type": category, "detail": _error_detail(detail),
                     "at": _now(), "query_id": _text(query_id or _value(item, "query_id"))[:200],
                     "http_status": http_status if type(http_status) is int else None})
+                from backend.infrastructure.acquisition.adapters.web.response_diagnostics import safe_diagnostics
+                diagnostic = safe_diagnostics(response_diagnostics)
+                if diagnostic:
+                    record['errors'][-1]['native_response_diagnostics'] = diagnostic
             self._commit(source_id, record)
             return source_id
 

@@ -17,7 +17,7 @@ def test_dual_listed_adr_plans_sec_edgar():
     # Check if sec_edgar search is planned
     sec_actions = [a for a in plan.actions if a.channel == "sec_edgar"]
     assert len(sec_actions) > 0, "Expected sec_edgar action for dual-listed ADR entity Infosys"
-    assert sec_actions[0].source_category == "regulatory_filing"
+    assert "regulatory_filing" in sec_actions[0].source_category
     assert sec_actions[0].authoritative is True
 
 

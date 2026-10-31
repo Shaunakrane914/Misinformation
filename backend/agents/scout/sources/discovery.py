@@ -69,8 +69,9 @@ class BingDiscovery(DiscoveryStrategy):
     def discover(self, request: ScoutSourceRequest, limit: int = 5) -> List[CandidateSource]:
         candidates: List[CandidateSource] = []
         q = request.query.strip()
-        if request.target_entity and request.target_entity.lower() not in q.lower():
-            q = f"{request.target_entity} {q}"
+        query_terms = re.sub(r"\b(?:site|inurl):\S+|https?://\S+", " ", q, flags=re.I)
+        if request.target_entity and not re.search(r"(?<!\w)" + re.escape(request.target_entity) + r"(?!\w)", query_terms, re.I):
+            q = f"{request.target_entity} {q}" 
         encoded_q = urllib.parse.quote_plus(q)
         url = f"https://www.bing.com/search?q={encoded_q}&count={max(limit * 2, 10)}"
 

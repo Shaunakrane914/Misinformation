@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="forensic-explorer.js"></script>
+    <script src="intelligence-transformer.js"></script>
+  <script src="aegis-graphs.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
   <script src="agent-research-client.js"></script>
@@ -631,6 +633,7 @@
               Evidence Discovery Funnel
             </span>
           </div>
+          <div id="scoutVolatilityChartMount" style="margin-bottom:16px;"></div>
           <div id="forensicMount"></div>
         </div>
       `;
@@ -853,6 +856,17 @@
       `;
 
       root.innerHTML = html;
+
+            if (typeof AegisGraphs !== 'undefined') {
+        const vcMount = document.getElementById('scoutVolatilityChartMount');
+        if (vcMount) {
+          AegisGraphs.renderVolatilityChart(vcMount, {
+            currentPrice: Number(stock.current_price) || null,
+            volumeZ: Number(stock.z_score) || null,
+            history: stock.price_history || null
+          });
+        }
+      }
 
       // Mount Native Forensic Funnel & Evidence Navigator
       const feMount = document.getElementById('forensicMount');

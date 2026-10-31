@@ -933,16 +933,20 @@ class StandardChannelHandlers:
 
     def _execute_sec_edgar(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
         from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import (
-            fetch_sec_submissions, normalize_sec_items,
+            fetch_sec_submissions, normalize_sec_items, financial_fact_leads,
         )
         form_filter = kwargs.get("form") or kwargs.get("form_filter")
-        result = fetch_sec_submissions(query, limit=limit, form_filter=form_filter)
+        result = fetch_sec_submissions(query, limit=limit, form_filter=form_filter,
+            filing_scope="QUARTER" if query_class == "quarterly_regulatory_filing" else None)
         self._record_transport(telemetry, result)
         items = result.get("items", [])
         if not items:
             telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else result.get("status", "FAILED"))
             return []
         fragments = normalize_sec_items(items, query_id=query_id, query_class=query_class, query_text=query_text)
+        if result.get("issuer_identity"):
+            leads = financial_fact_leads(result["issuer_identity"], query_id, query_class, query_text)
+            fragments = (fragments[:1] + leads + fragments[1:])[:max(1, limit)]
         self._attach_transport(fragments, result.get("transport"))
         self.router._tag_fragments(fragments, "sec_edgar", "sec_edgar", RetrievalMode.DIRECT_API.value, "sec-edgar-data-api", None, False)
         telemetry.update(status="SUCCESS", backend="sec-edgar-data-api")

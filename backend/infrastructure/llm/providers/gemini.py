@@ -37,12 +37,13 @@ class GeminiProvider(LLMProvider):
         from backend.infrastructure.llm.advisory_policy import MODEL, reserve_request, set_cooldown, AdvisoryPolicyError
         if not self.is_available():
             raise RuntimeError("GeminiProvider unavailable: No API keys configured.")
-        if model != MODEL or len(prompt) > 6000 or kwargs.get("max_attempts", 1) != 1:
+        selected_model = model or MODEL
+        if selected_model != MODEL or len(prompt) > 6000 or kwargs.get("max_attempts", 1) != 1:
             raise AdvisoryPolicyError("Only bounded strict-identity Flash-Lite advice is permitted")
         tokens = kwargs.get("max_output_tokens", 160)
         if type(tokens) is not int or not 1 <= tokens <= 160:
             raise AdvisoryPolicyError("Advisory output limit is 160 tokens")
-        timeout = min(2.0, float(kwargs.get("timeout", 2.0)))
+        timeout = min(5.0, max(2.0, float(kwargs.get("timeout", 4.0))))
         if not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("LLM timeout must be finite and positive")
         payload = {"contents": [{"parts": [{"text": prompt}]}],

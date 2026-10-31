@@ -16,7 +16,14 @@ import time
 import uuid
 
 MODEL = "gemini-3.5-flash-lite"
-PURPOSES = {"search_suggestion", "passage_suggestion"}
+PURPOSES = {
+    "search_suggestion",
+    "passage_suggestion",
+    "search_advice",
+    "entity_resolution",
+    "entity_discovery",
+    "hybrid_resolution",
+}
 _run = ContextVar("aegis_advisory_run", default=None)
 _investigation = ContextVar("aegis_advisory_investigation", default=None)
 
@@ -27,9 +34,12 @@ class AdvisoryPolicyError(RuntimeError):
 
 def daily_request_limit():
     """Server-only admission setting; invalid values cannot open the budget."""
-    raw = os.getenv('AEGIS_AI_DAILY_REQUEST_LIMIT', '3').strip()
-    if not re.fullmatch(r'[0-9]{1,2}', raw) or not 1 <= int(raw) <= 20:
-        raise AdvisoryPolicyError('AEGIS_AI_DAILY_REQUEST_LIMIT must be an integer from 1 to 20')
+    is_live = os.getenv('AEGIS_LIVE_ADVISORY_ENABLED', 'false').lower() in {'1', 'true', 'yes'}
+    raw = os.getenv('AEGIS_AI_DAILY_REQUEST_LIMIT', '1000' if is_live else '3').strip()
+    max_cap = int(os.getenv('AEGIS_AI_MAX_DAILY_REQUEST_LIMIT', '2000' if is_live else '20'))
+    digits_max = len(str(max_cap))
+    if not re.fullmatch(rf'[0-9]{{1,{digits_max}}}', raw) or not 1 <= int(raw) <= max_cap:
+        raise AdvisoryPolicyError(f'AEGIS_AI_DAILY_REQUEST_LIMIT must be an integer from 1 to {max_cap}')
     return int(raw)
 
 

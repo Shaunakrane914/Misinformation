@@ -181,6 +181,9 @@ def synthesize_financial_intelligence(
     strategy_observations = []
     incomplete_observations = []
     for s in sources:
+        from backend.services.research.financial_structured import qualified_document
+        if qualified_document(s, company_name):
+            continue  # Structured facts have their own citations and comparison contract.
         passage = str(s.get("relevant_excerpt") or s.get("content") or "")
         # A headline is a lead, not the financial proposition. In particular a
         # bullish title must not override a qualified or forecast-only passage.

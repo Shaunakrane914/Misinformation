@@ -15,11 +15,11 @@ from backend.services.agent_reach.channels import (
 
 def test_gzipped_sec_capture_is_decoded_boundedly_and_empty_stays_empty():
     adapter = SecFilingsFullAdapter()
-    candidate = CandidateSource(url="https://www.sec.gov/Archives/edgar/data/123/report.htm")
+    candidate = CandidateSource(url="https://www.sec.gov/Archives/edgar/data/123/000000012326000001/report.htm")
     for body, status in [(gzip.compress(b"<p>Observed regulatory passage.</p>"), "SUCCESS"),
                          (b"", "EMPTY_CONTENT")]:
         response = BoundedHTTPResponse(body=body, endpoint=candidate.url, status_code=200,
-            content_type="text/html", headers={}, latency_ms=1, attempts=1)
+            content_type="text/html", headers={"Content-Encoding":"gzip"} if body.startswith(b"\x1f\x8b") else {}, latency_ms=1, attempts=1)
         with patch("backend.infrastructure.acquisition.adapters.regulatory.sec_filings_full.fetch_public_http", return_value=response):
             result = adapter.acquire(candidate, RetrievalRequest())
         assert result.status == status
@@ -39,7 +39,10 @@ def test_sec_filings_full_adapter_can_handle():
 def test_sec_filings_full_adapter_discover():
     adapter = SecFilingsFullAdapter()
     sample_submissions = {
+        "cik": 1045810,
         "name": "NVIDIA CORP",
+        "tickers": ["NVDA"],
+        "exchanges": ["Nasdaq"],
         "filings": {
             "recent": {
                 "form": ["10-K", "10-Q"],
@@ -60,15 +63,15 @@ def test_sec_filings_full_adapter_discover():
         attempts=1,
     )
 
-    with patch("backend.infrastructure.acquisition.adapters.regulatory.sec_filings_full.fetch_public_http", return_value=mock_resp):
+    with patch("backend.infrastructure.acquisition.adapters.authoritative.sec_edgar.fetch_public_http", return_value=mock_resp):
         candidates = adapter.discover("NVDA", limit=2)
         assert len(candidates) == 2
         c = candidates[0]
         assert c.platform == "sec_filings_full"
-        assert "Form 10-K" in c.title
-        assert c.metadata["form"] == "10-K"
+        assert "Form 10-Q" in c.title
+        assert c.metadata["form"] == "10-Q"
         assert c.metadata["company_name"] == "NVIDIA CORP"
-        assert c.metadata["primary_source"] is True
+        assert c.metadata["primary_source"] is False  # Metadata is not a document body.
 
 
 def test_sec_filings_full_adapter_acquire_and_normalize():

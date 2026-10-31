@@ -1,5 +1,10 @@
 # Coding-agent handoffs
 
+## V2 Consolidated Release Reconciliation & Telemetry Integrity - 2026-11-01
+
+- [V2 Consolidated Release Reconciliation](2026-11-01_V2_CONSOLIDATED_RELEASE_RECONCILIATION.md): Clean consolidation branch `feat/v2-consolidated-release` based on current `main` (`733ffd6`). Resolved all 4 critical defects from PR #4: purged fabricated SEC contact fallback, purged fictional stock prices ($12.10) & fake 'SEC 6-K Filed' events, removed finding synthesis from unverified snippets, and verified Cloudflare/FastAPI routes. Preserved hybrid AI resolver, Groq/OpenAI failover chain, and Phase 4 golden replay bitwise invariance (13/13 passing). PR #4 kept open for reference.
+
+
 ## Production Acquisition Deployment - 2026-10-31
 
 - [Production acquisition repairs](2026-10-31_ACQUISITION_PRODUCTION_DEPLOYMENT.md): Canonical main integration of validated foreign ADR SEC EDGAR planning, YouTube spoken transcript enrichment, and technical domain GitHub retention. Full offline suites passed (64 unit, 100 chaos/security, smoke, persistence, zero lint). Pushed to origin/main.

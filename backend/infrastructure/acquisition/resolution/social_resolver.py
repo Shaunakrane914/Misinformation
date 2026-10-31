@@ -708,7 +708,7 @@ class EntitySocialResolver:
         clean = re.sub(r"^\$([A-Za-z0-9_]+)", r"\1", clean)
         # Remove domain qualifiers
         clean = re.sub(
-            r"\b(investigation|controversy|debt|sentiment|discussion|stock|market|rumor|probe|news|filings|earnings|latest|today)\b",
+            r"\b(investigation|controversy|debt|sentiment|discussion|stock|market|rumor|probe|news|filings|earnings|latest|today|claims|revenue|short|seller|community|investor|statement|announcement|scam|counterfeit|deepfake|impersonation|fake|verify|investigate|check|rumors)\b",
             "", clean, flags=re.IGNORECASE
         )
         # Strip trailing exchange suffixes (.NS, .BO)

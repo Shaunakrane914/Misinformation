@@ -1,0 +1,199 @@
+{
+  "schema": "reviewed-issuer-identity-v1",
+  "scope": "Bootstrap references, not exhaustive issuer list. Dynamic verified submissions/index cache is authoritative for new issuers. No source permissions granted.",
+  "issuers": [
+    {
+      "legal_name": "Infosys Limited",
+      "aliases": [
+        "Infosys",
+        "Infosys Technologies Limited",
+        "INFY.NS",
+        "INFY.BO"
+      ],
+      "cik": "0001067491",
+      "country_of_incorporation": "India",
+      "listings": [
+        {
+          "symbol": "INFY",
+          "exchange": "NYSE",
+          "jurisdiction": "US"
+        },
+        {
+          "symbol": "INFY",
+          "exchange": "NSE",
+          "jurisdiction": "India"
+        },
+        {
+          "symbol": null,
+          "exchange": "BSE",
+          "jurisdiction": "India"
+        }
+      ],
+      "reporting_jurisdictions": [
+        "India",
+        "US"
+      ],
+      "official_domains": [
+        "infosys.com"
+      ],
+      "fiscal_year_end": "0331",
+      "isin": null,
+      "provenance": [
+        {
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1067491/000119312526270520/0001193125-26-270520-index.htm",
+          "basis": "OFFICIAL_REFERENCE_REVIEW_NOT_NATIVE_CAPTURE",
+          "reviewed_on": "2026-10-31"
+        },
+        {
+          "source_url": "https://www.infosys.com/newsroom/press-releases/2026/form-20f-fiscal-2026.html",
+          "basis": "OFFICIAL_REFERENCE_REVIEW_NOT_NATIVE_CAPTURE",
+          "reviewed_on": "2026-10-31"
+        }
+      ],
+      "accounting_basis": "IFRS",
+      "access_restrictions": [
+        {
+          "url": "https://www.infosys.com/investors/reports-filings.html",
+          "http_status": 403,
+          "observed_date": "2026-10-29",
+          "basis": "PREVIOUS_RETAINED_NATIVE_HTTP_DENIAL; NO_AUTOMATIC_RETRY"
+        }
+      ]
+    },
+    {
+      "legal_name": "Apple Inc.",
+      "aliases": [
+        "Apple",
+        "AAPL"
+      ],
+      "cik": "0000320193",
+      "country_of_incorporation": "US",
+      "listings": [
+        {
+          "symbol": "AAPL",
+          "exchange": "NASDAQ",
+          "jurisdiction": "US"
+        }
+      ],
+      "reporting_jurisdictions": [
+        "US"
+      ],
+      "official_domains": [
+        "apple.com"
+      ],
+      "fiscal_year_end": null,
+      "isin": null,
+      "provenance": [
+        {
+          "source_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
+          "basis": "OFFICIAL_REFERENCE_REVIEW_NOT_NATIVE_CAPTURE",
+          "reviewed_on": "2026-10-31"
+        }
+      ],
+      "accounting_basis": "US_GAAP"
+    },
+    {
+      "legal_name": "Tata Consultancy Services Limited",
+      "aliases": [
+        "TCS",
+        "TCS.NS",
+        "TCS.BO"
+      ],
+      "cik": null,
+      "country_of_incorporation": null,
+      "listings": [
+        {
+          "symbol": "TCS",
+          "exchange": "NSE",
+          "jurisdiction": "India"
+        },
+        {
+          "symbol": "532540",
+          "exchange": "BSE",
+          "jurisdiction": "India"
+        }
+      ],
+      "reporting_jurisdictions": [
+        "India"
+      ],
+      "official_domains": [
+        "tcs.com"
+      ],
+      "fiscal_year_end": null,
+      "isin": "INE467B01029",
+      "provenance": [
+        {
+          "source_url": "https://www.tcs.com/investor-relations/investor-faqs",
+          "basis": "OFFICIAL_REFERENCE_REVIEW_NOT_NATIVE_CAPTURE",
+          "reviewed_on": "2026-10-31"
+        }
+      ]
+    },
+    {
+      "legal_name": "Skechers U.S.A., Inc.",
+      "aliases": [
+        "Skechers",
+        "Skechers USA",
+        "Skechers USA Inc",
+        "SKX"
+      ],
+      "cik": "0001065837",
+      "country_of_incorporation": "US",
+      "listings": [
+        {
+          "symbol": "SKX",
+          "exchange": "NYSE",
+          "jurisdiction": "US"
+        }
+      ],
+      "reporting_jurisdictions": [
+        "US"
+      ],
+      "official_domains": [
+        "skechers.com"
+      ],
+      "fiscal_year_end": "1231",
+      "isin": null,
+      "provenance": [
+        {
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1065837/000119312525141703/0001193125-25-141703-index.html",
+          "basis": "OFFICIAL_REFERENCE_REVIEW_NOT_NATIVE_CAPTURE",
+          "reviewed_on": "2026-10-31"
+        }
+      ],
+      "accounting_basis": "US_GAAP"
+    },
+    {
+      "legal_name": "Microsoft Corporation",
+      "aliases": [
+        "Microsoft",
+        "MSFT"
+      ],
+      "cik": "0000789019",
+      "country_of_incorporation": "US",
+      "listings": [
+        {
+          "symbol": "MSFT",
+          "exchange": "NASDAQ",
+          "jurisdiction": "US"
+        }
+      ],
+      "reporting_jurisdictions": [
+        "US"
+      ],
+      "official_domains": [
+        "microsoft.com"
+      ],
+      "fiscal_year_end": "0630",
+      "isin": null,
+      "provenance": [
+        {
+          "source_url": "https://www.sec.gov/edgar/browse/?CIK=0000789019",
+          "basis": "OFFICIAL_REFERENCE_REVIEW_NOT_NATIVE_CAPTURE",
+          "reviewed_on": "2026-10-31"
+        }
+      ],
+      "accounting_basis": "US_GAAP"
+    }
+  ]
+}

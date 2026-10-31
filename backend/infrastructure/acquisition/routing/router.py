@@ -369,28 +369,43 @@ class NativeRouter:
         # 2. Specialized Zero-Auth Social: Reddit
         if channel == "reddit":
             red_src = extract_reddit_source(url)
-            if red_src and self.use_arctic_shift:
-                target_pid = red_src.parent_id if red_src.source_type == "comment" else red_src.external_id
-                if target_pid:
-                    frag = self._fetch_arctic_shift_post(target_pid)
-                    comments = self._fetch_arctic_shift_comments(target_pid, limit=5)
-                    if frag and frag.content:
-                        comm_md = ""
-                        if comments:
-                            comm_md = "\n\n### Top Comments\n" + "\n\n".join(
-                                [f"**{c.author}** ({int(c.score)} pts):\n{c.content}" for c in comments[:3]]
-                            )
-                        full_body = frag.content + comm_md
+            if red_src:
+                if red_src.source_type == "subreddit" and red_src.subreddit:
+                    frags = self._fetch_reddit_subreddit_rss(red_src.subreddit, limit=5)
+                    if frags:
+                        combined_content = "\n\n---\n\n".join([f"**{f.title}**\n{f.content}" for f in frags])
                         return {
                             "status": "success",
-                            "title": frag.title,
-                            "content": full_body[:max_chars],
-                            "markdown": f"### {frag.title}\n**Author**: {frag.author}\n\n{full_body[:max_chars]}\n\n*Source: {frag.url}*",
+                            "title": f"r/{red_src.subreddit} Posts",
+                            "content": combined_content[:max_chars],
+                            "markdown": f"### r/{red_src.subreddit} Subreddit Posts\n\n{combined_content[:max_chars]}",
                             "url": url,
-                            "char_count": len(full_body),
-                            "backend": "arctic_shift",
+                            "char_count": len(combined_content),
+                            "backend": "reddit_rss",
                             "fallback_used": False,
                         }
+                elif self.use_arctic_shift:
+                    target_pid = red_src.parent_id if red_src.source_type == "comment" else red_src.external_id
+                    if target_pid:
+                        frag = self._fetch_arctic_shift_post(target_pid)
+                        comments = self._fetch_arctic_shift_comments(target_pid, limit=5)
+                        if frag and frag.content:
+                            comm_md = ""
+                            if comments:
+                                comm_md = "\n\n### Top Comments\n" + "\n\n".join(
+                                    [f"**{c.author}** ({int(c.score)} pts):\n{c.content}" for c in comments[:3]]
+                                )
+                            full_body = frag.content + comm_md
+                            return {
+                                "status": "success",
+                                "title": frag.title,
+                                "content": full_body[:max_chars],
+                                "markdown": f"### {frag.title}\n**Author**: {frag.author}\n\n{full_body[:max_chars]}\n\n*Source: {frag.url}*",
+                                "url": url,
+                                "char_count": len(full_body),
+                                "backend": "arctic_shift",
+                                "fallback_used": False,
+                            }
 
         # 3. Specialized Video: YouTube via yt-dlp
         if channel == "youtube":

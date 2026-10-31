@@ -120,7 +120,7 @@ def test_sec_edgar_form_filter():
         "tickers": ["NVDA"],
         "filings": {
             "recent": {
-                "accessionNumber": ["0001-24-1", "0001-24-2"],
+                "accessionNumber": ["0001045810-24-000001", "0001045810-24-000002"],
                 "filingDate": ["2024-02-21", "2024-01-10"],
                 "form": ["10-K", "8-K"],
                 "primaryDocument": ["doc1.htm", "doc2.htm"],
@@ -344,7 +344,7 @@ def test_router_executes_authoritative_sec_edgar(monkeypatch):
         "tickers": ["NVDA"],
         "filings": {
             "recent": {
-                "accessionNumber": ["0001-24-1"],
+                "accessionNumber": ["0001045810-24-000001"],
                 "filingDate": ["2024-02-21"],
                 "form": ["10-K"],
                 "primaryDocument": ["nvda.htm"],
@@ -365,8 +365,9 @@ def test_router_executes_authoritative_sec_edgar(monkeypatch):
     )
     assert telemetry["status"] == "SUCCESS"
     assert telemetry["backend"] == "sec-edgar-data-api"
-    assert len(fragments) == 1
-    assert fragments[0].platform == "sec_edgar"
+    assert len(fragments) == 2
+    assert all(fragment.platform == "sec_edgar" for fragment in fragments)
+    assert fragments[1].content_depth == "INDEX_SNIPPET"  # Locator, no body yet.
 
 
 def test_router_executes_authoritative_nist_cve(monkeypatch):

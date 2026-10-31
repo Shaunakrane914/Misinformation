@@ -6,6 +6,8 @@
   <title>Trending Agent — Topic Momentum &amp; Trend Discovery · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="intelligence-transformer.js"></script>
+  <script src="aegis-graphs.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
   <script src="agent-research-client.js"></script>
@@ -348,6 +350,7 @@
               <span style="font-size:0.72rem;font-family:var(--font-mono);color:var(--text-dim);" id="chartStatusBadge">Snapshot History</span>
             </div>
             <div style="height: 180px; position: relative;">
+              <div id="hawkesMount" style="margin-bottom:14px;"></div>
               <canvas id="velocityChart"></canvas>
               <div id="chartEmptyState" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.8rem;color:var(--text-dim);padding:20px;font-family:var(--font-mono);">
                 Run a scan to establish the first observation. Repeat later to plot a multi-interval velocity curve.
@@ -832,6 +835,10 @@
     }
 
     function updateVelocityChart(history) {
+      if (typeof AegisGraphs !== 'undefined') {
+        const hm = document.getElementById('hawkesMount');
+        if (hm) AegisGraphs.renderHawkesVelocity(hm, { r0: (currentScanData && currentScanData.telemetry && currentScanData.telemetry.r0) != null ? Number(currentScanData.telemetry.r0) : null });
+      }
       const ctx = document.getElementById('velocityChart');
       const emptyState = document.getElementById('chartEmptyState');
       if (!ctx) return;

@@ -90,6 +90,8 @@ def safe_fetch(url, *, headers=None, timeout=5.0, max_bytes=1_000_000, preserve_
             raise PermissionError("CONFIG_REQUIRED: SEC_USER_AGENT")
         headers = {key: value for key, value in headers.items() if key.lower() != "user-agent"}
         headers["User-Agent"] = os.environ["SEC_USER_AGENT"].strip()
+        from backend.infrastructure.acquisition.network.sec_pacing import wait_for_sec_slot
+        wait_for_sec_slot()
     if matches_host(url, ("arctic-shift.photon-reddit.com", "reddit.com")) and policy_status("reddit_deep"):
         raise PermissionError("POLICY_BLOCKED: Reddit access")
     safe, reason = validate_url_safe(url)
@@ -106,6 +108,7 @@ def safe_fetch(url, *, headers=None, timeout=5.0, max_bytes=1_000_000, preserve_
     # reopen redirects through transport kwargs. Ordinary native web reads keep
     # their separately validated redirect behavior.
     kwargs.pop("max_redirects", None)
+    kwargs.pop("max_attempts", None)
     try:
         response = _fetch(url, headers=headers, timeout=min(float(timeout), 5.0),
                           max_bytes=min(max_bytes, 1_000_000), max_attempts=1, max_redirects=0, **kwargs)

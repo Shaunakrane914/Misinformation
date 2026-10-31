@@ -27,7 +27,8 @@ def test_sec_edgar_cik_resolution_across_classes_and_adrs():
     assert resolve_cik("GOOGL") == "0001652044"
 
     # International Foreign Private Issuers & ADRs
-    assert resolve_cik("INFY") == "0001065837"   # Infosys ADR
+    assert resolve_cik("INFY") == "0001067491"
+    assert resolve_cik("SKX") == "0001065837"   # Infosys ADR
     assert resolve_cik("TTM") == "0000926042"    # Tata Motors ADR
     assert resolve_cik("LNVGY") == "0001002517"  # Lenovo ADR
     assert resolve_cik("TSM") == "0001046179"    # TSMC ADR
@@ -35,7 +36,7 @@ def test_sec_edgar_cik_resolution_across_classes_and_adrs():
     # Company name resolution
     assert resolve_cik("Johnson & Johnson") == "0000200406"
     assert resolve_cik("Microsoft Corporation") == "0000789019"
-    assert resolve_cik("Infosys Limited") == "0001065837"
+    assert resolve_cik("Infosys Limited") == "0001067491"
 
     # Numeric raw CIK zero-padding
     assert resolve_cik("789019") == "0000789019"
@@ -111,7 +112,7 @@ def test_scout_resolve_company_identity_attaches_cik():
     assert aapl["cik"] == "0000320193"
 
     infy = resolve_company_identity("Infosys")
-    assert infy["cik"] == "0001065837"
+    assert infy["cik"] == "0001067491"
 
 
 def test_financial_passage_context_with_filing_verification():

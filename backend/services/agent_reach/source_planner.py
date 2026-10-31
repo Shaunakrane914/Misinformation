@@ -357,8 +357,18 @@ class SourcePlanningEngine:
             updates.append((old, action))
         return updates
 
-    def replan(self, plan: SourcePlan, evidence_gaps: Iterable[str]) -> SourcePlan:
-        """Add one deterministic expansion stage; never recurse."""
+    def replan(
+        self,
+        plan: SourcePlan,
+        evidence_gaps: Iterable[str],
+        *,
+        primary_failure: Optional[Dict[str, Any]] = None,
+    ) -> SourcePlan:
+        """Add one deterministic expansion stage; never recurse.
+        
+        Strictly handles Failure Mode 2: If primary channel is denied or empty,
+        invokes HybridDiscoveryCoordinator for adaptive secondary channels.
+        """
         if plan.replan_count >= plan.budget.max_replans:
             plan.warnings.append("Replan budget exhausted")
             return plan
@@ -366,6 +376,24 @@ class SourcePlanningEngine:
         gaps = " ".join(str(gap) for gap in evidence_gaps).lower()
         existing = {(a.channel, a.operation, a.query.lower()) for a in plan.actions}
         candidates: List[SourceAction] = []
+
+        # Failure Mode 2: Explicit primary source failure / denial adaptation
+        if primary_failure is not None and plan.entity:
+            try:
+                from backend.services.research.hybrid_discovery import hybrid_discovery_coordinator
+                failed_ch = primary_failure.get("channel", "primary_source")
+                status_code = primary_failure.get("status", "DENIED_OR_EMPTY")
+                adaptive_actions = hybrid_discovery_coordinator.adapt_sources_on_failure(
+                    plan, failed_ch, status_code, allowed_channels=plan.channels
+                )
+                for act in adaptive_actions:
+                    candidates.append(act)
+                    plan.warnings.append(
+                        f"Adaptive source fallback: Primary channel '{failed_ch}' status '{status_code}'; added alternative '{act.channel}'."
+                    )
+            except Exception as exc:
+                plan.warnings.append(f"Adaptive source discovery failed closed: {type(exc).__name__}")
+
         if any(term in gaps for term in ("primary", "official", "filing", "authoritative")):
             candidates.append(self._action(
                 3, "web", "search",
@@ -454,10 +482,18 @@ class SourcePlanningEngine:
                 actions.append(self._action(1, "web", "read", index, "issuer_documents",
                     "DIRECT_CONTENT", 0, "Inspect original issuer document links before general search.", True))
             from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import resolve_cik
-            has_sec_adr = bool(resolve_cik(target))
-            regulator = "HKEX" if registry_key == "lenovo" else "SEC" if (not self._looks_indian(target) or has_sec_adr) else "SEBI"
-            if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and (not self._looks_indian(target) or has_sec_adr):
+            from backend.services.research.issuer_identity import resolve_issuer
+            identity = resolve_issuer(target)
+            cik = identity.get("cik") or resolve_cik(target)
+            jurisdictions = identity.get("reporting_jurisdictions", [])
+            is_indian = ("India" in jurisdictions) or self._looks_indian(target)
+            has_sec_adr = bool(cik)
+            regulator = "HKEX" if registry_key == "lenovo" else "SEC" if (not is_indian or has_sec_adr) else "SEBI"
+            if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and (not is_indian or has_sec_adr):
                 actions.append(self._action(1, "sec_edgar", "search", target, "regulatory_filing", "DIRECT_METADATA", 1, "Retrieve official SEC EDGAR corporate filings directly.", True))
+            if is_indian:
+                actions.append(self._action(1, "web", "search", f"{query_base}{issuer_scope} financial results NSE BSE", "issuer_disclosure_discovery",
+                    "SEARCH_INDEX_DISCOVERY", 1, "Discover observed Indian issuer disclosures; exchange/body permissions remain required.", True))
             actions.extend([
                 self._action(1, "web", "search", f"{query_base}{issuer_scope} quarterly results filing {regulator}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
                 self._action(1, "rss", "search", f"{query_base} results press release", "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),

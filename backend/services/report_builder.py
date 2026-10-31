@@ -355,6 +355,11 @@ class ReportBuilder:
             or scout_data.get("narrative")
         )
         summary = _summary_text(raw_summary)
+        disclosures = scout_data.get("financial_disclosures") or {}
+        if not raw_summary and disclosures.get("facts"):
+            summary = (f"Captured {len(disclosures['facts'])} source-validated financial records from "
+                f"{len(disclosures.get('documents', []))} original SEC data documents. "
+                "Reporting intervals, units and citations are retained per record; latest-period adjudication is not performed.")
 
         # ── Findings ─────────────────────────────────────────────────────────
         findings: List[str] = []
@@ -425,6 +430,8 @@ class ReportBuilder:
 
         # ── Agent Intelligence (Scout) ───────────────────────────────────────
         s_intel: Dict[str, Any] = {}
+        if isinstance(scout_data.get("financial_disclosures"), dict):
+            s_intel["financial_disclosures"] = scout_data["financial_disclosures"]
         if scout_data.get("filing_comparison"):
             s_intel["filing_comparison"] = scout_data["filing_comparison"]
         if scout_data.get("misinformation"):

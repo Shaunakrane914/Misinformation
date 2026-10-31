@@ -16,7 +16,14 @@ import time
 import uuid
 
 MODEL = "gemini-3.5-flash-lite"
-PURPOSES = {"search_suggestion", "passage_suggestion"}
+PURPOSES = {
+    "search_suggestion",
+    "passage_suggestion",
+    "search_advice",
+    "entity_resolution",
+    "entity_discovery",
+    "hybrid_resolution",
+}
 _run = ContextVar("aegis_advisory_run", default=None)
 _investigation = ContextVar("aegis_advisory_investigation", default=None)
 
@@ -25,11 +32,22 @@ class AdvisoryPolicyError(RuntimeError):
     pass
 
 
+class AdvisoryProviderBlocked(AdvisoryPolicyError):
+    """Raised when a specific provider is in cooldown or in-flight busy.
+    Allows the gateway sequential fallback chain to attempt alternative providers
+    without bypassing overall daily or per-investigation request budgets.
+    """
+    pass
+
+
 def daily_request_limit():
     """Server-only admission setting; invalid values cannot open the budget."""
-    raw = os.getenv('AEGIS_AI_DAILY_REQUEST_LIMIT', '3').strip()
-    if not re.fullmatch(r'[0-9]{1,2}', raw) or not 1 <= int(raw) <= 20:
-        raise AdvisoryPolicyError('AEGIS_AI_DAILY_REQUEST_LIMIT must be an integer from 1 to 20')
+    is_live = os.getenv('AEGIS_LIVE_ADVISORY_ENABLED', 'false').lower() in {'1', 'true', 'yes'}
+    raw = os.getenv('AEGIS_AI_DAILY_REQUEST_LIMIT', '1000' if is_live else '3').strip()
+    max_cap = int(os.getenv('AEGIS_AI_MAX_DAILY_REQUEST_LIMIT', '2000' if is_live else '20'))
+    digits_max = len(str(max_cap))
+    if not re.fullmatch(rf'[0-9]{{1,{digits_max}}}', raw) or not 1 <= int(raw) <= max_cap:
+        raise AdvisoryPolicyError(f'AEGIS_AI_DAILY_REQUEST_LIMIT must be an integer from 1 to {max_cap}')
     return int(raw)
 
 
@@ -109,7 +127,7 @@ def require_advisory(purpose):
 
 
 @contextmanager
-def reserve_request(purpose):
+def reserve_request(purpose, provider_name="gemini"):
     state = require_advisory(purpose)
     limit = daily_request_limit()
     if state.get("expires_at") is not None and time.time() >= state["expires_at"]:
@@ -118,11 +136,27 @@ def reserve_request(purpose):
     connection = _connect(state["database"])
     try:
         connection.execute("BEGIN IMMEDIATE")
-        cooldown, busy = connection.execute("SELECT cooldown,busy FROM provider WHERE id=1").fetchone()
+        connection.execute("CREATE TABLE IF NOT EXISTS provider_cooldowns (name TEXT PRIMARY KEY, cooldown REAL)")
+        p_row = connection.execute("SELECT cooldown FROM provider_cooldowns WHERE name=?", (provider_name,)).fetchone()
+        p_cooldown = p_row[0] if p_row else 0.0
+
+        legacy_cooldown, busy = connection.execute("SELECT cooldown,busy FROM provider WHERE id=1").fetchone()
+        if provider_name == "gemini":
+            p_cooldown = max(p_cooldown, legacy_cooldown or 0.0)
+
         calls = connection.execute("SELECT calls FROM runs WHERE id=?", (state["id"],)).fetchone()[0]
         used = connection.execute("SELECT 1 FROM investigations WHERE run=? AND id=?", (state["id"], _investigation.get())).fetchone()
-        if cooldown > time.time() or busy or calls >= limit or used:
-            raise AdvisoryPolicyError("Advisory cooldown, in-flight reservation or hard request budget blocks this call")
+
+        if p_cooldown > time.time():
+            raise AdvisoryProviderBlocked(f"Advisory provider '{provider_name}' is in cooldown")
+        if busy:
+            raise AdvisoryProviderBlocked("In-flight reservation blocks concurrent provider call")
+
+        if calls >= limit:
+            raise AdvisoryPolicyError("Hard request budget blocks this call")
+        if used:
+            raise AdvisoryPolicyError("Investigation request budget blocks this call")
+
         connection.execute("UPDATE runs SET calls=calls+1 WHERE id=?", (state["id"],))
         connection.execute("INSERT INTO investigations VALUES (?,?)", (state["id"], _investigation.get()))
         connection.execute("UPDATE provider SET busy=? WHERE id=1", (reservation,))
@@ -138,11 +172,15 @@ def reserve_request(purpose):
         connection.close()
 
 
-def set_cooldown(seconds):
+def set_cooldown(seconds, provider_name="gemini"):
     state = _run.get()
     if state:
         with closing(_connect(state["database"])) as connection:
-            connection.execute("UPDATE provider SET cooldown=MAX(cooldown,?) WHERE id=1", (time.time() + max(30, seconds),))
+            target_time = time.time() + max(30, seconds)
+            connection.execute("CREATE TABLE IF NOT EXISTS provider_cooldowns (name TEXT PRIMARY KEY, cooldown REAL)")
+            connection.execute("INSERT INTO provider_cooldowns (name, cooldown) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET cooldown=MAX(cooldown, ?)", (provider_name, target_time, target_time))
+            if provider_name == "gemini":
+                connection.execute("UPDATE provider SET cooldown=MAX(cooldown,?) WHERE id=1", (target_time,))
 
 
 def call_count():

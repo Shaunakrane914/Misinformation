@@ -30,10 +30,17 @@ from backend.services.url_validator import validate_url_safe
 logger = logging.getLogger(__name__)
 
 SEC_SUBMISSIONS_BASE = "https://data.sec.gov/submissions"
-DEFAULT_SEC_HEADERS = {
-    "User-Agent": os.getenv("SEC_USER_AGENT", ""),
-    "Accept-Encoding": "gzip, deflate",
-}
+SEC_USER_AGENT_ENV = "SEC_USER_AGENT"
+
+def get_sec_headers() -> Dict[str, str]:
+    """Return compliant SEC headers requiring configured owner User-Agent. Never fabricate contact."""
+    ua = os.getenv(SEC_USER_AGENT_ENV, "").strip()
+    return {
+        "User-Agent": ua,
+        "Accept-Encoding": "gzip, deflate",
+    }
+
+DEFAULT_SEC_HEADERS = get_sec_headers()
 
 
 class SecEdgarAdapter(PlatformAdapter):
@@ -69,14 +76,16 @@ class SecEdgarAdapter(PlatformAdapter):
         candidates: List[CandidateSource] = []
         clean_q = query.upper().strip()
 
-        # Find matching CIK
-        cik = None
-        ticker = None
-        for t, c in self.KNOWN_CIKS.items():
-            if re.search(r"(?<![A-Z0-9])" + re.escape(t) + r"(?![A-Z0-9])", clean_q):
-                cik = c
-                ticker = t
-                break
+        # Dynamic Authoritative Resolver with fallback
+        from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import resolve_cik
+        cik = resolve_cik(query)
+        ticker = clean_q
+        if not cik:
+            for t, c in self.KNOWN_CIKS.items():
+                if re.search(r"(?<![A-Z0-9])" + re.escape(t) + r"(?![A-Z0-9])", clean_q):
+                    cik = c
+                    ticker = t
+                    break
 
         if not cik:
             return candidates

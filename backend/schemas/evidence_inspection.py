@@ -22,6 +22,7 @@ MAX_CAPTURE_CHARS = 100_000
 MAX_PASSAGES = 8
 PASSAGE_CHARS = 600
 SOURCE_FIELDS = (
+    "financial_subject",
     "operation", "repo", "number", "state", "sha", "readme_sha", "comment_count",
     "comment_lookup_status", "comment_has_next_page", "answer_count", "answers_acquired",
     "answer_lookup_status", "sampled_answer_count", "answer_has_more", "question_id", "answer_id",
@@ -216,15 +217,28 @@ def _validated_evidence_passages(meta, body, fingerprint):
 def _validated_observations(meta, body):
     fields = {"passage_id", "evidence_id", "start", "end", "text", "content_role", "relevance", "attribution",
               "claim_status", "dates", "negation_present", "source_url", "published_at", "metric", "value", "unit",
-              "currency", "normalized_value", "period_end", "period_alignment", "source_page", "status", "table_alignment_verified", "scope", "range_upper"}
+              "currency", "normalized_value", "period_end", "period_alignment", "source_page", "status", "table_alignment_verified", "scope", "range_upper",
+              "body_sha256", "fiscal_year", "fiscal_quarter", "period_duration", "statement_type", "eps_basis", "extraction_method"}
     result = {}
     for field in ("passages", "financial_observations"):
         values = meta.get(field)
         if isinstance(values, list):
-            result[field] = [{key: value[key] for key in fields if key in value} for value in values[:24]
-                if isinstance(value, dict) and type(value.get("start")) is int and type(value.get("end")) is int
-                and 0 <= value["start"] < value["end"] <= len(body)
-                and body[value["start"]:value["end"]] == value.get("text")]
+            result[field] = []
+            for value in values[:24]:
+                if (not isinstance(value, dict) or type(value.get("start")) is not int or type(value.get("end")) is not int
+                        or not 0 <= value["start"] < value["end"] <= len(body)
+                        or body[value["start"]:value["end"]] != value.get("text")
+                        or value.get("body_sha256") and value["body_sha256"] != hashlib.sha256(body.encode("utf-8")).hexdigest()):
+                    continue
+                projected = {key: value[key] for key in fields if key in value}
+                if field == "financial_observations":
+                    spans = value.get("context_spans")
+                    projected["context_spans"] = [{key: span[key] for key in ("kind", "start", "end", "text") if key in span}
+                        for span in (spans if isinstance(spans, list) else [])[:12] if isinstance(span, dict)
+                        and type(span.get("start")) is int and type(span.get("end")) is int
+                        and 0 <= span["start"] < span["end"] <= len(body)
+                        and body[span["start"]:span["end"]] == span.get("text")]
+                result[field].append(projected)
     return result
 
 
@@ -257,6 +271,12 @@ def public_capture_metadata(item, max_chars=20_000):
     if isinstance(page, dict):
         observed = inspect_evidence(item)
         public_page = dict(observed["page_observations"])
+        from backend.services.research.financial_structured import project_financial_document
+        financial_document = project_financial_document(page.get("financial_document"), body[:max_chars])
+        if financial_document:
+            public_page["financial_document"] = financial_document
+            result["read_success"] = meta.get("read_success") is True
+            result["layer2_eligible"] = meta.get("layer2_eligible") is not False
         for key in ("title", "author", "published", "content_scope", "extraction_method", "pdf_source_sha256", "language", "language_basis"):
             if isinstance(page.get(key), str):
                 public_page[key] = page[key][:300]

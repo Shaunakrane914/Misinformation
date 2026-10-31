@@ -29,7 +29,8 @@ from backend.agents.scout.financial import (
     resolve_ticker_and_company,
     resolve_company_identity,
 )
-from backend.services.agent_reach.adapter import agent_reach_service  # Architecture contract preservation
+from backend.services.agent_reach.adapter import agent_reach_service
+from backend.services.research.financial_structured import scout_financial_disclosures  # Architecture contract preservation
 
 # Load environment variables
 load_dotenv()
@@ -557,6 +558,7 @@ class ScoutAgent:
             "primary_sources": primary_sources,
             "catalysts": reasoning.get("catalysts", {"positive": [], "negative": [], "unresolved": []}),
             "financial_observations": reasoning.get("financial_observations", []),
+            "financial_disclosures": scout_financial_disclosures(all_sources, company_name),
             "financial_context_summary": reasoning.get("financial_context_summary", {}),
             "filing_comparison": reasoning.get("filing_comparison", {"status": "NOT_PERFORMED", "comparisons": [],
                 "reason": "No comparable filing assessment was completed."}),

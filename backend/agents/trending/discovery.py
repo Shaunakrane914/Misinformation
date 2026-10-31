@@ -7,6 +7,7 @@ fetching via shared acquisition fabric, paparazzi fetching, and truthful box off
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import re
@@ -79,14 +80,39 @@ def resolve_entity(input_text: str, category: Optional[str] = None) -> Dict[str,
                 "confidence": 0.85
             }
 
-    # General entity fallback
+    # General entity fallback — enhance with live advisory when enabled
+    resolved_name = clean_text.title()
+    resolved_aliases: List[str] = []
+    resolved_category = category or "general"
+    confidence = 0.70
+
+    if os.getenv("AEGIS_LIVE_ADVISORY_ENABLED", "false").lower() in {"1", "true", "yes"}:
+        try:
+            from backend.infrastructure.llm.gateway import llm_gateway
+            prompt = (
+                f"Identify the entity or person: {json.dumps(clean_text)}. "
+                "Provide canonical name, category (entertainment/tech/business/politics/general), "
+                "and up to 3 common aliases as JSON: "
+                '{"canonical": "...", "category": "...", "aliases": ["..."]}'
+            )
+            raw = llm_gateway.generate_text(prompt, purpose="entity_discovery", max_output_tokens=100)
+            cleaned = re.sub(r"^```json\s*|^```\s*|\s*```$", "", raw.strip(), flags=re.IGNORECASE)
+            data = json.loads(cleaned)
+            if data.get("canonical"):
+                resolved_name = str(data["canonical"]).strip()
+                resolved_aliases = [str(a).strip() for a in data.get("aliases", []) if str(a).strip()]
+                resolved_category = str(data.get("category") or resolved_category).lower()
+                confidence = 0.88
+        except Exception:
+            pass
+
     return {
         "mode": "entity",
         "input": clean_text,
-        "resolved_entity": clean_text.title(),
-        "aliases": [],
-        "category": category or "general",
-        "confidence": 0.70
+        "resolved_entity": resolved_name,
+        "aliases": resolved_aliases,
+        "category": resolved_category,
+        "confidence": confidence,
     }
 
 

@@ -12,6 +12,7 @@ from backend.services.agent_reach.channels import CandidateSource, RetrievalRequ
 from backend.infrastructure.acquisition.adapters.expansion_safety import policy_status, safe_fetch, capture_adapter_fetches
 
 ADAPTERS = {
+    "sec_filings_full": ("regulatory.sec_filings_full", "SecFilingsFullAdapter"),
     "govuk": ("authoritative.govuk_public", "GovukPublicAdapter"),
     "wikipedia": ("encyclopedia.wikipedia", "WikipediaAdapter"),
     "substack": ("news.substack", "SubstackAdapter"),
@@ -140,8 +141,14 @@ def read_expanded_url(url, max_chars=20_000):
     Return None only when the existing web reader should handle this host. A
     recognized access failure is terminal here, never a reason to bypass it.
     """
+    from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import read_sec_financial_url
+    structured = read_sec_financial_url(url, max_chars=max_chars)
+    if structured is not None:
+        return structured
+    from backend.infrastructure.acquisition.adapters.regulatory.sec_filings_full import sec_filing_locator
     selected = next(((key, adapter) for key, adapter in get_expanded_adapters().items()
                      if key != 'cpsc_recalls' and (key != 'govuk' or urlsplit(url).path.startswith('/government/speeches/'))
+                      and (key != 'sec_filings_full' or sec_filing_locator(url))
                      and adapter.can_handle(CandidateSource(url=url))), None)
     if selected is None:
         return None
@@ -170,19 +177,36 @@ def read_expanded_url(url, max_chars=20_000):
     html = document.raw_metadata.get("source_html") or (document.raw_content if key == "news_wires" else "")
     if html and key != "trustpilot":
         from bs4 import BeautifulSoup
-        from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_readable_page
-        page = extract_readable_page(BeautifulSoup(html, "html.parser"))
-        content = page.pop("text")
-        page.pop("raw_text", None)
+        from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_readable_page, extract_observed_page_details, _publication_identity
+        soup = BeautifulSoup(html, "html.parser")
+        page = extract_observed_page_details(soup, document.url or url)
+        readable = extract_readable_page(soup)
+        content = readable.pop("text")
+        readable.pop("raw_text", None)
+        page.update(readable)
         if key == "substack" and document.raw_metadata.get("source_html_basis") == "CAPTURED_POST_BODY_HTML":
             # A captured API body_html field is an observed article-body field,
             # not a search headline. Ordinary HTML still needs semantic spans.
             if len(content.split()) >= 40 and "<p" in html:
                 page["body_quality"] = {"body_kind": "ARTICLE_BODY", "basis": "CAPTURED_POST_BODY_HTML"}
+            # These fields came with this acquired post body, not its feed/search
+            # candidate. Missing metadata stays missing; updates are not dates.
+            published = document.raw_metadata.get("published")
+            if isinstance(published, str) and published.strip() and not page.get("publication_metadata_conflict"):
+                if page.get("published") and _publication_identity(page["published"]) != _publication_identity(published):
+                    page["publication_metadata_conflict"] = True
+                    page.pop("published", None)
+                else:
+                    page.update(published=published[:100], publication_time_source="CAPTURED_POST_API:post_date")
+            for field in ("author", "title"):
+                if isinstance(document.raw_metadata.get(field), str):
+                    page[field] = document.raw_metadata[field][:500]
     if key == 'govuk':
         page.update(document.raw_metadata.get('page_metadata') or {})
         page.update(published=document.raw_metadata.get('published'), author='',
                     licence_urls=['https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'])
+    if key == 'sec_filings_full':
+        page.update(document.raw_metadata.get('page_metadata') or {})
     if fragment.content_depth in {"REFERENCE_TEXT", "PROFILE_METADATA"}:
         page.update(content_scope="PROFILE" if key == "wikidata_exec" else "BACKGROUND_REFERENCE",
                     body_kind="UNCLASSIFIED_PAGE")
@@ -200,4 +224,5 @@ def read_expanded_url(url, max_chars=20_000):
     return {"status": "success", "url": url, "title": fragment.title, "content": content, "markdown": content,
             "content_depth": fragment.content_depth, "page_metadata": page, "backend": adapter.backend_id,
             "truncated": original_length > len(content) or document.raw_metadata.get('body_truncated', False),
+            **({"transport": document.raw_metadata['transport']} if 'transport' in document.raw_metadata else {}),
             "source_completeness": "BOUNDED_CAPTURE_NOT_COMPLETE_WEBSITE"}

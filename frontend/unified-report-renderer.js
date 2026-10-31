@@ -255,11 +255,60 @@ function renderClaimDecomposition(report) {
   `);
 }
 
+/** VISUAL EVIDENCE & EPISTEMIC ANALYTICS BENTO GRID */
+function renderVisualAnalytics(report) {
+  const metrics = array(report.quantitative_metrics);
+  return section('ur-visual-analytics', 'VISUAL EVIDENCE &amp; EPISTEMIC ANALYTICS', `
+    <div class="ae-bento-grid">
+      <div class="ae-bento-card" id="ae-mount-radar"></div>
+      <div class="ae-bento-card" id="ae-mount-funnel"></div>
+      <div class="ae-bento-card" id="ae-mount-dispersion" style="grid-column: 1 / -1;"></div>
+      ${metrics.length > 0 ? `
+        <div class="ae-bento-card" style="grid-column: 1 / -1;">
+          <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--accent);margin-bottom:10px;">
+            // EXTRACTED QUANTITATIVE FIGURES (UNVERIFIED)
+          </div>
+          <div class="ae-metrics-pill-grid">
+            ${metrics.map(m => `
+              <div class="ae-metric-pill" title="${esc(m.context)}">
+                <span class="ae-metric-val">${esc(m.value)}</span>
+                <span class="ae-metric-src">${esc(m.source || m.publisher || 'Source unspecified')}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `);
+}
+
 /** SECTION 2 — KEY FINDINGS */
 function renderFindings(report) {
   const details = array(report.finding_details).filter(item => item && typeof item === 'object');
   const findings = array(report.findings).filter(item => typeof item === 'string' && item.trim());
-  const content = findings.length ? `<ul class="ur-list">${findings.map(text => {
+  const passages = array(report.evidence_workbench && report.evidence_workbench.passages);
+
+  const deckItems = [];
+
+  for (let i = 0; i < findings.length; i++) {
+    const text = findings[i];
+    const match = details.find(d => (d.statement || d.description || d.summary || d.title) === text);
+    const relatedPassage = passages.find(p => p.text && (p.text.includes(text.slice(0, 35)) || text.includes((p.text || '').slice(0, 35)))) || null;
+
+    deckItems.push({
+      title: text.length > 95 ? text.slice(0, 92) + '…' : text,
+      statement: text,
+      text: (relatedPassage && relatedPassage.text) || text,
+      publisher: (relatedPassage && relatedPassage.publisher_host) || (match && match.publisher) || 'Publisher unavailable',
+      timestamp: (relatedPassage && relatedPassage.published_at) || 'Date unknown',
+      badge: (match && match.epistemic_state) || 'REPORTED FINDING',
+      badgeColor: '#00e5ff',
+      url: safeEvidenceUrl(relatedPassage && relatedPassage.source_url) || null,
+      reasoning: (match && match.reasoning) || ''
+    });
+  }
+
+  const findingsList = findings.map(text => {
     const matches = details.filter(item => (item.statement || item.description || item.summary || item.title) === text);
     const states = [...new Set(matches.map(item => item.epistemic_state || 'Unspecified'))];
     const citations = [...new Set(matches.flatMap(item => array(item.citation_observations).map(c =>
@@ -269,9 +318,22 @@ function renderFindings(report) {
     const competitive = matches.some(item => item.metadata && item.metadata.source_context && item.metadata.source_context.classification === 'COMPETITIVE_CONTEXT')
       ? '<p class="ur-ev-note">COMPETITIVE CONTEXT — another actor’s development, not an announcement by the target.</p>' : '';
     return `<li>${community}${competitive}${body}${matches.length ? `<p class="ur-ev-note">Reported state: ${states.map(esc).join(', ')}. Source support requires passage review.${citations.length ? ` Citation observations: ${citations.map(esc).join(', ')}.` : ''}</p>` : ''}</li>`;
-  }).join('')}</ul>` : '<p class="ur-empty">No findings returned. This does not establish an absence of risk.</p>';
+  }).join('');
+
   const leads = array(report.processing_notes && report.processing_notes.unresolved_leads);
   const unresolved = leads.length ? `<details><summary>Unresolved leads — not findings</summary><ul class="ur-list">${leads.map(lead => `<li>${esc(lead.factor || lead.catalyst || '')}</li>`).join('')}</ul></details>` : '';
+
+  if (findings.length === 0 && deckItems.length === 0) {
+    return section('ur-findings', 'KEY FINDINGS', '<p class="ur-empty">No findings returned. This does not establish an absence of risk.</p>' + unresolved);
+  }
+
+  const itemsJson = esc(JSON.stringify(deckItems));
+  const content = `
+    <div id="ae-mount-findings-deck" data-deck-items="${itemsJson}">
+      <ul class="ur-list">${findingsList || deckItems.map(it => `<li><strong>${esc(it.badge)}:</strong> ${esc(it.statement)}</li>`).join('')}</ul>
+    </div>
+  `;
+
   return section('ur-findings', 'KEY FINDINGS', content + unresolved);
 }
 
@@ -593,6 +655,52 @@ function renderAgentIntelligence(report) {
   const captured = Object.values(report.evidence || {}).flatMap(value => array(value));
   const hasBodies = captured.some(item => item && item.extraction && item.extraction.evidentiary_use === 'REQUIRES_PASSAGE_REVIEW'
     && !['PROFILE_METADATA', 'VIDEO_METADATA', 'METADATA', 'DIRECT_METADATA'].includes(item.extraction.content_depth));
+
+  if (report.catalysts && typeof report.catalysts === 'object') {
+    const pos = array(report.catalysts.positive);
+    const neg = array(report.catalysts.negative);
+    const unres = array(report.catalysts.unresolved);
+    if (pos.length || neg.length || unres.length) {
+      modules.push(`
+        <div class="ur-intel-card" style="grid-column: 1 / -1;">
+          <h3 class="ur-intel-head">// Catalysts &amp; Headwinds Tri-Column Matrix</h3>
+          <p class="ur-ev-note">Signals categorized across grounded filings and reporting. Inspect source excerpts for each factor.</p>
+          <div class="ae-catalysts-matrix">
+            <div class="ae-catalyst-col pos">
+              <div class="ae-col-head"><span class="ae-dot">●</span> POSITIVE CATALYSTS (${pos.length})</div>
+              ${pos.length === 0 ? '<p class="ae-col-empty">No positive catalysts identified in current evidence.</p>' : ''}
+              ${pos.map(c => `
+                <div class="ae-cat-card">
+                  <div class="ae-cat-title">${esc(c.catalyst || c.factor || '')}</div>
+                  <div class="ae-cat-meta">${esc(c.source || 'Verified Source')} · <span class="ae-badge-pos">${esc(c.epistemic_state || 'SUPPORTED')}</span></div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="ae-catalyst-col neg">
+              <div class="ae-col-head"><span class="ae-dot">●</span> CONTESTED HEADWINDS (${neg.length})</div>
+              ${neg.length === 0 ? '<p class="ae-col-empty">No material headwinds identified in current evidence.</p>' : ''}
+              ${neg.map(c => `
+                <div class="ae-cat-card">
+                  <div class="ae-cat-title">${esc(c.catalyst || c.factor || '')}</div>
+                  <div class="ae-cat-meta">${esc(c.source || 'Monitored Channel')} · <span class="ae-badge-neg">${esc(c.epistemic_state || 'HEADWIND')}</span></div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="ae-catalyst-col unres">
+              <div class="ae-col-head"><span class="ae-dot">●</span> UNRESOLVED LEADS (${unres.length})</div>
+              ${unres.length === 0 ? '<p class="ae-col-empty">No pending regulatory inquiries or unverified claims.</p>' : ''}
+              ${unres.map(c => `
+                <div class="ae-cat-card">
+                  <div class="ae-cat-title">${esc(c.factor || c.catalyst || '')}</div>
+                  <div class="ae-cat-meta">${esc(c.source || 'Investigation Lead')} · <span class="ae-badge-unres">${esc(c.epistemic_state || 'PENDING')}</span></div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `);
+    }
+  }
 
   if (Array.isArray(intel.financial_observations) && intel.financial_observations.length) {
     modules.push(`<div class="ur-intel-card"><h3 class="ur-intel-head">Scout // Captured financial context</h3>
@@ -955,6 +1063,11 @@ function renderUnifiedReport(container, report) {
     return;
   }
 
+  // Enrich raw words and passages into structured intelligence if transformer is available
+  if (typeof IntelligenceTransformer !== 'undefined') {
+    report = IntelligenceTransformer.enrich(report);
+  }
+
   // Native agent sections can precede the shared report. Put transport failure
   // above those sections too, not several screens below an empty dashboard.
   const parent = container.parentElement;
@@ -1003,6 +1116,7 @@ function renderUnifiedReport(container, report) {
   const html = [
     renderSummary(report),
     renderClaimDecomposition(report),
+    renderVisualAnalytics(report),
     renderFindings(report),
     renderEvidenceWorkbench(report),
     renderEvidence(report),
@@ -1019,6 +1133,28 @@ function renderUnifiedReport(container, report) {
 
   container.innerHTML = `<div class="unified-report">${html}</div>`;
   bindEvidenceWorkbench(container, report);
+
+  // Mount interactive high-craft visual models if AegisGraphs is available
+  if (typeof AegisGraphs !== 'undefined') {
+    const radarMount = container.querySelector('#ae-mount-radar');
+    if (radarMount) AegisGraphs.renderEpistemicRadar(radarMount, (report.trust && report.trust.epistemic_tensor) || report.epistemic_tensor);
+
+    const funnelMount = container.querySelector('#ae-mount-funnel');
+    if (funnelMount) AegisGraphs.renderEvidenceFunnel(funnelMount, report.funnel || (report.trust && report.trust.funnel));
+
+    const dispMount = container.querySelector('#ae-mount-dispersion');
+    if (dispMount) AegisGraphs.renderChannelDispersion(dispMount, report.channel_dispersion);
+
+    const findingsMount = container.querySelector('#ae-mount-findings-deck');
+    if (findingsMount && findingsMount.dataset.deckItems) {
+      try {
+        const items = JSON.parse(findingsMount.dataset.deckItems);
+        AegisGraphs.renderSplitCommandDeck(findingsMount, items);
+      } catch (err) {
+        console.warn('[Aegis] Failed to mount SplitCommandDeck:', err);
+      }
+    }
+  }
 
   // Expand/collapse on mobile — toggle .ur-section.collapsed on heading click
   container.querySelectorAll('.ur-heading-button').forEach(button => {

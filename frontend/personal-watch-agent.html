@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Personal Watch Agent — Public Profile &amp; Impersonation Verification · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
+  <script src="intelligence-transformer.js"></script>
+  <script src="aegis-graphs.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
   <style>
@@ -478,6 +480,7 @@
     }
 
     function renderDashboard(data) {
+      if (typeof IntelligenceTransformer !== 'undefined') { data = IntelligenceTransformer.enrich(data); }
       const mount = document.getElementById('resultsMount');
       mount.innerHTML = '';
 
@@ -768,6 +771,14 @@
       }
 
       // 9. Source Explorer (All Clickable Sources)
+      if (typeof AegisGraphs !== 'undefined') {
+        const tgWrap = document.createElement('div');
+        tgWrap.id = 'pwThreatGaugeMount';
+        tgWrap.style.marginBottom = '24px';
+        mount.appendChild(tgWrap);
+        AegisGraphs.renderIdentityThreatGauge(tgWrap, data.threat_vectors || {});
+      }
+
       renderSourceExplorer(mount, evidence);
 
       // 10. Unified Investigation Report (schema v3.8.0)

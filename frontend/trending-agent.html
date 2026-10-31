@@ -6,6 +6,8 @@
   <title>Trending Agent — Topic Momentum &amp; Trend Discovery · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="intelligence-transformer.js"></script>
+  <script src="aegis-graphs.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
   <style>
@@ -326,6 +328,7 @@
             </div>
             <div style="height: 180px; position: relative;">
               <canvas id="velocityChart"></canvas>
+            <div id="hawkesMount" style="margin-top:14px;"></div>
               <div id="chartEmptyState" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.8rem;color:var(--text-dim);padding:20px;font-family:var(--font-mono);">
                 Initial scan snapshot recorded. Run repeat scans over time to plot the multi-interval velocity curve.
               </div>
@@ -615,6 +618,7 @@
     }
 
     function renderScanResults(data) {
+      if (typeof IntelligenceTransformer !== 'undefined') { data = IntelligenceTransformer.enrich(data); }
       // 1. Update Telemetry Ribbon
       const tel = data.telemetry || {};
       document.getElementById('telSignals').textContent = tel.signals_retrieved || (data.evidence ? data.evidence.length : 0);
@@ -819,6 +823,10 @@
     }
 
     function updateVelocityChart(history) {
+      if (typeof AegisGraphs !== 'undefined') {
+        const hm = document.getElementById('hawkesMount');
+        if (hm) AegisGraphs.renderHawkesVelocity(hm, { r0: (currentScanData && currentScanData.telemetry && currentScanData.telemetry.r0) || 0.84 });
+      }
       const ctx = document.getElementById('velocityChart');
       const emptyState = document.getElementById('chartEmptyState');
       if (!ctx) return;

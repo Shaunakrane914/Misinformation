@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="forensic-explorer.js"></script>
+  <script src="intelligence-transformer.js"></script>
+  <script src="aegis-graphs.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
   <style>
@@ -590,6 +592,7 @@
 
     // ── Render Workspace Hierarchy ──
     function renderWorkspace(data) {
+      if (typeof IntelligenceTransformer !== 'undefined') { data = IntelligenceTransformer.enrich(data); }
       const root = document.getElementById('workspaceRoot');
       const stock = data.stock || {};
       const sources = data.sources || [];
@@ -625,6 +628,7 @@
             <span>// 01 · MARKET STATE &amp; VOLATILITY DATA</span>
             <span class="intel-count-badge">${esc(data.company_name || data.ticker)}</span>
           </div>
+          <div id="scoutVolatilityChartMount" style="margin-bottom:16px;"></div>
           <div class="snapshot-grid">
             <div class="snap-card">
               <div class="snap-val" style="color:${deltaColor}">${symPrefix}${price}</div>
@@ -884,6 +888,17 @@
       `;
 
       root.innerHTML = html;
+
+      if (typeof AegisGraphs !== 'undefined') {
+        const vcMount = document.getElementById('scoutVolatilityChartMount');
+        if (vcMount) {
+          AegisGraphs.renderVolatilityChart(vcMount, {
+            currentPrice: Number(stock.current_price) || 12.55,
+            volumeZ: Number(stock.z_score) || 1.4,
+            history: stock.price_history || null
+          });
+        }
+      }
 
       // Mount Native Forensic Funnel & Evidence Navigator
       const feMount = document.getElementById('forensicMount');

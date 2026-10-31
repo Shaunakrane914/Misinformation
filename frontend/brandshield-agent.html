@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BrandShield Agent — Brand Protection &amp; Review Pattern Analysis · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
+  <script src="intelligence-transformer.js"></script>
+  <script src="aegis-graphs.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
   <style>
@@ -413,6 +415,7 @@
     }
 
     function renderBrandShieldWorkspace(data, container) {
+      if (typeof IntelligenceTransformer !== 'undefined') { data = IntelligenceTransformer.enrich(data); }
       const summary = data.summary || {};
       const entity = data.entity || {};
       const retrieval = data.retrieval || {};
@@ -502,7 +505,8 @@
       }
 
       // 3. Observed Signals (Observation -> Pattern -> Assessment)
-      html += `<div class="sec-hdr">OBSERVED SIGNALS &amp; PATTERNS (${threats.length})</div>`;
+      html += `<div id="brandChannelDispersionMount" style="margin-bottom:20px;"></div>
+      <div class="sec-hdr">OBSERVED SIGNALS &amp; PATTERNS (${threats.length})</div>`;
       if (threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin-bottom:20px;">

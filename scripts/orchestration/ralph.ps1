@@ -23,12 +23,13 @@ param (
 
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-Set-Location $ScriptDir
+$RootDir = (Resolve-Path (Join-Path $ScriptDir "..\..")).Path
+Set-Location $RootDir
 
-$TasksFile = Join-Path $ScriptDir ".agent\tasks.json"
-$LogFile = Join-Path $ScriptDir ".agent\logs\LOG.md"
-$SteeringFile = Join-Path $ScriptDir ".agent\STEERING.md"
-$PromptFile = Join-Path $ScriptDir ".agent\PROMPT.md"
+$TasksFile = Join-Path $RootDir ".agent\tasks.json"
+$LogFile = Join-Path $RootDir ".agent\logs\LOG.md"
+$SteeringFile = Join-Path $RootDir ".agent\STEERING.md"
+$PromptFile = Join-Path $RootDir ".agent\PROMPT.md"
 
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host "  Ralph Wiggum Loop ・ Autonomous Agent Execution (PowerShell)" -ForegroundColor Cyan

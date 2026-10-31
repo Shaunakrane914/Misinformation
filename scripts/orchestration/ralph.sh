@@ -5,26 +5,27 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$ROOT_DIR"
 
-PRD_FILE="$SCRIPT_DIR/.agent/prd/PRD.md"
-PROGRESS_FILE="$SCRIPT_DIR/.agent/logs/LOG.md"
-HISTORY_DIR="$SCRIPT_DIR/.agent/history"
+PRD_FILE="$ROOT_DIR/.agent/prd/PRD.md"
+PROGRESS_FILE="$ROOT_DIR/.agent/logs/LOG.md"
+HISTORY_DIR="$ROOT_DIR/.agent/history"
 
-source "$SCRIPT_DIR/scripts/lib/constants.sh"
-source "$SCRIPT_DIR/scripts/lib/logging.sh"
-source "$SCRIPT_DIR/scripts/lib/preflight.sh"
-source "$SCRIPT_DIR/scripts/lib/timing.sh"
-source "$SCRIPT_DIR/scripts/lib/terminal.sh"
-source "$SCRIPT_DIR/scripts/lib/spinner.sh"
-source "$SCRIPT_DIR/scripts/lib/preview.sh"
-source "$SCRIPT_DIR/scripts/lib/output.sh"
-source "$SCRIPT_DIR/scripts/lib/cleanup.sh"
-source "$SCRIPT_DIR/scripts/lib/promise.sh"
-source "$SCRIPT_DIR/scripts/lib/notify.sh"
-source "$SCRIPT_DIR/scripts/lib/agents.sh"
-source "$SCRIPT_DIR/scripts/lib/display.sh"
-source "$SCRIPT_DIR/scripts/lib/args.sh"
+source "$ROOT_DIR/scripts/lib/constants.sh"
+source "$ROOT_DIR/scripts/lib/logging.sh"
+source "$ROOT_DIR/scripts/lib/preflight.sh"
+source "$ROOT_DIR/scripts/lib/timing.sh"
+source "$ROOT_DIR/scripts/lib/terminal.sh"
+source "$ROOT_DIR/scripts/lib/spinner.sh"
+source "$ROOT_DIR/scripts/lib/preview.sh"
+source "$ROOT_DIR/scripts/lib/output.sh"
+source "$ROOT_DIR/scripts/lib/cleanup.sh"
+source "$ROOT_DIR/scripts/lib/promise.sh"
+source "$ROOT_DIR/scripts/lib/notify.sh"
+source "$ROOT_DIR/scripts/lib/agents.sh"
+source "$ROOT_DIR/scripts/lib/display.sh"
+source "$ROOT_DIR/scripts/lib/args.sh"
 
 # Timing
 START_TIME=$(date +%s)
@@ -84,7 +85,7 @@ for i in $(seq 1 $MAX_ITERATIONS); do
   # Run Agent with the ralph prompt (prepend PROJECT_ROOT)
   PROMPT_CONTENT="PROJECT_ROOT=$SCRIPT_DIR
 
-$(cat $SCRIPT_DIR/.agent/PROMPT.md)"
+$(cat $ROOT_DIR/.agent/PROMPT.md)"
 
   # Start spinner
   start_spinner

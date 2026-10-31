@@ -251,3 +251,4 @@
     module.exports = IntelligenceTransformer;
   }
 })(typeof window !== 'undefined' ? window : this);
+

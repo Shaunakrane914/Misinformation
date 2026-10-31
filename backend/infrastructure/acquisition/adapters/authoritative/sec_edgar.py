@@ -118,9 +118,9 @@ def resolve_cik(query: str) -> Optional[str]:
     
     Precedence Order:
     1. Direct numeric CIK (e.g. '0001067491' or '1067491')
-    2. Authoritative Dynamic Resolver (IssuerIdentityResolver bootstrap + observed submissions/indexes)
-    3. Cached index on disk (zero network I/O)
-    4. Minimal audited static fallback (retained for backward-compatible offline fixture isolation)
+    2. Minimal audited static ticker/name map (exact canonical mapping)
+    3. Authoritative Dynamic Resolver (IssuerIdentityResolver bootstrap + observed submissions/indexes)
+    4. Cached index on disk (zero network I/O)
     """
     raw = query.strip()
     if not raw:
@@ -128,22 +128,8 @@ def resolve_cik(query: str) -> Optional[str]:
     # 1. Pure numeric CIK detection
     if raw.isdigit() and len(raw) <= 10:
         return raw.zfill(10)
-    from backend.services.research.issuer_identity import resolve_issuer, issuer_identity_resolver
-    # 2. Authoritative Dynamic Resolver in memory
-    identity = resolve_issuer(raw)
-    if identity["status"] == "AMBIGUOUS":
-        return None
-    if identity.get("cik"):
-        return identity["cik"]
-    # 3. Disk cache ingestion if present
-    if identity["status"] == "UNRESOLVED":
-        if issuer_identity_resolver.load_cached_index_file() > 0:
-            identity = resolve_issuer(raw)
-            if identity.get("cik"):
-                return identity["cik"]
-            if identity["status"] == "AMBIGUOUS":
-                return None
-    # 4. Minimal Audited Static Fallback
+
+    # 2. Exact Audited Static Map
     clean = raw.upper()
     # Strip market/exchange prefixes like NASDAQ:, NYSE:, BATS:
     clean = re.sub(r"^(?:NASDAQ|NYSE|AMEX|BATS):\s*", "", clean)
@@ -159,6 +145,23 @@ def resolve_cik(query: str) -> Optional[str]:
     base_name = re.sub(r"\s+(?:INC|INCORPORATED|CORP|CORPORATION|LTD|LIMITED|CO|COMPANY)$", "", name_clean).strip()
     if base_name in COMPANY_NAME_CIK_MAP:
         return COMPANY_NAME_CIK_MAP[base_name]
+
+    # 3. Authoritative Dynamic Resolver in memory
+    from backend.services.research.issuer_identity import resolve_issuer, issuer_identity_resolver
+    identity = resolve_issuer(raw)
+    if identity["status"] == "AMBIGUOUS":
+        return None
+    if identity.get("cik"):
+        return identity["cik"]
+
+    # 4. Disk cache ingestion if present
+    if identity["status"] == "UNRESOLVED":
+        if issuer_identity_resolver.load_cached_index_file() > 0:
+            identity = resolve_issuer(raw)
+            if identity.get("cik"):
+                return identity["cik"]
+            if identity["status"] == "AMBIGUOUS":
+                return None
     return None
 
 

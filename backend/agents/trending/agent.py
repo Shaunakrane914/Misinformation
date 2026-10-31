@@ -398,45 +398,15 @@ class TrendingAgent:
                 "reason": "RESEARCH_PIPELINE_ERROR", "error_type": type(reach_err).__name__,
                 "message": "Research acquisition failed before a usable report could be assembled; no conclusion about available public evidence is established."}
 
-        # Fallback to direct channel headlines when deep research acquisition yielded 0 items
-        if len(all_raw_evidence) < 5:
-            try:
-                news_items = self.fetch_news(target_query)
-                if news_items:
-                    all_raw_evidence.extend(
-                        self._normalize_evidence(
-                            news_items,
-                            platform_name="news",
-                            retrieval_method="trending_direct_news",
-                        )
-                    )
-            except Exception as news_err:
-                logger.debug(f"[TrendingAgent] Fallback fetch_news notice: {news_err}")
+        # All source discovery/fallback belongs to the shared bounded pipeline.
+        # Neither an empty qualified set nor a pipeline exception authorizes an
+        # extra headline request outside that investigation's HTTP/deadline cap.
 
         accepted_ev, _ = relevance_gate.filter_candidates(
             all_raw_evidence,
             target_entity=target_query,
             domain="trending", window_hours=window_hours
         )
-
-        # Tiered Freshness Policy:
-        # 1. If articles exist within the 48h window, they are the primary headline.
-        # 2. Display visible recent developments alongside or when fresh 48h items are sparse.
-        if len(accepted_ev) < 6 and all_raw_evidence:
-            for ev in all_raw_evidence:
-                if ev not in accepted_ev and (
-                    ev.metadata.get("temporal_tier") == "RECENT_DEVELOPMENTS"
-                    or getattr(ev, "source_tier", "") in ("TIER_1", "TIER_2", "TIER_3", "TIER_4")
-                    or len((ev.content or ev.snippet or "").split()) >= 10
-                ):
-                    ev.metadata["temporal_tier"] = "RECENT_DEVELOPMENTS"
-                    ev.metadata["trend_nature"] = "RECENT_DEVELOPMENTS"
-                    ev.metadata["headline_nature"] = "RECENT_DEVELOPMENTS"
-                    if not ev.published_at:
-                        ev.published_at = ev.retrieved_at
-                        ev.metadata["publication_time_basis"] = "ACQUISITION_DISCOVERY_TIMESTAMP_UNVERIFIED"
-                    accepted_ev.append(ev)
-
         usable_evidence = accepted_ev
 
         # Deduplicate evidence by clean title/content

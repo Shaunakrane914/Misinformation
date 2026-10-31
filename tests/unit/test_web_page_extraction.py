@@ -85,7 +85,8 @@ def test_page_observation_limits_and_malformed_json_ld():
         BeautifulSoup(html, "html.parser"), "https://example.com/page"
     )
     assert details["content_scope"] == "main"
-    assert len(details["observed_links"]) == 120
+    from backend.infrastructure.acquisition.adapters.web.page_extraction import MAX_OBSERVED_LINKS
+    assert len(details["observed_links"]) == min(160, MAX_OBSERVED_LINKS)
     assert len(details["discovery_links"]) == 16
     assert len(details["tables"][0]) == 10
     assert details["declared_structured_data"] == []

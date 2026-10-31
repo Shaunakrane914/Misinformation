@@ -25,7 +25,7 @@ ADAPTERS = {
     "gdelt": ("news.gdelt", "GdeltDocAdapter"),
     "cpsc_recalls": ("consumer.cpsc_recalls", "CpscRecallsAdapter"),
 }
-DOMAIN_DISCOVERY = {"trending": "gdelt", "brand": "news_wires", "personal": "substack"}
+DOMAIN_DISCOVERY = {"financial": "yahoo_finance", "trending": "gdelt", "brand": "news_wires", "personal": "substack"}
 
 
 @lru_cache(maxsize=1)

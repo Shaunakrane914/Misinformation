@@ -282,7 +282,7 @@ function renderVisualAnalytics(report) {
   `);
 }
 
-/** SECTION 2 — KEY FINDINGS & INVESTIGATIVE COMMAND CONSOLE */
+/** SECTION 2 — KEY FINDINGS */
 function renderFindings(report) {
   const details = array(report.finding_details).filter(item => item && typeof item === 'object');
   const findings = array(report.findings).filter(item => typeof item === 'string' && item.trim());
@@ -339,23 +339,33 @@ function renderFindings(report) {
     });
   }
 
-// Strict invariant: Never synthesize findings from raw passages when findings are empty.
+  const findingsList = findings.map(text => {
+    const matches = details.filter(item => (item.statement || item.description || item.summary || item.title) === text);
+    const states = [...new Set(matches.map(item => item.epistemic_state || 'Unspecified'))];
+    const citations = [...new Set(matches.flatMap(item => array(item.citation_observations).map(c =>
+      c && typeof c === 'object' ? `${c.evidence_id}: ${c.availability || 'UNAVAILABLE'}` : '')).filter(Boolean))];
+    const body = text.length > 700 ? `<details class="ur-full-finding"><summary>Context preview — expand before interpreting: ${esc(text.slice(0, 180))}…</summary><p>${esc(text)}</p></details>` : esc(text);
+    const community = matches.some(item => item.metadata && item.metadata.community_sample_only) ? '<p class="ur-ev-note">Sampled community observation only. Virality and independent corroboration are not measured.</p>' : '';
+    const competitive = matches.some(item => item.metadata && item.metadata.source_context && item.metadata.source_context.classification === 'COMPETITIVE_CONTEXT')
+      ? '<p class="ur-ev-note">COMPETITIVE CONTEXT — another actor’s development, not an announcement by the target.</p>' : '';
+    return `<li>${community}${competitive}${body}${matches.length ? `<p class="ur-ev-note">Reported state: ${states.map(esc).join(', ')}. Source support requires passage review.${citations.length ? ` Citation observations: ${citations.map(esc).join(', ')}.` : ''}</p>` : ''}</li>`;
+  }).join('');
 
   const leads = array(report.processing_notes && report.processing_notes.unresolved_leads);
-  const unresolved = leads.length ? `<details style="margin-top:14px;"><summary>Unresolved leads — not findings</summary><ul class="ur-list">${leads.map(lead => `<li>${esc(lead.factor || lead.catalyst || '')}</li>`).join('')}</ul></details>` : '';
+  const unresolved = leads.length ? `<details><summary>Unresolved leads — not findings</summary><ul class="ur-list">${leads.map(lead => `<li>${esc(lead.factor || lead.catalyst || '')}</li>`).join('')}</ul></details>` : '';
 
-  if (deckItems.length === 0) {
-    return section('ur-findings', 'KEY FINDINGS &amp; COMMAND CONSOLE', '<p class="ur-empty">No findings returned. This does not establish an absence of risk.</p>' + unresolved);
+  if (findings.length === 0 && deckItems.length === 0) {
+    return section('ur-findings', 'KEY FINDINGS', '<p class="ur-empty">No findings returned. This does not establish an absence of risk.</p>' + unresolved);
   }
 
   const itemsJson = esc(JSON.stringify(deckItems));
   const content = `
     <div id="ae-mount-findings-deck" data-deck-items="${itemsJson}">
-      <ul class="ur-list">${deckItems.map(it => `<li><strong>${esc(it.badge)}:</strong> ${esc(it.statement)}</li>`).join('')}</ul>
+      <ul class="ur-list">${findingsList || deckItems.map(it => `<li><strong>${esc(it.badge)}:</strong> ${esc(it.statement)}</li>`).join('')}</ul>
     </div>
   `;
 
-  return section('ur-findings', 'KEY FINDINGS &amp; INVESTIGATIVE COMMAND CONSOLE', content + unresolved);
+  return section('ur-findings', 'KEY FINDINGS', content + unresolved);
 }
 
 /** Candidates remain inspectable without claiming a successful body read. */

@@ -227,7 +227,7 @@ class NativeNormalizer:
         fragments: List[EvidenceFragment] = []
         for e in raw_items:
             title = e.get("title", "")
-            link = e.get("link", "")
+            link = e.get("link", "") or e.get("url", "")
             # Unwrap redirect wrappers (e.g. Bing News apiclick, Yahoo RU=) to surface direct publisher URLs
             if link:
                 if "bing.com/news/apiclick" in link:

@@ -272,9 +272,12 @@ class RuntimeOperationCapabilities:
             if fresh and observation.outcome == "RATE_LIMITED":
                 decision, reason = "DEFER_TEMPORARY", "RATE_LIMITED"
                 runtime_health, temporary = "RATE_LIMITED", True
-            elif fresh and observation.outcome in {"FAILED", "EMPTY", "UNAVAILABLE"}:
+            elif fresh and observation.outcome in {"FAILED", "UNAVAILABLE"}:
                 decision, reason = "DEFER_TEMPORARY", f"RECENT_{observation.outcome}"
                 runtime_health, temporary = "DEGRADED", True
+            elif fresh and observation.outcome == "EMPTY":
+                decision, reason = "ELIGIBLE_UNVERIFIED", "RECENT_EMPTY_QUERY"
+                runtime_health, temporary = "DEGRADED", False
             elif fresh and observation.outcome in self.SUCCESS_OUTCOMES:
                 decision = "DEPRIORITIZE_CACHE" if observation.cache_only else "PREFER"
                 reason = "CACHE_ONLY_OBSERVATION" if observation.cache_only else "RECENT_VERIFIED_OUTCOME"

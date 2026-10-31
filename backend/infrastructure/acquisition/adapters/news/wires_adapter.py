@@ -97,25 +97,32 @@ class NewswireAdapter(PlatformAdapter):
         candidates: List[CandidateSource] = []
         seen: set = set()
         tokens = [t for t in query.lower().split() if len(t) > 2]
-        scanned = 0
+        feeds_to_scan = list(self.OFFICIAL_FEEDS.items())[:self.MAX_FEEDS_PER_DISCOVER]
 
-        for wire_name, feed_url in self.OFFICIAL_FEEDS.items():
-            if len(candidates) >= limit or scanned >= self.MAX_FEEDS_PER_DISCOVER:
-                break
-            scanned += 1
+        def _fetch_single_feed(item):
+            w_name, f_url = item
             try:
-                resp = fetch_public_http(feed_url, timeout=3.0, max_bytes=2_000_000)
-                if resp.status_code != 200:
-                    continue
-                for f in UniversalFeedDiscovery.parse_feed_content(
-                        resp.body.decode("utf-8", errors="replace"), feed_url, limit=40):
-                    if len(candidates) >= limit:
-                        break
-                    text_to_match = f"{f.title} {f.snippet}".lower()
-                    if not tokens or any(tok in text_to_match for tok in tokens):
-                        self._emit(f, wire_name, candidates, seen)
+                resp = fetch_public_http(f_url, timeout=3.0, max_bytes=2_000_000)
+                if resp.status_code == 200:
+                    return w_name, f_url, resp.body.decode("utf-8", errors="replace")
             except Exception as exc:
-                logger.debug(f"[NewswireAdapter] Discovery error for {wire_name}: {type(exc).__name__}")
+                logger.debug(f"[NewswireAdapter] Discovery error for {w_name}: {type(exc).__name__}")
+            return w_name, f_url, None
+
+        import concurrent.futures
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(len(feeds_to_scan), 6)) as pool:
+            for wire_name, feed_url, body_str in pool.map(_fetch_single_feed, feeds_to_scan):
+                if not body_str or len(candidates) >= limit:
+                    continue
+                try:
+                    for f in UniversalFeedDiscovery.parse_feed_content(body_str, feed_url, limit=40):
+                        if len(candidates) >= limit:
+                            break
+                        text_to_match = f"{f.title} {f.snippet}".lower()
+                        if not tokens or any(tok in text_to_match for tok in tokens):
+                            self._emit(f, wire_name, candidates, seen)
+                except Exception:
+                    pass
 
         return candidates[:limit]
 

@@ -306,7 +306,9 @@ def fetch_reddit_subreddit_rss(
     set_c = cache_set or social_cache.set
 
     cached = get_c(cache_key)
-    if cached:
+    if cached is not None:
+        if not cached:
+            return []
         cached_copy = copy.deepcopy(cached)
         for fragment in cached_copy:
             fragment.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
@@ -314,7 +316,7 @@ def fetch_reddit_subreddit_rss(
         return cached_copy
 
     url = f"https://www.reddit.com/r/{clean_sub}/.rss"
-    timeout = DEFAULT_HTTP_TIMEOUT
+    timeout = min(DEFAULT_HTTP_TIMEOUT, 4.0)
     req = urllib.request.Request(
         url,
         headers={
@@ -393,6 +395,7 @@ def fetch_reddit_subreddit_rss(
     except urllib.error.HTTPError as e:
         if e.code == 429:
             logger.warning(f"[RedditAdapter] Subreddit RSS rate limited (429) for r/{clean_sub}")
+            set_c(cache_key, [])
         else:
             logger.debug(f"[RedditAdapter] Subreddit RSS HTTP {e.code} for r/{clean_sub}: {e}")
     except Exception as e:

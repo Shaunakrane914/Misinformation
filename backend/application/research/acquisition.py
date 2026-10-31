@@ -29,10 +29,13 @@ class QueryPlanningStage:
         planned_queries = source_plan.to_channel_queries()
 
         # Preserve useful domain query diversity, but only for channels selected
-        # by the capability-aware plan. Planner actions take precedence and the
-        # per-channel bound prevents indiscriminate fan-out.
+        # by the capability-aware plan, plus technical domain channels like GitHub.
+        channels_to_evaluate = list(source_plan.channels)
+        if request.domain in ("technical", "fact_check") and "github" in legacy_queries and "github" not in channels_to_evaluate:
+            channels_to_evaluate.append("github")
+
         multi_queries: dict[str, list[dict[str, Any]]] = {}
-        for channel in source_plan.channels:
+        for channel in channels_to_evaluate:
             combined = list(planned_queries.get(channel, []))
             seen = {item.get("query_text", "").strip().lower() for item in combined}
             for item in legacy_queries.get(channel, []):

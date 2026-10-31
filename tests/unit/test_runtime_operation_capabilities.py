@@ -80,6 +80,15 @@ def test_new_success_immediately_recovers_from_temporary_failure():
     assert state["runtime_health"] == "HEALTHY"
 
 
+def test_empty_query_observation_does_not_defer_future_searches():
+    runtime = RuntimeOperationCapabilities()
+    runtime.record_observation("web", "search", _telemetry("EMPTY"))
+    state = runtime.assess("web", "search")
+    assert state["decision"] == "ELIGIBLE_UNVERIFIED"
+    assert state["runtime_health"] == "DEGRADED"
+    assert state["temporary"] is False
+
+
 def test_metadata_operation_is_rejected_when_full_content_is_required():
     runtime = RuntimeOperationCapabilities()
     state = runtime.assess("youtube", "search", required_depth="DIRECT_CONTENT")

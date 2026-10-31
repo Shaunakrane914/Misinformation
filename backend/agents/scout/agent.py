@@ -298,6 +298,7 @@ class ScoutAgent:
                 q_class = item.query_class
                 q_text = item.query_text
                 is_primary = item.primary_source or role in ("PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY")
+                content = item.content or snippet
             else:
                 e_id = item.get("evidence_id", f"src_{idx+1:03d}")
                 title = item.get("title", "Untitled Discovered Signal")
@@ -317,6 +318,7 @@ class ScoutAgent:
                 q_class = item.get("query_class", "general")
                 q_text = item.get("query_text", "")
                 is_primary = role == "PRIMARY"
+                content = item.get("content", "") or snippet
 
             if group and group.startswith("syndicated_"):
                 syndicated_count += 1
@@ -331,6 +333,7 @@ class ScoutAgent:
                 "selection_decision": getattr(item, "selection_decision", "ACCEPTED") if hasattr(item, "id") else item.get("selection_decision", "ACCEPTED"),
                 "selection_reason": getattr(item, "selection_reason", "ACQUIRED_EVIDENCE") if hasattr(item, "id") else item.get("selection_reason", "ACQUIRED_EVIDENCE"),
                 "title": title,
+                "content": content,
                 "url": url,
                 "has_url": bool(url),
                 "author": source_name,

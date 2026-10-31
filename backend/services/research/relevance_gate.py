@@ -323,6 +323,7 @@ class RelevanceGate:
                 if assessment.temporal_status:
                     item.metadata["temporal_status"] = assessment.temporal_status
                     item.metadata["temporal_eligible"] = assessment.is_accepted
+                    item.metadata["temporal_fresh"] = assessment.temporal_fresh
             elif isinstance(item, dict):
                 item["relevance_score"] = assessment.relevance_score
                 item["relevance_class"] = assessment.relevance_class
@@ -334,6 +335,7 @@ class RelevanceGate:
                 if assessment.temporal_status:
                     item["temporal_status"] = assessment.temporal_status
                     item["temporal_eligible"] = assessment.is_accepted
+                    item["temporal_fresh"] = assessment.temporal_fresh
 
             if assessment.is_accepted:
                 accepted.append(item)

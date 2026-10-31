@@ -127,12 +127,14 @@ def execute_web_read(
         except SecurityPolicyViolation as error:
             return {"status": "blocked_ssrf", "error": str(error), "url": url}
         except ProviderHTTPError as error:
-            return {
-                "status": "failed", "error": str(error), "url": url,
-                "transport": {"endpoint": error.endpoint, "http_status": error.status_code,
-                              "retry_after_seconds": error.retry_after_seconds,
-                              "network_observed_this_attempt": error.network_observed},
-            }
+            if getattr(error, "status_code", None) == 429 or getattr(error, "status_code", None) not in (401, 403, 500, 502, 503):
+                return {
+                    "status": "failed", "error": str(error), "url": url,
+                    "transport": {"endpoint": error.endpoint, "http_status": error.status_code,
+                                  "retry_after_seconds": error.retry_after_seconds,
+                                  "network_observed_this_attempt": error.network_observed},
+                }
+            logger.debug(f"[JinaWebReader] Native web read got HTTP {error.status_code}. Trying Jina fallback.")
         except Exception as e_web:
             logger.debug(f"[JinaWebReader] Native web read notice: {e_web}. Trying fallback.")
 

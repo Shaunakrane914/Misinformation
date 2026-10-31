@@ -285,16 +285,20 @@ class StandardChannelHandlers:
 
     def _execute_feed(self, channel, query, limit, query_id, query_class, query_text, telemetry):
         try:
-            encoded = urllib.parse.quote_plus(query.strip())
-            # For news channel, prioritize Bing News RSS to obtain direct publisher URLs rather than
+            clean_q = re.sub(r'["\']', '', query).strip()
+            encoded = urllib.parse.quote_plus(clean_q)
+            # Prioritize Bing News RSS to obtain direct publisher URLs rather than
             # opaque Google News wrapper redirect tokens (/rss/articles/CBMi...).
-            if channel == "news":
-                url = f"https://www.bing.com/news/search?q={encoded}&format=rss"
-                result = self.router.executor.execute_rss_read(url, limit=limit)
-                if not result.get("items"):
-                    url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
-                    result = self.router.executor.execute_rss_read(url, limit=limit)
-            else:
+            url = f"https://www.bing.com/news/search?q={encoded}&format=rss"
+            result = self.router.executor.execute_rss_read(url, limit=limit)
+            if not result.get("items"):
+                noise_words = {"latest", "news", "updates", "today", "developments", "announcements", "upcoming", "monitor", "personal", "identity", "threat", "surface", "impersonation", "profiles", "synthetic", "deepfakes", "scams", "false", "claims", "for", "statement", "reporting", "about"}
+                terms = [t for t in re.sub(r'[^\w\s]', ' ', clean_q).split() if t.lower() not in noise_words and len(t) > 1]
+                if terms:
+                    short_q = urllib.parse.quote_plus(" ".join(terms[:4]))
+                    url_short = f"https://www.bing.com/news/search?q={short_q}&format=rss"
+                    result = self.router.executor.execute_rss_read(url_short, limit=limit)
+            if not result.get("items"):
                 url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
                 result = self.router.executor.execute_rss_read(url, limit=limit)
             self._record_transport(telemetry, result)

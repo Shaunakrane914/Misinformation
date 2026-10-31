@@ -248,6 +248,28 @@ class DeepReader:
                     dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                     return item, cached_res, attempt_id, dur_ms
 
+            # Native spoken transcript acquisition for YouTube videos
+            if any(_host == yh or _host.endswith("." + yh) for yh in ("youtube.com", "youtu.be")):
+                try:
+                    from backend.services.agent_reach.native.router import native_router
+                    yt_frags, _ = native_router.execute_channel_query("youtube", url, operation="transcript")
+                    if yt_frags and yt_frags[0].content and len(yt_frags[0].content) >= 50:
+                        content = yt_frags[0].content
+                        title = yt_frags[0].title or getattr(item, "title", "YouTube Video Transcript")
+                        markdown = f"# {title}\n\n**Source**: YouTube Transcript\n\n{content}"
+                        dur_ms = round((time.perf_counter() - t0) * 1000, 2)
+                        res = {
+                            "status": "success",
+                            "markdown": markdown,
+                            "title": title,
+                            "url": url,
+                            "backend": "yt-dlp-transcript",
+                        }
+                        self._cache[url] = (res, now)
+                        return item, res, attempt_id, dur_ms
+                except Exception as ex:
+                    logger.debug(f"[DeepReader] Native YouTube transcript failed for {url}: {ex}")
+
             try:
                 res = agent_reach_service.read(url, max_chars=max_chars_per_read)
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)

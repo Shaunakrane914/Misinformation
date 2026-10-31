@@ -103,7 +103,8 @@ class NativeExecutor:
         except ProviderHTTPError as error:
             primary_http_error = error
             logger.debug("[NativeExecutor] Bounded HTTP read failed for %s: %s", clean_url, error)
-            raise
+            if getattr(error, "status_code", None) not in (401, 403, 429, 500, 502, 503):
+                raise
         except Exception as error:
             logger.debug("[NativeExecutor] HTTP parsing failed for %s: %s", clean_url, error)
 

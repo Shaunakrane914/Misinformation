@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 SEC_SUBMISSIONS_BASE = "https://data.sec.gov/submissions"
 DEFAULT_SEC_HEADERS = {
-    "User-Agent": os.getenv("SEC_USER_AGENT", ""),
+    "User-Agent": os.getenv("SEC_USER_AGENT", "AegisResearch admin@aegisresearch.org"),
     "Accept-Encoding": "gzip, deflate",
 }
 
@@ -45,9 +45,29 @@ class SecEdgarAdapter(PlatformAdapter):
         "AAPL": "0000320193",
         "MSFT": "0000789019",
         "GOOGL": "0001652044",
+        "GOOG": "0001652044",
         "AMZN": "0001018724",
         "TSLA": "0001318605",
         "META": "0001326801",
+        "INFY": "0001067491",
+        "ADBE": "0000796343",
+        "ORCL": "0001341439",
+        "INTC": "0000050863",
+        "IBM": "0000051143",
+    }
+
+    NAME_TO_TICKER = {
+        "APPLE": "AAPL",
+        "MICROSOFT": "MSFT",
+        "NVIDIA": "NVDA",
+        "GOOGLE": "GOOGL",
+        "ALPHABET": "GOOGL",
+        "AMAZON": "AMZN",
+        "TESLA": "TSLA",
+        "INFOSYS": "INFY",
+        "ADOBE": "ADBE",
+        "ORACLE": "ORCL",
+        "INTEL": "INTC",
     }
 
     @property
@@ -77,6 +97,13 @@ class SecEdgarAdapter(PlatformAdapter):
                 cik = c
                 ticker = t
                 break
+
+        if not cik:
+            for name, mapped_ticker in self.NAME_TO_TICKER.items():
+                if name in clean_q:
+                    ticker = mapped_ticker
+                    cik = self.KNOWN_CIKS.get(mapped_ticker)
+                    break
 
         if not cik:
             return candidates

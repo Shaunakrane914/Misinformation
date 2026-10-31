@@ -23,6 +23,9 @@ ADAPTERS = {
     "trending_pulse": ("news.wires_adapter", "TrendingPulseAdapter"),
     "hackernews": ("social.hackernews", "HackerNewsAdapter"),
     "arxiv": ("academic.arxiv", "ArxivAdapter"),
+    "sec_edgar": ("regulatory.sec_edgar", "SecEdgarAdapter"),
+    "sec_filings_full": ("regulatory.sec_filings_full", "SecFilingsFullAdapter"),
+    "factcheck": ("factcheck.factcheck_adapter", "FactCheckAdapter"),
 }
 # Primary bounded discovery source per domain. Trending moved off Bluesky: its public
 # searchPosts endpoint now returns HTTP 403 (auth required), verified live 2026-10-26.

@@ -65,9 +65,17 @@ def normalize_item(
         source_tier = "TIER_2_COMMUNITY_WEB"
 
     published_at = item.get("published_at") or item.get("published") or item.get("date") or "Recent"
+    meta = dict(item.get("metadata") or {})
+    content_depth = item.get("content_depth") or meta.get("content_depth") or "SNIPPET"
+    meta.setdefault("content_depth", content_depth)
+    meta.setdefault("likes", item.get("likes", 0))
+    meta.setdefault("retweets", item.get("retweets", 0))
+    meta.setdefault("score", item.get("score", 0))
+    meta.setdefault("is_official", item.get("is_official", False))
 
     return {
         "evidence_id": evidence_id,
+        "content_depth": content_depth,
         "discovered_candidate_id": item.get("discovered_candidate_id"),
         "ranked_candidate_id": item.get("ranked_candidate_id"),
         "accepted_candidate_id": item.get("accepted_candidate_id"),
@@ -89,12 +97,7 @@ def normalize_item(
         "source_role": source_role,
         "source_tier": source_tier,
         "retrieval_method": "Agent Reach Omni-Retrieval",
-        "metadata": {
-            "likes": item.get("likes", 0),
-            "retweets": item.get("retweets", 0),
-            "score": item.get("score", 0),
-            "is_official": item.get("is_official", False)
-        }
+        "metadata": meta,
     }
 
 
@@ -251,6 +254,7 @@ def search_personal_evidence(
                 "url": url,
                 "snippet": snippet,
                 "content": content,
+                "content_depth": depth,
                 "author": author,
                 "published": pub,
                 "published_at": pub,

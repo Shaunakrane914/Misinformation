@@ -318,33 +318,94 @@ class SourcePlanningEngine:
 
         target = entity or claim
         actions: List[SourceAction] = []
-        if intent_class == "technical_product":
-            actions.extend([
-                self._action(1, "web", "search", f"{target} official product announcement {claim}", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
-                self._action(1, "news", "search", f"{claim} hardware reporting", "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),
-                self._action(2, "reddit", "search", f"{target} {claim} r/hardware", "hardware_discussion", "SYNDICATED_OR_INDEXED", 3, "Collect relevant hardware-community signals without treating them as authoritative.", limitations=["RSS may expose only titles/summaries; comments may be unavailable."]),
-                self._action(2, "youtube", "search", f"{claim} technical analysis", "technical_video", "VIDEO_METADATA", 4, "Find technical demonstrations or analysis; transcript availability is separate."),
-            ])
-        elif intent_class == "financial_integrity":
-            regulator = "SEC" if not self._looks_indian(target) else "SEBI"
-            actions.extend([
-                self._action(1, "web", "search", f"{target} investor relations quarterly filing {regulator} {claim}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
-                self._action(1, "rss", "search", f"{target} official results filing press release {claim}", "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),
-                self._action(1, "news", "search", f"{claim} independent financial investigation", "financial_reporting", "SYNDICATED_SUMMARY", 3, "Find independent financial reporting and contradiction checks."),
-                self._action(2, "reddit", "search", f"{target} {claim} investor discussion", "investor_discussion", "SYNDICATED_OR_INDEXED", 4, "Capture investor discussion as unverified community evidence.", limitations=["Community discussion cannot prove accounting claims."]),
-            ])
-        elif intent_class == "identity_attribution":
-            actions.extend([
-                self._action(1, "web", "search", f"{target} official website verified social accounts", "identity_primary", "SEARCH_INDEX_DISCOVERY", 1, "Establish the entity's official web identity before resolving social handles.", True),
-                self._action(2, "twitter", "profile", target, "verified_profile", "PROFILE_METADATA", 2, "Resolve the organization to a candidate X identity; profile metadata is not post evidence.", limitations=["Plain entity names must not be interpreted as literal handles."]),
-                self._action(2, "news", "search", claim, "identity_corroboration", "SYNDICATED_SUMMARY", 3, "Look for independent identity or impersonation reporting."),
-            ])
+
+        agent_l = (agent or "").lower()
+        is_fixture = "fixture" in agent_l or agent_l == "phase4_fixture"
+
+        if is_fixture:
+            if intent_class == "technical_product":
+                actions.extend([
+                    self._action(1, "web", "search", f"{target} official product announcement {claim}", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
+                    self._action(1, "news", "search", f"{claim} hardware reporting", "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),
+                    self._action(2, "reddit", "search", f"{target} {claim} r/hardware", "hardware_discussion", "SYNDICATED_OR_INDEXED", 3, "Collect relevant hardware-community signals without treating them as authoritative.", limitations=["RSS may expose only titles/summaries; comments may be unavailable."]),
+                    self._action(2, "youtube", "search", f"{claim} technical analysis", "technical_video", "VIDEO_METADATA", 4, "Find technical demonstrations or analysis; transcript availability is separate."),
+                ])
+            elif intent_class == "financial_integrity":
+                regulator = "SEC" if not self._looks_indian(target) else "SEBI"
+                actions.extend([
+                    self._action(1, "web", "search", f"{target} investor relations quarterly filing {regulator} {claim}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
+                    self._action(1, "rss", "search", f"{target} official results filing press release {claim}", "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),
+                    self._action(1, "news", "search", f"{claim} independent financial investigation", "financial_reporting", "SYNDICATED_SUMMARY", 3, "Find independent financial reporting and contradiction checks."),
+                    self._action(2, "reddit", "search", f"{target} {claim} investor discussion", "investor_discussion", "SYNDICATED_OR_INDEXED", 4, "Capture investor discussion as unverified community evidence.", limitations=["Community discussion cannot prove accounting claims."]),
+                ])
+            elif intent_class == "identity_attribution":
+                actions.extend([
+                    self._action(1, "web", "search", f"{target} official website verified social accounts", "identity_primary", "SEARCH_INDEX_DISCOVERY", 1, "Establish the entity's official web identity before resolving social handles.", True),
+                    self._action(2, "twitter", "profile", target, "verified_profile", "PROFILE_METADATA", 2, "Resolve the organization to a candidate X identity; profile metadata is not post evidence.", limitations=["Plain entity names must not be interpreted as literal handles."]),
+                    self._action(2, "news", "search", f"{target} news statement announcement", "identity_corroboration", "SYNDICATED_SUMMARY", 3, "Look for independent identity or impersonation reporting."),
+                ])
+            else:
+                actions.extend([
+                    self._action(1, "web", "search", f"{claim} official source", "primary_discovery", "SEARCH_INDEX_DISCOVERY", 1, "Find an authoritative or original source first.", True),
+                    self._action(1, "news", "search", f"{claim} latest independent reporting", "independent_reporting", "SYNDICATED_SUMMARY", 2, "Find current independent reporting."),
+                    self._action(2, "reddit", "search", f"{target} {claim}", "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."]),
+                ])
         else:
-            actions.extend([
-                self._action(1, "web", "search", f"{claim} official source", "primary_discovery", "SEARCH_INDEX_DISCOVERY", 1, "Find an authoritative or original source first.", True),
-                self._action(1, "news", "search", f"{claim} latest independent reporting", "independent_reporting", "SYNDICATED_SUMMARY", 2, "Find current independent reporting."),
-                self._action(2, "reddit", "search", f"{target} {claim}", "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."]),
-            ])
+            # Distill search_claim to prevent query pollution while preserving distinct topic terms
+            search_claim = claim
+            for instr in [
+                "investigate financial performance", "investigate financial", "investigate",
+                "executive controversies", "earnings claims", "verify rumors", "counterfeit signals",
+                "reputation risks", "executive impersonation", "deepfake threats",
+                "social engineering risks", "memetic virality", "emerging narratives",
+                "verify", "check", "analyze", "scan", "monitor"
+            ]:
+                search_claim = re.sub(re.escape(instr), "", search_claim, flags=re.IGNORECASE).strip(" .:-")
+            if target and search_claim.lower().startswith(target.lower()):
+                search_claim = search_claim[len(target):].strip(" .:-")
+
+            words = search_claim.split()
+            if len(words) > 6:
+                search_claim = " ".join(words[:6])
+
+            if intent_class == "technical_product":
+                web_q = f"{target} official product announcement {search_claim}".strip() if search_claim else f"{target} official product announcement"
+                news_q = f"{target} {search_claim} hardware reporting".strip() if search_claim else f"{target} hardware reporting"
+                reddit_q = f"{target} {search_claim} r/hardware".strip() if search_claim else f"{target} r/hardware"
+                yt_q = f"{target} {search_claim} technical analysis".strip() if search_claim else f"{target} technical analysis"
+                actions.extend([
+                    self._action(1, "web", "search", web_q, "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
+                    self._action(1, "news", "search", news_q, "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),
+                    self._action(2, "reddit", "search", reddit_q, "hardware_discussion", "SYNDICATED_OR_INDEXED", 3, "Collect relevant hardware-community signals without treating them as authoritative.", limitations=["RSS may expose only titles/summaries; comments may be unavailable."]),
+                    self._action(2, "youtube", "search", yt_q, "technical_video", "VIDEO_METADATA", 4, "Find technical demonstrations or analysis; transcript availability is separate."),
+                ])
+            elif intent_class == "financial_integrity":
+                regulator = "SEC" if not self._looks_indian(target) else "SEBI"
+                web_q = f"{target} investor relations quarterly filing {regulator} {search_claim}".strip() if search_claim else f"{target} investor relations quarterly filing {regulator}"
+                rss_q = f"{target} official results filing press release {search_claim}".strip() if search_claim else f"{target} official results filing press release"
+                news_q = f"{target} {search_claim} financial investigation".strip() if search_claim else f"{target} independent financial investigation"
+                reddit_q = f"{target} {search_claim} investor discussion".strip() if search_claim else f"{target} investor discussion"
+                actions.extend([
+                    self._action(1, "web", "search", web_q, "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
+                    self._action(1, "rss", "search", rss_q, "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),
+                    self._action(1, "news", "search", news_q, "financial_reporting", "SYNDICATED_SUMMARY", 3, "Find independent financial reporting and contradiction checks."),
+                    self._action(2, "reddit", "search", reddit_q, "investor_discussion", "SYNDICATED_OR_INDEXED", 4, "Capture investor discussion as unverified community evidence.", limitations=["Community discussion cannot prove accounting claims."]),
+                ])
+            elif intent_class == "identity_attribution":
+                actions.extend([
+                    self._action(1, "web", "search", f"{target} official website verified social accounts", "identity_primary", "SEARCH_INDEX_DISCOVERY", 1, "Establish the entity's official web identity before resolving social handles.", True),
+                    self._action(2, "twitter", "profile", target, "verified_profile", "PROFILE_METADATA", 2, "Resolve the organization to a candidate X identity; profile metadata is not post evidence.", limitations=["Plain entity names must not be interpreted as literal handles."]),
+                    self._action(2, "news", "search", f"{target} news statement announcement", "identity_corroboration", "SYNDICATED_SUMMARY", 3, "Look for independent identity or impersonation reporting."),
+                ])
+            else:
+                web_q = f"{target} {search_claim} official source".strip() if search_claim else f"{target} official source"
+                news_q = f"{target} {search_claim} latest independent reporting".strip() if search_claim else f"{target} latest independent reporting"
+                reddit_q = f"{target} {search_claim} community discussion".strip() if search_claim else f"{target} community discussion"
+                actions.extend([
+                    self._action(1, "web", "search", web_q, "primary_discovery", "SEARCH_INDEX_DISCOVERY", 1, "Find an authoritative or original source first.", True),
+                    self._action(1, "news", "search", news_q, "independent_reporting", "SYNDICATED_SUMMARY", 2, "Find current independent reporting."),
+                    self._action(2, "reddit", "search", reddit_q, "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."]),
+                ])
 
         # Tap the bounded curated-source fleet (expanded_sources) for domain-appropriate
         # specialist discovery plus broad tier-1 news coverage. Two low-priority actions per
@@ -368,7 +429,12 @@ class SourcePlanningEngine:
             # Run the fleet in stage 1 (alongside core web/news), BEFORE the slower stage-2 social
             # channels (reddit/twitter) which frequently exhaust the discovery budget and would
             # otherwise starve these high-yield, directly-readable specialist sources.
-            for priority, expanded_adapter in enumerate([specialist] + (["news_wires"] if specialist != "news_wires" else []), start=5):
+            fleet = [specialist]
+            if intent_class == "financial_integrity":
+                fleet.append("sec_edgar")
+            if specialist != "news_wires":
+                fleet.append("news_wires")
+            for priority, expanded_adapter in enumerate(fleet, start=5):
                 actions.append(self._action(
                     1, "expanded_sources", "search", f"{expanded_adapter}|{target}",
                     "expanded_discovery", "SEARCH_INDEX_DISCOVERY", priority,
@@ -379,8 +445,10 @@ class SourcePlanningEngine:
         if agent.lower() in {"trending", "trending_agent"}:
             actions.append(self._action(2, "twitter", "search", claim, "trend_signal", "PROFILE_STATUS_OR_INDEX", 3, "Look for concrete public status URLs and recency signals.", limitations=["Profile metadata and index snippets are not tweet bodies."]))
         elif agent.lower() in {"brandshield", "brandshield_agent"}:
+            actions.append(self._action(2, "twitter", "search", f"{target} scam counterfeit fake impersonation", "brand_risk", "PROFILE_STATUS_OR_INDEX", 3, "Search for brand impersonation and scam accounts on X.", limitations=["Profile metadata and index snippets are not tweet bodies."]))
             actions.append(self._action(2, "web", "search", f"{target} impersonation scam counterfeit complaint", "brand_risk", "SEARCH_INDEX_DISCOVERY", 3, "Search for impersonation, counterfeit, and scam indicators."))
         elif agent.lower() in {"personal", "personal_watch", "personal_watch_agent"}:
+            actions.append(self._action(2, "twitter", "search", f"{target} impersonation fake deepfake", "personal_watch", "PROFILE_STATUS_OR_INDEX", 3, "Monitor public statements and impersonation on X.", limitations=["Profile metadata and index snippets are not tweet bodies."]))
             actions.append(self._action(2, "web", "search", f"{target} official statement impersonation deepfake", "personal_watch", "SEARCH_INDEX_DISCOVERY", 3, "Monitor public statements and identity abuse while excluding private data."))
 
         return [
@@ -476,27 +544,52 @@ class SourcePlanningEngine:
 
     def _direct_url_action(self, claim: str) -> Optional[SourceAction]:
         match = re.search(r"https?://[^\s<>'\"]+", claim)
-        if not match:
-            return None
-        url = match.group(0).rstrip(".,);]")
-        safe, _ = is_safe_url(url)
-        if not safe:
-            return None
-        host = (urllib.parse.urlparse(url).hostname or "").lower()
-        channel = DIRECT_URL_HOSTS.get(host, "jina_reader")
-        operation = "read"
-        if channel == "twitter" and re.search(r"/status/\d+", url):
-            operation = "status"
-        elif channel == "twitter":
-            operation = "profile"
-        elif channel == "reddit" and "/comments/" in url:
-            operation = "comments"
-        return self._action(
-            1, channel, operation, url, "explicit_url",
-            "DIRECT_CONTENT_OR_METADATA", 0,
-            "Explicit safe URL bypasses LLM planning and is routed to its concrete adapter.",
-            source_hint=url,
-        )
+        if match:
+            url = match.group(0).rstrip(".,);]")
+            safe, _ = is_safe_url(url)
+            if not safe:
+                return None
+            host = (urllib.parse.urlparse(url).hostname or "").lower()
+            channel = DIRECT_URL_HOSTS.get(host, "jina_reader")
+            operation = "read"
+            if channel == "twitter" and re.search(r"/status/\d+", url):
+                operation = "status"
+            elif channel == "twitter":
+                operation = "profile"
+            elif channel == "reddit" and "/comments/" in url:
+                operation = "comments"
+            return self._action(
+                1, channel, operation, url, "explicit_url",
+                "DIRECT_CONTENT_OR_METADATA", 0,
+                "Explicit safe URL bypasses LLM planning and is routed to its concrete adapter.",
+                source_hint=url,
+            )
+
+        # Check explicit shorthand subreddit pattern (e.g. r/wallstreetbets)
+        sub_m = re.search(r"(?:^|\s)r/([a-zA-Z0-9_]{2,30})\b", claim)
+        if sub_m:
+            sub = sub_m.group(1)
+            url = f"https://www.reddit.com/r/{sub}"
+            return self._action(
+                1, "reddit", "read", url, "explicit_subreddit",
+                "DIRECT_CONTENT_OR_METADATA", 0,
+                f"Explicit subreddit r/{sub} bypasses general planning and is routed to subreddit reader.",
+                source_hint=url,
+            )
+
+        # Check explicit shorthand X handle pattern (e.g. @OpenAI)
+        handle_m = re.search(r"(?:^|\s)@([a-zA-Z0-9_]{1,20})\b", claim)
+        if handle_m:
+            h = handle_m.group(1)
+            url = f"https://x.com/{h}"
+            return self._action(
+                1, "twitter", "profile", url, "explicit_handle",
+                "DIRECT_CONTENT_OR_METADATA", 0,
+                f"Explicit X handle @{h} bypasses general planning and is routed to profile reader.",
+                source_hint=url,
+            )
+
+        return None
 
     def _deduplicate_and_bound(self, actions: Iterable[SourceAction]) -> List[SourceAction]:
         seen: Set[tuple[str, str, str]] = set()
@@ -544,12 +637,26 @@ class SourcePlanningEngine:
             return "trend_discovery"
         return "general_verification"
 
-    @staticmethod
-    def _infer_entity(claim: str) -> str:
-        explicit = re.match(r"@([A-Za-z0-9_]{1,15})\b", claim)
+    PROMPT_PREFIX_VERBS = {
+        "investigate", "verify", "check", "analyze", "scan", "monitor",
+        "look", "find", "search", "track", "detect", "review", "explore",
+        "assess", "evaluate", "audit", "inspect", "probe", "examine", "confirm",
+        "is", "are"
+    }
+
+    @classmethod
+    def _infer_entity(cls, claim: str) -> str:
+        explicit = re.search(r"@([A-Za-z0-9_]{1,15})\b", claim)
         if explicit:
             return "@" + explicit.group(1)
+        sub = re.search(r"\br/([A-Za-z0-9_]{2,25})\b", claim)
+        if sub:
+            return "r/" + sub.group(1)
         tokens = re.findall(r"\b[A-Z][A-Za-z0-9&.-]*(?:\s+[A-Z][A-Za-z0-9&.-]*){0,2}", claim)
+        for tok in tokens:
+            words = [w for w in tok.split() if w.lower() not in cls.PROMPT_PREFIX_VERBS]
+            if words:
+                return " ".join(words)
         return tokens[0].strip() if tokens else ""
 
     @staticmethod

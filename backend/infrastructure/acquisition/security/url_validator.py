@@ -94,7 +94,7 @@ def is_ip_blocked(ip_str: str) -> bool:
 # Thread-safe in-memory DNS resolution cache: host -> (is_valid, error_msg, expiry_timestamp)
 _DNS_CACHE: dict = {}
 _DNS_CACHE_TTL = 300.0  # 5 minutes
-_DNS_SLOTS = threading.BoundedSemaphore(8)
+_DNS_SLOTS = threading.BoundedSemaphore(24)
 
 
 def resolve_public_addresses(host: str, port: int, timeout: float = 2.5,
@@ -107,7 +107,7 @@ def resolve_public_addresses(host: str, port: int, timeout: float = 2.5,
     """
     if not host or not (0 < port < 65536) or (port not in ALLOWED_PORTS and not allow_custom_ports):
         raise ValueError("Invalid public HTTP destination")
-    if not _DNS_SLOTS.acquire(blocking=False):
+    if not _DNS_SLOTS.acquire(blocking=True, timeout=max(0.5, timeout)):
         raise TimeoutError("DNS validation capacity exhausted")
     results = queue.Queue(maxsize=1)
 
@@ -219,6 +219,9 @@ def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool,
             err = f"DNS resolution failed for hostname '{host}': {e}"
             _DNS_CACHE[host_lower] = (False, err, now + 60.0)
             return False, err
+        except TimeoutError as e:
+            # Do not poison DNS cache on transient capacity exhaustion or resolver timeouts
+            return False, f"Transient DNS validation timeout for '{host}': {e}"
         except Exception as e:
             err = f"Error validating host '{host}': {e}"
             _DNS_CACHE[host_lower] = (False, err, now + 60.0)

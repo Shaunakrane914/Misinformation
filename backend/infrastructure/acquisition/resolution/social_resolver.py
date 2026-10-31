@@ -704,9 +704,9 @@ class EntitySocialResolver:
         clean = query.strip()
         # Remove cashtags ($NVDA -> NVDA)
         clean = re.sub(r"^\$([A-Za-z0-9_]+)", r"\1", clean)
-        # Remove domain qualifiers
+        # Remove domain qualifiers and prompt instructions
         clean = re.sub(
-            r"\b(investigation|controversy|debt|sentiment|discussion|stock|market|rumor|probe|news|filings|earnings|latest|today)\b",
+            r"\b(investigation|controversy|debt|sentiment|discussion|stock|market|rumor|probe|news|filings|earnings|latest|today|claims|revenue|short|seller|community|investor|statement|announcement|scam|counterfeit|deepfake|impersonation|fake|verify|investigate|check|rumors)\b",
             "", clean, flags=re.IGNORECASE
         )
         # Strip trailing exchange suffixes (.NS, .BO)

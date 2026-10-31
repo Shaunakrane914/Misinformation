@@ -83,6 +83,8 @@ Ported and verified from the isolated reconciliation worktree:
 | **Static Syntax Audit** | `flake8 backend tests scripts` | **0 ERRORS** | Zero undefined variables, zero syntax defects |
 | **Release Candidate Smoke**| `scripts/validate_release_candidate_smoke.py` | **PASS** | `OFFLINE_SMOKE_PASS` across healthz, readyz, capabilities, doctor, and 5 scenarios |
 | **Rollback Compatibility** | `scripts/validate_rollback_compatibility.py` | **PASS (Honest)** | Correctly detects and reports 55 historical unsealed dossiers per invariant |
+| **GitHub Actions CI PR #5** | [Run 41235660103](https://github.com/Shaunakrane914/Misinformation/actions/runs/41235660103) | **100% PASS (5/5)** | Lint, contracts, offline suite (3,010 tests), Python 3.11/3.12/3.13 matrix all green |
+| **GitHub Actions Push CI** | [Run 41235654885](https://github.com/Shaunakrane914/Misinformation/actions/runs/41235654885) | **100% PASS (5/5)** | Independent full run on commit `f053015` green across all jobs |
 
 ---
 

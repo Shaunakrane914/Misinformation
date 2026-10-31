@@ -216,8 +216,10 @@ def test_fetch_sec_submissions_accepts_static_map_alias_google():
         attempts=1,
     )
 
-    with patch("backend.infrastructure.acquisition.adapters.authoritative.sec_edgar.fetch_public_http", return_value=mock_resp):
-        res = fetch_sec_submissions("Google")
-        assert res["status"] == "SUCCESS", f"Expected SUCCESS for Google, got: {res}"
-        assert res["company_name"] == "Alphabet Inc."
-        assert res["cik"] == "0001652044"
+    def mock_fetcher(url, **kw):
+        return mock_resp
+
+    res = fetch_sec_submissions("Google", http_fetcher=mock_fetcher)
+    assert res["status"] == "SUCCESS", f"Expected SUCCESS for Google, got: {res}"
+    assert res["company_name"] == "Alphabet Inc."
+    assert res["cik"] == "0001652044"

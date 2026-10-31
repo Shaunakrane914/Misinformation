@@ -108,3 +108,4 @@ All 12 frontend test suites in tests/frontend/test_*.js
 - Commit the focused changes to branch `feat/v2-consolidated-release`.
 - Push to `origin feat/v2-consolidated-release` to update PR #5.
 - Monitor GitHub Actions CI until all workflow jobs complete green.
+

@@ -1,5 +1,9 @@
 # Coding-agent handoffs
 
+## Production Acquisition Deployment - 2026-10-31
+
+- [Production acquisition repairs](2026-10-31_ACQUISITION_PRODUCTION_DEPLOYMENT.md): Canonical main integration of validated foreign ADR SEC EDGAR planning, YouTube spoken transcript enrichment, and technical domain GitHub retention. Full offline suites passed (64 unit, 100 chaos/security, smoke, persistence, zero lint). Pushed to origin/main.
+
 ## GOV.UK original speeches - 2026-10-31
 
 - [Real two-speaker reuse](2026-10-31_GOVUK_SPEECH_REUSE.md): four approved admissions; two new speeches, 5,500 raw /4,850 exact local frontend words; original speaker/issuer/delivery/publication preserved. Focused checks only; no deployment.

@@ -440,6 +440,8 @@ class SourcePlanningEngine:
                 self._action(1, "web", "search", f"{query_base}{issuer_scope} product announcement", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
                 self._action(1, "news", "search", f"{claim} hardware reporting", "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),
             ])
+            if "github" in allowed and (explicitly_allowed or any(k in claim.lower() for k in ("github", "repo", "library", "framework", "commit", "release", "code", "sdk", "source"))):
+                actions.append(self._action(1, "github", "search", query_base, "technical_repository", "SYNDICATED_OR_INDEXED", 2, "Locate open source repository, documentation, and commits."))
             if include_contradiction_probe:
                 actions.append(self._action(2, "web", "search", f"{target} rumor debunked false announcement {claim}", "contradiction_probe", "SEARCH_INDEX_DISCOVERY", 2, "Search for explicit denials or debunking records."))
             actions.extend([
@@ -451,8 +453,10 @@ class SourcePlanningEngine:
             if index and "web" in allowed:
                 actions.append(self._action(1, "web", "read", index, "issuer_documents",
                     "DIRECT_CONTENT", 0, "Inspect original issuer document links before general search.", True))
-            regulator = "HKEX" if registry_key == "lenovo" else "SEC" if not self._looks_indian(target) else "SEBI"
-            if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and not self._looks_indian(target):
+            from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import resolve_cik
+            has_sec_adr = bool(resolve_cik(target))
+            regulator = "HKEX" if registry_key == "lenovo" else "SEC" if (not self._looks_indian(target) or has_sec_adr) else "SEBI"
+            if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and (not self._looks_indian(target) or has_sec_adr):
                 actions.append(self._action(1, "sec_edgar", "search", target, "regulatory_filing", "DIRECT_METADATA", 1, "Retrieve official SEC EDGAR corporate filings directly.", True))
             actions.extend([
                 self._action(1, "web", "search", f"{query_base}{issuer_scope} quarterly results filing {regulator}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),

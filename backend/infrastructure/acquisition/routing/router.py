@@ -410,11 +410,30 @@ class NativeRouter:
                     title = info.get("title") or ""
                     desc = info.get("description") or ""
                     uploader = info.get("uploader") or info.get("channel") or ""
-                    content = "\n\n".join(part for part in (
+                    transcript_text = ""
+                    try:
+                        transcript_res = self.executor.execute_youtube_transcript(url, timeout=min(5.0, max_chars / 500))
+                        if transcript_res and transcript_res.get("status") == "SUCCESS" and transcript_res.get("content"):
+                            raw_sub = transcript_res["content"]
+                            clean_lines = []
+                            for line in raw_sub.splitlines():
+                                line_s = line.strip()
+                                if not line_s or line_s.startswith(("WEBVTT", "Kind:", "Language:", "NOTE")) or "-->" in line_s or line_s.isdigit():
+                                    continue
+                                clean_lines.append(line_s)
+                            transcript_text = " ".join(clean_lines)
+                    except Exception as e:
+                        logger.debug("[NativeRouter] YouTube transcript extraction skipped/failed: %s", e)
+
+                    content_parts = [
                         f"Title: {title}" if title else "",
                         f"Channel: {uploader}" if uploader else "",
-                        f"Description:\n{desc}" if desc else "",
-                    ) if part)
+                    ]
+                    if transcript_text:
+                        content_parts.append(f"Transcript:\n{transcript_text}")
+                    elif desc:
+                        content_parts.append(f"Description:\n{desc}")
+                    content = "\n\n".join(part for part in content_parts if part)
                     return {
                         "status": "success",
                         "title": title,

@@ -1,5 +1,29 @@
 # Coding-agent handoffs
 
+## Social Acquisition Expansion & Direct URL Reading Verification — 2026-10-31
+
+- [Social Acquisition Expansion & Direct URL Reading Verification](2026-10-31_SOCIAL_ACQUISITION_EXPANSION_AND_DIRECT_READS.md): Verified and expanded zero-auth direct reading for Reddit subreddits (
+/... and 
+eddit.com/r/...), Reddit post comments, Twitter/X profiles (@... and x.com/...), and tweet status permalinks. Repaired prompt verb choking bug (Investigate extracted as entity), direct subreddit routing in NativeRouter, and search query qualifier pollution in Reddit post filters. All 868 unit, chaos, and security tests passing.
+
+## Frontend Transformation Layer & Bespoke Visualizations — 2026-10-31
+
+- [Frontend Transformation Layer & Bespoke Visualizations](2026-10-31_FRONTEND_TRANSFORMATION_AND_VISUALIZATIONS.md): Solved linear event stacking and sparse panel presentation by building the client-side Evidence-to-Intelligence Transformation Engine (frontend/intelligence-transformer.js) and pure SVG/Canvas high-craft analytics suite (frontend/aegis-graphs.js). Verified all 4 agents on live browser with 6-Axis Epistemic Tensor Radar, Evidence Discovery Funnel, Master-Detail Split Command Deck (replacing vertical bullet lists), Tri-Column Catalysts Matrix, Volatility Anomaly Envelopes, Hawkes Virality Curve, and 360° Identity Defense Threat Gauge. Uncommitted worktree.
+
+## Complete Historical Source Regression Audit & Acquisition Repair — 2026-10-31
+
+- [Complete Historical Source Regression Audit](../testing/AEGIS_FULL_SOURCE_REGRESSION_AUDIT_2026-10-31.md):
+  Forensic code-level audit across 421 Git commits. Proved primary hypothesis: query text pollution,
+  SEC EDGAR 403 / orphaned adapter gates, _looks_indian ADR filtering, YouTube transcript omission,
+  technical GitHub suppression, and empty-query capability lockout (REG-08) were choking content.
+  Repaired all 8 regressions in-place: sequential 4-agent run jumped from 0 words on agents 2-4
+  to 48,739 words. Full 20-prompt live empirical benchmark across all 4 agents achieved 254,489 words
+  (Scout: 86,211 words avg 17.2k; BrandShield: 56,021 words avg 11.2k; Trending: 32,065 words avg 6.4k;
+  PersonalWatch: 80,192 words avg 16.0k) with a 100.0% deep read conversion rate (194/194 sources).
+  Generated artifacts: legacy_vs_current_sources.csv, agent_website_efficiency.csv,
+  confirmed_regressions.csv, source_to_frontend_loss.csv, before_after_repairs.json, and
+  artifacts/live_evaluation/five_prompt_four_agent_results.json.
+
 ## News wrapper unwrapping, temporal guard & 4-agent verification — 2026-10-27
 
 - [News wrapper unwrapping & 4-agent verification](2026-10-27_NEWS_WRAPPER_UNWRAPPING_AND_FOUR_AGENT_VERIFICATION.md):

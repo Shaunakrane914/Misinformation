@@ -9,13 +9,13 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-787%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/testing/CI_COVERAGE_MATRIX.md)
+[![Tests](https://img.shields.io/badge/Tests-868%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/testing/CI_COVERAGE_MATRIX.md)
 [![Evaluation](https://img.shields.io/badge/Evaluation-Audited%20ML%20Baseline-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
-[![Status](https://img.shields.io/badge/Status-Release%20Candidate%20Ready-success?style=for-the-badge)](docs/architecture/PHASE7_1_RELEASE_CANDIDATE_REPORT.md)
+[![Status](https://img.shields.io/badge/Status-Aegis%202.0%20Production%20Ready-success?style=for-the-badge)](docs/deployment/V2_FINAL_DEPLOYMENT_GUIDE.md)
 
 **Aegis Protocol is an evidence-first claim verification system and research framework. It combines cross-platform evidence retrieval across 16 operations, claim-aware source planning, learned candidate reranking, source-independence clustering, contradiction analysis, and multi-perspective LLM reasoning with abstention-aware classification.**
 
-[📚 Documentation Portal](docs/index.md) · [🤖 Coding Agents Guide](AGENTS.md) · [🗺️ Workspace Map](docs/development/WORKSPACE_MAP.md) · [📜 Script Index](docs/development/SCRIPT_INDEX.md) · [🏛️ Target Architecture](docs/architecture/TARGET_ARCHITECTURE.md) · [🚀 Release Candidate](docs/architecture/PHASE7_1_RELEASE_CANDIDATE_REPORT.md) · [Testing Suite](docs/testing/CI_COVERAGE_MATRIX.md)
+[📚 Documentation Portal](docs/index.md) · [🤖 Coding Agents Guide](AGENTS.md) · [🗺️ Workspace Map](docs/development/WORKSPACE_MAP.md) · [📜 Script Index](docs/development/SCRIPT_INDEX.md) · [🏛️ Target Architecture](docs/architecture/TARGET_ARCHITECTURE.md) · [🚀 Release Candidate](docs/deployment/V2_FINAL_DEPLOYMENT_GUIDE.md) · [Testing Suite](docs/testing/CI_COVERAGE_MATRIX.md)
 
 </div>
 

@@ -10,6 +10,17 @@ Current verification milestone: [Phase 8A real acquisition verification](archite
 
 ---
 
+## 🚀 Aegis Protocol 2.0 (v4.1.0) Final Production Release
+
+- **[Aegis Protocol 2.0 Production Deployment Guide](deployment/V2_FINAL_DEPLOYMENT_GUIDE.md)**: Canonical enterprise deployment guide, health probe contracts, Docker topologies, and environment configuration.
+- **[Aegis 2.0 Postmortem: Dead Code Recovery & Prevention Protocols](architecture/V2_POSTMORTEM_AND_DEAD_CODE_RECOVERY.md)**: Technical breakdown of how the 'Ghost Ship' regression occurred, forensic recovery of REG-01 through REG-08, and the 5 non-negotiable prevention standards.
+- **[Complete Historical Source Regression Audit](testing/AEGIS_FULL_SOURCE_REGRESSION_AUDIT_2026-10-31.md)**: Forensic code-level audit across 421 Git commits proving the dead-code hypothesis and quantifying the +2889% word count recovery across 20 live prompts.
+- **[Frontend Transformation Layer & Bespoke Visualizations](handoffs/2026-10-31_FRONTEND_TRANSFORMATION_AND_VISUALIZATIONS.md)**: Client-side Evidence-to-Intelligence transformation engine and pure SVG/Canvas analytics suite.
+- **[Social Acquisition Expansion & Direct URL Reading](handoffs/2026-10-31_SOCIAL_ACQUISITION_EXPANSION_AND_DIRECT_READS.md)**: Zero-auth direct acquisition for Subreddits, Reddit threads/comments, X profiles, and tweet status permalinks.
+- **[Security Policy & Defense Architecture](../SECURITY.md)**: SSRF prevention, 1MB bounded buffer caps, 5.0s timeouts, credential redaction, and production mock guards.
+
+---
+
 ## 🏛️ System Architecture & Engineering Blueprints
 
 - **[System Architecture Overview](architecture/OVERVIEW.md)**: High-level architectural topology, layers, and domain boundaries.

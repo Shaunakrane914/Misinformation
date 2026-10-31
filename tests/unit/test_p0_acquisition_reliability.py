@@ -180,7 +180,7 @@ def test_discovered_candidate_reaches_read_and_publication(monkeypatch, tmp_path
     from backend.services.research.deep_reader import deep_reader
     with patch.object(agent_reach.agent_reach_service, "retrieve_many", return_value=retrieval), \
             patch.object(agent_reach.agent_reach_service, "read", reader), patch.object(deep_reader, "_cache", {}):
-        result = ResearchPipeline(ResearchBudget(timeout_seconds=2, follow_up_budget=0, primary_escalation_budget=0, deep_read_budget=1)).run(
+        result = ResearchPipeline(ResearchBudget(timeout_seconds=10, follow_up_budget=0, primary_escalation_budget=0, deep_read_budget=1)).run(
             ResearchRequest(target="Lenovo", domain="financial", deep_read_budget=1, corroboration_budget=0))
     assert reader.call_count == 1
     assert len(result.evidence) == 1

@@ -144,7 +144,7 @@ class DefaultLLMGateway(LLMGateway):
                 # Enforce Aegis advisory governance across all live providers
                 from backend.infrastructure.llm.advisory_policy import (
                     require_advisory, _run, _investigation, investigation_scope,
-                    AdvisoryPolicyError,
+                    AdvisoryPolicyError, AdvisoryProviderBlocked,
                 )
                 import os, uuid
                 is_live = os.getenv("AEGIS_LIVE_ADVISORY_ENABLED", "false").lower() in {"1", "true", "yes"}
@@ -163,8 +163,15 @@ class DefaultLLMGateway(LLMGateway):
                     raise RuntimeError("Synthetic LLM output blocked by fail-closed policy")
                 self._last_response.set(response)
                 return response.content
+            except AdvisoryProviderBlocked as exc:
+                last_error = exc
+                logger.warning(
+                    "[LLMGateway] Provider '%s' blocked (%s); trying next provider in fallback chain",
+                    name, exc
+                )
+                continue
             except AdvisoryPolicyError:
-                # Governance policy violation (unscoped, budget exhausted, cooldown) must fail closed
+                # Governance policy violation (unscoped, daily budget exhausted, per-investigation limit) must fail closed
                 raise
             except Exception as exc:
                 last_error = exc

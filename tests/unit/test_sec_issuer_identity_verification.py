@@ -183,3 +183,41 @@ def test_scout_jurisdiction_routing_for_indian_companies():
     assert len(tcs_sec) == 0, "TCS must NOT plan SEC EDGAR"
     assert any("SEBI" in a.query or "NSE BSE" in a.query for a in tcs_plan.actions), "TCS must plan Indian regulatory search"
 
+def test_fetch_sec_submissions_accepts_static_map_alias_google():
+    """Verify that static-map alias 'Google' -> Alphabet CIK 0001652044 is accepted (Comment 12)."""
+    from unittest.mock import patch
+    from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import fetch_sec_submissions
+    from backend.infrastructure.acquisition.network.http import BoundedHTTPResponse
+
+    fake_submissions = {
+        "cik": "0001652044",
+        "entityType": "Operating",
+        "sic": "7370",
+        "sicDescription": "SERVICES-COMPUTER PROGRAMMING, DATA PROCESSING, ETC.",
+        "name": "Alphabet Inc.",
+        "tickers": ["GOOGL", "GOOG"],
+        "exchanges": ["Nasdaq", "Nasdaq"],
+        "ein": "611767919",
+        "description": "Alphabet Inc.",
+        "website": "https://abc.xyz",
+        "stateOfIncorporation": "DE",
+        "stateOfIncorporationDescription": "DELAWARE",
+        "fiscalYearEnd": "1231",
+        "filings": {"recent": {"accessionNumber": [], "filingDate": [], "reportDate": [], "acceptanceDateTime": [], "act": [], "form": [], "fileNumber": [], "filmNumber": [], "items": [], "size": [], "isXBRL": [], "isInlineXBRL": [], "primaryDocument": [], "primaryDocDescription": []}},
+    }
+    raw_payload = json.dumps(fake_submissions).encode("utf-8")
+    mock_resp = BoundedHTTPResponse(
+        body=raw_payload,
+        endpoint="https://data.sec.gov/submissions/CIK0001652044.json",
+        status_code=200,
+        content_type="application/json",
+        headers={"content-type": "application/json"},
+        latency_ms=50,
+        attempts=1,
+    )
+
+    with patch("backend.infrastructure.acquisition.adapters.authoritative.sec_edgar.fetch_public_http", return_value=mock_resp):
+        res = fetch_sec_submissions("Google")
+        assert res["status"] == "SUCCESS", f"Expected SUCCESS for Google, got: {res}"
+        assert res["company_name"] == "Alphabet Inc."
+        assert res["cik"] == "0001652044"

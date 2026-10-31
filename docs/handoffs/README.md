@@ -1,5 +1,9 @@
 # Coding-agent handoffs
 
+## CodeRabbit Review Remediation & Governance Tightening - 2026-11-01
+
+- [CodeRabbit Review Remediation](2026-11-01_CODERABBIT_REVIEW_REMEDIATION.md): Addressed all 15 CodeRabbit review comments on PR #5 across 6 prioritized tracks: AI-proposed issuer identifier consistency, uniform advisory failover governance (AdvisoryProviderBlocked), frontend keyword catalyst isolation, honest finding-to-passage provenance, empirical dispersion bands and empty states in visualizations (eliminating synthetic curves and zero-masking), and SEC alias resolution. All 27 unit tests and 12 frontend suites pass.
+
 ## V2 Consolidated Release Reconciliation & Telemetry Integrity - 2026-11-01
 
 - [V2 Consolidated Release Reconciliation](2026-11-01_V2_CONSOLIDATED_RELEASE_RECONCILIATION.md): Clean consolidation branch `feat/v2-consolidated-release` based on current `main` (`733ffd6`). Resolved all 4 critical defects from PR #4: purged fabricated SEC contact fallback, purged fictional stock prices ($12.10) & fake 'SEC 6-K Filed' events, removed finding synthesis from unverified snippets, and verified Cloudflare/FastAPI routes. Preserved hybrid AI resolver, Groq/OpenAI failover chain, and Phase 4 golden replay bitwise invariance (13/13 passing). PR #4 kept open for reference.

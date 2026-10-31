@@ -33,7 +33,17 @@
     renderVolatilityChart(container, options = {}) {
       if (!container) return;
 
-      const history = Array.isArray(options.history) ? options.history : [];
+      const rawHistory = Array.isArray(options.history) ? options.history : [];
+      const history = rawHistory
+        .map(p => {
+          if (!p || typeof p !== 'object') return null;
+          if (p.val === null || p.val === undefined || p.val === '') return null;
+          const num = Number(p.val);
+          if (!Number.isFinite(num)) return null;
+          return { ...p, val: num };
+        })
+        .filter(Boolean);
+
       if (history.length < 2) {
         container.innerHTML = `
           <div class="ae-graph-wrapper ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
@@ -53,7 +63,7 @@
       const padding = { top: 24, right: 30, bottom: 30, left: 45 };
 
       const points = history;
-      const vals = points.map(p => Number(p.val) || 0);
+      const vals = points.map(p => p.val);
       const minVal = Math.min(...vals) * 0.98;
       const maxVal = Math.max(...vals) * 1.02;
       const rangeVal = (maxVal - minVal) || 1;
@@ -78,10 +88,20 @@
 
       const areaD = `${pathD} L ${coords[coords.length - 1].x} ${height - padding.bottom} L ${coords[0].x} ${height - padding.bottom} Z`;
 
-      // Anomaly band Y positions (+1.5σ and -1.5σ)
-      const meanY = padding.top + innerH / 2;
-      const bandTopY = Math.max(padding.top + 8, meanY - innerH * 0.35);
-      const bandBottomY = Math.min(height - padding.bottom - 8, meanY + innerH * 0.35);
+      // Empirical dispersion calculations (mean ± 1.5σ)
+      const mean = vals.reduce((sum, v) => sum + v, 0) / vals.length;
+      const variance = vals.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / vals.length;
+      const stdDev = Math.sqrt(variance);
+      const hasDispersion = Number.isFinite(stdDev) && stdDev > 0;
+
+      let bandTopY = 0;
+      let bandBottomY = 0;
+      if (hasDispersion) {
+        const topVal = Math.min(maxVal, mean + 1.5 * stdDev);
+        const bottomVal = Math.max(minVal, mean - 1.5 * stdDev);
+        bandTopY = Math.max(padding.top, padding.top + innerH - ((topVal - minVal) / rangeVal) * innerH);
+        bandBottomY = Math.min(height - padding.bottom, padding.top + innerH - ((bottomVal - minVal) / rangeVal) * innerH);
+      }
 
       const chartId = 'ae_chart_' + Math.random().toString(36).slice(2, 8);
 
@@ -89,7 +109,7 @@
         <div class="ae-graph-wrapper" style="position:relative;background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.06em;">// VOLATILITY &amp; TRAJECTORY DISPERSION</span>
+              <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.06em;">// ${hasDispersion ? 'EMPIRICAL DISPERSION BAND (MEAN ± 1.5σ)' : 'VOLATILITY TRAJECTORY'}</span>
               <span style="font-size:0.68rem;padding:2px 6px;border-radius:4px;background:rgba(0,229,255,0.12);color:var(--accent);border:1px solid rgba(0,229,255,0.25);">OBSERVED QUORUM</span>
             </div>
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">
@@ -105,10 +125,12 @@
               </linearGradient>
             </defs>
 
-            <!-- Dispersion Bands -->
+            ${hasDispersion ? `
+            <!-- Dispersion Bands (Mean ± 1.5σ) -->
             <rect x="${padding.left}" y="${bandTopY}" width="${innerW}" height="${bandBottomY - bandTopY}" fill="rgba(245,158,11,0.03)" stroke="rgba(245,158,11,0.2)" stroke-dasharray="3,3" stroke-width="1"/>
             <line x1="${padding.left}" y1="${bandTopY}" x2="${width - padding.right}" y2="${bandTopY}" stroke="rgba(245,158,11,0.4)" stroke-dasharray="4,4" stroke-width="1"/>
             <line x1="${padding.left}" y1="${bandBottomY}" x2="${width - padding.right}" y2="${bandBottomY}" stroke="rgba(245,158,11,0.4)" stroke-dasharray="4,4" stroke-width="1"/>
+            ` : ''}
 
             <!-- Axis Labels -->
             <text x="${padding.left - 6}" y="${padding.top + 10}" fill="#64748b" font-size="10" font-family="monospace" text-anchor="end">$${maxVal.toFixed(2)}</text>
@@ -143,7 +165,37 @@
     renderEpistemicRadar(container, tensor = null) {
       if (!container) return;
 
-      if (!tensor || typeof tensor !== 'object' || (tensor.relevance == null && tensor.source_quality == null && tensor.independence == null)) {
+      if (!tensor || typeof tensor !== 'object') {
+        container.innerHTML = `
+          <div class="ae-radar-widget ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
+              // EPISTEMIC TENSOR: INSUFFICIENT DATA
+            </div>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;line-height:1.5;">
+              Multi-dimensional epistemic tensor unpopulated for this evaluation. Telemetry policy strictly prohibits rendering fabricated tensor scores.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      function parseAxisVal(val) {
+        if (val === null || val === undefined || val === '') return null;
+        const num = Number(val);
+        return Number.isFinite(num) ? Math.max(0.0, Math.min(1.0, num)) : null;
+      }
+
+      const axes = [
+        { label: 'Relevance', key: 'relevance', val: parseAxisVal(tensor.relevance) },
+        { label: 'Source Quality', key: 'source_quality', val: parseAxisVal(tensor.source_quality) },
+        { label: 'Independence', key: 'independence', val: parseAxisVal(tensor.independence) },
+        { label: 'Primary Weight', key: 'primary_weight', val: parseAxisVal(tensor.primary_weight) },
+        { label: 'Freshness', key: 'freshness', val: parseAxisVal(tensor.freshness) },
+        { label: 'Resilience', key: 'contradiction', val: tensor.contradiction != null && Number.isFinite(Number(tensor.contradiction)) ? Math.max(0.0, 1.0 - Math.max(0.0, Math.min(1.0, Number(tensor.contradiction)))) : null }
+      ];
+
+      const assessedAxes = axes.filter(a => a.val !== null);
+      if (assessedAxes.length === 0) {
         container.innerHTML = `
           <div class="ae-radar-widget ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
@@ -160,16 +212,6 @@
       const size = 260;
       const center = size / 2;
       const radius = 90;
-
-      const axes = [
-        { label: 'Relevance', key: 'relevance', val: Number(tensor.relevance) || 0.0 },
-        { label: 'Source Quality', key: 'source_quality', val: Number(tensor.source_quality) || 0.0 },
-        { label: 'Independence', key: 'independence', val: Number(tensor.independence) || 0.0 },
-        { label: 'Primary Weight', key: 'primary_weight', val: Number(tensor.primary_weight) || 0.0 },
-        { label: 'Freshness', key: 'freshness', val: Number(tensor.freshness) || 0.0 },
-        { label: 'Resilience', key: 'contradiction', val: tensor.contradiction != null ? Math.max(0.0, 1.0 - Number(tensor.contradiction)) : 0.0 }
-      ];
-
       const angleStep = (Math.PI * 2) / axes.length;
 
       // Web rings
@@ -184,9 +226,9 @@
         return `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>`;
       }).join('');
 
-      // Data polygon
+      // Data polygon - clamp assessed values, unassessed remain at center 0
       const dataPts = axes.map((ax, i) => {
-        const clamped = Math.max(0.05, Math.min(1.0, ax.val));
+        const clamped = ax.val !== null ? Math.max(0.05, Math.min(1.0, ax.val)) : 0;
         const a = i * angleStep - Math.PI / 2;
         const x = center + Math.cos(a) * (radius * clamped);
         const y = center + Math.sin(a) * (radius * clamped);
@@ -194,12 +236,17 @@
       });
 
       const polyStr = dataPts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-      const harmonicScore = Math.round(axes.reduce((a, b) => a + b.val, 0) / axes.length * 100);
+      const meanScore = Math.round((assessedAxes.reduce((sum, a) => sum + a.val, 0) / assessedAxes.length) * 100);
 
       const html = `
         <div class="ae-radar-widget" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#c4b5fd;letter-spacing:0.06em;margin-bottom:6px;text-align:left;">
-            // 6-AXIS EPISTEMIC TENSOR RADAR
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#c4b5fd;letter-spacing:0.06em;text-align:left;">
+              // 6-AXIS EPISTEMIC TENSOR RADAR
+            </span>
+            <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);">
+              ${assessedAxes.length}/6 ASSESSED
+            </span>
           </div>
           <svg viewBox="0 0 ${size} ${size}" style="width:100%;max-width:240px;height:auto;margin:0 auto;overflow:visible;">
             ${ringPolys}
@@ -211,22 +258,24 @@
               const y2 = center + Math.sin(a) * radius;
               const lx = center + Math.cos(a) * (radius + 20);
               const ly = center + Math.sin(a) * (radius + 20);
+              const labelText = ax.val !== null ? esc(ax.label) : `${esc(ax.label)} (n/a)`;
+              const labelColor = ax.val !== null ? '#94a3b8' : '#475569';
               return `
                 <line x1="${center}" y1="${center}" x2="${x2}" y2="${y2}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-                <text x="${lx}" y="${ly + 4}" fill="#94a3b8" font-size="9" font-family="monospace" text-anchor="middle">${esc(ax.label)}</text>
+                <text x="${lx}" y="${ly + 4}" fill="${labelColor}" font-size="9" font-family="monospace" text-anchor="middle">${labelText}</text>
               `;
             }).join('')}
 
             <!-- Data polygon -->
             <polygon points="${polyStr}" fill="rgba(129,140,248,0.25)" stroke="#818cf8" stroke-width="2"/>
 
-            <!-- Vertex nodes -->
-            ${dataPts.map(p => `
+            <!-- Vertex nodes for assessed axes only -->
+            ${dataPts.filter(p => p.val !== null).map(p => `
               <circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#06080d" stroke="#818cf8" stroke-width="2"/>
             `).join('')}
           </svg>
           <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:6px;">
-            Harmonic Epistemic Score: <strong style="color:#c4b5fd;">${harmonicScore}%</strong>
+            Mean Epistemic Score: <strong style="color:#c4b5fd;">${meanScore}%</strong>
           </div>
         </div>
       `;
@@ -460,43 +509,71 @@
     renderHawkesVelocity(container, options = {}) {
       if (!container) return;
 
-      if (options.r0 == null) {
+      if (options.r0 == null || !Number.isFinite(Number(options.r0))) {
         container.innerHTML = `
           <div class="ae-graph-wrapper ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
               // INSUFFICIENT TEMPORAL VELOCITY OBSERVATIONS
             </div>
             <p style="font-size:0.82rem;color:var(--text-muted);margin:0;">
-              Zero longitudinal timestamp sequences captured. Hawkes virality curve requires temporal arrival data.
+              Zero longitudinal timestamp sequences captured. Hawkes virality estimation requires finite branching factor and arrival data.
             </p>
           </div>
         `;
         return;
       }
 
-      const width = options.width || 600;
-      const height = options.height || 210;
-      const padding = { top: 22, right: 30, bottom: 28, left: 45 };
-
       const r0 = Number(options.r0);
       const isSupercritical = r0 >= 1.0;
       const stateBadge = isSupercritical ? 'SUPER-CRITICAL CASCADE (R₀ &gt; 1.0)' : 'SUB-CRITICAL BOUNDED PROPAGATION (R₀ &lt; 1.0)';
       const stateColor = isSupercritical ? 'var(--rose)' : 'var(--emerald)';
 
-      // Generate Hawkes intensity curve points
-      const pointsCount = 24;
+      const arrivals = Array.isArray(options.arrivals)
+        ? options.arrivals.map(Number).filter(Number.isFinite).sort((a, b) => a - b)
+        : [];
+
+      // If no longitudinal arrival timestamps are provided, do NOT fabricate a curve or hardcoded time axis.
+      // Render an honest scalar metric panel with R0 and the supercriticality status.
+      if (arrivals.length < 2) {
+        container.innerHTML = `
+          <div class="ae-graph-wrapper" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.06em;">// HAWKES SELF-EXCITING VIRALITY ACCELERATION</span>
+              <span style="font-size:0.68rem;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.06);color:${stateColor};border:1px solid ${stateColor}44;font-family:var(--font-mono);font-weight:700;">
+                ${stateBadge}
+              </span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
+              <div>
+                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;">OBSERVED BRANCHING RATIO R₀</div>
+                <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:${stateColor};">${r0.toFixed(2)}</div>
+              </div>
+              <p style="font-size:0.8rem;color:var(--text-muted);margin:0;max-width:360px;line-height:1.4;text-align:right;">
+                Scalar branching ratio recorded without continuous arrival timestamps. Continuous intensity curve omitted to preserve telemetry integrity.
+              </p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // When arrival timestamps exist, derive curve from observed arrivals
+      const width = options.width || 600;
+      const height = options.height || 210;
+      const padding = { top: 22, right: 30, bottom: 28, left: 45 };
       const innerW = width - padding.left - padding.right;
       const innerH = height - padding.top - padding.bottom;
 
-      const curvePoints = [];
-      for (let i = 0; i < pointsCount; i++) {
-        const t = i / (pointsCount - 1);
-        const intensity = 0.1 + (Math.max(0, r0) * Math.exp(-2.5 * t) * Math.sin(t * 3.5 + 0.2) + 0.1 * Math.sin(t * 5));
-        const clamped = Math.max(0.05, Math.min(1.0, intensity));
-        const x = padding.left + t * innerW;
-        const y = padding.top + innerH - clamped * innerH;
-        curvePoints.push({ x, y, t, intensity: clamped });
-      }
+      const tMin = arrivals[0];
+      const tMax = arrivals[arrivals.length - 1];
+      const tSpan = (tMax - tMin) || 1;
+
+      const curvePoints = arrivals.map((t, idx) => {
+        const x = padding.left + ((t - tMin) / tSpan) * innerW;
+        const intensity = Math.min(1.0, Math.max(0.05, (idx + 1) / arrivals.length * r0));
+        const y = padding.top + innerH - intensity * innerH;
+        return { x, y, t };
+      });
 
       let d = `M ${curvePoints[0].x} ${curvePoints[0].y}`;
       for (let i = 1; i < curvePoints.length; i++) {
@@ -542,9 +619,8 @@
             <!-- Axis Labels -->
             <text x="${padding.left - 6}" y="${padding.top + 10}" fill="#64748b" font-size="9" font-family="monospace" text-anchor="end">Peak λ</text>
             <text x="${padding.left - 6}" y="${height - padding.bottom}" fill="#64748b" font-size="9" font-family="monospace" text-anchor="end">0</text>
-            <text x="${padding.left}" y="${height - padding.bottom + 16}" fill="#64748b" font-size="9" font-family="monospace">T-48h</text>
-            <text x="${width / 2}" y="${height - padding.bottom + 16}" fill="#64748b" font-size="9" font-family="monospace" text-anchor="middle">T-24h</text>
-            <text x="${width - padding.right}" y="${height - padding.bottom + 16}" fill="#64748b" font-size="9" font-family="monospace" text-anchor="end">Now (T-0)</text>
+            <text x="${padding.left}" y="${height - padding.bottom + 16}" fill="#64748b" font-size="9" font-family="monospace">Observed Start</text>
+            <text x="${width - padding.right}" y="${height - padding.bottom + 16}" fill="#64748b" font-size="9" font-family="monospace" text-anchor="end">Latest Observation</text>
           </svg>
         </div>
       `;
@@ -559,29 +635,35 @@
     renderIdentityThreatGauge(container, options = {}) {
       if (!container) return;
 
-      const hasValues = options.deepfake != null || options.impersonation != null || options.doxxing != null || options.smear != null;
-      if (!hasValues) {
+      function parseThreat(val) {
+        if (val === null || val === undefined || val === '') return null;
+        const n = Number(val);
+        return Number.isFinite(n) ? Math.max(0, Math.min(100, Math.round(n))) : null;
+      }
+
+      const vectors = [
+        { label: 'Synthetic Media / Deepfake', val: parseThreat(options.deepfake), color: '#38bdf8' },
+        { label: 'Executive Impersonation', val: parseThreat(options.impersonation), color: '#00e5ff' },
+        { label: 'Doxxing & Credential Exposure', val: parseThreat(options.doxxing), color: '#10b981' },
+        { label: 'Coordinated Smear / Defamation', val: parseThreat(options.smear), color: '#f59e0b' }
+      ];
+
+      const assessed = vectors.filter(v => v.val !== null);
+      if (assessed.length === 0) {
         container.innerHTML = `
           <div class="ae-graph-wrapper ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
               // NO ATTACK VECTOR OBSERVATIONS RECORDED
             </div>
             <p style="font-size:0.82rem;color:var(--text-muted);margin:0;">
-              Zero adversarial impersonation, doxxing, or synthetic media vectors detected in monitored channels.
+              No assessments recorded; this is not evidence of safety.
             </p>
           </div>
         `;
         return;
       }
 
-      const vectors = [
-        { label: 'Synthetic Media / Deepfake', val: Number(options.deepfake) || 0, color: '#38bdf8' },
-        { label: 'Executive Impersonation', val: Number(options.impersonation) || 0, color: '#00e5ff' },
-        { label: 'Doxxing & Credential Exposure', val: Number(options.doxxing) || 0, color: '#10b981' },
-        { label: 'Coordinated Smear / Defamation', val: Number(options.smear) || 0, color: '#f59e0b' }
-      ];
-
-      const maxThreat = Math.max(...vectors.map(v => v.val));
+      const maxThreat = Math.max(...assessed.map(v => v.val));
       const overallStatus = maxThreat > 50 ? 'ELEVATED THREAT DETECTED' : 'DEFENSE POSTURE SECURE';
       const statusColor = maxThreat > 50 ? 'var(--rose)' : 'var(--emerald)';
 
@@ -598,10 +680,10 @@
               <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px;">
                 <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.72rem;margin-bottom:6px;">
                   <span style="color:var(--text-muted);">${esc(v.label)}</span>
-                  <strong style="color:${v.color};">${v.val}%</strong>
+                  ${v.val !== null ? `<strong style="color:${v.color};">${v.val}%</strong>` : `<strong style="color:var(--text-dim);font-size:0.68rem;">Not assessed</strong>`}
                 </div>
                 <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">
-                  <div style="height:100%;width:${v.val}%;background:${v.color};border-radius:3px;box-shadow:0 0 8px ${v.color}66;"></div>
+                  ${v.val !== null ? `<div style="height:100%;width:${v.val}%;background:${v.color};border-radius:3px;box-shadow:0 0 8px ${v.color}66;"></div>` : `<div style="height:100%;width:0%;"></div>`}
                 </div>
               </div>
             `).join('')}

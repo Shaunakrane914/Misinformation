@@ -58,6 +58,7 @@ class IssuerIdentityResolver:
         self._last_sync_failed_at: Optional[float] = None
         self._last_sync_error: Optional[str] = None
         self._last_sync_provenance: Optional[Dict[str, Any]] = None
+        self._cached_index_loaded: bool = False
         for record in records:
             self.register(record)
 
@@ -223,7 +224,7 @@ class IssuerIdentityResolver:
             }
         )
 
-    def observe_ticker_index(self, data, source_url, body_sha256, query=None):
+    def observe_ticker_index(self, data, source_url, body_sha256, query=None, is_live: bool = False):
         """Ingest an actually captured official company_tickers_exchange index."""
         if (
             source_url != "https://www.sec.gov/files/company_tickers_exchange.json"
@@ -291,8 +292,9 @@ class IssuerIdentityResolver:
                 "distinct_issuers_ingested": len(grouped),
                 "synced_at": time.time(),
             }
-            self._last_sync_failed_at = None
-            self._last_sync_error = None
+            if is_live:
+                self._last_sync_failed_at = None
+                self._last_sync_error = None
         return len(grouped)
 
     def record_sync_failure(self, error: Exception, endpoint: str):
@@ -310,26 +312,36 @@ class IssuerIdentityResolver:
         """Load saved genuine capture of company_tickers_exchange.json without network I/O."""
         import hashlib
 
-        candidates = [file_path] if file_path else [
-            Path(__file__).parents[3] / "tests" / "unit" / "fixtures" / "sec_company_tickers_exchange.json",
-            Path(__file__).parents[2] / "tests" / "unit" / "fixtures" / "sec_company_tickers_exchange.json",
-            Path(__file__).parent / "fixtures" / "sec_company_tickers_exchange.json",
-            Path("tests/unit/fixtures/sec_company_tickers_exchange.json"),
-        ]
-        for p in candidates:
-            if not p:
-                continue
-            path = Path(p)
-            if path.is_file():
-                raw = path.read_bytes()
-                sha = hashlib.sha256(raw).hexdigest()
-                parsed = json.loads(raw.decode("utf-8"))
-                return self.observe_ticker_index(
-                    parsed,
-                    "https://www.sec.gov/files/company_tickers_exchange.json",
-                    sha,
-                )
-        return 0
+        with self._lock:
+            if file_path is None and self._cached_index_loaded:
+                return 0
+
+            candidates = [file_path] if file_path else [
+                Path(__file__).parents[3] / "tests" / "unit" / "fixtures" / "sec_company_tickers_exchange.json",
+                Path(__file__).parents[2] / "tests" / "unit" / "fixtures" / "sec_company_tickers_exchange.json",
+                Path(__file__).parent / "fixtures" / "sec_company_tickers_exchange.json",
+                Path("tests/unit/fixtures/sec_company_tickers_exchange.json"),
+            ]
+            for p in candidates:
+                if not p:
+                    continue
+                path = Path(p)
+                if path.is_file():
+                    raw = path.read_bytes()
+                    sha = hashlib.sha256(raw).hexdigest()
+                    parsed = json.loads(raw.decode("utf-8"))
+                    count = self.observe_ticker_index(
+                        parsed,
+                        "https://www.sec.gov/files/company_tickers_exchange.json",
+                        sha,
+                        is_live=False,
+                    )
+                    if file_path is None:
+                        self._cached_index_loaded = True
+                    return count
+            if file_path is None:
+                self._cached_index_loaded = True
+            return 0
 
     def remember_filings(self, cik, filings):
         with self._lock:

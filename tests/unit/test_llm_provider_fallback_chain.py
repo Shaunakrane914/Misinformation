@@ -171,3 +171,57 @@ def test_openai_provider_availability():
     p_valid = OpenAIProvider(api_key="sk-test123")
     assert p_valid.is_available() is True
 
+def test_gemini_in_cooldown_falls_over_to_groq():
+    """When Gemini is in provider cooldown (AdvisoryProviderBlocked), fallback to Groq succeeds (Comment 2)."""
+    from backend.infrastructure.llm.advisory_policy import AdvisoryProviderBlocked
+
+    gemini_mock = MagicMock(spec=LLMProvider)
+    gemini_mock.is_available.return_value = True
+    gemini_mock.generate.side_effect = AdvisoryProviderBlocked("Gemini provider in cooldown")
+
+    groq_mock = MagicMock(spec=LLMProvider)
+    groq_mock.is_available.return_value = True
+    groq_mock.generate.return_value = LLMResponse(
+        content='{"suggestion": "safe fallback from groq"}',
+        model="openai/gpt-oss-20b",
+        provider="groq",
+        latency_ms=95.0,
+        usage=LLMUsage(prompt_tokens=10, completion_tokens=10, total_tokens=20, is_estimated=False),
+    )
+
+    gateway = DefaultLLMGateway(
+        settings_instance=Settings(environment="development", aegis_mock_llm=False),
+        gemini_provider=gemini_mock,
+        groq_provider=groq_mock,
+    )
+    gateway.mock_mode = False
+
+    result = gateway.generate_text("test query", purpose="search_suggestion")
+    assert "safe fallback from groq" in result
+    assert gemini_mock.generate.call_count == 1
+    assert groq_mock.generate.call_count == 1
+
+
+def test_budget_exhaustion_fails_closed_without_secondary_attempts():
+    """When overall daily budget or scope is exhausted (AdvisoryPolicyError), gateway fails closed."""
+    from backend.infrastructure.llm.advisory_policy import AdvisoryPolicyError
+
+    gemini_mock = MagicMock(spec=LLMProvider)
+    gemini_mock.is_available.return_value = True
+    gemini_mock.generate.side_effect = AdvisoryPolicyError("Hard request budget exhausted")
+
+    groq_mock = MagicMock(spec=LLMProvider)
+    groq_mock.is_available.return_value = True
+
+    gateway = DefaultLLMGateway(
+        settings_instance=Settings(environment="development", aegis_mock_llm=False),
+        gemini_provider=gemini_mock,
+        groq_provider=groq_mock,
+    )
+    gateway.mock_mode = False
+
+    with pytest.raises(AdvisoryPolicyError, match="Hard request budget exhausted"):
+        gateway.generate_text("test query", purpose="search_suggestion")
+
+    assert gemini_mock.generate.call_count == 1
+    assert groq_mock.generate.call_count == 0

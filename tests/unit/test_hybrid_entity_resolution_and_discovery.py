@@ -309,3 +309,46 @@ def test_personal_watch_policy_rejects_sensitive_pii():
     valid, _, reason = gate.verify_candidate_entity("personal_watch", prop_pii, None)
     assert valid is False
     assert reason == "REJECTED_SENSITIVE_PII"
+
+def test_scout_verification_rejects_conflicting_identifiers(sample_sec_resolver):
+    """Verification Gate must reject candidate entity when provided identifiers disagree (Comment 3)."""
+    gate = VerificationGate()
+
+    # 1. Real ticker with fictional/non-matching legal name
+    proposal_mixed = CandidateEntityProposal(
+        legal_name="Fictional LLC",
+        ticker="AAPL",
+        rationale="AI hallucinates that Apple is Fictional LLC",
+    )
+    valid, record, reason = gate.verify_candidate_entity("scout", proposal_mixed, sample_sec_resolver)
+    assert valid is False
+    assert "IDENTIFIER_FAILED_RESOLUTION" in reason or "DOES_NOT_MATCH" in reason
+
+    # 2. Conflicting genuine identifiers (Apple ticker + Infosys CIK)
+    proposal_conflict = CandidateEntityProposal(
+        legal_name="Apple Inc.",
+        ticker="AAPL",
+        cik="0001067491",  # Infosys CIK
+        rationale="AI mixes Apple ticker with Infosys CIK",
+    )
+    valid, record, reason = gate.verify_candidate_entity("scout", proposal_conflict, sample_sec_resolver)
+    assert valid is False
+    assert reason in ("CANDIDATE_IDENTIFIERS_DISAGREE", "PROPOSED_CIK_DOES_NOT_MATCH_RECORD")
+
+
+def test_scout_verification_rejects_candidate_not_matching_requested_company(sample_sec_resolver):
+    """Verification Gate must reject genuine entity that has no relation to the requested company."""
+    gate = VerificationGate()
+
+    # User asked for Tesla, AI proposes Apple
+    proposal_unrelated = CandidateEntityProposal(
+        legal_name="Apple Inc.",
+        ticker="AAPL",
+        cik="0000320193",
+        rationale="A genuine company that is completely unrelated to Tesla",
+    )
+    valid, record, reason = gate.verify_candidate_entity(
+        "scout", proposal_unrelated, sample_sec_resolver, target_query="Tesla Motors"
+    )
+    assert valid is False
+    assert reason == "CANDIDATE_DOES_NOT_MATCH_REQUESTED_COMPANY"

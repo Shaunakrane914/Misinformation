@@ -97,27 +97,85 @@ class VerificationGate:
         agent: str,
         proposal: CandidateEntityProposal,
         resolver: Any,
+        target_query: Optional[str] = None,
     ) -> Tuple[bool, Optional[Dict[str, Any]], str]:
         """Verify an AI-proposed entity against official registry ground truth (Failure Mode 1).
 
+        All provided identifiers must resolve and agree with one another and the requested company.
         Returns: (is_verified, verified_record_or_none, rejection_reason)
         """
         agent_norm = agent.lower()
 
         if agent_norm in {"scout", "scout_agent", "financial"}:
             # Scout Invariant: Candidate must match a genuine entry in the authoritative SEC index.
-            # We probe the resolver using legal_name, ticker, or proposed CIK.
-            queries_to_test = [q for q in (proposal.cik, proposal.ticker, proposal.legal_name, proposal.parent_company) if q]
-            for q in queries_to_test:
-                res = resolver.resolve(q)
-                if res.get("status") == "RESOLVED_WITH_PROVENANCE" and res.get("cik"):
-                    # Ground truth confirmed in registry!
-                    verified = dict(res)
-                    verified["resolution_path"] = "AI_HEURISTIC_CONFIRMED_IN_REGISTRY"
-                    verified["ai_proposal_rationale"] = proposal.rationale
-                    return True, verified, ""
+            # All non-empty identifiers must resolve, and they must all agree on the same CIK.
+            identifiers = [q for q in (proposal.cik, proposal.ticker, proposal.legal_name) if q]
+            if not identifiers:
+                return False, None, "CANDIDATE_NOT_CONFIRMED_IN_AUTHORITATIVE_REGISTRY"
 
-            return False, None, "CANDIDATE_NOT_CONFIRMED_IN_AUTHORITATIVE_REGISTRY"
+            resolved_records = []
+            for q in identifiers:
+                res = resolver.resolve(q)
+                if not (res.get("status") == "RESOLVED_WITH_PROVENANCE" and res.get("cik")):
+                    return False, None, f"IDENTIFIER_FAILED_RESOLUTION_{q}"
+                resolved_records.append(res)
+
+            ciks = {r["cik"] for r in resolved_records}
+            if len(ciks) != 1:
+                return False, None, "CANDIDATE_IDENTIFIERS_DISAGREE"
+
+            record = resolved_records[0]
+
+            # Structural consistency checks against resolved record
+            from backend.services.research.issuer_identity import identity_key, clean_base_name
+            if proposal.ticker:
+                rec_symbols = {
+                    identity_key(t.get("symbol", ""))
+                    for t in record.get("listings", []) if isinstance(t, dict)
+                }
+                if identity_key(proposal.ticker) not in rec_symbols:
+                    return False, None, "PROPOSED_TICKER_DOES_NOT_MATCH_RECORD"
+
+            if proposal.cik and identity_key(proposal.cik) != identity_key(record.get("cik", "")):
+                return False, None, "PROPOSED_CIK_DOES_NOT_MATCH_RECORD"
+
+            if proposal.legal_name:
+                valid_names = {
+                    identity_key(record.get("legal_name", "")),
+                    *[identity_key(a) for a in record.get("aliases", []) if isinstance(a, str)],
+                    *[identity_key(b) for b in clean_base_name(record.get("legal_name", ""))],
+                }
+                if identity_key(proposal.legal_name) not in valid_names:
+                    return False, None, "PROPOSED_LEGAL_NAME_DOES_NOT_MATCH_RECORD"
+
+            # Agreement with requested company (target_query)
+            if target_query:
+                t_clean = identity_key(target_query)
+                all_entity_keys = {
+                    identity_key(record.get("cik", "")),
+                    identity_key(record.get("legal_name", "")),
+                    *[identity_key(t.get("symbol", "")) for t in record.get("listings", []) if isinstance(t, dict)],
+                    *[identity_key(a) for a in record.get("aliases", []) if isinstance(a, str)],
+                    *[identity_key(b) for b in clean_base_name(record.get("legal_name", ""))],
+                }
+                t_words = set(re.findall(r"[A-Z0-9]+", target_query.upper()))
+                name_words = set(re.findall(r"[A-Z0-9]+", record.get("legal_name", "").upper()))
+                rationale_words = set(re.findall(r"[A-Z0-9]+", (proposal.rationale or "").upper()))
+
+                matches_entity = t_clean in all_entity_keys or bool(t_words & name_words)
+                affiliation_terms = {"SUBSIDIARY", "PARENT", "ACQUIRED", "ACQUISITION", "OWNS", "OWNED", "DIVISION", "MERGED", "HOLDING", "PORTFOLIO", "BRAND"}
+                matches_affiliation = bool(t_words & rationale_words) and bool(rationale_words & affiliation_terms)
+
+                if not matches_entity and not matches_affiliation:
+                    return False, None, "CANDIDATE_DOES_NOT_MATCH_REQUESTED_COMPANY" 
+
+
+
+
+            verified = dict(record)
+            verified["resolution_path"] = "AI_HEURISTIC_CONFIRMED_IN_REGISTRY"
+            verified["ai_proposal_rationale"] = proposal.rationale
+            return True, verified, ""
 
         elif agent_norm in {"brandshield", "brandshield_agent"}:
             # BrandShield Invariant: Candidate brand must have a safe domain or match recognized brand catalog.
@@ -320,7 +378,7 @@ class HybridDiscoveryCoordinator:
 
         for candidate in batch.candidates:
             verified, record, reason = self.verification_gate.verify_candidate_entity(
-                "scout", candidate, resolver
+                "scout", candidate, resolver, target_query=query
             )
             if verified and record:
                 logger.info(

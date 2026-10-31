@@ -54,7 +54,19 @@
       if (!data || typeof data !== 'object') return data;
 
       const passages = this.collectPassages(data);
-      const evidence = Array.isArray(data.evidence) ? data.evidence : (Array.isArray(data.sources) ? data.sources : []);
+      let evidence = [];
+      if (Array.isArray(data.evidence)) {
+        evidence = data.evidence;
+      } else if (data.evidence && typeof data.evidence === 'object') {
+        const ev = data.evidence;
+        evidence = [
+          ...(Array.isArray(ev.primary) ? ev.primary : []),
+          ...(Array.isArray(ev.independent) ? ev.independent : []),
+          ...(Array.isArray(ev.community) ? ev.community : [])
+        ];
+      } else if (Array.isArray(data.sources)) {
+        evidence = data.sources;
+      }
       const allSentences = this.extractAllSentences(passages, evidence);
 
       // INVARIANT: Do NOT synthesize findings from unverified snippets.
@@ -63,16 +75,20 @@
         data.findings = [];
       }
 
-      // Extract Catalysts & Headwinds only if empty and real sentences exist
-      if (!data.catalysts || typeof data.catalysts !== 'object' || (!data.catalysts.positive?.length && !data.catalysts.negative?.length && !data.catalysts.unresolved?.length)) {
-        data.catalysts = this.extractCatalysts(allSentences);
+      // Do NOT overwrite or synthesize data.catalysts with keyword-extracted items;
+      // Preserve existing backend-supplied catalysts, or store heuristic items under client_derived
+      if (!data.catalysts || typeof data.catalysts !== 'object') {
+        data.catalysts = { positive: [], negative: [], unresolved: [] };
       }
+      data.client_derived = {
+        heuristic_catalysts: this.extractCatalysts(allSentences)
+      };
 
       // Extract Quantitative Indicators directly from acquired evidence
       data.quantitative_metrics = this.extractQuantitativeIndicators(allSentences);
 
       // Compute Channel Dispersion from actual evidence records
-      data.channel_dispersion = this.computeChannelDispersion(evidence, passages);
+      data.channel_dispersion = this.computeChannelDispersion(evidence);
 
       return data;
     },
@@ -93,6 +109,16 @@
           if (e.text) list.push({ text: e.text, source_title: e.source_name || e.title, publisher_host: e.publisher || e.domain, url: e.url });
           if (e.snippet) list.push({ text: e.snippet, source_title: e.title, publisher_host: e.domain, url: e.url });
         }
+      } else if (data.evidence && typeof data.evidence === 'object') {
+        const allEv = [
+          ...(Array.isArray(data.evidence.primary) ? data.evidence.primary : []),
+          ...(Array.isArray(data.evidence.independent) ? data.evidence.independent : []),
+          ...(Array.isArray(data.evidence.community) ? data.evidence.community : [])
+        ];
+        for (const e of allEv) {
+          if (e.text) list.push({ text: e.text, source_title: e.source_name || e.title, publisher_host: e.publisher || e.domain, url: e.url });
+          if (e.snippet) list.push({ text: e.snippet, source_title: e.title, publisher_host: e.domain, url: e.url });
+        }
       }
       return list;
     },
@@ -109,9 +135,9 @@
             seen.add(norm);
             sentences.push({
               text: s,
-              source: p.source_title || p.publisher_host || 'Verified Source',
+              source: p.source_title || p.publisher_host || 'Unspecified Source',
               url: p.url || p.source_url || null,
-              publisher: p.publisher_host || 'Reporting Source'
+              publisher: p.publisher_host || 'Unspecified Publisher'
             });
           }
         }
@@ -125,9 +151,9 @@
             seen.add(norm);
             sentences.push({
               text: s,
-              source: e.source_name || e.title || 'Monitored Source',
+              source: e.source_name || e.title || 'Unspecified Source',
               url: e.url || null,
-              publisher: e.publisher || e.domain || 'Wire Network'
+              publisher: e.publisher || e.domain || 'Unspecified Publisher'
             });
           }
         }
@@ -149,7 +175,6 @@
           if (negative.length < 5) {
             negative.push({
               catalyst: text,
-              evidence_ids: [s.publisher],
               source: s.source,
               url: s.url,
               epistemic_state: 'CONTESTED_HEADWIND'
@@ -162,7 +187,6 @@
           if (positive.length < 5) {
             positive.push({
               catalyst: text,
-              evidence_ids: [s.publisher],
               source: s.source,
               url: s.url,
               epistemic_state: 'SUPPORTED_GROWTH'
@@ -176,7 +200,6 @@
             unresolved.push({
               factor: text,
               catalyst: text,
-              evidence_ids: [s.publisher],
               source: s.source,
               url: s.url,
               epistemic_state: 'UNVERIFIED_PENDING'
@@ -213,9 +236,10 @@
       return metrics;
     },
 
-    computeChannelDispersion(evidence, passages) {
+    computeChannelDispersion(evidence) {
       const counts = { regulatory: 0, news: 0, web: 0, social: 0, research: 0 };
-      const total = (evidence.length + passages.length) || 0;
+      const items = Array.isArray(evidence) ? evidence : [];
+      const total = items.length;
 
       if (total === 0) {
         return {
@@ -227,12 +251,35 @@
         };
       }
 
-      for (const e of evidence) {
-        const url = (e.url || '').toLowerCase();
+      function getHostname(urlStr) {
+        if (!urlStr || typeof urlStr !== 'string') return '';
+        try {
+          const parsed = new URL(urlStr.includes('://') ? urlStr : 'https://' + urlStr);
+          return parsed.hostname.toLowerCase();
+        } catch (_) {
+          return '';
+        }
+      }
+
+      for (const e of items) {
+        const rawUrl = (e.url || '').toLowerCase();
+        const host = getHostname(e.url) || (e.domain || e.publisher_host || '').toLowerCase();
         const pub = (e.publisher || e.domain || '').toLowerCase();
-        if (url.includes('sec.gov') || pub.includes('edgar') || pub.includes('regulatory')) counts.regulatory++;
-        else if (pub.includes('bbc') || pub.includes('reuters') || pub.includes('apnews') || pub.includes('bloomberg') || url.includes('news')) counts.news++;
-        else if (url.includes('reddit') || url.includes('twitter') || url.includes('x.com') || url.includes('youtube')) counts.social++;
+
+        const isRegulatory = host === 'sec.gov' || host.endsWith('.sec.gov') || pub.includes('edgar') || pub.includes('regulatory') || rawUrl.includes('sec.gov');
+        const isSocial = host === 'twitter.com' || host.endsWith('.twitter.com') ||
+                         host === 'x.com' || host.endsWith('.x.com') ||
+                         host === 'reddit.com' || host.endsWith('.reddit.com') ||
+                         host === 'youtube.com' || host.endsWith('.youtube.com');
+        const isNews = !isRegulatory && !isSocial && (
+          pub.includes('bbc') || pub.includes('reuters') || pub.includes('apnews') ||
+          pub.includes('bloomberg') || host.includes('reuters.com') || host.includes('bloomberg.com') ||
+          pub.includes('news')
+        );
+
+        if (isRegulatory) counts.regulatory++;
+        else if (isSocial) counts.social++;
+        else if (isNews) counts.news++;
         else counts.web++;
       }
 
@@ -240,8 +287,8 @@
         regulatory_pct: Math.round((counts.regulatory / total) * 100),
         news_pct: Math.round((counts.news / total) * 100),
         social_pct: Math.round((counts.social / total) * 100),
-        web_pct: Math.max(0, 100 - Math.round((counts.regulatory / total) * 100) - Math.round((counts.news / total) * 100) - Math.round((counts.social / total) * 100)),
-        total_items: evidence.length + passages.length
+        web_pct: Math.round((counts.web / total) * 100),
+        total_items: total
       };
     }
   };

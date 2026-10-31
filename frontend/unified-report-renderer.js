@@ -266,13 +266,13 @@ function renderVisualAnalytics(report) {
       ${metrics.length > 0 ? `
         <div class="ae-bento-card" style="grid-column: 1 / -1;">
           <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--accent);margin-bottom:10px;">
-            // VERIFIED QUANTITATIVE &amp; REGULATORY INDICATORS
+            // EXTRACTED QUANTITATIVE FIGURES (UNVERIFIED)
           </div>
           <div class="ae-metrics-pill-grid">
             ${metrics.map(m => `
               <div class="ae-metric-pill" title="${esc(m.context)}">
                 <span class="ae-metric-val">${esc(m.value)}</span>
-                <span class="ae-metric-src">${esc(m.source || m.publisher || 'Verified Record')}</span>
+                <span class="ae-metric-src">${esc(m.source || m.publisher || 'Source unspecified')}</span>
               </div>
             `).join('')}
           </div>
@@ -293,49 +293,18 @@ function renderFindings(report) {
   for (let i = 0; i < findings.length; i++) {
     const text = findings[i];
     const match = details.find(d => (d.statement || d.description || d.summary || d.title) === text);
-    const relatedPassage = passages.find(p => p.text && (p.text.includes(text.slice(0, 35)) || text.includes((p.text || '').slice(0, 35))))
-      || passages[i % (passages.length || 1)] || null;
+    const relatedPassage = passages.find(p => p.text && (p.text.includes(text.slice(0, 35)) || text.includes((p.text || '').slice(0, 35)))) || null;
 
     deckItems.push({
       title: text.length > 95 ? text.slice(0, 92) + '…' : text,
       statement: text,
       text: (relatedPassage && relatedPassage.text) || text,
-      publisher: (relatedPassage && relatedPassage.publisher_host) || (match && match.publisher) || 'Verified Disclosure Node',
-      timestamp: (relatedPassage && relatedPassage.published_at) || 'Current Milestone',
-      badge: (match && match.epistemic_state) || 'GROUNDED FINDING',
+      publisher: (relatedPassage && relatedPassage.publisher_host) || (match && match.publisher) || 'Publisher unavailable',
+      timestamp: (relatedPassage && relatedPassage.published_at) || 'Date unknown',
+      badge: (match && match.epistemic_state) || 'REPORTED FINDING',
       badgeColor: '#00e5ff',
       url: safeEvidenceUrl(relatedPassage && relatedPassage.source_url) || null,
-      reasoning: (match && match.reasoning) || 'Corroborated across primary filing and qualified reporting records.'
-    });
-  }
-
-  const cats = report.catalysts || {};
-  for (const c of array(cats.positive)) {
-    if (deckItems.length >= 10) break;
-    deckItems.push({
-      title: c.catalyst || 'Positive Catalyst',
-      statement: c.catalyst || '',
-      text: c.catalyst || '',
-      publisher: c.source || 'Authoritative Wire',
-      timestamp: 'Active Catalyst',
-      badge: 'POSITIVE CATALYST',
-      badgeColor: '#10b981',
-      url: safeEvidenceUrl(c.url) || null,
-      reasoning: 'Positive momentum indicator corroborated by public filings.'
-    });
-  }
-  for (const c of array(cats.negative)) {
-    if (deckItems.length >= 12) break;
-    deckItems.push({
-      title: c.catalyst || 'Contested Headwind',
-      statement: c.catalyst || '',
-      text: c.catalyst || '',
-      publisher: c.source || 'Monitored Channel',
-      timestamp: 'Active Headwind',
-      badge: 'CONTESTED HEADWIND',
-      badgeColor: '#f43f5e',
-      url: safeEvidenceUrl(c.url) || null,
-      reasoning: 'Material challenge or regulatory matter under active review.'
+      reasoning: (match && match.reasoning) || ''
     });
   }
 

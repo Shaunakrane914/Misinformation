@@ -239,10 +239,21 @@ def fetch_sec_submissions(
             if req_legal not in observed_keys:
                 raise ValueError(f"Requested legal entity '{prior_identity['legal_name']}' does not match returned SEC entity '{data.get('name')}'")
         elif prior_identity["status"] == "UNRESOLVED" and not query_or_cik.strip().isdigit():
-            subject = re.sub(r"^(?:NASDAQ|NYSE|AMEX):\s*", "", query_or_cik.strip(), flags=re.I)
-            subject = re.sub(r"\.(?:NS|BO|US|O|N)$", "", subject, flags=re.I)
-            if legal_key(subject) not in observed_keys:
-                raise ValueError("Requested issuer does not match returned submissions identity")
+            clean = re.sub(r"^(?:NASDAQ|NYSE|AMEX|BATS):\s*", "", query_or_cik.strip().upper())
+            clean_sym = re.sub(r"\.(?:O|N|US|NS|BO|HK)$", "", clean).replace("-", ".").replace("/", ".")
+            static_hit = TICKER_CIK_MAP.get(clean_sym)
+            if not static_hit:
+                name_clean = re.sub(r"[^\w\s&]", "", clean).strip()
+                static_hit = COMPANY_NAME_CIK_MAP.get(name_clean)
+                if not static_hit:
+                    base = re.sub(r"\s+(?:INC|INCORPORATED|CORP|CORPORATION|LTD|LIMITED|CO|COMPANY)$", "", name_clean).strip()
+                    static_hit = COMPANY_NAME_CIK_MAP.get(base)
+
+            if static_hit != cik:
+                subject = re.sub(r"^(?:NASDAQ|NYSE|AMEX):\s*", "", query_or_cik.strip(), flags=re.I)
+                subject = re.sub(r"\.(?:NS|BO|US|O|N)$", "", subject, flags=re.I)
+                if legal_key(subject) not in observed_keys:
+                    raise ValueError("Requested issuer does not match returned submissions identity")
         identity = issuer_identity_resolver.observe_submissions(data, cik, url, hashlib.sha256(raw_bytes).hexdigest())
     except Exception as e:
         logger.warning("[SEC EDGAR] Fetch failure for CIK %s: %s", cik, type(e).__name__)

@@ -38,26 +38,31 @@ class GroqProvider(LLMProvider):
         return bool(self.api_key)
 
     def generate(self, prompt: str, model: Optional[str] = None, **kwargs: Any) -> LLMResponse:
-        """Execute text or structured generation via Groq API."""
+        """Execute text or structured generation via Groq API under unified advisory governance."""
+        from backend.infrastructure.llm.advisory_policy import (
+            reserve_request, set_cooldown, AdvisoryPolicyError,
+        )
+
         if not self.is_available():
             raise RuntimeError("GroqProvider unavailable: No API key configured.")
 
-        if len(prompt) > 6000:
-            raise ValueError("Prompt exceeds maximum advisory limit (6000 chars)")
+        if len(prompt) > 6000 or kwargs.get("max_attempts", 1) != 1:
+            raise AdvisoryPolicyError("Advisory generation prompt exceeds 6000 chars or max_attempts != 1")
+
+        tokens = kwargs.get("max_output_tokens", 160)
+        if type(tokens) is not int or not 1 <= tokens <= 250:
+            raise AdvisoryPolicyError("Advisory output limit is 160-250 tokens")
 
         selected_model = model if (model and not model.startswith("gemini-")) else self.default_model
-        timeout = min(5.0, float(kwargs.get("timeout", 2.5)))
+        timeout = min(2.5, float(kwargs.get("timeout", 2.0)))
         if not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("LLM timeout must be finite and positive")
-
-        max_tokens = min(int(kwargs.get("max_output_tokens", 250)), 1024)
-        temperature = float(kwargs.get("temperature", 0.0))
 
         payload: Dict[str, Any] = {
             "model": selected_model,
             "messages": [{"role": "user", "content": prompt}],
-            "temperature": temperature,
-            "max_tokens": max_tokens,
+            "temperature": float(kwargs.get("temperature", 0.0)),
+            "max_tokens": tokens,
         }
         if kwargs.get("json_mode", False) or "schema" in kwargs or "json" in prompt.lower():
             payload["response_format"] = {"type": "json_object"}
@@ -69,41 +74,43 @@ class GroqProvider(LLMProvider):
             "User-Agent": "AegisProtocol/1.0",
         }
 
-        try:
-            response = requests.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                headers=headers,
-                json=payload,
-                timeout=timeout,
+        with reserve_request(kwargs.get("purpose"), provider_name="groq"):
+            try:
+                response = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers=headers,
+                    json=payload,
+                    timeout=timeout,
+                )
+            except Exception as error:
+                latency = (time.perf_counter() - started) * 1000
+                logger.warning("[GroqProvider] Transport failed: %s after %.1fms", type(error).__name__, latency)
+                raise RuntimeError(f"Groq transport failed: {type(error).__name__}") from None
+
+            latency_ms = (time.perf_counter() - started) * 1000
+            if response.status_code == 429:
+                set_cooldown(60, "groq")
+                raise RuntimeError(f"Groq rate limit exceeded (HTTP 429): {response.text[:200]}")
+            if response.status_code != 200:
+                raise RuntimeError(f"Groq advisory returned HTTP {response.status_code}: {response.text[:200]}")
+
+            data = response.json()
+            content = self._extract_content(data)
+            usage = self._usage_from_response(data, prompt, content)
+
+            logger.info(
+                "[GroqProvider] Generation succeeded; model=%s tokens=%d latency=%.1fms",
+                selected_model, usage.total_tokens, latency_ms
             )
-        except Exception as error:
-            latency = (time.perf_counter() - started) * 1000
-            logger.warning("[GroqProvider] Transport failed: %s after %.1fms", type(error).__name__, latency)
-            raise RuntimeError(f"Groq transport failed: {type(error).__name__}") from None
-
-        latency_ms = (time.perf_counter() - started) * 1000
-        if response.status_code == 429:
-            raise RuntimeError(f"Groq rate limit exceeded (HTTP 429): {response.text[:200]}")
-        if response.status_code != 200:
-            raise RuntimeError(f"Groq advisory returned HTTP {response.status_code}: {response.text[:200]}")
-
-        data = response.json()
-        content = self._extract_content(data)
-        usage = self._usage_from_response(data, prompt, content)
-
-        logger.info(
-            "[GroqProvider] Generation succeeded; model=%s tokens=%d latency=%.1fms",
-            selected_model, usage.total_tokens, latency_ms
-        )
-        return LLMResponse(
-            content=content,
-            model=selected_model,
-            provider="groq",
-            latency_ms=latency_ms,
-            usage=usage,
-            raw_response=data,
-            metadata={"provider_model": selected_model, "usage_source": "provider" if not usage.is_estimated else "estimated"},
-        )
+            return LLMResponse(
+                content=content,
+                model=selected_model,
+                provider="groq",
+                latency_ms=latency_ms,
+                usage=usage,
+                raw_response=data,
+                metadata={"provider_model": selected_model, "usage_source": "provider" if not usage.is_estimated else "estimated"},
+            )
 
     def _extract_content(self, data: Dict[str, Any]) -> str:
         choices = data.get("choices", [])

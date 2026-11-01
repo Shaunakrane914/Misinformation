@@ -137,6 +137,11 @@
           <span>Verify a Claim</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
+        <button type="button" class="ae-nav-hamburger" id="aeNavMobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="ae-hamb-bar"></span>
+          <span class="ae-hamb-bar"></span>
+          <span class="ae-hamb-bar"></span>
+        </button>
       </div>
     </div>
   `;
@@ -149,6 +154,176 @@
   });
 
   document.body.prepend(header);
+
+  // ── Mobile Drawer, Overlay & Bottom Quick Dock ──
+  const drawer = document.createElement('aside');
+  drawer.className = 'ae-mobile-drawer';
+  drawer.id = 'aeMobileDrawer';
+  drawer.setAttribute('aria-label', 'Mobile Navigation');
+  drawer.setAttribute('aria-hidden', 'true');
+  drawer.inert = true;
+  drawer.innerHTML = `
+    <div class="ae-drawer-header">
+      <div class="ae-brand-text">
+        <span class="ae-brand-name">AEGIS</span>
+        <span class="ae-brand-sub">SIGNAL · NAVIGATION</span>
+      </div>
+      <button type="button" class="ae-drawer-close" id="aeDrawerClose" aria-label="Close navigation">✕</button>
+    </div>
+    <div class="ae-drawer-body">
+      <div class="ae-drawer-section-label">SPECIALIZED AGENTS</div>
+      <div class="ae-drawer-grid">
+        <a href="scout-agent.html" class="ae-drawer-item ${active === 'company' ? 'active' : ''}">
+          <span class="ae-drawer-icon" style="background:rgba(16,185,129,0.12);color:#10b981;">🏢</span>
+          <div class="ae-drawer-meta">
+            <strong>Scout</strong>
+            <span>Financial claims &amp; SEC disclosures</span>
+          </div>
+        </a>
+        <a href="brandshield-agent.html" class="ae-drawer-item ${active === 'brand' ? 'active' : ''}">
+          <span class="ae-drawer-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b;">🛡️</span>
+          <div class="ae-drawer-meta">
+            <strong>BrandShield</strong>
+            <span>Brand defense &amp; counterfeit alerts</span>
+          </div>
+        </a>
+        <a href="trending-agent.html" class="ae-drawer-item ${active === 'trending' ? 'active' : ''}">
+          <span class="ae-drawer-icon" style="background:rgba(6,182,212,0.12);color:#06b6d4;">📈</span>
+          <div class="ae-drawer-meta">
+            <strong>Trending</strong>
+            <span>Viral velocity &amp; memetic mutation</span>
+          </div>
+        </a>
+        <a href="personal-watch-agent.html" class="ae-drawer-item ${active === 'identity' ? 'active' : ''}">
+          <span class="ae-drawer-icon" style="background:rgba(168,85,247,0.12);color:#a855f7;">👤</span>
+          <div class="ae-drawer-meta">
+            <strong>Personal Watch</strong>
+            <span>Speech forensics &amp; VIP defense</span>
+          </div>
+        </a>
+      </div>
+      <div class="ae-drawer-section-label">INVESTIGATION SUITE</div>
+      <div class="ae-drawer-grid">
+        <a href="submit.html" class="ae-drawer-item ${active === 'verify' ? 'active' : ''}">
+          <span class="ae-drawer-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6;">⚖️</span>
+          <div class="ae-drawer-meta">
+            <strong>Verify a Claim</strong>
+            <span>Cross-examination &amp; matrix analysis</span>
+          </div>
+        </a>
+        <a href="dashboard.html" class="ae-drawer-item">
+          <span class="ae-drawer-icon" style="background:rgba(255,255,255,0.06);color:#e2e8f0;">📊</span>
+          <div class="ae-drawer-meta">
+            <strong>Evidence Dossiers</strong>
+            <span>Historical investigations archive</span>
+          </div>
+        </a>
+      </div>
+      <div class="ae-drawer-section-label">SYSTEM &amp; METHODOLOGY</div>
+      <div class="ae-drawer-links-list">
+        <a href="lab.html" class="ae-drawer-sublink">🔬 Threat Intelligence Lab</a>
+        <a href="status.html" class="ae-drawer-sublink">⚡ System &amp; Operation Health</a>
+        <a href="about.html" class="ae-drawer-sublink">📖 Epistemic Methodology</a>
+        <a href="benchmark.html" class="ae-drawer-sublink">🎯 Retrieval Benchmarks</a>
+      </div>
+    </div>
+  `;
+
+  const drawerBackdrop = document.createElement('div');
+  drawerBackdrop.className = 'ae-drawer-backdrop';
+  drawerBackdrop.id = 'aeDrawerBackdrop';
+
+  const bottomDock = document.createElement('nav');
+  bottomDock.className = 'ae-mobile-dock';
+  bottomDock.id = 'aeMobileDock';
+  bottomDock.setAttribute('aria-label', 'Mobile Quick Navigation');
+  bottomDock.innerHTML = `
+    <a href="index.html" class="ae-dock-btn ${active === 'home' ? 'active' : ''}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      <span>Home</span>
+    </a>
+    <a href="scout-agent.html" class="ae-dock-btn ${active === 'company' ? 'active' : ''}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      <span>Scout</span>
+    </a>
+    <a href="brandshield-agent.html" class="ae-dock-btn ${active === 'brand' ? 'active' : ''}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      <span>Brand</span>
+    </a>
+    <a href="trending-agent.html" class="ae-dock-btn ${active === 'trending' ? 'active' : ''}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+      <span>Trending</span>
+    </a>
+    <a href="personal-watch-agent.html" class="ae-dock-btn ${active === 'identity' ? 'active' : ''}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Personal</span>
+    </a>
+    <button type="button" class="ae-dock-btn" id="aeDockMenuBtn" aria-label="Open navigation menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      <span>Menu</span>
+    </button>
+  `;
+
+  document.body.appendChild(drawer);
+  document.body.appendChild(drawerBackdrop);
+  document.body.appendChild(bottomDock);
+
+  function openMobileDrawer() {
+    drawer.classList.add('open');
+    drawerBackdrop.classList.add('open');
+    drawer.inert = false;
+    drawer.removeAttribute('aria-hidden');
+    document.body.classList.add('ae-drawer-open');
+    const toggle = document.getElementById('aeNavMobileToggle');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMobileDrawer() {
+    drawer.classList.remove('open');
+    drawerBackdrop.classList.remove('open');
+    drawer.inert = true;
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('ae-drawer-open');
+    const toggle = document.getElementById('aeNavMobileToggle');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  const mobToggle = document.getElementById('aeNavMobileToggle');
+  if (mobToggle) mobToggle.addEventListener('click', () => {
+    if (drawer.classList.contains('open')) closeMobileDrawer();
+    else openMobileDrawer();
+  });
+
+  const mobClose = document.getElementById('aeDrawerClose');
+  if (mobClose) mobClose.addEventListener('click', closeMobileDrawer);
+  drawerBackdrop.addEventListener('click', closeMobileDrawer);
+
+  const dockMenu = document.getElementById('aeDockMenuBtn');
+  if (dockMenu) dockMenu.addEventListener('click', openMobileDrawer);
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      closeMobileDrawer();
+    }
+  });
+
+  // ── Smooth Mobile & Desktop Page Transitions ──
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if (!a || !a.href) return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('javascript:') || a.target === '_blank' || a.hasAttribute('download')) return;
+    if (a.origin && a.origin !== window.location.origin) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    
+    // Smooth transition
+    e.preventDefault();
+    closeMobileDrawer();
+    document.body.classList.add('ae-page-exit');
+    setTimeout(() => {
+      window.location.href = a.href;
+    }, 90);
+  });
 
   // ── 3. Command Palette Modal Engine (Actions vs System) ──
   const cmdPaletteItems = [

@@ -34,7 +34,9 @@
     /* ── Centered Hero Content ── */
     .hero-container {
       position: relative;
+      width: 100%;
       max-width: 960px;
+      box-sizing: border-box;
       margin: 0 auto;
       padding: 130px 24px 60px;
       text-align: center;
@@ -43,6 +45,28 @@
       flex-direction: column;
       align-items: center;
       pointer-events: none;
+    }
+
+    .hero-layers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    .hero-workspaces-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 860px) {
+      .hero-layers-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .hero-workspaces-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
     }
     .hero-container * {
       pointer-events: auto;
@@ -228,6 +252,88 @@
     @media (max-width: 560px) {
       .method-strip { grid-template-columns: 1fr; }
     }
+
+    /* ── Mobile-Optimized Viewport Enhancements ── */
+    @media (max-width: 768px) {
+      #waveCanvas {
+        pointer-events: none !important;
+        opacity: 0.35;
+      }
+      .hero-stage {
+        min-height: auto;
+        padding: 20px 0 32px;
+      }
+      .hero-container {
+        padding: 28px 16px 20px;
+      }
+      .hero-badge-tag {
+        margin-bottom: 14px;
+        font-size: 0.68rem;
+        padding: 4px 12px;
+      }
+      .hero-heading {
+        font-size: clamp(1.75rem, 6vw, 2.4rem) !important;
+        line-height: 1.15;
+        margin-bottom: 12px;
+      }
+      .hero-subheading {
+        font-size: 0.88rem;
+        line-height: 1.5;
+        margin: 0 auto 18px;
+      }
+      .hero-search-box {
+        padding: 6px 8px 6px 12px;
+        gap: 8px;
+        border-radius: 12px;
+      }
+      .cmd-badge {
+        display: none !important;
+      }
+      .hero-pillars-row {
+        display: none !important;
+      }
+      .hero-agent-pills-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin: 12px auto 18px;
+        max-width: 100%;
+      }
+      .hero-agent-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 7px 12px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 0.8rem;
+        min-height: 44px;
+        transition: all 0.15s ease;
+      }
+      .hero-agent-pill:active {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--accent);
+      }
+      .hero-suggestions-title {
+        margin-top: 6px;
+      }
+      .hero-suggestion-chip {
+        font-size: 0.74rem;
+        padding: 6px 10px;
+      }
+      .method-strip-wrapper {
+        padding: 0 16px;
+        margin-bottom: 36px;
+      }
+      .method-strip {
+        padding: 16px;
+        gap: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -265,6 +371,26 @@
           </button>
         </div>
       </form>
+
+      <!-- Mobile Quick Agent Switcher -->
+      <div class="hero-agent-pills-row">
+        <a href="scout-agent.html" class="hero-agent-pill">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;"></span>
+          <strong>Scout</strong> <span style="color:var(--text-dim);font-size:0.75rem;">Finance</span>
+        </a>
+        <a href="brandshield-agent.html" class="hero-agent-pill">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f59e0b;"></span>
+          <strong>BrandShield</strong> <span style="color:var(--text-dim);font-size:0.75rem;">Brands</span>
+        </a>
+        <a href="trending-agent.html" class="hero-agent-pill">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#06b6d4;"></span>
+          <strong>Trending</strong> <span style="color:var(--text-dim);font-size:0.75rem;">Virality</span>
+        </a>
+        <a href="personal-watch-agent.html" class="hero-agent-pill">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#a855f7;"></span>
+          <strong>Personal Watch</strong> <span style="color:var(--text-dim);font-size:0.75rem;">VIP</span>
+        </a>
+      </div>
 
       <div class="hero-pillars-row">
         <span>Evidence from multiple independent sources</span>
@@ -342,7 +468,7 @@
       </p>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;margin-bottom:60px;">
+    <div class="hero-layers-grid">
       <!-- Layer 1: Observed -->
       <div class="ae-card" style="padding:22px;border-top:3px solid var(--emerald);background:rgba(13,17,26,0.7);">
         <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--emerald);letter-spacing:0.06em;font-weight:700;margin-bottom:8px;">01 &bull; OBSERVED EVIDENCE</div>
@@ -379,7 +505,7 @@
       </h2>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:20px;">
+    <div class="hero-workspaces-grid">
       <!-- Workspace 1 -->
       <div class="ae-card" style="padding:24px;background:rgba(13,17,26,0.75);">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;">

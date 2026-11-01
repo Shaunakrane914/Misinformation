@@ -174,7 +174,45 @@ class MockLLMProvider(LLMProvider):
                 "recommended_action": "Issue clarification notice and monitor social channels."
             })
 
-        # 6. Default generic structured response if prompt requests JSON
+        # 6. Source planning & search suggestion mock
+        if "llmsuggestedplan" in prompt_lower or ("adversarial" in prompt_lower and ("search action" in prompt_lower or "search queries" in prompt_lower)):
+            if "adversarialprobebatch" in prompt_lower:
+                return self._json({
+                    "probes": [
+                        {
+                            "channel": "news",
+                            "operation": "search",
+                            "query": '"Acme" (accounting fraud OR whistleblower OR sec probe)',
+                            "angle": "REGULATORY_ALLEGATION",
+                            "rationale": "Probe for unverified regulatory investigations and whistleblower claims"
+                        },
+                        {
+                            "channel": "web",
+                            "operation": "search",
+                            "query": '"Acme" (denied OR debunked OR restatement)',
+                            "angle": "COUNTER_CLAIM",
+                            "rationale": "Verify formal company denial or counter-evidence"
+                        }
+                    ]
+                })
+            return self._json({
+                "actions": [
+                    {
+                        "channel": "news",
+                        "operation": "search",
+                        "query": "unverified rumor whistleblower investigation",
+                        "rationale": "Targeted regulatory and counter-claim search"
+                    },
+                    {
+                        "channel": "web",
+                        "operation": "search",
+                        "query": "official statement denied controversy",
+                        "rationale": "Official response and fact verification search"
+                    }
+                ]
+            })
+
+        # 7. Default generic structured response if prompt requests JSON
         if "json" in prompt_lower:
             return self._json({
                 "status": "success",

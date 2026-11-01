@@ -442,6 +442,9 @@ class UnifiedReport:
     processing_notes: Dict[str, Any] = field(default_factory=dict)
     investigation_status: Optional[str] = None
     evidence_workbench: Dict[str, Any] = field(default_factory=dict)
+    allegation_matrix: List[Dict[str, Any]] = field(default_factory=list)
+    corroboration_summary: Optional[Dict[str, Any]] = None
+    misinformation_dossier: Optional[Dict[str, Any]] = None
 
     # Internal metadata (not rendered in report sections)
     agent: Optional[str] = None          # e.g. "claim_verifier"
@@ -484,6 +487,12 @@ class UnifiedReport:
             d["processing_notes"] = self.processing_notes
         if self.evidence_workbench:
             d["evidence_workbench"] = self.evidence_workbench
+        if self.allegation_matrix:
+            d["allegation_matrix"] = self.allegation_matrix
+        if self.corroboration_summary:
+            d["corroboration_summary"] = self.corroboration_summary
+        if self.misinformation_dossier:
+            d["misinformation_dossier"] = self.misinformation_dossier
         return d
 
 

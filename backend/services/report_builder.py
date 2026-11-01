@@ -221,7 +221,7 @@ class ReportBuilder:
         # ── Findings ─────────────────────────────────────────────────────────
         findings: List[str] = []
         narratives = trend_data.get("narratives") or trend_data.get("claims") or []
-        for n in narratives[:6]:
+        for n in narratives[:12]:
             if isinstance(n, dict):
                 text = n.get("summary") or n.get("text") or n.get("claim_text") or ""
             else:
@@ -488,7 +488,7 @@ class ReportBuilder:
 
         findings: List[str] = []
         threats = brand_data.get("threats") or brand_data.get("threat_list") or []
-        for t in threats[:6]:
+        for t in threats[:12]:
             if isinstance(t, dict):
                 text = t.get("description") or t.get("summary") or t.get("type") or str(t)
             else:
@@ -587,7 +587,7 @@ class ReportBuilder:
 
         findings: List[str] = []
         alerts = personal_data.get("threats") or personal_data.get("alerts") or []
-        for a in alerts[:6]:
+        for a in alerts[:12]:
             if isinstance(a, dict):
                 text = a.get("description") or a.get("summary") or a.get("type") or str(a)
             else:
@@ -759,7 +759,14 @@ def _dict_to_evidence_item(d: Dict[str, Any]) -> UnifiedEvidenceItem:
     from backend.schemas.evidence_inspection import inspect_evidence
     return UnifiedEvidenceItem(
         title=_str_val(d.get("title")),
-        snippet=_str_val(d.get("snippet") or d.get("relevant_excerpt") or d.get("content") or d.get("summary")),
+        snippet=_str_val(
+            (
+                "\n\n".join(p["text"] for p in (d.get("evidence_passages") or (meta.get("evidence_passages") if isinstance(meta, dict) else None) or [])[:3] if isinstance(p, dict) and p.get("text"))
+                if (d.get("evidence_passages") or (meta.get("evidence_passages") if isinstance(meta, dict) else None))
+                else None
+            )
+            or d.get("snippet") or d.get("relevant_excerpt") or d.get("content") or d.get("summary")
+        ),
         url=url,
         timestamp=_str_val(d.get("timestamp") or d.get("published_at") or d.get("published")),
         source=source,
@@ -1127,4 +1134,73 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
     reference = trace.get("reference_background")
     if isinstance(reference, dict):
         report.agent_intelligence["reference_background"] = deepcopy(reference)
+
+    # ── Claim Intelligence Core Integration (Deliverables 1 & 2) ───────────
+    try:
+        from backend.services.claim_intelligence import (
+            claim_extractor,
+            stance_analyzer,
+            corroboration_detector,
+            assessment_engine,
+        )
+        import hashlib
+
+        ent_raw = data.get("entity") or data.get("brand") or data.get("ticker") or data.get("target_entity")
+        if isinstance(ent_raw, dict):
+            target_entity = ent_raw.get("name") or ent_raw.get("brand") or ent_raw.get("issuer") or ent_raw.get("canonical_name") or "Subject"
+        elif isinstance(ent_raw, str) and ent_raw.strip():
+            target_entity = ent_raw.strip()
+        elif report.query and isinstance(report.query, str) and report.query.strip():
+            target_entity = report.query.split()[0]
+        else:
+            target_entity = "Subject"
+        atomic_claims = claim_extractor.extract_claims(str(report.query or "Unspecified Claim"), entity=target_entity)
+
+        all_sources = [
+            item.to_dict() for bucket in (canonical.primary, canonical.independent, canonical.community)
+            for item in bucket
+        ]
+
+        corrob_summary, provenance_edges = corroboration_detector.analyze_sources(all_sources)
+        report.corroboration_summary = corrob_summary.model_dump()
+
+        matrix_items = []
+        for claim in atomic_claims:
+            passages = []
+            for s in all_sources:
+                snippet = s.get("snippet") or ""
+                body = s.get("content") or snippet
+                if snippet:
+                    passages.append({
+                        "source_id": s.get("evidence_id") or s.get("url") or "src",
+                        "source_url": s.get("url") or "",
+                        "publisher": (s.get("source") or {}).get("name") or s.get("publisher") or "Unknown",
+                        "passage_text": snippet,
+                        "full_content": body,
+                        "published_at": s.get("timestamp"),
+                    })
+
+            evidence_links = stance_analyzer.evaluate_source_passages(claim, passages)
+            matrix_item = assessment_engine.assess_claim(
+                claim=claim,
+                evidence_links=evidence_links,
+                corroboration_summary=corrob_summary,
+            )
+            matrix_items.append(matrix_item)
+
+        report.allegation_matrix = [m.model_dump() for m in matrix_items]
+
+        dossier = assessment_engine.build_dossier(
+            investigation_id=f"inv_{report.agent}_{hashlib.sha256((report.query or '').encode()).hexdigest()[:8]}",
+            query=report.query or "Investigation",
+            entity=target_entity,
+            agent=report.agent or "Aegis",
+            matrix_items=matrix_items,
+            corroboration_summary=corrob_summary,
+            provenance_edges=provenance_edges,
+        )
+        report.misinformation_dossier = dossier.model_dump()
+    except Exception as e:
+        logger.warning(f"Claim Intelligence Core evaluation skipped: {e}")
+
     return report

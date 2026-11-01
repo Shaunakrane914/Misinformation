@@ -1,5 +1,13 @@
 # Coding-agent handoffs
 
+## AEGIS / Signal: Adaptive Editorial Information Platform & Mobile Redesign — 2026-11-01
+
+- [AEGIS / Signal Adaptive Mobile Redesign](2026-11-01_SIGNAL_ADAPTIVE_MOBILE_REDESIGN.md): Transformed Aegis into an adaptive editorial information platform (**AEGIS / Signal**). Overhauled mobile experience across all 14 pages with touch-safe 3D canvas, mobile navigation drawer, floating thumb dock, smooth 90ms page exit transitions, and responsive content grids (eliminating horizontal overflow, `docScrollWidth === innerWidth === 390px`). Injected editorial Signal Masthead and truthful visualization guards into unified reports. Verified across all 4 production agents in both desktop and mobile viewports with comprehensive word count parity (Scout: 5,230/5,215; BrandShield: 2,429/2,414; Trending: 1,442/1,294; Personal Watch: 1,858/1,832). All 112 pytest unit/security and 13 Node frontend test suites pass.
+
+## Claim Intelligence Core Architecture (Deliverables 1 & 2) — 2026-11-01
+
+- [Claim Intelligence Core Architecture](2026-11-01_CLAIM_INTELLIGENCE_CORE_ARCHITECTURE.md): Transformation of Aegis into a claim-centric misinformation investigation platform. Built unified Claim Intelligence Core (backend/services/claim_intelligence/) powering all four agents (Scout, BrandShield, Trending, Personal Watch). Implemented Deliverable 1 (Allegation vs. Evidence Matrix with 6-state calibrated verdicts and corporate denial isolation) and Deliverable 2 (Corroboration Illusion Detector with Source Independence Graph and echo-chamber syndication alerts). All 12 unit tests and 13 frontend test suites pass with zero lint errors.
+
 ## Deep Misinformation Dictionaries & Adversarial AI Layer — 2026-11-01
 
 - [Deep Misinformation Dictionaries & Adversarial AI Layer](2026-11-01_DEEP_MISINFORMATION_DICTIONARIES_AND_AI_LAYER.md): Deep implementation of both Option A (multi-agent forensic dictionaries, contradiction cues, multilingual terms) and Option B (adversarial hypothesis-driven probe generation, VerificationGate validation, grounded epistemic verdict engine). All 2,819 unit, chaos, and security tests pass, plus 12 frontend Node test suites.

@@ -72,8 +72,9 @@ def _run_harvest_pipeline(request, budget, profile_name, http_budget):
     # Preserve existing capability-aware specialist routes without replacing
     # publisher harvesting with a universal social-source sweep.
     from backend.services.agent_reach.source_planner import source_planning_engine
+    use_planner_llm = os.getenv("AEGIS_SOURCE_PLANNER_LLM_ENABLED", "false").lower() in {"1", "true", "yes"} or bool(request.extra_params.get("use_llm"))
     source_plan = source_planning_engine.plan(request.extra_params.get("claim_text") or request.target,
-        entity=request.target, domain=request.domain, agent=request.agent_name, use_llm=False,
+        entity=request.target, domain=request.domain, agent=request.agent_name, use_llm=use_planner_llm,
         routing_hints={**request.extra_params, 'time_scope': request.time_scope},
         allowed_channels=request.extra_params.get('allowed_channels'))
     extra_queries = [{"channel": channel, **row} for channel, rows in source_plan.to_channel_queries().items()

@@ -1,5 +1,6 @@
 """Planning, broad discovery, qualification, and evidence ranking."""
 
+import os
 from typing import Any
 import hashlib
 import re
@@ -72,12 +73,13 @@ class QueryPlanningStage:
         # Purpose boilerplate is not a factual claim or useful provider query.
         # Preserve a caller's exact claim separately from the resolved entity.
         planning_text = request.extra_params.get("claim_text") or request.target
+        use_planner_llm = os.getenv("AEGIS_SOURCE_PLANNER_LLM_ENABLED", "false").lower() in {"1", "true", "yes"} or bool(request.extra_params.get("use_llm"))
         source_plan = source_planning_engine.plan(
             planning_text,
             entity=request.target,
             domain=request.domain,
             agent=request.agent_name,
-            use_llm=False,
+            use_llm=use_planner_llm,
             routing_hints={**request.extra_params, 'time_scope': request.time_scope},
             allowed_channels=request.extra_params.get('allowed_channels'),
         )

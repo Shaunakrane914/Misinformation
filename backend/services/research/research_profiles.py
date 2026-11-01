@@ -56,9 +56,9 @@ class ResearchProfile:
 QUICK = ResearchProfile("QUICK", 24, 6, 5, 6, 60.0, 24.0,
                         concurrency=2, max_host_reads=3, max_operations=24,
                         max_wrapper_reads=1, max_discovery_reads=2)
-STANDARD = ResearchProfile("STANDARD", 60, 12, 8, 14, 150.0, 55.0,
-                           max_host_reads=5, max_operations=48,
-                           max_wrapper_reads=2, max_discovery_reads=5)
+STANDARD = ResearchProfile("STANDARD", 80, 16, 8, 20, 150.0, 55.0,
+                           max_host_reads=6, max_operations=64,
+                           max_wrapper_reads=2, max_discovery_reads=6)
 DEEP = ResearchProfile("DEEP", 100, 18, 10, 24, 240.0, 90.0,
                       max_operations=80)
 PROFILES = {profile.name: profile for profile in (QUICK, STANDARD, DEEP)}

@@ -375,14 +375,209 @@ function renderClaimDecomposition(report) {
   `);
 }
 
+
+/** ALLEGATION VS. EVIDENCE MATRIX (Deliverable 1 - Priority 1) */
+function renderAllegationMatrix(report) {
+  const items = array(report.allegation_matrix).filter(item => item && typeof item === 'object');
+  if (items.length === 0) return '';
+
+  const cards = items.map((item, idx) => {
+    const claim = item.claim || {};
+    const vKey = normalizeVerdictKey(item.verdict) || 'UNVERIFIED';
+    const cfg = VERDICT_CONFIG[vKey] || VERDICT_CONFIG.UNVERIFIED;
+    const confVal = typeof item.confidence === 'number' && Number.isFinite(item.confidence) ? pct(item.confidence) : PH_NUM;
+
+    // Framing flags / deceptive chips
+    const flags = array(item.deceptive_framing_flags).map(flag => {
+      const flagText = String(flag).replace(/_/g, ' ');
+      return `<span class="ur-matrix-flag" title="Deceptive framing pattern">⚠️ ${esc(flagText)}</span>`;
+    }).join(' ');
+
+    // Registries checked
+    const regs = array(item.registries_checked).map(r => `<span class="ur-matrix-reg-pill">${esc(r)}</span>`).join(' ');
+
+    // Supporting Links & Denials
+    const supportingHtml = array(item.supporting_links).map(link => {
+      const url = safeEvidenceUrl(link.source_url);
+      const title = esc(link.publisher || 'Primary Record');
+      const text = esc(link.passage_text || '');
+      const hash = link.content_hash ? `<span class="ur-passage-hash" title="SHA-256 byte digest">SHA-256: ${esc(link.content_hash.slice(0, 12))}…</span>` : '';
+      return `
+        <div class="ur-matrix-link ur-matrix-link--support">
+          <div class="ur-matrix-link-head">
+            <span class="ur-matrix-link-badge ur-matrix-link-badge--support">✓ PRIMARY RECORD</span>
+            ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${title} ↗</a>` : `<span>${title}</span>`}
+          </div>
+          <blockquote>"${text}"</blockquote>
+          <div class="ur-matrix-link-foot">${hash}<span>${esc(link.rationale || '')}</span></div>
+        </div>`;
+    }).join('');
+
+    const denialsHtml = array(item.corporate_denials).map(link => {
+      const url = safeEvidenceUrl(link.source_url);
+      const title = esc(link.publisher || 'Company Spokesperson');
+      const text = esc(link.passage_text || '');
+      const hash = link.content_hash ? `<span class="ur-passage-hash" title="SHA-256 byte digest">SHA-256: ${esc(link.content_hash.slice(0, 12))}…</span>` : '';
+      return `
+        <div class="ur-matrix-link ur-matrix-link--denial">
+          <div class="ur-matrix-link-head">
+            <span class="ur-matrix-link-badge ur-matrix-link-badge--denial">ℹ️ CORPORATE DENIAL</span>
+            ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${title} ↗</a>` : `<span>${title}</span>`}
+          </div>
+          <blockquote>"${text}"</blockquote>
+          <div class="ur-matrix-link-foot">${hash}<span><em>Recorded as evidence of denial, not proof of falsity.</em></span></div>
+        </div>`;
+    }).join('');
+
+    const contradictingHtml = array(item.contradicting_links).map(link => {
+      const url = safeEvidenceUrl(link.source_url);
+      const title = esc(link.publisher || 'Fact-Check / Investigation');
+      const text = esc(link.passage_text || '');
+      return `
+        <div class="ur-matrix-link ur-matrix-link--contradict">
+          <div class="ur-matrix-link-head">
+            <span class="ur-matrix-link-badge ur-matrix-link-badge--contradict">✕ REFUTATION</span>
+            ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${title} ↗</a>` : `<span>${title}</span>`}
+          </div>
+          <blockquote>"${text}"</blockquote>
+          <div class="ur-matrix-link-foot"><span>${esc(link.rationale || '')}</span></div>
+        </div>`;
+    }).join('');
+
+    const advisory = item.action_advisory ? `
+      <div class="ur-matrix-advisory">
+        <div class="ur-matrix-advisory-title"><strong>Action Advisory:</strong> ${esc(item.action_advisory)}</div>
+      </div>` : '';
+
+    return `
+      <div class="ur-matrix-card ur-verdict--${vKey.toLowerCase()}">
+        <div class="ur-matrix-head">
+          <div class="ur-matrix-badge-group">
+            <span class="ur-verdict-pill ${cfg.badgeClass}">${esc(cfg.label)}</span>
+            <span class="ur-matrix-conf">Confidence: ${confVal}</span>
+          </div>
+          ${flags ? `<div class="ur-matrix-flags">${flags}</div>` : ''}
+        </div>
+
+        <div class="ur-matrix-columns">
+          <!-- LEFT: Allegation -->
+          <div class="ur-matrix-col ur-matrix-col--allegation">
+            <div class="ur-matrix-col-header">
+              <span class="ur-matrix-icon">📢</span>
+              <h4>Circulating Allegation</h4>
+            </div>
+            <div class="ur-matrix-bubble">
+              <p class="ur-matrix-allegation-text">"${esc(claim.raw_allegation || claim.normalized_proposition || 'Allegation text')}"</p>
+            </div>
+            <div class="ur-matrix-meta-list">
+              <div class="ur-matrix-meta-item"><span>Target Entity:</span> <strong>${esc(claim.target_entity || PH_STR)}</strong></div>
+              ${claim.predicate ? `<div class="ur-matrix-meta-item"><span>Core Action:</span> <strong>${esc(claim.predicate)}</strong></div>` : ''}
+              ${claim.subject_scope && claim.subject_scope !== 'unspecified' ? `<div class="ur-matrix-meta-item"><span>Scope:</span> <strong>${esc(claim.subject_scope)}</strong></div>` : ''}
+              ${claim.temporal_scope ? `<div class="ur-matrix-meta-item"><span>Asserted Time:</span> <strong>${esc(claim.temporal_scope)}</strong></div>` : ''}
+              ${array(claim.extracted_qualifiers).length ? `<div class="ur-matrix-meta-item"><span>Qualifiers:</span> <em>${esc(claim.extracted_qualifiers.join(', '))}</em></div>` : ''}
+            </div>
+            <p class="ur-matrix-summary-desc">${esc(item.allegation_summary || '')}</p>
+          </div>
+
+          <!-- RIGHT: Verified Public Record -->
+          <div class="ur-matrix-col ur-matrix-col--evidence">
+            <div class="ur-matrix-col-header">
+              <span class="ur-matrix-icon">⚖️</span>
+              <h4>Verified Record & Primary Sources</h4>
+            </div>
+            <p class="ur-matrix-record-summary">${esc(item.verified_record_summary || 'No records returned.')}</p>
+            
+            <div class="ur-matrix-evidence-stream">
+              ${supportingHtml}
+              ${contradictingHtml}
+              ${denialsHtml}
+              ${!supportingHtml && !contradictingHtml && !denialsHtml ? '<div class="ur-matrix-empty">No primary source passages qualified for this assertion.</div>' : ''}
+            </div>
+
+            ${regs ? `<div class="ur-matrix-regs"><span>Registries Checked:</span> ${regs}</div>` : ''}
+          </div>
+        </div>
+
+        ${advisory}
+      </div>`;
+  }).join('');
+
+  return section('ur-allegation-matrix', 'ALLEGATION VS. EVIDENCE MATRIX', `
+    <p class="ur-ev-note">Side-by-side deconstruction of circulating allegations against verified primary public records.</p>
+    <div class="ur-matrix-deck">${cards}</div>
+  `);
+}
+
+/** CORROBORATION ILLUSION DETECTOR & SOURCE INDEPENDENCE GRAPH (Deliverable 2 - Priority 2) */
+function renderCorroborationIllusion(report) {
+  const summary = report.corroboration_summary;
+  if (!summary || typeof summary !== 'object' || !summary.total_sources_scanned) return '';
+
+  const isIllusion = Boolean(summary.corroboration_illusion_detected);
+  const ratioPct = typeof summary.corroboration_ratio === 'number' ? Math.round(summary.corroboration_ratio * 100) : 100;
+
+  const alertBox = isIllusion ? `
+    <div class="ur-corrob-alert">
+      <div class="ur-corrob-alert-icon">⚠️</div>
+      <div class="ur-corrob-alert-body">
+        <h4>Corroboration Illusion Detected</h4>
+        <p>${esc(summary.warning_message || 'Multiple publishers repeated content originating from a single source. High search count does not indicate independent confirmation.')}</p>
+      </div>
+    </div>` : '';
+
+  const groupsHtml = array(summary.groups).map(g => {
+    const isInd = Boolean(g.is_independent);
+    const pub = esc(g.primary_origin_publisher || 'Primary Origin');
+    const url = safeEvidenceUrl(g.primary_origin_url);
+    const reprints = array(g.reprint_publishers).map(r => `<span class="ur-corrob-reprint-pill">${esc(r)}</span>`).join(' ');
+
+    return `
+      <div class="ur-corrob-group ${isInd ? 'ur-corrob-group--independent' : 'ur-corrob-group--syndicated'}">
+        <div class="ur-corrob-group-header">
+          <span class="ur-corrob-node-type">${isInd ? 'Independent Origin' : 'Syndicated Chain'}</span>
+          <div class="ur-corrob-origin">
+            ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${pub} ↗</a>` : `<span>${pub}</span>`}
+          </div>
+        </div>
+        ${reprints ? `
+          <div class="ur-corrob-reprints">
+            <span class="ur-corrob-reprint-label">Syndicated to:</span>
+            <div class="ur-corrob-reprint-list">${reprints}</div>
+          </div>` : '<div class="ur-corrob-reprints"><em>Standalone reporting — zero observed reprints.</em></div>'}
+      </div>`;
+  }).join('');
+
+  return section('ur-corroboration-graph', 'SOURCE INDEPENDENCE & CORROBORATION ILLUSION AUDIT', `
+    <p class="ur-ev-note">Auditing whether multiple news articles represent genuinely independent corroboration or an echo-chamber of syndicated reprints.</p>
+    ${alertBox}
+    <div class="ur-corrob-metrics">
+      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${summary.total_sources_scanned}</span><span class="ur-corrob-metric-label">Sources Scanned</span></div>
+      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${summary.unique_publishers}</span><span class="ur-corrob-metric-label">Unique Publishers</span></div>
+      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val ${isIllusion ? 'ur-corrob-metric-val--alert' : ''}">${summary.independent_evidence_chains}</span><span class="ur-corrob-metric-label">Independent Chains</span></div>
+      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${summary.syndicated_reprints_count}</span><span class="ur-corrob-metric-label">Syndicated Reprints</span></div>
+      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${ratioPct}%</span><span class="ur-corrob-metric-label">Independence Ratio</span></div>
+    </div>
+    <div class="ur-corrob-groups-tree">${groupsHtml}</div>
+  `);
+}
+
 /** VISUAL EVIDENCE & EPISTEMIC ANALYTICS BENTO GRID */
 function renderVisualAnalytics(report) {
+  const hasTensor = Boolean((report.trust && report.trust.epistemic_tensor) || report.epistemic_tensor);
+  const hasFunnel = Boolean(report.funnel || (report.trust && report.trust.funnel));
+  const hasDispersion = Boolean(report.channel_dispersion && Object.keys(report.channel_dispersion).length > 0);
   const metrics = array(report.quantitative_metrics);
+
+  // If no visual models exist, do not force an empty chart container
+  if (!hasTensor && !hasFunnel && !hasDispersion && metrics.length === 0) {
+    return '';
+  }
+
   return section('ur-visual-analytics', 'VISUAL EVIDENCE &amp; EPISTEMIC ANALYTICS', `
     <div class="ae-bento-grid">
-      <div class="ae-bento-card" id="ae-mount-radar"></div>
-      <div class="ae-bento-card" id="ae-mount-funnel"></div>
-      <div class="ae-bento-card" id="ae-mount-dispersion" style="grid-column: 1 / -1;"></div>
+      ${hasTensor ? '<div class="ae-bento-card" id="ae-mount-radar"></div>' : ''}
+      ${hasFunnel ? '<div class="ae-bento-card" id="ae-mount-funnel"></div>' : ''}
+      ${hasDispersion ? '<div class="ae-bento-card" id="ae-mount-dispersion" style="grid-column: 1 / -1;"></div>' : ''}
       ${metrics.length > 0 ? `
         <div class="ae-bento-card" style="grid-column: 1 / -1;">
           <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--accent);margin-bottom:10px;">
@@ -1187,6 +1382,30 @@ function renderExportToolbar(report) {
  * @param {HTMLElement} container  Target mount point.
  * @param {Object}      report     The JSON report from any agent endpoint.
  */
+function renderSignalMasthead(report) {
+  const agentKey = (report._meta && report._meta.agent) || 'investigation';
+  const agentTitles = {
+    scout: 'SCOUT // FINANCIAL INTELLIGENCE & DISCLOSURE AUDIT',
+    brandshield: 'BRANDSHIELD // BRAND DEFENSE & COUNTERFEIT REGISTRY',
+    trending: 'TRENDING // VIRAL CONTAGION & MEMETIC VELOCITY',
+    personal_watch: 'PERSONAL WATCH // EXECUTIVE IMPERSONATION & SPEECH FORENSICS',
+    claim_verifier: 'CLAIM VERIFIER // MULTI-SOURCE EMPIRICAL AUDIT'
+  };
+  const title = agentTitles[agentKey] || 'AEGIS PROTOCOL // ADAPTIVE SIGNAL REPORT';
+
+  return `
+    <div class="signal-masthead">
+      <div class="signal-masthead-dateline">
+        <span class="signal-masthead-pill">SIGNAL DISPATCH</span>
+        <span>${esc(title)}</span>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">
+        SYSTEM: V4.1.0 · EVIDENCE-FIRST · VERIFIABLE
+      </div>
+    </div>
+  `;
+}
+
 function renderUnifiedReport(container, report) {
   if (!container) {
     console.warn('[Aegis] renderUnifiedReport: no container element provided');
@@ -1249,6 +1468,8 @@ function renderUnifiedReport(container, report) {
 
   const html = [
     renderSummary(report),
+    renderAllegationMatrix(report),
+    renderCorroborationIllusion(report),
     renderClaimDecomposition(report),
     renderFindings(report),
     renderVisualAnalytics(report),
@@ -1265,7 +1486,8 @@ function renderUnifiedReport(container, report) {
     renderExportToolbar(report),
   ].filter(Boolean).join('\n');
 
-  container.innerHTML = `<div class="unified-report">${html}</div>`;
+  const masthead = renderSignalMasthead(report);
+  container.innerHTML = `<div class="unified-report">${masthead}\n${html}</div>`;
   bindEvidenceWorkbench(container, report);
 
   // Mount interactive high-craft visual models if AegisGraphs is available
@@ -1390,6 +1612,6 @@ if (typeof window !== 'undefined') {
   window.fetchAndRenderReport = fetchAndRenderReport;
 }
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest, workbenchPage };
+  module.exports = { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest, workbenchPage, renderAllegationMatrix, renderCorroborationIllusion };
 }
 })();

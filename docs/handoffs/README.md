@@ -1,5 +1,9 @@
 # Coding-agent handoffs
 
+## Cloudflare Pages & Render Live Rollout — 2026-11-01
+
+- [Cloudflare Pages & Render Live Rollout](2026-11-01_CLOUDFLARE_PAGES_AND_RENDER_DEPLOYMENT.md): Deployed committed frontend directly to Cloudflare Pages via Wrangler (`https://664a6f07.aegis-protocol-110.pages.dev` and `https://aegis-protocol-110.pages.dev/`), fixing the direct-upload desynchronization (`Git Provider: No`). Fixed rebase budget regression in `4c621fb`. Verified live mobile viewport with Playwright on iPhone 14 (dock visible, pills visible, `scrollWidth == innerWidth == 390px`). Confirmed all 5 GitHub Actions matrix jobs passed (run 41318293504) and Render backend is live with HTTP 200.
+
 ## AEGIS / Signal: Adaptive Editorial Information Platform & Mobile Redesign — 2026-11-01
 
 - [AEGIS / Signal Adaptive Mobile Redesign](2026-11-01_SIGNAL_ADAPTIVE_MOBILE_REDESIGN.md): Transformed Aegis into an adaptive editorial information platform (**AEGIS / Signal**). Overhauled mobile experience across all 14 pages with touch-safe 3D canvas, mobile navigation drawer, floating thumb dock, smooth 90ms page exit transitions, and responsive content grids (eliminating horizontal overflow, `docScrollWidth === innerWidth === 390px`). Injected editorial Signal Masthead and truthful visualization guards into unified reports. Verified across all 4 production agents in both desktop and mobile viewports with comprehensive word count parity (Scout: 5,230/5,215; BrandShield: 2,429/2,414; Trending: 1,442/1,294; Personal Watch: 1,858/1,832). All 112 pytest unit/security and 13 Node frontend test suites pass.

@@ -1,5 +1,9 @@
 # Coding-agent handoffs
 
+## Deep Misinformation Dictionaries & Adversarial AI Layer — 2026-11-01
+
+- [Deep Misinformation Dictionaries & Adversarial AI Layer](2026-11-01_DEEP_MISINFORMATION_DICTIONARIES_AND_AI_LAYER.md): Deep implementation of both Option A (multi-agent forensic dictionaries, contradiction cues, multilingual terms) and Option B (adversarial hypothesis-driven probe generation, VerificationGate validation, grounded epistemic verdict engine). All 2,819 unit, chaos, and security tests pass, plus 12 frontend Node test suites.
+
 ## CodeRabbit Review Remediation & Governance Tightening - 2026-11-01
 
 - [CodeRabbit Review Remediation](2026-11-01_CODERABBIT_REVIEW_REMEDIATION.md): Addressed all 15 CodeRabbit review comments on PR #5 across 6 prioritized tracks: AI-proposed issuer identifier consistency, uniform advisory failover governance (AdvisoryProviderBlocked), frontend keyword catalyst isolation, honest finding-to-passage provenance, empirical dispersion bands and empty states in visualizations (eliminating synthetic curves and zero-masking), and SEC alias resolution. All 27 unit tests and 12 frontend suites pass.

@@ -50,14 +50,34 @@ class BrandShieldExtractionEngine:
 
         from backend.services.research.source_quality import is_utility_or_auth_url
 
-        counterfeit_keywords = {"counterfeit", "replica", "fake", "knockoff", "1:1", "clone", "unauthorized seller", "first copy"}
-        impersonation_keywords = {"fake account", "impersonat", "spoof", "phishing", "scam handle", "support scam"}
-        safety_keywords = {"hazard", "explosion", "toxic", "poison", "recall", "catch fire", "burns", "injury"}
+        counterfeit_keywords = {
+            "counterfeit", "replica", "fake", "knockoff", "1:1", "clone",
+            "unauthorized seller", "first copy", "dupe", "unauthorized dealer",
+            "grey market", "bootleg", "fake batch", "replica grade", "aaa quality",
+            "1:1 clone", "superclone", "counterfeits", "counterfeiting"
+        }
+        impersonation_keywords = {
+            "fake account", "impersonat", "spoof", "phishing", "scam handle",
+            "support scam", "customer service scam", "fake support", "spoofed email",
+            "impersonating brand", "bogus site", "typosquat", "fake website", "scam domain"
+        }
+        safety_keywords = {
+            "hazard", "explosion", "toxic", "poison", "recall", "catch fire",
+            "burns", "injury", "contaminated", "choking hazard", "carcinogen",
+            "safety defect", "burn hazard", "adverse reaction", "adulterated", "health hazard"
+        }
+        smear_campaign_keywords = {
+            "boycott", "propaganda", "smear", "cancel", "disinformation campaign",
+            "fake advertisement", "unauthorized endorsement", "reputation attack"
+        }
         legal_patterns = [
             r"\blawsuit\b", r"\bsubpoena\b", r"\bantitrust\b", r"\bpatent infringement\b",
             r"\bregulatory\s+(?:probe|inquiry|investigation|action|fine|penalty)\b",
             r"\b(?:sec|ftc|doj)\s+(?:investigation|probe|lawsuit|inquiry|subpoena|enforcement|fine)\b",
-            r"\bclass action\b", r"\bcourt\s+order\b", r"\bfined\s+by\s+regulator\b"
+            r"\bclass action\b", r"\bcourt\s+order\b", r"\bfined\s+by\s+regulator\b",
+            r"\bconsumer\s+protection\s+(?:action|warning)\b",
+            r"\bwhistleblower\s+(?:complaint|leak)\b",
+            r"\bftc\s+(?:warning|probe|action)\b"
         ]
         rumor_keywords = {"rumor", "allegedly", "claims that", "unconfirmed", "leak", "insider says"}
 

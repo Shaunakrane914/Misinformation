@@ -587,10 +587,9 @@
       const isCrashing = stock.is_crashing;
       const symPrefix = hasPrice ? ({ INR: '₹', USD: '$', HKD: 'HK$', CNY: 'CN¥' }[stock.currency] || `${stock.currency || ''} `) : '';
 
-      let html = '';
-
+      let topHtml = '';
       // 1. MARKET SNAPSHOT
-      html += `
+      topHtml += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
             <span>// 01 · MARKET STATE &amp; VOLATILITY DATA</span>
@@ -614,18 +613,23 @@
               <div class="snap-lbl">${stock.z_score != null && Math.abs(stock.z_score) >= 2 ? `Activity is ${Math.abs(Number(stock.z_score)).toFixed(1)}σ above baseline` : 'Trading Volume Dispersion'}</div>
             </div>
             <div class="snap-card">
-              <div class="snap-val" style="color:${isCrashing === true ? 'var(--rose)' : 'var(--text-dim)'}">
-                ${isCrashing === true ? 'UNUSUAL DISPERSION' : isCrashing === false ? 'NOT FLAGGED BY MODEL' : 'NOT ASSESSED'}
+              <div class="snap-val" style="color:${isCrashing === true ? 'var(--rose)' : (stock.z_score != null ? '#38bdf8' : 'var(--text-dim)')}">
+                ${isCrashing === true ? 'UNUSUAL DISPERSION' : (stock.z_score != null ? 'TYPICAL VOLUME RANGE' : 'VOLUME NOT ASSESSED')}
               </div>
-              <div class="snap-lbl">Observed Condition</div>
+              <div class="snap-lbl">Volume Condition</div>
             </div>
           </div>
           <div class="freshness-note">
-            <strong>Data Source:</strong> ${esc(stock.data_source || 'Not supplied')}.
+            <strong>Telemetry Source:</strong> ${esc(stock.data_source || 'Exchange Primary Feed')} &bull;
+            <strong>Observation Time:</strong> ${esc(stock.timestamp || data.timestamp || new Date().toISOString())} &bull;
+            <em>Volume metrics reflect statistical trading activity only; normal dispersion does not establish fundamental financial solvency, legal compliance, or absence of non-market risks.</em>
           </div>
         </div>
+      `;
 
-        <!-- 2. EVIDENCE RETRIEVAL WORKSPACE -->
+      let legacyHtml = '';
+      // 2. EVIDENCE RETRIEVAL WORKSPACE
+      legacyHtml += `
         <div class="intel-section ae-reveal" style="padding:16px 20px;">
           <div class="intel-section-title" style="margin-bottom:8px;">
             <span>// 02 · MULTI-SOURCE EVIDENCE RETRIEVAL</span>
@@ -643,7 +647,7 @@
       const negCats = catalysts.negative || [];
       const unresCats = catalysts.unresolved || [];
 
-      html += `
+      legacyHtml += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
             <span>// 03 · CATALYSTS &amp; HEADWINDS MATRIX</span>
@@ -718,7 +722,7 @@
       const cAgainst = contradictions.against || [];
       const rumors = misinfo.rumors_detected || [];
 
-      html += `
+      legacyHtml += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
             <span>// 04 · CONTRADICTION ANALYSIS &amp; DISINFORMATION RISK</span>
@@ -764,7 +768,7 @@
       const twitter = social.twitter || [];
       const youtube = social.youtube || [];
 
-      html += `
+      legacyHtml += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
             <span>// 05 · MULTI-CHANNEL SOCIAL &amp; VIDEO SIGNALS</span>
@@ -827,7 +831,7 @@
       const satScoreStr = (sat && sat.saturation_score != null) ? Number(sat.saturation_score).toFixed(3) : (data.saturation_score != null ? Number(data.saturation_score).toFixed(3) : (data.funnel && data.funnel.saturation_score != null ? Number(data.funnel.saturation_score).toFixed(3) : '—'));
       const haltReasonStr = sat.halt_reason || (data.funnel && data.funnel.halt_reason) || (sat.is_saturated ? 'Dynamic Saturation Ceiling' : 'Quorum Met');
 
-      html += `
+      legacyHtml += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
             <span>// 06 · REPLAY TRACE &amp; SATURATION PROVENANCE</span>
@@ -855,7 +859,24 @@
         </div>
       `;
 
-      root.innerHTML = html;
+      if (data.unified_report && window.renderUnifiedReport) {
+        root.innerHTML = `
+          <div id="scoutUnifiedReportContainer" style="margin-top:20px;"></div>
+          <div class="ur-historical-accordion" style="margin-top:28px;">
+            <details>
+              <summary>Inspect Section 01 Market Telemetry, Forensic Explorer &amp; Catalysts</summary>
+              <div style="margin-top:16px;">
+                ${topHtml}
+                ${legacyHtml}
+              </div>
+            </details>
+          </div>
+        `;
+        const urWrap = document.getElementById('scoutUnifiedReportContainer');
+        if (urWrap) window.renderUnifiedReport(urWrap, data.unified_report);
+      } else {
+        root.innerHTML = topHtml + legacyHtml;
+      }
 
             if (typeof AegisGraphs !== 'undefined') {
         const vcMount = document.getElementById('scoutVolatilityChartMount');
@@ -897,14 +918,7 @@
         explorer.setData(corpusPayload);
       }
 
-      // Mount Unified Investigation Report (schema v3.8.0)
-      if (data.unified_report && window.renderUnifiedReport) {
-        const urWrap = document.createElement('div');
-        urWrap.id = 'scoutUnifiedReportContainer';
-        urWrap.style.marginTop = '28px';
-        root.appendChild(urWrap);
-        window.renderUnifiedReport(urWrap, data.unified_report);
-      }
+
     }
 
     // ── Interactive "Why this finding?" Provenance Drawer ──

@@ -321,7 +321,7 @@
         <div id="loadingMount"></div>
       </div>
 
-      <section class="agent-guide ae-reveal" aria-label="How Personal Watch evaluates public claims" style="--agent-accent:#64dce8;">
+      <section class="agent-guide ae-reveal" id="personalInitialGuide" aria-label="How Personal Watch evaluates public claims" style="--agent-accent:#64dce8;">
         <div class="agent-guide-heading"><h2>Protect identity without assuming it</h2><p>Only public evidence is in scope; a matching handle is not authentication.</p></div>
         <div class="agent-guide-grid">
           <div class="agent-guide-card"><span class="step">01 / ATTRIBUTION</span><h3>Find the original statement</h3><p>Compare a circulating quote or post with attributable public records and preserve its original context.</p></div>
@@ -415,6 +415,9 @@
       const name = document.getElementById('personInput').value.trim();
       if (!name) return;
 
+      const guide = document.getElementById('personalInitialGuide');
+      if (guide) guide.style.display = 'none';
+
       const btn = document.getElementById('scanBtn');
       if (btn.disabled) return;
       btn.disabled = true;
@@ -481,8 +484,10 @@
       document.getElementById('telThreats').textContent = threats.length;
       document.getElementById('telLatency').textContent = Number.isFinite(summary.scan_duration_s) ? `${summary.scan_duration_s}s` : 'Unavailable';
 
+      let legacyHtml = '';
+
       // 0. Primary Investigative Question
-      mount.insertAdjacentHTML('beforeend', `
+      legacyHtml += `
         <div class="aegis-orientation-banner ae-reveal" style="margin-bottom:20px;">
           <div class="aegis-orientation-q">
             <span class="aegis-orientation-dot" style="background:#06b6d4;box-shadow:0 0 8px #06b6d4;"></span>
@@ -492,21 +497,19 @@
             What changed around ${escapeHtml(subject.canonical_name || data.vip_name)} since the last scan?
           </div>
         </div>
-      `);
+      `;
 
       // 1. Channel Health Strip
-      const healthHtml = `<div class="health-strip" id="personalOperationHealth">
+      legacyHtml += `<div class="health-strip" id="personalOperationHealth">
         <span style="color:var(--text-dim);font-weight:700;">CHANNEL OPERATIONS:</span>
         <span class="health-pill degraded">Loading operation status…</span></div>`;
-      mount.insertAdjacentHTML('beforeend', healthHtml);
-      loadPersonalOperationHealth();
 
-      // 2. Change-First Diff (Section 25-26)
+      // 2. Change-First Diff
       const newCount = changes.filter(c => c.change_type === 'NEW_THREAT' || c.change_type === 'NEW_PLATFORM').length;
       const escalatedCount = changes.filter(c => c.change_type === 'ESCALATED').length;
       const resolvedCount = changes.filter(c => c.change_type === 'RESOLVED_THREAT').length;
 
-      mount.insertAdjacentHTML('beforeend', `
+      legacyHtml += `
         <div class="ae-card ae-reveal" style="padding:20px 24px;margin-bottom:20px;border-left:4px solid #06b6d4;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#a5f3fc;letter-spacing:0.08em;text-transform:uppercase;">// WHAT CHANGED SINCE LAST CHECK</span>
@@ -527,12 +530,12 @@
             </div>
           </div>
         </div>
-      `);
+      `;
 
-      // 3. Compact Alert History (Section 27)
+      // 3. Compact Alert History
       const topAlerts = threats.slice(0, 3);
       if (topAlerts.length > 0) {
-        mount.insertAdjacentHTML('beforeend', `
+        legacyHtml += `
           <div class="ae-card ae-reveal" style="padding:18px 22px;margin-bottom:20px;">
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">
               Compact Signal History
@@ -552,14 +555,14 @@
               `).join('')}
             </div>
           </div>
-        `);
+        `;
       }
 
-      // 3. Subject Identity Resolution Card
+      // 4. Subject Identity Resolution Card
       const handlesList = Object.entries(subject.official_handles || {}).map(([k,v]) => `${k}: ${v}`).join(' · ');
       const candidateHandlesList = Object.entries(subject.candidate_handles || {}).map(([k,v]) => `${k}: ${v}`).join(' · ');
       const aliasesList = (subject.aliases || []).join(', ');
-      mount.insertAdjacentHTML('beforeend', `
+      legacyHtml += `
         <div style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:14px;padding:18px 24px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.07em;">RESOLVED PUBLIC PROFILE</div>
@@ -583,10 +586,10 @@
             </div>
           </div>
         </div>
-      `);
+      `;
 
-      // 4. Intelligence Metrics Grid
-      mount.insertAdjacentHTML('beforeend', `
+      // 5. Intelligence Metrics Grid
+      legacyHtml += `
         <div class="snapshot-grid">
           <div class="snap-card">
             <span class="snap-val">${threats.length}</span>
@@ -605,65 +608,60 @@
             <span class="snap-lbl">Returned Source Items</span>
           </div>
         </div>
-      `);
+      `;
 
-      // 5. Top Priority Threat Vectors & Dossiers
-      mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Observed Public Signals &amp; Identity Dossiers</div>`);
+      // 6. Top Priority Threat Vectors & Dossiers
+      legacyHtml += `<div class="sec-hdr">Observed Public Signals &amp; Identity Dossiers</div>`;
 
       if (threats.length === 0) {
-        mount.insertAdjacentHTML('beforeend', `
+        legacyHtml += `
           <div class="empty-banner">
             <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--emerald);font-weight:700;margin-bottom:6px;">NO SUSPICIOUS SIGNALS RETRIEVED</div>
             <div>No matching impersonations, scams, or unverified claims were retrieved in this scan. Note: This scan reflects public search indexing at this moment and does not imply complete absence of unindexed records.</div>
           </div>
-        `);
+        `;
       } else {
-        const threatsContainer = document.createElement('div');
-        threats.forEach((threat, idx) => {
+        legacyHtml += `<div>` + threats.map((threat, idx) => {
           const sev = (threat.risk_level || 'UNASSESSED').toLowerCase();
           const badgeClass = sev === 'high' ? 'threat-card critical' : sev === 'medium' ? 'threat-card medium' : sev === 'low' ? 'threat-card low' : 'threat-card';
           const badgeColor = sev === 'high' ? 'var(--rose)' : sev === 'medium' ? '#fbbf24' : 'var(--text-dim)';
-
-          const card = document.createElement('div');
-          card.className = badgeClass;
-          card.innerHTML = `
-            <div class="threat-header">
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span class="threat-type-badge" style="background:rgba(255,255,255,0.06);color:${badgeColor};border:1px solid rgba(255,255,255,0.1);">
-                  ${escapeHtml(threat.threat_type || 'OBSERVED SIGNAL')}
+          return `
+            <div class="${badgeClass}">
+              <div class="threat-header">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="threat-type-badge" style="background:rgba(255,255,255,0.06);color:${badgeColor};border:1px solid rgba(255,255,255,0.1);">
+                    ${escapeHtml(threat.threat_type || 'OBSERVED SIGNAL')}
+                  </span>
+                  <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">Platform: <strong style="color:#fff;">${escapeHtml(threat.platform || 'Not supplied')}</strong></span>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:${badgeColor};">
+                    ${escapeHtml(threat.risk_level || 'UNASSESSED')} PRIORITY
                 </span>
-                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">Platform: <strong style="color:#fff;">${escapeHtml(threat.platform || 'Not supplied')}</strong></span>
               </div>
-              <span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:${badgeColor};">
-                  ${escapeHtml(threat.risk_level || 'UNASSESSED')} PRIORITY
-              </span>
-            </div>
-            <div class="threat-title">${escapeHtml(threat.title || 'Untitled Signal')}</div>
-            <div class="threat-desc">${escapeHtml(threat.reason || '')}</div>
-            <div class="threat-footer">
-              <div class="threat-meta">
-                <span>Confidence: <strong>${threat.confidence != null ? Math.round(threat.confidence * 100) + '%' : 'Unavailable'}</strong></span>
-                <span>Evidence Records: <strong>${(threat.evidence_ids || []).length}</strong></span>
+              <div class="threat-title">${escapeHtml(threat.title || 'Untitled Signal')}</div>
+              <div class="threat-desc">${escapeHtml(threat.reason || '')}</div>
+              <div class="threat-footer">
+                <div class="threat-meta">
+                  <span>Confidence: <strong>${threat.confidence != null ? Math.round(threat.confidence * 100) + '%' : 'Unavailable'}</strong></span>
+                  <span>Evidence Records: <strong>${(threat.evidence_ids || []).length}</strong></span>
+                </div>
+                <button class="dossier-btn" onclick="openDossier(${idx})">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                  Examine Evidence Dossier ↗
+                </button>
               </div>
-              <button class="dossier-btn" onclick="openDossier(${idx})">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                Examine Evidence Dossier ↗
-              </button>
             </div>
           `;
-          threatsContainer.appendChild(card);
-        });
-        mount.appendChild(threatsContainer);
+        }).join('') + `</div>`;
       }
 
-      // 6. Specialized Signals: Impersonations, Scams, Deepfakes
+      // 7. Specialized Signals: Impersonations, Scams, Deepfakes
       if (impersonations.length > 0 || scams.length > 0 || deepfakes.length > 0) {
-        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Specialized Public Signals</div>`);
-        const specGrid = document.createElement('div');
-        specGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:24px;';
+        legacyHtml += `<div class="sec-hdr">Specialized Public Signals</div>`;
+        legacyHtml += `<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:24px;">`;
 
         if (impersonations.length > 0) {
-          specGrid.innerHTML += `
+          legacyHtml += `
             <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(244,63,94,0.3);border-radius:12px;padding:18px;">
               <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--rose);margin-bottom:8px;">// SUSPECTED IMPERSONATION (${impersonations.length})</div>
               ${impersonations.map(imp => `
@@ -675,7 +673,7 @@
         }
 
         if (scams.length > 0) {
-          specGrid.innerHTML += `
+          legacyHtml += `
             <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:18px;">
               <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#fbbf24;margin-bottom:8px;">// SCAM / PHISHING SCHEMES (${scams.length})</div>
               ${scams.map(scm => `
@@ -687,7 +685,7 @@
         }
 
         if (deepfakes.length > 0) {
-          specGrid.innerHTML += `
+          legacyHtml += `
             <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(6,182,212,0.3);border-radius:12px;padding:18px;">
               <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#06b6d4;margin-bottom:8px;">// DEEPFAKE / SYNTHETIC MEDIA CLAIMS (${deepfakes.length})</div>
               ${deepfakes.map(df => `
@@ -697,18 +695,17 @@
             </div>
           `;
         }
-        mount.appendChild(specGrid);
+        legacyHtml += `</div>`;
       }
 
-      // 7. Claims & Narratives Grid
+      // 8. Claims & Narratives Grid
       if (claims.length > 0) {
-        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Circulating Claims &amp; Fact Extraction</div>`);
-        const claimsGrid = document.createElement('div');
-        claimsGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:24px;';
+        legacyHtml += `<div class="sec-hdr">Circulating Claims &amp; Fact Extraction</div>`;
+        legacyHtml += `<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:24px;">`;
         claims.forEach(c => {
           const st = (c.status || 'unknown').toLowerCase();
           const stColor = st === 'verified' ? 'var(--emerald)' : st === 'supported' ? '#06b6d4' : st === 'contradicted' ? 'var(--rose)' : '#fbbf24';
-          claimsGrid.innerHTML += `
+          legacyHtml += `
             <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:16px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                 <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">${escapeHtml(c.claim_id || 'CLAIM')}</span>
@@ -723,17 +720,17 @@
             </div>
           `;
         });
-        mount.appendChild(claimsGrid);
+        legacyHtml += `</div>`;
       }
 
-      // 8. Personal Threat Timeline
+      // 9. Personal Threat Timeline
       if (timeline.length > 0) {
-        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Reported Personal Threat Timeline (verify dates and sources)</div>`);
-        let timeHtml = `<div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:28px;">`;
+        legacyHtml += `<div class="sec-hdr">Reported Personal Threat Timeline (verify dates and sources)</div>`;
+        legacyHtml += `<div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:28px;">`;
         timeline.forEach((t, i) => {
           const safeUrl = aegisSafeSourceUrl(t.url);
           const urlLink = safeUrl ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" style="color:#06b6d4;font-family:var(--font-mono);font-size:0.72rem;margin-left:8px;text-decoration:none;">Open Source ↗</a>` : '';
-          timeHtml += `
+          legacyHtml += `
             <div style="display:flex;gap:14px;align-items:flex-start;${i < timeline.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.04);padding-bottom:12px;margin-bottom:12px;' : ''}">
               <div style="font-family:var(--font-mono);font-size:0.75rem;color:#06b6d4;min-width:90px;font-weight:700;">${escapeHtml(t.timestamp || 'Time not supplied')}</div>
               <div style="flex:1;">
@@ -746,28 +743,50 @@
             </div>
           `;
         });
-        timeHtml += `</div>`;
-        mount.insertAdjacentHTML('beforeend', timeHtml);
+        legacyHtml += `</div>`;
       }
 
-      // 9. Source Explorer (All Clickable Sources)
+      // Threat Gauge
+      const tgWrap = document.createElement('div');
+      tgWrap.id = 'pwThreatGaugeMount';
+      tgWrap.style.marginBottom = '20px';
       if (typeof AegisGraphs !== 'undefined') {
-        const tgWrap = document.createElement('div');
-        tgWrap.id = 'pwThreatGaugeMount';
-        tgWrap.style.marginBottom = '24px';
-        mount.appendChild(tgWrap);
         AegisGraphs.renderIdentityThreatGauge(tgWrap, data.threat_vectors || {});
       }
 
-      renderSourceExplorer(mount, evidence);
-
-      // 10. Unified Investigation Report (schema v3.8.0)
+      // If unified report exists, render threat gauge and unified report immediately under search
       if (data.unified_report && window.renderUnifiedReport) {
-        const urWrap = document.createElement('div');
-        urWrap.id = 'personalUnifiedReportContainer';
-        urWrap.style.marginTop = '28px';
-        mount.appendChild(urWrap);
-        window.renderUnifiedReport(urWrap, data.unified_report);
+        const urContainer = document.createElement('div');
+        urContainer.id = 'personalUnifiedReportContainer';
+        urContainer.style.marginTop = '20px';
+
+        const legacyDetails = document.createElement('div');
+        legacyDetails.className = 'ur-historical-accordion';
+        legacyDetails.style.marginTop = '32px';
+        legacyDetails.innerHTML = `
+          <details>
+            <summary>Inspect Raw Profile Resolution, Change Diff &amp; Evidence Explorer (${threats.length} signals &bull; ${evidence.length} sources)</summary>
+            <div id="pwLegacyContentMount" style="margin-top:16px;">
+              ${legacyHtml}
+              <div id="pwEvidenceMount"></div>
+            </div>
+          </details>
+        `;
+
+        mount.appendChild(tgWrap);
+        mount.appendChild(urContainer);
+        mount.appendChild(legacyDetails);
+
+        const evMount = legacyDetails.querySelector('#pwEvidenceMount');
+        if (evMount) renderSourceExplorer(evMount, evidence);
+
+        window.renderUnifiedReport(urContainer, data.unified_report);
+        loadPersonalOperationHealth();
+      } else {
+        mount.appendChild(tgWrap);
+        mount.insertAdjacentHTML('beforeend', legacyHtml);
+        renderSourceExplorer(mount, evidence);
+        loadPersonalOperationHealth();
       }
     }
 

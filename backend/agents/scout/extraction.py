@@ -129,7 +129,7 @@ class ScoutExtractionEngine:
                         evidence_ids=[ev_id],
                     )
                 )
-            elif any(k in text_lower for k in ("sec probe", "doj investigation", "antitrust lawsuit", "regulator")):
+            elif any(k in text_lower for k in ("sec probe", "doj investigation", "antitrust lawsuit", "regulator", "whistleblower", "subpoena", "fraud inquiry", "restatement inquiry", "insider trading")):
                 corporate_events.append(
                     CorporateEvent(
                         event_id=f"EVT-REG-{idx:03d}",
@@ -141,8 +141,14 @@ class ScoutExtractionEngine:
                     )
                 )
 
-            # 3. Social Rumor Signal
-            if f.platform in ("reddit", "twitter") and any(k in text_lower for k in ("unconfirmed", "rumor", "leak", "hearing that")):
+            # 3. Social & Forensic Rumor Signal
+            scout_rumor_lexicon = (
+                "unconfirmed", "rumor", "leak", "hearing that", "whistleblower",
+                "short seller", "forensic audit", "accounting red flag", "off-balance sheet",
+                "insider dump", "margin call", "bankruptcy rumor", "fraud allegation",
+                "cooked books", "fabricated report", "pump and dump", "ponzi"
+            )
+            if any(k in text_lower for k in scout_rumor_lexicon):
                 rumor_signals.append({
                     "rumor_id": f"RUM-{idx:03d}",
                     "platform": f.platform,

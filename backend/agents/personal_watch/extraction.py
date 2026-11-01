@@ -54,7 +54,11 @@ class PersonalWatchExtractionEngine:
             "joins", "leaves", "ceo", "board member", "founder", "hired"
         }
         impersonation_keywords = {
-            "fake account", "impersonat", "deepfake", "crypto scam", "giveaway scam"
+            "fake account", "impersonat", "deepfake", "crypto scam", "giveaway scam",
+            "voice clone", "deepfake audio", "ai voice", "face swap", "synthetic video",
+            "fake channel", "whatsapp scam", "telegram clone", "unauthorized merchandise",
+            "parody account", "bogus account", "spoofed handle", "death hoax", "arrested rumor",
+            "fake quote", "fabricated remarks"
         }
 
         for idx, f in enumerate(fragments, start=1):

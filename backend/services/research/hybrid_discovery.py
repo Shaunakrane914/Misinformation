@@ -79,6 +79,19 @@ class AdaptiveSourceBatch(BaseModel):
     actions: List[AdaptiveSourceProposal] = Field(default_factory=list, max_length=4)
 
 
+class AdversarialProbeProposal(BaseModel):
+    """Structured adversarial misinformation probe proposed by the AI layer."""
+    channel: str = Field(description="Permitted channel: web, news, reddit, twitter, or youtube")
+    operation: str = Field(default="search", description="Channel operation: search only")
+    query: str = Field(min_length=3, max_length=240, description="Targeted forensic search query targeting rumors, counter-claims, or unverified allegations")
+    angle: str = Field(default="CONTRADICTION_PROBE", description="Forensic angle: RUMOR_DEBUNK, REGULATORY_ALLEGATION, COUNTERFEIT_ABUSE, DEEPFAKE_IMPERSONATION, SMEAR_BOYCOTT, or WHISTLEBLOWER")
+    rationale: str = Field(min_length=3, max_length=240, description="Hypothesis explaining why this query surfaces potential misinformation")
+
+
+class AdversarialProbeBatch(BaseModel):
+    probes: List[AdversarialProbeProposal] = Field(default_factory=list, max_length=3)
+
+
 # ---------------------------------------------------------------------------
 # Deterministic Verification Gate
 # ---------------------------------------------------------------------------
@@ -261,6 +274,58 @@ class VerificationGate:
             rationale=action.rationale,
             authoritative=False,
             source_hint=action.source_hint,
+        )
+        return True, source_action, ""
+
+    def verify_adversarial_action(
+        self,
+        action: AdversarialProbeProposal,
+        entity: str,
+        allowed_channels: Set[str],
+    ) -> Tuple[bool, Optional[SourceAction], str]:
+        """Verify an AI-proposed adversarial misinformation probe.
+
+        Invariants:
+        - Channel must be in allowed_channels and executable.
+        - Operation must be 'search'.
+        - Query must not contain direct URLs, scripts, or private/secret text.
+        - Runtime capabilities must assess the channel as not EXCLUDE.
+        """
+        channel = action.channel.strip().lower().replace("x", "twitter")
+        operation = action.operation.strip().lower()
+
+        if channel not in allowed_channels or operation not in EXECUTABLE_CAPABILITIES.get(channel, set()):
+            return False, None, "UNSUPPORTED_CHANNEL_OR_OPERATION"
+
+        if operation != "search":
+            return False, None, "AI_SEARCH_SUGGESTIONS_ONLY"
+
+        q = action.query.strip()
+        if not q or len(q) < 3 or len(q) > 250:
+            return False, None, "INVALID_QUERY_LENGTH"
+
+        if re.search(r"https?://|(?:r/)[A-Za-z0-9_]+", q):
+            return False, None, "UNVALIDATED_SEARCH_QUERY"
+
+        if private_or_secret_text(q):
+            return False, None, "REJECTED_SENSITIVE_TEXT"
+
+        assessment = self.capabilities.assess(channel, operation, required_depth="CAPABILITY_DEPENDENT")
+        if assessment.get("decision") in {"EXCLUDE", "DEFER_TEMPORARY"}:
+            return False, None, assessment.get("reason", "CAPABILITY_UNAVAILABLE")
+
+        action_id = f"act_adv_{abs(hash((channel, operation, q, action.angle))) % 100000000:08d}"
+        source_action = SourceAction(
+            action_id=action_id,
+            stage=2,
+            channel=channel,
+            operation=operation,
+            query=q,
+            source_category="adversarial_misinformation_probe",
+            expected_depth="SEARCH_INDEX_DISCOVERY",
+            priority=2,
+            rationale=f"[{action.angle}] {action.rationale}",
+            authoritative=False,
         )
         return True, source_action, ""
 
@@ -491,6 +556,147 @@ class HybridDiscoveryCoordinator:
                 logger.info("[HybridDiscovery] Rejected adaptive action: %s (%s)", prop.query, reason)
 
         return accepted_actions
+
+    # -----------------------------------------------------------------------
+    # Adversarial Misinformation & Forensic Probe Planning
+    # -----------------------------------------------------------------------
+
+    def generate_adversarial_probes(
+        self,
+        entity: str,
+        claim: str,
+        agent: str,
+        allowed_channels: Optional[Set[str]] = None,
+        timeout: float = 2.5,
+    ) -> List[SourceAction]:
+        """AI Layer: Formulate targeted adversarial queries to surface misinformation.
+
+        Generates dialectical counter-claim, rumor, whistleblower, or abuse probes.
+        Never hallucinates facts or URLs; all proposals pass through the Verification Gate.
+        """
+        if allowed_channels is not None:
+            allowed = set(allowed_channels) & set(EXECUTABLE_CAPABILITIES)
+        else:
+            allowed = {"news", "web", "reddit", "twitter", "youtube"} & set(EXECUTABLE_CAPABILITIES)
+        if not allowed:
+            return []
+
+        clean_entity = re.sub(r"\s*\([A-Z0-9.^-]{1,20}\)\s*", " ", (entity or claim)).strip()
+        if not clean_entity or private_or_secret_text(clean_entity + " " + claim):
+            return []
+
+        prompt = (
+            "You are an Adversarial Misinformation & Forensic Intelligence Assistant.\n"
+            f"Target Entity: {json.dumps(clean_entity[:150])}\n"
+            f"Context / User Claim: {json.dumps(claim[:300])}\n"
+            f"Investigative Agent: {agent}\n"
+            f"Permitted Channels: {sorted(allowed)}\n"
+            "Formulate 1 or 2 targeted adversarial search queries designed to retrieve potential misinformation, "
+            "circulating rumors, unverified allegations, counter-claims, smear campaigns, or deepfakes about this entity.\n"
+            "Do NOT suggest generic press releases or neutral company news.\n"
+            "Schema: " + json.dumps(AdversarialProbeBatch.model_json_schema(), separators=(",", ":"))
+        )
+
+        batch: Optional[AdversarialProbeBatch] = None
+        try:
+            batch = bounded_advice_call(
+                lambda: self.gateway.generate_structured(
+                    prompt,
+                    AdversarialProbeBatch,
+                    **{**advisory_call_options(timeout), "purpose": "search_suggestion"},
+                ),
+                timeout=timeout,
+            )
+        except Exception as exc:
+            logger.warning("[HybridDiscovery] Adversarial probe proposal failed: %s", exc)
+
+        accepted: List[SourceAction] = []
+        if batch and batch.probes:
+            for prop in batch.probes:
+                valid, action, reason = self.verification_gate.verify_adversarial_action(prop, clean_entity, allowed)
+                if valid and action:
+                    accepted.append(action)
+                else:
+                    logger.info("[HybridDiscovery] Rejected adversarial probe: %s (%s)", prop.query, reason)
+
+        # Deterministic Fallback if AI proposes 0 valid actions or is unavailable/mocked
+        if not accepted:
+            deterministic_probes = self._deterministic_adversarial_fallback(clean_entity, claim, agent, allowed)
+            for dp in deterministic_probes:
+                valid, action, _ = self.verification_gate.verify_adversarial_action(dp, clean_entity, allowed)
+                if valid and action:
+                    accepted.append(action)
+
+        return accepted[:2]
+
+    def _deterministic_adversarial_fallback(
+        self,
+        entity: str,
+        claim: str,
+        agent: str,
+        allowed: Set[str]
+    ) -> List[AdversarialProbeProposal]:
+        """Deterministic fallback generating high-yield adversarial queries based on agent specialty."""
+        agent_norm = agent.lower()
+        probes = []
+        primary_ch = "web" if "web" in allowed else ("news" if "news" in allowed else list(allowed)[0] if allowed else "web")
+        social_ch = "reddit" if "reddit" in allowed else ("twitter" if "twitter" in allowed else primary_ch)
+
+        if agent_norm in {"scout", "scout_agent", "financial"}:
+            probes.append(AdversarialProbeProposal(
+                channel=primary_ch,
+                operation="search",
+                query=f'"{entity}" (rumor OR "short seller" OR whistleblower OR "sec probe" OR fraud OR restatement)',
+                angle="REGULATORY_ALLEGATION",
+                rationale="Probe for short-seller allegations, whistleblower claims, or corporate denials.",
+            ))
+            if social_ch != primary_ch:
+                probes.append(AdversarialProbeProposal(
+                    channel=social_ch,
+                    operation="search",
+                    query=f'"{entity}" (unconfirmed OR leak OR scandal OR bankruptcy)',
+                    angle="RUMOR_DEBUNK",
+                    rationale="Detect unverified financial buzz or panic in community forums.",
+                ))
+        elif agent_norm in {"brandshield", "brandshield_agent"}:
+            probes.append(AdversarialProbeProposal(
+                channel=primary_ch,
+                operation="search",
+                query=f'"{entity}" (counterfeit OR replica OR phishing OR "fake support" OR scam)',
+                angle="COUNTERFEIT_ABUSE",
+                rationale="Discover suspect listings, gray market sales, and brand impersonation attacks.",
+            ))
+            probes.append(AdversarialProbeProposal(
+                channel="news" if "news" in allowed else primary_ch,
+                operation="search",
+                query=f'"{entity}" (boycott OR scandal OR contamination OR recall OR lawsuit)',
+                angle="SMEAR_BOYCOTT",
+                rationale="Identify public boycott campaigns, safety recalls, or consumer smear narratives.",
+            ))
+        elif agent_norm in {"personal", "personal_watch", "personal_watch_agent"}:
+            probes.append(AdversarialProbeProposal(
+                channel=primary_ch,
+                operation="search",
+                query=f'"{entity}" (deepfake OR "voice clone" OR "ai video" OR "crypto giveaway")',
+                angle="DEEPFAKE_IMPERSONATION",
+                rationale="Screen for synthetic media, voice clones, and unauthorized giveaway scams.",
+            ))
+            probes.append(AdversarialProbeProposal(
+                channel="news" if "news" in allowed else primary_ch,
+                operation="search",
+                query=f'"{entity}" ("did not say" OR "fabricated quote" OR "death hoax" OR statement)',
+                angle="RUMOR_DEBUNK",
+                rationale="Search for attribution debunking and refutations of fabricated quotes.",
+            ))
+        else:
+            probes.append(AdversarialProbeProposal(
+                channel=primary_ch,
+                operation="search",
+                query=f'"{entity}" (rumor OR hoax OR debunked OR "fact check" OR "viral claim")',
+                angle="RUMOR_DEBUNK",
+                rationale="Capture viral claims, debunking analyses, and fact-checking reviews.",
+            ))
+        return probes
 
 
 # Global singleton coordinator

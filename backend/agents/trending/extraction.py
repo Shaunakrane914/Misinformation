@@ -67,7 +67,12 @@ class TrendingExtractionEngine:
 
         # 3. Sentiment Quantification
         pos_words = {"success", "praise", "record", "growth", "announces", "leads", "award", "win", "high", "positive"}
-        neg_words = {"scandal", "backlash", "slammed", "lawsuit", "crash", "fall", "boycott", "criticized", "allegations", "fake"}
+        neg_words = {
+            "scandal", "backlash", "slammed", "lawsuit", "crash", "fall", "boycott",
+            "criticized", "allegations", "fake", "hoax", "debunked", "disputed",
+            "unverified", "astroturf", "misleading", "bot", "coordinated", "manipulated",
+            "smear", "propaganda", "rumor", "fabricated"
+        }
         pos_count = 0
         neg_count = 0
         all_text = " ".join([f"{f.title} {f.snippet}" for f in fragments]).lower()

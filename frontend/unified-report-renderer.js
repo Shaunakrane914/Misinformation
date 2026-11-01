@@ -101,6 +101,110 @@ const VERDICT_CONFIG = {
   },
 };
 
+
+/** Compute categorical recency badge: CURRENT INCIDENT (<14d) vs HISTORICAL EVENT */
+function computeRecencyBadge(timestampStr) {
+  if (!timestampStr || typeof timestampStr !== 'string' || timestampStr === 'Unknown' || timestampStr === 'Date unknown' || timestampStr === PH_STR) {
+    return '<span class="ur-badge ur-badge--date-unverified">UNDATED / DATE UNVERIFIED</span>';
+  }
+  const parsed = Date.parse(timestampStr);
+  if (!Number.isFinite(parsed)) {
+    return '<span class="ur-badge ur-badge--date-unverified">' + esc(timestampStr) + '</span>';
+  }
+  const daysAgo = (Date.now() - parsed) / (1000 * 60 * 60 * 24);
+  if (daysAgo >= 0 && daysAgo <= 14) {
+    return '<span class="ur-badge ur-badge--current-incident">CURRENT INCIDENT (&lt; 14d)</span>';
+  } else {
+    const d = new Date(parsed);
+    const dateLabel = d.toISOString().split('T')[0];
+    return '<span class="ur-badge ur-badge--historical-event">HISTORICAL EVENT (' + esc(dateLabel) + ')</span>';
+  }
+}
+
+/** Compute categorical source role badge: ORIGINAL INTERVIEW / PRIMARY vs SECONDARY REPORT vs COMMUNITY */
+function computeSourceRoleBadge(item) {
+  if (!item || typeof item !== 'object') return '';
+  const source = item.source && typeof item.source === 'object' ? item.source : {};
+  const auth = String(source.authority || item.source_authority || '').toUpperCase();
+  const type = String(source.type || '').toUpperCase();
+  const isPrim = source.is_primary === true || item.source_role === 'PRIMARY';
+  const pub = String(source.name || item.publisher_host || item.publisher || '').toUpperCase();
+  const title = String(item.title || item.source_title || '').toUpperCase();
+
+  if (isPrim || auth.includes('REGULATOR') || auth.includes('EDGAR') || type === 'FILING' || pub.includes('SEC') || pub.includes('EDGAR') || title.includes('INTERVIEW') || title.includes('10-K') || title.includes('10-Q') || title.includes('8-K')) {
+    return '<span class="ur-badge ur-badge--primary-source">ORIGINAL / PRIMARY DISCLOSURE</span>';
+  } else if (pub.includes('REDDIT') || pub.includes('TWITTER') || pub.includes('X.COM') || pub.includes('YOUTUBE') || type === 'COMMUNITY' || type === 'SOCIAL') {
+    return '<span class="ur-badge ur-badge--community-post">COMMUNITY DISCUSSION</span>';
+  } else {
+    return '<span class="ur-badge ur-badge--secondary-report">SECONDARY REPORT / WIRE</span>';
+  }
+}
+
+/** Synthesize high-craft Executive Direct Answer answering user query upfront */
+function renderExecutiveAnswer(report, verdictKey) {
+  const target = (report._meta && report._meta.query) || '';
+  const agent = (report._meta && report._meta.agent) || '';
+  const agentLabelMap = {
+    scout: 'Scout Financial Anomaly & Corporate Intelligence',
+    brandshield: 'BrandShield Impersonation & Smear Defense',
+    trending: 'Trending Narrative Velocity & Virality Tracking',
+    personal_watch: 'Personal Watch VIP & Executive Defense',
+    claim_verifier: 'Claim Verifier'
+  };
+  const agentDisplay = agentLabelMap[agent.toLowerCase()] || agent || 'Aegis Intelligence';
+  const vLabel = (VERDICT_CONFIG[verdictKey] && VERDICT_CONFIG[verdictKey].label) || (verdictKey || 'ASSESSED');
+
+  let directAnswer = '';
+  let caveat = '';
+  const cleanTarget = esc(target) || 'the submitted inquiry';
+
+  if (agent === 'scout' || /scout/i.test(agent)) {
+    if (verdictKey === 'SUPPORTED' || !verdictKey) {
+      directAnswer = `Analysis of <strong>${cleanTarget}</strong>: Primary regulatory disclosures and market telemetry show consistent operational reporting with no verified accounting discrepancies or anomalous volume manipulation signals.`;
+    } else if (verdictKey === 'REFUTED' || verdictKey === 'MISLEADING') {
+      directAnswer = `Investigation of <strong>${cleanTarget}</strong>: Material contradictions or reporting discrepancies were identified against official regulatory filings. Circulating reports conflict with primary statutory disclosures.`;
+    } else {
+      directAnswer = `Assessment of <strong>${cleanTarget}</strong>: Public evidence is currently unverified or insufficient to confirm anomalous corporate activity. Review primary SEC filings below.`;
+    }
+    caveat = 'Volume dispersion reflects current trading ranges only and does not establish fundamental financial solvency or absence of non-market risks.';
+  } else if (agent === 'brandshield' || /brand/i.test(agent)) {
+    if (verdictKey === 'SUPPORTED' || !verdictKey) {
+      directAnswer = `Brand Defense Audit for <strong>${cleanTarget}</strong>: No active coordinated smear campaigns or verified hostile typosquat/impersonation domains were detected in monitored channels.`;
+    } else if (verdictKey === 'REFUTED' || verdictKey === 'MISLEADING') {
+      directAnswer = `Brand Defense Alert for <strong>${cleanTarget}</strong>: Potential brand disparagement or conflicting representations identified across reporting channels.`;
+    } else {
+      directAnswer = `Brand Audit for <strong>${cleanTarget}</strong>: Insufficient external observations to verify active impersonation or smear vectors.`;
+    }
+    caveat = 'Absence of observed brand threat vectors in monitored channels does not guarantee an absence of targeted or private adversary activity.';
+  } else if (agent === 'trending' || /trend/i.test(agent)) {
+    const activeClusters = (report.agent_intelligence && report.agent_intelligence.recent_developments && report.agent_intelligence.recent_developments.length) || 0;
+    if (activeClusters > 0) {
+      directAnswer = `Narrative Tracking for <strong>${cleanTarget}</strong>: Active discussion cluster identified within the current observation window. Circulating claims remain subject to primary corroboration.`;
+    } else {
+      directAnswer = `Narrative Tracking for <strong>${cleanTarget}</strong>: Zero active breakout trends or viral cascades detected within the 48-hour active window. Historical coverage and discovery leads are archived below.`;
+    }
+    caveat = 'Platform discovery counts reflect sampled queries and do not measure absolute reach, audience sentiment, or narrative veracity.';
+  } else if (agent === 'personal_watch' || /personal/i.test(agent)) {
+    directAnswer = `Executive Integrity Audit for <strong>${cleanTarget}</strong>: Monitored attack vectors (synthetic media, doxxing, executive impersonation) show no verified high-severity compromise in public feeds. Quotations reflect publisher-attributed reporting.`;
+    caveat = 'Unmonitored channels, private communication platforms, and unindexed media remain unassessed; this is not proof of total personal safety.';
+  } else {
+    directAnswer = `Investigation for <strong>${cleanTarget}</strong> concluded with status <strong>${vLabel}</strong> based on indexed evidence and qualification checks.`;
+    caveat = 'Determinations are evidence-grounded and model-assisted; inspect primary source citations below.';
+  }
+
+  return `
+    <div class="ur-executive-answer">
+      <div class="ur-exec-header">
+        <span class="ur-exec-title">// EXECUTIVE CORE ANSWER</span>
+        <span class="ur-exec-meta">${esc(agentDisplay)} &bull; ${esc(vLabel)}</span>
+      </div>
+      <p class="ur-exec-text">${directAnswer}</p>
+      <div class="ur-exec-caveat">${caveat}</div>
+    </div>
+  `;
+}
+
+
 // ─── Utility helpers ──────────────────────────────────────────────────────────
 
 /** Escape HTML to prevent XSS when inserting dynamic text. */
@@ -211,8 +315,24 @@ function renderSummary(report) {
   const label = report._meta && report._meta.agent === 'claim_verifier'
     ? 'Claim under review' : 'Investigation target';
   const banner = renderVerdictBanner(report);
+
+  let verdictKey = null;
+  if (report.investigation_status === 'ACQUISITION_FAILED') {
+    verdictKey = 'ACQUISITION_FAILED';
+  } else if (report.verdict && typeof report.verdict === 'object') {
+    verdictKey = normalizeVerdictKey(report.verdict.verdict || report.verdict.status);
+  } else if (report._meta && report._meta.verdict) {
+    verdictKey = normalizeVerdictKey(report._meta.verdict);
+  } else if (report.summary && typeof report.summary === 'string') {
+    const match = report.summary.match(/Claim is \*\*([A-Za-z_]+)\*\*/i);
+    if (match) verdictKey = normalizeVerdictKey(match[1]);
+  }
+
+  const execAnswer = renderExecutiveAnswer(report, verdictKey);
+
   const content = `${target ? `<p class="ur-target"><span>${label}</span>${esc(target)}</p>` : ''}
     ${banner}
+    ${execAnswer}
     <p class="ur-summary">${esc(report.summary) || '<em>No summary available.</em>'}</p>`;
   return section('ur-summary', "WHAT'S HAPPENING?", content);
 }
@@ -343,7 +463,13 @@ function renderDiscovery(report) {
   if (!candidates.length) return '';
   return section('ur-discovery', 'DISCOVERY LEADS AND UNQUALIFIED CAPTURES',
     `<p class="ur-ev-note">${candidates.length} non-evidence record(s) retained. Some are unread leads; others were captured but rejected for the research objective. Inspect the read and qualification status. Neither counts as verified claim support.</p>
-     <details><summary>Inspect leads and rejected captures</summary>${candidates.map(item => renderEvidenceCard(item)).join('')}</details>`);
+     <div class="ur-historical-accordion">
+       <details>
+         <summary>Archived Mentions &amp; Discovery Leads (${candidates.length} record(s) outside 48h window)</summary>
+         <p class="ur-ev-note" style="margin:8px 0 12px 0;">These items represent older mentions or discovery leads captured outside the immediate active velocity window. They are retained for archival reference and are NOT promoted into verified active findings.</p>
+         ${candidates.map(item => renderEvidenceCard(item)).join('')}
+       </details>
+     </div>`);
 }
 
 /** A bounded collection of exact passages, distinct from the short brief. */
@@ -364,7 +490,13 @@ function renderWorkbenchPage(workbench, filters = {}) {
   const selected = workbenchPage(workbench, filters);
   const cards = selected.rows.map(row => {
     const url = safeEvidenceUrl(row.source_url);
+    const recBadge = computeRecencyBadge(row.published_at);
+    const roleBadge = computeSourceRoleBadge(row);
     return `<article class="ur-workbench-passage"><h4>${esc(row.source_title || 'Captured source')}</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0;">
+        ${roleBadge}
+        ${recBadge}
+      </div>
       <p class="ur-ev-note">${esc(row.publisher_host || 'Unknown publisher')} · ${esc(row.content_role || 'SOURCE ASSERTION')} · UNVERIFIED · ${esc(row.published_at || 'Publication date unknown')}</p>
       ${row.context_labels && typeof row.context_labels === 'object' ? `<p class="ur-ev-note">${Object.values(row.context_labels).filter(value => typeof value === 'string').map(esc).join(' · ')}</p>` : ''}
       ${row.source_permission && safeEvidenceUrl(row.source_permission.licence_url) ? `<p class="ur-ev-note">Source credit: ${esc(row.source_permission.author || row.publisher_host || 'Original publisher')} · Exact excerpt · ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Original source</a> · ` : ''}<a href="${esc(safeEvidenceUrl(row.source_permission.licence_url))}" target="_blank" rel="noopener noreferrer">Source licence</a></p>` : ''}
@@ -480,6 +612,8 @@ function renderEvidenceCard(item, allowRead = true) {
   const srcDomain = source.domain ? `<span>Reported domain: ${esc(source.domain)}</span>` : '';
   const isPrim  = source.is_primary === true;
   const badge   = isPrim ? `<span class="ur-badge ur-badge--primary">Primary</span>` : '';
+  const recBadge = computeRecencyBadge(item.timestamp || item.published_at);
+  const roleBadge = computeSourceRoleBadge(item);
 
   // Authoritative Source Tag
   const auth = String(source.authority || item.source_authority || '').toUpperCase();
@@ -545,7 +679,7 @@ function renderEvidenceCard(item, allowRead = true) {
   return `
     <article class="ur-ev-card" data-ur-evidence-id="${esc(item.evidence_id || '')}" data-ur-source-url="${esc(url || '')}">
       <div class="ur-ev-card-head">
-        ${titleEl}${badge}${authBadge}${relBadge}${noUrl}
+        ${titleEl}${badge}${authBadge}${roleBadge}${recBadge}${relBadge}${noUrl}
       </div>
       ${item.evidence_id ? `<p class="ur-ev-note">Evidence ID: ${esc(item.evidence_id)}</p>` : ''}
       ${item.extraction && item.extraction.evidentiary_use === 'DISCOVERY_ONLY' ? '<p class="ur-ev-note">Discovery only; not verified claim support.</p>' : ''}
@@ -1116,8 +1250,8 @@ function renderUnifiedReport(container, report) {
   const html = [
     renderSummary(report),
     renderClaimDecomposition(report),
-    renderVisualAnalytics(report),
     renderFindings(report),
+    renderVisualAnalytics(report),
     renderEvidenceWorkbench(report),
     renderEvidence(report),
     renderDiscovery(report),

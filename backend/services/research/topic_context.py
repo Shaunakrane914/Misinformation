@@ -26,6 +26,31 @@ TOPICS = {
     'product_safety': ('recall', 'product safety', 'fire hazard', 'defective product'),
     'scams': ('scam', 'fraud', 'impersonation', 'counterfeit', 'fake advertisement', 'fake endorsement'),
     'false_quotes': ('false quote', 'fabricated quote', 'misattributed', 'did not say', 'झूठा बयान'),
+    'financial_misinformation': (
+        'accounting fraud', 'ponzi', 'short seller report', 'insider dump',
+        'whistleblower complaint', 'off-balance sheet', 'bankruptcy rumor',
+        'margin call', 'restatement', 'pump and dump', 'cooked books', 'वित्तीय घोटाला'
+    ),
+    'smear_campaigns': (
+        'boycott', 'boycott campaign', 'defamation', 'smear campaign',
+        'reputation attack', 'coordinated attack', 'cancel campaign', 'बहिष्कार'
+    ),
+    'synthetic_media': (
+        'deepfake', 'ai voice clone', 'voice clone', 'face swap',
+        'synthetic video', 'ai generated audio', 'deepfake video', 'audio clone', 'कृत्रिम वीडियो'
+    ),
+    'viral_misinformation': (
+        'viral claim', 'whatsapp forward', 'viral hoax', 'forwarded many times',
+        'debunked', 'fact check', 'fake news', 'वायरल दावा', 'फर्जी खबर', 'झूठा दावा'
+    ),
+    'astroturfing': (
+        'bot farm', 'coordinated inauthentic behavior', 'fake reviews',
+        'review bombing', 'sockpuppet', 'hashtag hijacking', 'inauthentic reviews'
+    ),
+    'executive_threats': (
+        'ceo resignation rumor', 'executive scandal', 'doxxing', 'credential leak',
+        'vip scam', 'executive impersonation', 'fake executive'
+    ),
 }
 
 
@@ -76,15 +101,27 @@ def infer_context(claim, subject='', *, agent='', domain='', hints=None, observe
         tasks = ['PUBLIC_STATEMENT']
     if _has(task_text, 'false quote') or _has(task_text, 'fabricated quote') or _has(task_text, 'did not say'):
         tasks = ['QUOTE_VERIFICATION'] if agent == 'personal_watch' else tasks
+    if agent == 'scout':
+        for task, cues in [('FRAUD_INVESTIGATION', ('accounting fraud', 'ponzi', 'restatement', 'whistleblower')),
+                           ('SHORT_SELLER_ATTACK', ('short seller', 'short report', 'cooked books')),
+                           ('INSIDER_TRADING', ('insider dump', 'margin call'))]:
+            if any(_has(task_text, cue) for cue in cues):
+                tasks.append(task)
+    if agent == 'personal_watch':
+        for task, cues in [('DEEPFAKE_DEFENSE', ('deepfake', 'voice clone', 'face swap', 'synthetic video')),
+                           ('DEFAMATION_DEFENSE', ('death hoax', 'arrested rumor', 'fake scandal', 'fabricated quote'))]:
+            if any(_has(task_text, cue) for cue in cues):
+                tasks.append(task)
     if agent == 'brandshield':
         for task, cues in [('PHISHING', ('phishing',)), ('COUNTERFEIT', ('counterfeit', 'fake product')),
                            ('PRODUCT_SAFETY', ('recall', 'product safety')),
                            ('ENDORSEMENT_CLAIM', ('fake advertisement', 'fake endorsement', 'celebrity advertisement')),
+                           ('SMEAR_CAMPAIGN', ('boycott', 'smear campaign', 'cancel campaign', 'defamation')),
                            ('IMPERSONATION', ('impersonation',))]:
             if any(_has(task_text, cue) for cue in cues):
                 tasks.append(task)
     scores = {topic: .8 for topic, cues in TOPICS.items() if any(_has(
-        task_text if topic in {'product_safety', 'scams', 'false_quotes'} else text, cue) for cue in cues)}
+        task_text if topic in {'product_safety', 'scams', 'false_quotes', 'financial_misinformation', 'smear_campaigns', 'synthetic_media', 'viral_misinformation', 'astroturfing', 'executive_threats'} else text, cue) for cue in cues)}
     if re.search(r'\bfake\s+(?:celebrity\s+)?(?:ad(?:vertisement)?s?|endorsements?)\b', task_text, re.I):
         scores['scams'] = .8
     requested_topics = hints.get('topics', [])

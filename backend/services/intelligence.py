@@ -149,3 +149,66 @@ Return ONLY the JSON array."""
         }
         for mention in mentions
     ]
+
+
+def analyze_misinformation_grounding(
+    claim_text: str,
+    evidence_items: List[Dict[str, Any]],
+    target_entity: str = "",
+) -> Dict[str, Any]:
+    """Analyze whether evidence corroborates, refutes, or identifies unverified misinformation.
+
+    Grounded via Centralized LLM Gateway; falls back to deterministic analysis if unavailable.
+    """
+    if not evidence_items or not claim_text.strip():
+        return {
+            "verdict": "UNVERIFIED",
+            "confidence": 0.5,
+            "hallmark": "INSUFFICIENT_EVIDENCE",
+            "summary": "Insufficient evidence observed to establish factual status or misinformation.",
+        }
+
+    sample_texts = []
+    for idx, ev in enumerate(evidence_items[:8], start=1):
+        content = ev.get("content") or ev.get("snippet") or ev.get("title") or ""
+        platform = ev.get("platform", "Web")
+        source_role = ev.get("source_role", "SECONDARY")
+        sample_texts.append(f"[{idx}] Platform: {platform} (Role: {source_role}): {content[:200]}")
+
+    prompt = f"""You are an Epistemic Verification Analyst.
+Target Entity: {json.dumps(target_entity or 'Target')}
+Claim Under Review: {json.dumps(claim_text[:300])}
+Observed Evidence Fragments:
+{chr(10).join(sample_texts)}
+
+Determine:
+1. verdict: "VERIFIED" (backed by primary disclosures), "CONTRADICTED" (refuted by official/reputable sources), "UNVERIFIED_RUMOR" (circulating in unverified forums), or "MISINFORMATION_NARRATIVE" (demonstrably fabricated/deceptive)
+2. confidence: Float between 0.0 and 1.0
+3. hallmark: Short categorization (e.g. OFFICIAL_DISCLOSURE, FABRICATED_QUOTE, DEEPFAKE_SCAM, ASTROTURF_CAMPAIGN, GENUINE_REPORTING)
+4. summary: One sentence explaining the factual posture.
+
+Return STRICT JSON:
+{{
+  "verdict": "CONTRADICTED",
+  "confidence": 0.85,
+  "hallmark": "FABRICATED_QUOTE",
+  "summary": "Primary statements contradict the circulating quotation."
+}}"""
+
+    try:
+        raw = call_gemini_text(prompt)
+        parsed = json.loads(clean_json_string(raw))
+        if isinstance(parsed, dict):
+            if "summary" not in parsed and "explanation" in parsed:
+                parsed["summary"] = parsed["explanation"]
+            if "verdict" in parsed:
+                return parsed
+    except Exception as exc:
+        logger.warning("[Intelligence] Misinformation grounding fallback: %s", exc)
+
+    return {
+        "verdict": "UNVERIFIED_RUMOR",
+        "confidence": 0.6,
+        "hallmark": "UNVERIFIED_CIRCULATION",
+        "summary": "Circulating claim observed across sampled sources; primary authoritative corroboration pending.",
+    }

@@ -313,7 +313,7 @@
         </div>
       </div>
 
-      <section class="agent-guide ae-reveal" aria-label="How Trending evaluates a narrative" style="--agent-accent:#f48ac5;">
+      <section class="agent-guide ae-reveal" id="trendingInitialGuide" aria-label="How Trending evaluates a narrative" style="--agent-accent:#f48ac5;">
         <div class="agent-guide-heading"><h2>Separate attention from truth</h2><p>Panels below stay empty until a real scan returns observations.</p></div>
         <div class="agent-guide-grid">
           <div class="agent-guide-card"><span class="step">01 / SAMPLE</span><h3>Scope the signal</h3><p>Source counts describe retrieved samples, not platform-wide reach or virality.</p></div>
@@ -336,6 +336,19 @@
         <div class="ch-badge" id="ch_instagram"><span>Instagram</span><span class="dot-val">Auth gated</span></div>
       </div>
 
+      <!-- UNIFIED INVESTIGATION REPORT (Schema v3.8.0) MOUNTED IMMEDIATELY UNDER CONTROLS -->
+      <div id="trendingUnifiedReportContainer" style="margin-top:20px;display:none;"></div>
+
+      <div class="ur-historical-accordion" id="trendingTelemetryDrawer" style="display:none;margin-top:28px;">
+        <details>
+          <summary>Inspect Raw Channel Feeds, Velocity Plots &amp; Discovery Explorers</summary>
+          <div style="margin-top:16px;">
+            <div id="trendingLegacyMount"></div>
+          </div>
+        </details>
+      </div>
+
+      <div id="trendingPrimaryWorkspace">
       <!-- MAIN CONTENT GRID -->
       <div class="main-grid ae-reveal">
         <!-- LEFT: DISCOVERED TRENDS & TIME-SERIES CHART -->
@@ -448,8 +461,7 @@
         </div>
       </div>
 
-      <!-- UNIFIED INVESTIGATION REPORT (Schema v3.8.0) -->
-      <div id="trendingUnifiedReportContainer" style="margin-top:36px;display:none;"></div>
+      </div>
     </div>
     </main>
 
@@ -576,6 +588,8 @@
       const query = document.getElementById('scanQueryInput').value.trim();
       if (!query) return;
       if (trendingScanBusy) return;
+      const guide = document.getElementById('trendingInitialGuide');
+      if (guide) guide.style.display = 'none';
       trendingScanBusy = true;
       const scanButton = document.getElementById('trendingScanBtn');
       const buttonContent = scanButton.innerHTML;
@@ -671,11 +685,17 @@
 
       // 9. Unified Investigation Report (schema v3.8.0)
       const urMount = document.getElementById('trendingUnifiedReportContainer');
+      const drawer = document.getElementById('trendingTelemetryDrawer');
+      const primaryWs = document.getElementById('trendingPrimaryWorkspace');
       if (urMount && window.renderUnifiedReport && data.unified_report) {
         urMount.style.display = 'block';
         window.renderUnifiedReport(urMount, data.unified_report);
+        if (drawer) drawer.style.display = 'block';
+        if (primaryWs && (!data.trends || data.trends.length === 0)) primaryWs.style.display = 'none';
       } else if (urMount) {
         urMount.style.display = 'none';
+        if (drawer) drawer.style.display = 'none';
+        if (primaryWs) primaryWs.style.display = 'block';
       }
     }
 

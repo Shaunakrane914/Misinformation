@@ -698,19 +698,34 @@
         </div>
       `;
 
-      container.innerHTML = html;
+      if (data.unified_report && window.renderUnifiedReport) {
+        container.innerHTML = `
+          <div id="brandshieldUnifiedReportContainer" style="margin-top:20px;"></div>
+          <div class="ur-historical-accordion" style="margin-top:28px;">
+            <details>
+              <summary>Inspect Raw Brand Threat Signals, Snapshot &amp; Source Explorer (${threats.length} signals &bull; ${sources.length} sources)</summary>
+              <div style="margin-top:16px;">
+                ${html}
+              </div>
+            </details>
+          </div>
+        `;
+        const urWrap = document.getElementById('brandshieldUnifiedReportContainer');
+        if (urWrap) window.renderUnifiedReport(urWrap, data.unified_report);
+        loadBrandOperationHealth(retrieval.latency_ms);
+      } else {
+        container.innerHTML = html;
+        loadBrandOperationHealth(retrieval.latency_ms);
+      }
       loadBrandOperationHealth(retrieval.latency_ms);
-
-      // Mount Unified Investigation Report (schema v3.8.0)
-      mountBrandUnifiedReport(container, data);
     }
 
     function mountBrandUnifiedReport(container, data) {
       if (data.unified_report && window.renderUnifiedReport) {
-        const urWrap = document.createElement('div');
+        const urWrap = document.getElementById('brandshieldUnifiedReportContainer') || document.createElement('div');
         urWrap.id = 'brandshieldUnifiedReportContainer';
-        urWrap.style.marginTop = '28px';
-        container.appendChild(urWrap);
+        urWrap.style.marginTop = '20px';
+        if (!urWrap.parentElement) container.appendChild(urWrap);
         window.renderUnifiedReport(urWrap, data.unified_report);
       }
     }

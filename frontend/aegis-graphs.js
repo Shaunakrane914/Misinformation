@@ -169,10 +169,10 @@
         container.innerHTML = `
           <div class="ae-radar-widget ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
-              // EPISTEMIC TENSOR: INSUFFICIENT DATA
+              // EPISTEMIC QUALITY SCORES PENDING
             </div>
             <p style="font-size:0.82rem;color:var(--text-muted);margin:0;line-height:1.5;">
-              Multi-dimensional epistemic tensor unpopulated for this evaluation. Telemetry policy strictly prohibits rendering fabricated tensor scores.
+              Composite quality scores (relevance, source quality, and independence) are calculated when multiple independent documents are verified. Individual source credibility notes are available in the evidence inspection below.
             </p>
           </div>
         `;
@@ -199,10 +199,10 @@
         container.innerHTML = `
           <div class="ae-radar-widget ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
-              // EPISTEMIC TENSOR: INSUFFICIENT DATA
+              // EPISTEMIC QUALITY SCORES PENDING
             </div>
             <p style="font-size:0.82rem;color:var(--text-muted);margin:0;line-height:1.5;">
-              Multi-dimensional epistemic tensor unpopulated for this evaluation. Telemetry policy strictly prohibits rendering fabricated tensor scores.
+              Composite quality scores (relevance, source quality, and independence) are calculated when multiple independent documents are verified. Individual source credibility notes are available in the evidence inspection below.
             </p>
           </div>
         `;
@@ -277,6 +277,9 @@
           <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:6px;">
             Mean Epistemic Score: <strong style="color:#c4b5fd;">${meanScore}%</strong>
           </div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;">
+            NOTE: Low observed scores reflect absence of detected attack patterns in monitored sources only; this is not proof of personal safety or absence of offline risk.
+          </div>
         </div>
       `;
 
@@ -300,10 +303,10 @@
         container.innerHTML = `
           <div class="ae-funnel-widget ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
-              // EVIDENCE DISCOVERY FUNNEL: ZERO RETRIEVAL OPERATIONS
+              // EVIDENCE PIPELINE SUMMARY
             </div>
-            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;">
-              Zero pipeline actions recorded. No synthetic waterfall stages displayed.
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;line-height:1.5;">
+              As search queries and document reads are performed across providers, this pipeline tracks how many sources were discovered, analyzed, and qualified as grounded findings.
             </p>
           </div>
         `;
@@ -342,6 +345,9 @@
               `;
             }).join('')}
           </div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;">
+            NOTE: Low observed scores reflect absence of detected attack patterns in monitored sources only; this is not proof of personal safety or absence of offline risk.
+          </div>
         </div>
       `;
 
@@ -364,10 +370,10 @@
         container.innerHTML = `
           <div class="ae-dispersion-widget ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
-              // ZERO CHANNEL OBSERVATIONS RECORDED
+              // SOURCE DISTRIBUTION PENDING
             </div>
-            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;">
-              No evidence fragments classified across regulatory, news, social, or open web channels.
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;line-height:1.5;">
+              This investigation currently draws on direct primary and targeted web sources. Multi-channel distribution (comparing news, regulatory filings, and social discussions) will display when evidence spans several publication types.
             </p>
           </div>
         `;
@@ -391,6 +397,9 @@
             <span style="color:#38bdf8;">● News: ${news}%</span>
             <span style="color:#c4b5fd;">● Web: ${web}%</span>
             <span style="color:#f59e0b;">● Social: ${social}%</span>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;">
+            NOTE: Low observed scores reflect absence of detected attack patterns in monitored sources only; this is not proof of personal safety or absence of offline risk.
           </div>
         </div>
       `;
@@ -513,10 +522,10 @@
         container.innerHTML = `
           <div class="ae-graph-wrapper ae-empty-state" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);letter-spacing:0.06em;margin-bottom:8px;">
-              // INSUFFICIENT TEMPORAL VELOCITY OBSERVATIONS
+              // SPREAD VELOCITY &amp; MOMENTUM (INSUFFICIENT TEMPORAL VELOCITY OBSERVATIONS)
             </div>
-            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;">
-              Zero longitudinal timestamp sequences captured. Hawkes virality estimation requires finite branching factor and arrival data.
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;line-height:1.5;">
+              Velocity tracking measures how rapidly a narrative accelerates across platforms over time. Because this topic lacks historical timestamps across multiple intervals, a spread acceleration curve is not currently available.
             </p>
           </div>
         `;
@@ -664,8 +673,15 @@
       }
 
       const maxThreat = Math.max(...assessed.map(v => v.val));
-      const overallStatus = maxThreat > 50 ? 'ELEVATED THREAT DETECTED' : 'DEFENSE POSTURE SECURE';
-      const statusColor = maxThreat > 50 ? 'var(--rose)' : 'var(--emerald)';
+      let overallStatus = 'LOW OBSERVED ATTACK SIGNALS (NOT EVIDENCE OF SAFETY)';
+      let statusColor = '#38bdf8';
+      if (maxThreat > 50) {
+        overallStatus = 'ELEVATED THREAT DETECTED';
+        statusColor = 'var(--rose)';
+      } else if (assessed.length < vectors.length) {
+        overallStatus = 'PARTIAL ASSESSMENT — LOW OBSERVED SIGNALS (NOT EVIDENCE OF SAFETY)';
+        statusColor = 'var(--amber)';
+      }
 
       const html = `
         <div class="ae-graph-wrapper" style="background:rgba(8,12,18,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;">
@@ -687,6 +703,9 @@
                 </div>
               </div>
             `).join('')}
+          </div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;">
+            NOTE: Low observed scores reflect absence of detected attack patterns in monitored sources only; this is not proof of personal safety or absence of offline risk.
           </div>
         </div>
       `;

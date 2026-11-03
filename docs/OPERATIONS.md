@@ -1,66 +1,49 @@
-# Aegis Protocol — Operations & Deployment Guide
-**Document Version**: 3.5.1  
-**Target Environment**: Production Docker / Cloud / Local Developer Workstation
+# Operations
 
----
+## Local configuration
 
-## 1. Environment Variable Reference
+Use Python 3.11 or later and install `requirements.txt`. Copy `.env.example` to
+an untracked `.env`. The example lists supported settings; placeholder values are
+not valid credentials. Local SQLite operation is available without a Supabase account.
 
-| Variable Name | Required? | Default | Purpose |
-| :--- | :--- | :--- | :--- |
-| `GEMINI_API_KEY` | Optional* | None | Primary Google Gemini API key for live inference. |
-| `GEMINI_API_KEY_2`, `_3` | Optional | None | Secondary rotating keys for load distribution. |
-| `AEGIS_MOCK_LLM` | Optional | `false` | When set to `true`, forces offline deterministic mock LLM provider. |
-| `SUPABASE_URL` | Optional* | None | Supabase project URL for PostgreSQL persistence. |
-| `SUPABASE_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Optional* | None | Supabase authentication token. |
-| `APIFY_TOKEN` | Optional | None | Token for Twitter/X scraper integration. |
-| `YF_API_KEY` | Optional | None | Yahoo Finance API key for market quotes. |
-| `LOG_LEVEL` | Optional | `INFO` | Logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`). |
-| `PORT` | Optional | `8000` | HTTP listening port for Uvicorn server. |
-
-*\*Note: If Gemini API keys or Supabase credentials are not provided or remote servers are unreachable, Aegis Protocol automatically activates its zero-crash local in-memory fallback stores and resilient mock providers, enabling full local testing without requiring external credentials.*
-
----
-
-## 2. Local Setup & Startup
-
-### 1. Clone & Setup Virtual Environment
 ```bash
-git clone https://github.com/Shaunakrane914/Misinformation.git
-cd Misinformation
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Linux/macOS:
-source venv/bin/activate
-pip install -r requirements.txt
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
-### 2. Configure Environment
+`ENVIRONMENT`, `PORT`, `ALLOWED_ORIGIN` and `ADMIN_API_TOKEN` control deployment
+behavior. Restrict production origins and protect administrative operations.
+Never configure `AEGIS_MOCK_LLM=true` in production. Offline fixtures are for tests.
+
+Configure model keys only for providers you intend to call. Advisory features
+have explicit enable flags and policy budgets; do not rotate credentials or reset
+ledgers to evade quotas. A failed provider is not permission to fabricate evidence.
+
+SEC public data does not require an API key. Its route requires a real approved
+`SEC_USER_AGENT` contact. Source-specific credentials, review records and approval
+flags remain necessary where the source requires them. Empty credentials and
+unreviewed publishers must remain unavailable.
+
+## Deployment
+
+- `Dockerfile` builds the FastAPI application; `render.yaml` describes Render setup.
+- The static `frontend/` can be served by FastAPI or uploaded to Cloudflare Pages.
+- The current Cloudflare project uses direct uploads. A Git push alone does not
+  establish that its frontend matches the backend release.
+- Check `/api/healthz`, `/api/readyz` and `/api/system/deployment-status`; record
+  actual revision and readiness observations before calling a release verified.
+
+Provider timeouts, denied access and empty research outcomes need separate diagnosis.
+Inspect candidate, read, body, qualified-source and passage counts rather than only
+HTTP status or total text length. Do not bypass a 401/403/429 using another reader.
+
+## Validation and data
+
 ```bash
-cp .env.example .env
-# Edit .env with your credentials if live services are desired
+python scripts/validate_release_candidate_smoke.py
+python scripts/validate_rollback_compatibility.py
 ```
 
-### 3. Initialize Database Schema (Supabase / Postgres)
-If using Supabase or PostgreSQL:
-1. Open the SQL Editor in your Supabase dashboard.
-2. Run the script: `backend/setup_aegis_db.sql`.
-3. This creates the `claims` and `evidence` tables, indexes, and constraints.
-
-### 4. Run Development Server
-```bash
-python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
-```
-Navigate to:
-- Interactive API Documentation: `http://localhost:8000/docs`
-- Main Dashboard: `http://localhost:8000/index.html`
-- Threat Intelligence Lab: `http://localhost:8000/threat-lab.html`
-
----
-
-## 3. Health & Telemetry Endpoints
-
-- **`GET /healthz`**: Basic liveness probe returning system status, version, timestamp, and active agent count.
-- **`GET /api/`**: OpenAPI metadata, system topology, and agent registry.
-- **`GET /api/dashboard/stats`**: Aggregated claim and threat statistics.
+These validators use isolated offline storage. They do not prove live provider
+health or deployed rollback. Back up local SQLite/dossiers separately and inspect
+historical archive integrity explicitly. Keep runtime records, generated reports
+and screenshots outside tracked source. See [testing](TESTING.md).

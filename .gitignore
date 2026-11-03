@@ -1,51 +1,84 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-ENV/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Environment
+# Local environments, credentials and editor state
 .env
-.env.local
-.env.*.local
-
-# IDE
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+ENV/
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
+.DS_Store
+Thumbs.db
 
-# Database
+# Python and build outputs
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+node_modules/
+
+# Runtime data and generated output
 *.db
 *.sqlite
-.scraper_health_history.json
 *.sqlite3
-aegis.db
+*.log
+*.tmp
+*.mp4
+*.report.json
+port.txt
+.scraper_health_history.json
+/backend/data/dossiers/*.json
+!/backend/data/dossiers/.gitkeep
+/artifacts/*
+!/artifacts/README.md
+!/artifacts/retrieval_benchmark/
+/research/
+/downloads/
+/logs/
 
-# Agent skills lock (managed by Antigravity IDE, kept in .gemini/)
-.gemini/skills-lock.json
+# Local workspaces and coding-assistant configuration
+/.scratch/
+/scratch/
+/.agent/
+/.agents/
+/.gemini/
+/.codex/
+/.claude/
+/AGENTS.md
+/CLAUDE.md
+/.wrangler/
+/.netlify/
+/frontend/.netlify/
 
-# Test files (root scratch files only)
+# Curated public docs; session reports stay local
+/docs/*
+!/docs/index.md
+!/docs/ARCHITECTURE.md
+!/docs/OPERATIONS.md
+!/docs/TESTING.md
+!/docs/EVALUATION.md
+!/docs/SECURITY.md
+!/docs/api/
+/docs/api/*
+!/docs/api/README.md
+!/docs/evaluation/
+/docs/evaluation/*
+!/docs/evaluation/README.md
+!/docs/evaluation/results/
+/docs/evaluation/results/*
+!/docs/evaluation/results/reranker_benchmark_4ad02c2.json
+!/docs/evaluation/results/welfake_classical_ml_4ad02c2.json
+!/docs/showcase/
+/docs/showcase/*.md
+/docs/showcase/composition/AGENTS.md
+/docs/showcase/composition/CLAUDE.md
+
+# Root scratch utilities and copied prompts
 /test_*.py
 /check_*.py
 /debug_*.py
@@ -53,100 +86,11 @@ aegis.db
 /verify_*.py
 /diagnose_*.py
 /*_test.py
-!scripts/
-
-# Temporary files
-*.log
-*.tmp
-.wrangler/
-personal_api.txt
-append_function.py
-FORCE_CRASH_TEST
-scratch/
-.scratch/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Project specific
-TEST/
-.agent/
-.agents/
-
-# AI-generated chat logs
-Starting Misinformation Project.md
+/temp_user_prompts.txt
+/final_report_prompt.txt
+/found_questions.txt
+/full_mission_mandate.txt
+/questions_full.txt
+/personal_api.txt
+/Starting Misinformation Project.md
 *.conversation.md
-# Local Netlify folder
-.netlify
-frontend/.netlify
-.netlify/
-frontend/.netlify/
-port.txt
-.pytest_cache/
-*.pyc
-pytest.ini
-
-# Test output artifacts
-scripts/*_report.json
-*.report.json
-backend/data/dossiers/*.json
-!backend/data/dossiers/.gitkeep
-research/scraper_bakeoff/artifacts/
-/artifacts/*
-!/artifacts/README.md
-!/artifacts/all_agents_evaluation.json
-!/artifacts/all_agents_evaluation.md
-!/artifacts/live_agent_smoke_result.json
-!/artifacts/phase7_1_smoke_validation_results.json
-
-!/artifacts/single_case_4_agent_fetch_audit.json
-!/artifacts/single_case_4_agent_fetch_audit.md
-!/artifacts/single_case_study_retrieval_audit.json
-!/artifacts/single_case_study_retrieval_audit.md
-!/artifacts/unlimited_time_case_study_audit.json
-!/artifacts/unlimited_time_case_study_audit.md
-!/artifacts/complete_retrieval_fix_live_audit.json
-!/artifacts/complete_retrieval_fix_live_audit.md
-!/artifacts/final_retrieval_audit.json
-!/artifacts/final_retrieval_audit.md
-!/artifacts/retrieval_benchmark/
-!/artifacts/retrieval_benchmark/**
-!/artifacts/live_retrieval_evaluation/
-!/artifacts/live_retrieval_evaluation/**
-!/artifacts/live_acquisition_audit/
-!/artifacts/live_acquisition_audit/**
-!/artifacts/live_acquisition_audit_reconciled/
-!/artifacts/live_acquisition_audit_reconciled/**
-!/artifacts/live_acquisition_audit_phase6_7/
-!/artifacts/live_acquisition_audit_phase6_7/**
-!/artifacts/live_acquisition_phase6_8/
-!/artifacts/live_acquisition_phase6_8/**
-!/artifacts/phase8_live_acquisition/
-!/artifacts/phase8_live_acquisition/**
-!/artifacts/phase8_live_probes/
-!/artifacts/phase8_live_probes/**
-!/artifacts/phase8_frontend_visual/
-artifacts/phase8_frontend_visual/*
-!/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/
-!/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/**
-# Allow only this reviewed Phase 9 checkpoint, not arbitrary future scrape dumps.
-!/artifacts/phase9_acquisition_depth/
-/artifacts/phase9_acquisition_depth/*
-!/artifacts/phase9_acquisition_depth/2026-10-15_checkpoint/
-!/artifacts/phase9_acquisition_depth/2026-10-15_checkpoint/**
-research/scraper_bakeoff/repos/
-
-# Large video binaries
-brag-output/*.mp4
-docs/showcase/*.mp4
-*.mp4
-
-
-# Scratch research notes
-temp_user_prompts.txt
-final_report_prompt.txt
-found_questions.txt
-full_mission_mandate.txt
-questions_full.txt
-

@@ -52,3 +52,11 @@ build/
 .DS_Store
 Thumbs.db
 
+
+# Local worktrees and development instructions
+.scratch/
+scratch/
+AGENTS.md
+CLAUDE.md
+.codex/
+.claude/

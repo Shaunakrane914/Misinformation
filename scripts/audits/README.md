@@ -1,17 +1,11 @@
-# scripts/audits/
+# Acquisition and evidence tools
 
-Live-network audit scripts that produce empirical evidence artifacts.
+`run_terminal_agent_quality.py` is the bounded specialist runner. Live activity is
+opt-in; inspect `--help`, source permissions and the requested budgets first.
+`website_yield_observer.py` and `website_word_yield.py` distinguish network events,
+article bodies and selected/published words.
 
-> **Warning:** These scripts make real network requests and require valid API keys.
-> Run in a properly configured environment, not during CI.
-
-| Script | Description |
-|--------|-------------|
-| `run_final_retrieval_audit.py` | Phase 6.9 final provider audit |
-| `run_complete_retrieval_fix_audit.py` | Post-fix full acquisition audit |
-| `run_phase6_7_live_acquisition_audit.py` | Phase 6.7 live acquisition |
-| `run_phase6_8_resolution_benchmark.py` | Social resolution benchmark |
-| `live_agent_json_audit.py` | JSON structure validation on live agent outputs |
-| `local_agent_json_audit.py` | JSON structure validation on local cached outputs |
-
-Audit outputs are preserved in `artifacts/` per AGENTS.md invariants.
+Retained replay, qualification and historical audit helpers are dependencies of
+regression tests. They do not supply a new live-success claim merely by replaying
+saved text. One-off browser matrices and superseded manual probes are excluded
+from the maintained tree. See [Testing](../../docs/TESTING.md).

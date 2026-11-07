@@ -313,9 +313,8 @@ def test_scout_corporate_rumor_debunking():
         }
     ]
     res = evaluate_corporate_rumor("ACME", "Acme in talks to acquire competitor", evidence)
-    assert res["verdict"] in ("REFUTED", "CONTRADICTED")
-    assert res["confidence"] >= 0.80
-    assert len(res["citations"]) >= 1
+    assert res["verdict"] == "INSUFFICIENT_EVIDENCE"
+    assert res["citations"] == []  # a declared-primary snippet is not an acquired filing
 
 
 # =============================================================================

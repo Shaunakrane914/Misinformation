@@ -25,6 +25,7 @@ from backend.services.agent_reach.channels import (
     RetrievalRequest,
 )
 from backend.services.url_validator import validate_url_safe
+from backend.infrastructure.acquisition.network.http import ProviderHTTPError
 
 logger = logging.getLogger(__name__)
 
@@ -127,18 +128,22 @@ class SubstackAdapter(PlatformAdapter):
         title = candidate.title or "Substack Post"
         subtitle = candidate.metadata.get("subtitle", "")
         author = ""
+        published = None
+        body_html = ""
+        raw_html = ""
 
         if slug and "." in netloc:
             post_api = f"https://{netloc}/api/v1/posts/{slug}"
             if validate_url_safe(post_api)[0]:
                 try:
-                    resp = fetch_public_http(post_api, headers=DEFAULT_SUBSTACK_HEADERS, timeout=6.0)
+                    resp = fetch_public_http(post_api, headers=DEFAULT_SUBSTACK_HEADERS, timeout=5.0, preserve_http_errors=True)
                     if resp.status_code in {401, 403, 429}:
-                        return FetchedDocument(url=url, status="ACCESS_DENIED" if resp.status_code != 429 else "RATE_LIMITED",
-                            failure_reason="Provider denied the post read", backend_id=self.backend_id)
+                        raise ProviderHTTPError("Provider denied the post read", endpoint=post_api,
+                            status_code=resp.status_code, network_observed=True, attempts=resp.attempts)
                     if resp.status_code == 200:
                         post_json = json.loads(resp.body.decode("utf-8", errors="replace"))
                         title = post_json.get("title", title)
+                        published = post_json.get("post_date")
                         subtitle = post_json.get("subtitle", subtitle)
                         body_html = post_json.get("body_html", "")
                         # Clean html
@@ -148,13 +153,21 @@ class SubstackAdapter(PlatformAdapter):
                         bylines = post_json.get("publishedBylines", [])
                         if bylines and isinstance(bylines, list):
                             author = bylines[0].get("name", "")
+                except (PermissionError, ProviderHTTPError) as exc:
+                    if isinstance(exc, PermissionError) or exc.status_code in {401, 403, 429} or exc.failure_kind in {
+                            "SSRF_BLOCKED", "ACCESS_REJECTED", "PERMISSION_REQUIRED", "AUTH_REQUIRED", "ACCESS_DENIED", "RATE_LIMITED"}:
+                        raise
+                    logger.debug("[SubstackAdapter] Post API transport failure: %s", type(exc).__name__)
                 except Exception as exc:
                     logger.debug("[SubstackAdapter] Post API notice for %s: %s", slug, type(exc).__name__)
 
         # Fallback to direct HTML scrape if API not available or empty
         if not body_text:
             try:
-                resp = fetch_public_http(url, headers=DEFAULT_SUBSTACK_HEADERS, timeout=6.0, max_bytes=2_000_000)
+                resp = fetch_public_http(url, headers=DEFAULT_SUBSTACK_HEADERS, timeout=5.0, max_bytes=1_000_000, preserve_http_errors=True)
+                if resp.status_code in {401, 403, 429}:
+                    raise ProviderHTTPError("Provider denied the page read", endpoint=url,
+                        status_code=resp.status_code, network_observed=True, attempts=resp.attempts)
                 if resp.status_code == 200:
                     raw_html = resp.body.decode("utf-8", errors="replace")
                     cleaned = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", raw_html, flags=re.IGNORECASE)
@@ -162,6 +175,8 @@ class SubstackAdapter(PlatformAdapter):
                     cleaned = re.sub(r"<(?:p|div|h[1-6]|li)[^>]*>", "\n\n", cleaned, flags=re.IGNORECASE)
                     cleaned = re.sub(r"<[^>]+>", " ", cleaned)
                     body_text = re.sub(r"[ \t]+", " ", cleaned).strip()
+            except (PermissionError, ProviderHTTPError):
+                raise
             except Exception as exc:
                 return FetchedDocument(url=url, status="FAILED", failure_reason=type(exc).__name__, backend_id=self.backend_id)
 
@@ -183,8 +198,9 @@ class SubstackAdapter(PlatformAdapter):
             backend_id=self.backend_id,
             raw_metadata={
                 "title": title,
-                "source_html": locals().get("raw_html") or locals().get("body_html") or "",
-                "source_html_basis": "CAPTURED_POST_BODY_HTML" if locals().get("body_html") else "HTTP_HTML",
+                "published": published if body_html and not raw_html else None,
+                "source_html": raw_html or body_html,
+                "source_html_basis": "HTTP_HTML" if raw_html else "CAPTURED_POST_BODY_HTML",
                 "subtitle": subtitle,
                 "author": author,
                 "publication": netloc,

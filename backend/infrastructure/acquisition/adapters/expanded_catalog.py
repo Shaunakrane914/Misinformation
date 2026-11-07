@@ -22,10 +22,19 @@ ADAPTERS = {
     "bluesky": ("social.bluesky", "BlueskyAdapter"),
     "telegram": ("social.telegram", "TelegramPublicAdapter"),
     "news_wires": ("news.wires_adapter", "NewswireAdapter"),
+    "news": ("news.wires_adapter", "NewswireAdapter"),
     "gdelt": ("news.gdelt", "GdeltDocAdapter"),
     "cpsc_recalls": ("consumer.cpsc_recalls", "CpscRecallsAdapter"),
+    "factcheck": ("factcheck.factcheck_adapter", "FactCheckAdapter"),
 }
-DOMAIN_DISCOVERY = {"financial": "yahoo_finance", "trending": "gdelt", "brand": "news_wires", "personal": "substack"}
+DOMAIN_DISCOVERY = {
+    "financial": "yahoo_finance",
+    "trending": "gdelt",
+    "brand": "news_wires",
+    "personal": "substack",
+    "fact_check": "factcheck",
+    "news": "news_wires",
+}
 
 
 @lru_cache(maxsize=1)
@@ -92,7 +101,12 @@ def _publisher_observation(adapter, metadata):
     subject and task gates. GDELT first-seen and CPSC issue observations keep
     their existing distinct provenance and never enter this publication field.
     """
-    if adapter != 'news_wires' or not isinstance(metadata, dict):
+    if adapter == "factcheck" and isinstance(metadata, dict):
+        return {
+            "discovery_published_at": metadata.get("discovery_published_at") or metadata.get("published_at") or "",
+            "discovery_author": metadata.get("discovery_author") or metadata.get("publisher") or "",
+        }
+    if adapter not in ('news_wires', 'news') or not isinstance(metadata, dict):
         return {}
     publication = metadata.get('published')
     if (metadata.get('publication_time_basis') != 'PUBLISHER_FEED_DECLARATION'
@@ -174,7 +188,7 @@ def read_expanded_url(url, max_chars=20_000):
         return {"status": "failed", "url": url, "failure_kind": "EMPTY_CONTENT", "content": ""}
     fragment = fragments[0]
     content, page = fragment.content or "", {"content_scope": "UNCLASSIFIED_PAGE"}
-    html = document.raw_metadata.get("source_html") or (document.raw_content if key == "news_wires" else "")
+    html = document.raw_metadata.get("source_html") or (document.raw_content if key in {"news", "news_wires"} else "")
     if html and key != "trustpilot":
         from bs4 import BeautifulSoup
         from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_readable_page, extract_observed_page_details, _publication_identity

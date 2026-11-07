@@ -1,9 +1,9 @@
 """
 Aegis Protocol — Threat Intelligence Lab Instruments
 =====================================================
-Physics-grounded deterministic and statistical forensic instruments:
-1. Zipf-Mandelbrot Token-Rank Power-Law Regression (Synthetic Text Detector)
-2. Hawkes Point-Process Contagion Simulator (Viral Cascade & Blast Radius)
+Educational statistical profiles and deterministic illustrations:
+1. Zipf-Mandelbrot token-frequency curve fit (not authorship detection)
+2. Illustrative diffusion curve with Hawkes-style intensity (not observed reach)
 3. Multi-Node Fault-Tolerant Consensus Arbitrament (Outlier Trimming & Ensemble Quorum)
 """
 
@@ -30,7 +30,7 @@ def compute_mandelbrot_fit(
     
     Returns:
         Dict containing R^2 goodness of fit, Shannon entropy, Type-Token Ratio (TTR),
-        per-token curve data, and forensic classification (SYNTHETIC vs HUMAN).
+        per-token curve data; authorship remains undetermined.
     """
     clean_text = (text or "").strip()
     if not clean_text:
@@ -50,7 +50,7 @@ def compute_mandelbrot_fit(
             "status": "warning",
             "message": "Sample too small for statistically valid regression (minimum 10 words required).",
             "verdict": "INSUFFICIENT_DATA",
-            "confidence": 50.0,
+            "confidence": None,
             "r_squared": 0.0,
             "entropy": 0.0,
             "ttr": 0.0,
@@ -103,20 +103,17 @@ def compute_mandelbrot_fit(
     if ss_tot > 1e-9:
         r_squared = max(0.0, min(0.999, 1.0 - (ss_res / ss_tot)))
     else:
-        r_squared = 0.85
+        r_squared = 0.0
 
     ttr = round(unique_tokens / total_tokens, 4)
     entropy = round(-sum((c / total_tokens) * math.log2(c / total_tokens) for c in counts.values()), 3)
 
-    is_synthetic = r_squared >= 0.92 and (ttr < 0.75 or entropy < 5.2)
-    confidence = round(min(98.8, max(60.0, r_squared * 100.0)), 1)
-    verdict = "SYNTHETIC" if is_synthetic else "HUMAN"
+    confidence = None
+    verdict = "AUTHORSHIP_UNDETERMINED"
 
     analysis = (
         f"Mandelbrot rank-frequency regression yielded R² = {r_squared:.3f} (entropy: {entropy} bits, TTR: {ttr:.2f}). "
-        + ("Token distribution shows characteristic low-variance power-law decay typical of autoregressive transformer sampling."
-           if is_synthetic else
-           "Token distribution exhibits organic vocabulary burstiness, lexical variance, and non-smooth tail distribution consistent with human composition.")
+        + "This describes a token-frequency fit. It does not determine authorship or provide a calibrated probability of AI generation."
     )
 
     return {
@@ -155,7 +152,7 @@ def simulate_hawkes_contagion(
     if not text:
         raise ValueError("Either topic or claim must be provided for Hawkes contagion analysis.")
 
-    # Compute deterministic parameters grounded by topic characteristics
+    # Deterministic example parameters; these are not fitted observations.
     seed_val = int(hashlib.md5(text.encode("utf-8")).hexdigest()[:8], 16)
 
     # Base background intensity (spontaneous submissions)
@@ -177,7 +174,7 @@ def simulate_hawkes_contagion(
     elif r0 >= 1.0:
         threat_level = "ELEVATED"
         threat_color = "yellow"
-        trajectory = "Critical sustained propagation"
+        trajectory = "Supercritical propagation" if r0 > 1.0 else "Critical sustained propagation"
     else:
         threat_level = "NOMINAL"
         threat_color = "green"
@@ -219,12 +216,13 @@ def simulate_hawkes_contagion(
         "hourly_distribution": hourly_distribution,
         "critical_window_hours": 4.5 if r0 >= 1.2 else 8.0,
         "containment_recommendation": (
-            "Initiate immediate automated debunker deployment across Tier-1 ingestion nodes."
-            if r0 >= 1.3 else
-            "Maintain passive monitoring; cascade velocity remains sub-critical under current network topology."
+            "Illustrative supercritical model (R0 > 1); no observed reach or intervention recommendation."
+            if r0 > 1.0 else
+            "Illustrative critical model (R0 = 1); no observed reach." if r0 == 1.0 else
+            "Illustrative subcritical model (R0 < 1); no observed reach."
         ),
         "is_simulation": True,
-        "methodology": "Hawkes Exponential Kernel Self-Exciting Point Process"
+        "methodology": "Illustrative diffusion curve with Hawkes-style exponential intensity; not a fitted point process"
     }
 
 

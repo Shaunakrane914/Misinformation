@@ -92,12 +92,28 @@ def result_fit(query, title, snippet, url, query_class=""):
         return score, None if score >= 0.75 else "HEADLINE_MISMATCH"
     text = f"{title} {snippet} {parsed.hostname} {parsed.path}".casefold()
     state = _search.get() or {}
-    target = re.sub(r"\([^)]*\)", "", state.get("target") or "")
+    raw_target = state.get("target") or ""
+    # Strip ticker suffixes (.NS, .BO, .BSE, .NSE, .L, .TO, etc.) and parenthesized tokens
+    clean_target = re.sub(r"\.(NS|BO|BSE|NSE|L|TO|HK)\b", "", raw_target, flags=re.I)
+    target = re.sub(r"\([^)]*\)", "", clean_target)
+    # Exclude common exchange tickers and corporate stopwords
     subject = [word for word in re.findall(r"[a-z0-9]+", target.casefold())
-               if len(word) >= 2 and word not in {"inc", "ltd", "limited", "corp", "corporation", "company"}]
+               if len(word) >= 2 and word not in {
+                   "inc", "ltd", "limited", "corp", "corporation", "company",
+                   "ns", "bo", "bse", "nse", "nasdaq", "nyse", "share", "stock"
+               }]
     if subject:
-        if state.get("domain") == "trending":
-            from backend.services.research.entity_resolver import EntityResolver
+        domain_name = state.get("domain")
+        from backend.services.research.entity_resolver import EntityResolver, KNOWN_CANONICAL_PROFILES
+        target_lower = target.strip().lower()
+        matched_entity = KNOWN_CANONICAL_PROFILES.get(target_lower)
+        if matched_entity:
+            entity_names = [matched_entity.canonical_name.lower()] + [a.lower() for a in matched_entity.aliases]
+            entity_matched = any(re.search(r"\b" + re.escape(en) + r"\b", text) for en in entity_names)
+        else:
+            entity_matched = False
+
+        if domain_name == "trending":
             entity = EntityResolver.resolve_entity(target, domain="trending")
             _, _, rejection = EntityResolver.evaluate_entity_match(text, entity)
             if rejection:
@@ -107,6 +123,14 @@ def result_fit(query, title, snippet, url, query_class=""):
                     and provisional_topic_overlap(entity.canonical_name, f"{title} {snippet}"))
                 if not provisional:
                     return 0.0, "SUBJECT_MISMATCH"
+        elif entity_matched:
+            # Entity canonical name or alias matched in text
+            pass
+        elif len(subject) > 3:
+            # Multi-word claims: require at least 40% of subject tokens instead of rigid 100%
+            subject_hits = sum(bool(re.search(r"\b" + re.escape(word) + r"\b", text)) for word in subject)
+            if (subject_hits / len(subject)) < 0.40:
+                return 0.0, "SUBJECT_MISMATCH"
         elif not all(re.search(r"\b" + re.escape(word) + r"\b", text) for word in subject):
             return 0.0, "SUBJECT_MISMATCH"
     lexical_query = re.sub(r"\b(?:site|when|after|before):\S+", "", query, flags=re.I)

@@ -149,9 +149,12 @@ def _run_harvest_pipeline(request, budget, profile_name, http_budget):
             from backend.services.research.source_registry import source_registry
             permission = source_registry.excerpt_decision(item.canonical_url, item.metadata.get('page_metadata'))
             item.metadata['source_use_permission'] = permission
-            item.metadata["layer2_eligible"] = result.is_accepted and structural_body and permission['eligible']
+            from backend.services.research.specialist_planning import matches_specialist_body
+            task_match = matches_specialist_body(item, request.extra_params.get("claim_text") or request.intent,
+                                                request.target, request.domain)
+            item.metadata["layer2_eligible"] = result.is_accepted and structural_body and permission['eligible'] and task_match
             reason = result.rejection_reason or ("NO_STRUCTURAL_BODY" if not structural_body else
-                     permission.get('reason') if not permission['eligible'] else None)
+                     permission.get('reason') if not permission['eligible'] else "REQUESTED_TASK_NOT_OBSERVED_IN_BODY" if not task_match else None)
             item.metadata["post_read_qualification_reason"] = reason
             item.metadata["temporal_required"] = request.domain == "trending"
             item.metadata["temporal_eligible"] = result.is_accepted if request.domain == "trending" else True

@@ -24,6 +24,28 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["System & Telemetry"])
 
 
+@router.get("/api/system/benchmarks")
+def published_benchmarks():
+    """Selected committed offline results, without machine paths or live accuracy claims."""
+    import json
+    from pathlib import Path
+    folder = Path(__file__).resolve().parents[2] / "docs/evaluation/results"
+    try:
+        classification = json.loads((folder / "welfake_classical_ml_4ad02c2.json").read_text(encoding="utf-8"))
+        ranking = json.loads((folder / "reranker_benchmark_4ad02c2.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        raise HTTPException(status_code=503, detail="Committed benchmark results unavailable")
+    return {"scope": "HISTORICAL_OFFLINE_EXPERIMENTS", "live_research_accuracy": None,
+        "commit": classification["git_commit"], "recorded_at": classification["timestamp_utc"],
+        "classification": {"dataset": "WELFake", "model": classification["model"]["name"],
+            "test_samples": classification["dataset"]["split_sizes"]["test"],
+            "metrics": classification["results"]["test"]["metrics"],
+            "limitation": "Binary headline classification; not live claim verification."},
+        "reranker": {"evaluation": ranking["evaluation"], "design": ranking["scientific_disclosure"],
+            "raw": ranking["reranker"]["raw_retrieval"], "reranked": ranking["reranker"]["reranked_retrieval"],
+            "limitation": "Small controlled candidate pools; not end-to-end retrieval or investigation latency."}}
+
+
 class GeminiProxyRequest(BaseModel):
     prompt: str = Field(..., min_length=1, max_length=20000, description="Prompt string to execute with model rotation.")
 
@@ -436,3 +458,21 @@ async def explain_claim(request: dict):
     except Exception as e:
         logger.error(f"[API] Error generating explanation: {str(e)}")
         return {"explanation": "Unable to generate explanation right now.", "evidence_url": ""}
+
+
+@router.get("/api/investigations")
+def recent_investigations(ids: str = ""):
+    from backend.services.investigation_history import recent_reports
+    if len(ids) > 2000:
+        raise HTTPException(422, "Supply at most 50 report IDs")
+    return {"investigations": recent_reports([part for part in ids.split(",") if part]),
+            "scope": "Reports identified by this browser's saved IDs"}
+
+
+@router.get("/api/investigations/{identifier}")
+def saved_investigation(identifier: str):
+    from backend.services.investigation_history import get_report
+    report = get_report(identifier)
+    if report is None:
+        raise HTTPException(404, "Saved investigation not found; it may belong to unavailable or expired storage")
+    return {"unified_report": report}

@@ -144,7 +144,7 @@ assert(container.innerHTML.includes('No source URL'));
 assert(container.innerHTML.includes('Acquisition trace'));
 assert(container.innerHTML.includes('Source grouping is not proof'));
 assert(container.innerHTML.includes('required authorization'));
-assert(container.innerHTML.includes('Claim under review'));
+assert(container.innerHTML.includes('Exact claim &lt;img'));
 assert(container.innerHTML.includes('SOURCE COVERAGE'));
 assert(container.innerHTML.includes('Observed query outcomes'));
 assert(container.innerHTML.includes('aria-controls="ur-summary-body"'));

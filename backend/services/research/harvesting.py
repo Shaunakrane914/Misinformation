@@ -331,7 +331,7 @@ def raw_source_type(item):
         return "PUBLISHER_HOMEPAGE"
     if role in {"NEWS_INDEX", "DOCUMENT_INDEX"} or item.metadata.get("discovery_kind") == "FEED_INDEX":
         return "SOURCE_INDEX"
-    if item.content_depth in {"SOCIAL_POST", "VIDEO_METADATA", "PROFILE_METADATA", "DIRECT_METADATA"}:
+    if item.content_depth in {"SOCIAL_POST", "VIDEO_METADATA", "PROFILE_METADATA", "DIRECT_METADATA", "STRUCTURED_PUBLIC_DATA"}:
         return "COMMUNITY_POST" if item.content_depth == "SOCIAL_POST" else "STRUCTURED_PUBLIC_DATA"
     if item.primary_source and item.content_depth in {"PRIMARY_DOCUMENT", "REGULATORY_FILING", "OFFICIAL_STATEMENT"}:
         return "OFFICIAL_DOCUMENT"

@@ -6,6 +6,10 @@ from backend.services.research.passage_extractor import has_usable_passage
 
 def specialist_brief(data, agent, target, discovery):
     domain = "brand" if agent == "brandshield" else "personal"
+    if domain == "brand":
+        target = data.get("brand_name") or data.get("brand") or target
+        if isinstance(target, dict):
+            target = target.get("name") or target.get("brand") or "Investigated brand"
     if domain == "personal":
         # The report query may be a source URL or allegation, not the subject
         # whose name appears in captured speaker attribution.

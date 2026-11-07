@@ -157,7 +157,8 @@ class ClaimIntelligenceEngine:
             # Search objectives are not propositions asserted by the caller.
             # Keep declarative research reporting and explicit factual claims.
             from backend.services.research.research_objectives import is_research_instruction
-            if is_research_instruction(candidate):
+            from backend.services.claim_intelligence.claim_extractor import is_testable_claim
+            if is_research_instruction(candidate) or not is_testable_claim(candidate):
                 continue
             c_id = f"claim_{idx + 1:03d}"
             

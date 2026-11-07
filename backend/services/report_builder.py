@@ -68,6 +68,7 @@ class ReportBuilder:
         execution_log: Optional[List[Any]] = None,
         queries_planned: int = 0,
         timeline_events: Optional[List[Dict[str, Any]]] = None,
+        research_data: Optional[Dict[str, Any]] = None,
     ) -> UnifiedReport:
         """
         Build a UnifiedReport for the Claim Verifier agent.
@@ -112,11 +113,21 @@ class ReportBuilder:
         # ── Evidence ─────────────────────────────────────────────────────────
         evidence = UnifiedEvidenceSet()
         if corpus is not None:
-            items = getattr(corpus, "evidence_items", []) or []
+            if hasattr(corpus, "evidence_items"):
+                items = getattr(corpus, "evidence_items", []) or []
+            elif isinstance(corpus, dict):
+                items = corpus.get("evidence_items") or corpus.get("investigated_sources") or corpus.get("evidence") or []
+            else:
+                items = []
             evidence = classify_evidence_items(items)
 
         # ── Disagreements ─────────────────────────────────────────────────────
         # ── Disagreements & Contradictions ────────────────────────────────────
+        if not any((evidence.primary, evidence.independent, evidence.community)):
+            findings = []
+            summary = ("Claim is **INSUFFICIENT_EVIDENCE**. Missing acquired evidence is not proof of truth or falsity."
+                       if verdict else None)
+
         disagreements: List[str] = []
         structured_contradictions: List[Dict[str, Any]] = []
         if corpus is not None:
@@ -184,7 +195,7 @@ class ReportBuilder:
             elif "true" in str(v_str).lower():
                 next_steps = ["Monitor for updates from primary sources."]
 
-        return UnifiedReport(
+        report = UnifiedReport(
             summary=summary,
             findings=findings,
             evidence=evidence,
@@ -198,6 +209,9 @@ class ReportBuilder:
             claim_decomposition=decomposed,
             detailed_contradictions=structured_contradictions,
         )
+        if research_data:
+            report = _complete_agent_report(report, research_data, execution_log, queries_planned)
+        return report
 
     # ── Trending Agent ────────────────────────────────────────────────────────
 
@@ -881,6 +895,11 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         if hasattr(finding, "to_dict"):
             finding = finding.to_dict()
         if isinstance(finding, dict):
+            assessment = (finding.get("metadata") or {}).get("claim_assessment")
+            if (isinstance(assessment, dict) and not finding.get("supporting_evidence_ids")
+                    and not finding.get("contradicting_evidence_ids")):
+                # An unanswered question is an assessment gap, not a finding.
+                continue
             text = _summary_text(finding.get("statement") or finding.get("description")
                                  or finding.get("summary") or finding.get("title"))
             if text:
@@ -905,6 +924,9 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         report.findings = finding_texts
     else:
         report.findings = list(dict.fromkeys(finding_texts + report.findings))
+    from backend.services.claim_intelligence.claim_extractor import is_testable_claim
+    if not is_testable_claim(report.query or ""):
+        report.findings = [finding for finding in report.findings if finding.strip() != (report.query or "").strip()]
 
     # Rich canonical records take precedence over lossy legacy news summaries.
     canonical = UnifiedEvidenceSet()
@@ -1151,7 +1173,7 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         elif isinstance(ent_raw, str) and ent_raw.strip():
             target_entity = ent_raw.strip()
         elif report.query and isinstance(report.query, str) and report.query.strip():
-            target_entity = report.query.split()[0]
+            target_entity = claim_extractor._infer_entity(report.query.strip())
         else:
             target_entity = "Subject"
         atomic_claims = claim_extractor.extract_claims(str(report.query or "Unspecified Claim"), entity=target_entity)
@@ -1167,18 +1189,23 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         matrix_items = []
         for claim in atomic_claims:
             passages = []
-            for s in all_sources:
-                snippet = s.get("snippet") or ""
-                body = s.get("content") or snippet
-                if snippet:
-                    passages.append({
-                        "source_id": s.get("evidence_id") or s.get("url") or "src",
-                        "source_url": s.get("url") or "",
-                        "publisher": (s.get("source") or {}).get("name") or s.get("publisher") or "Unknown",
-                        "passage_text": snippet,
-                        "full_content": body,
-                        "published_at": s.get("timestamp"),
-                    })
+            sources_by_id = {s.get("evidence_id"): s for s in all_sources}
+            for passage in report.evidence_workbench.get("passages", []):
+                source = sources_by_id.get(passage.get("evidence_id"), {})
+                raw = raw_by_id.get(passage.get("evidence_id"), {})
+                body = raw.get("readable_text")
+                text = passage.get("text") or ""
+                start, end = passage.get("start"), passage.get("end")
+                if not isinstance(body, str) or type(start) is not int or type(end) is not int:
+                    continue
+                if start < 0 or body[start:end] != text:
+                    continue
+                if hashlib.sha256(body.encode("utf-8")).hexdigest() != passage.get("captured_text_sha256"):
+                    continue
+                passages.append({"source_id": passage["evidence_id"], "source_url": passage.get("source_url"),
+                    "publisher": passage.get("publisher_host"), "passage_text": text, "full_content": body,
+                    "primary_source": source.get("source", {}).get("is_primary") is True,
+                    "published_at": passage.get("published_at")})
 
             evidence_links = stance_analyzer.evaluate_source_passages(claim, passages)
             matrix_item = assessment_engine.assess_claim(
@@ -1203,4 +1230,21 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
     except Exception as e:
         logger.warning(f"Claim Intelligence Core evaluation skipped: {e}")
 
+    from backend.services.report_answer import build_answer
+    answer = build_answer(report, data)
+    if answer:
+        report.processing_notes["task_answer"] = answer
+        if report.investigation_status != "ACQUISITION_FAILED":
+            # Keep observed access/freshness/capture gaps alongside the scoped
+            # answer. A shorter overview must not erase a real failure reason.
+            if generated_summary or has_acquisition_metrics or report.processing_notes.get("specialist_coverage"):
+                previous = report.summary or ""
+                if report.agent == "trending":
+                    from backend.services.research.temporal_guard import requested_trending_window
+                    window = trace.get("trending_window_hours") or requested_trending_window(report.query)
+                    previous = previous.replace("48-hour", f"{window:g}-hour")
+                report.summary = previous + " " + answer["summary"]
+            else:
+                report.summary = answer["summary"]
+        report.next_steps = list(dict.fromkeys([answer["next_action"], *report.next_steps]))
     return report

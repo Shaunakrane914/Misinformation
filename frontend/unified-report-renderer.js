@@ -112,12 +112,13 @@ function computeRecencyBadge(timestampStr) {
     return '<span class="ur-badge ur-badge--date-unverified">' + esc(timestampStr) + '</span>';
   }
   const daysAgo = (Date.now() - parsed) / (1000 * 60 * 60 * 24);
+  if (daysAgo < 0) return '<span class="ur-badge ur-badge--date-unverified">FUTURE DATE / UNVERIFIED</span>';
   if (daysAgo >= 0 && daysAgo <= 14) {
-    return '<span class="ur-badge ur-badge--current-incident">CURRENT INCIDENT (&lt; 14d)</span>';
+    return '<span class="ur-badge ur-badge--current-incident">RECENT PUBLICATION (&lt; 14d)</span>';
   } else {
     const d = new Date(parsed);
     const dateLabel = d.toISOString().split('T')[0];
-    return '<span class="ur-badge ur-badge--historical-event">HISTORICAL EVENT (' + esc(dateLabel) + ')</span>';
+    return '<span class="ur-badge ur-badge--historical-event">OLDER PUBLICATION (' + esc(dateLabel) + ')</span>';
   }
 }
 
@@ -125,85 +126,38 @@ function computeRecencyBadge(timestampStr) {
 function computeSourceRoleBadge(item) {
   if (!item || typeof item !== 'object') return '';
   const source = item.source && typeof item.source === 'object' ? item.source : {};
-  const auth = String(source.authority || item.source_authority || '').toUpperCase();
-  const type = String(source.type || '').toUpperCase();
-  const isPrim = source.is_primary === true || item.source_role === 'PRIMARY';
-  const pub = String(source.name || item.publisher_host || item.publisher || '').toUpperCase();
-  const title = String(item.title || item.source_title || '').toUpperCase();
-
-  if (isPrim || auth.includes('REGULATOR') || auth.includes('EDGAR') || type === 'FILING' || pub.includes('SEC') || pub.includes('EDGAR') || title.includes('INTERVIEW') || title.includes('10-K') || title.includes('10-Q') || title.includes('8-K')) {
-    return '<span class="ur-badge ur-badge--primary-source">ORIGINAL / PRIMARY DISCLOSURE</span>';
-  } else if (pub.includes('REDDIT') || pub.includes('TWITTER') || pub.includes('X.COM') || pub.includes('YOUTUBE') || type === 'COMMUNITY' || type === 'SOCIAL') {
-    return '<span class="ur-badge ur-badge--community-post">COMMUNITY DISCUSSION</span>';
-  } else {
-    return '<span class="ur-badge ur-badge--secondary-report">SECONDARY REPORT / WIRE</span>';
-  }
+  const primary = source.is_primary === true || ['PRIMARY', 'PRIMARY_OFFICIAL', 'PRIMARY_REGULATORY'].includes(item.source_role);
+  const community = ['social', 'community'].includes(String(source.type || '').toLowerCase());
+  return `<span class="ur-badge ${primary ? 'ur-badge--primary' : community ? 'ur-badge--community-post' : 'ur-badge--secondary-report'}">${primary ? 'PRIMARY SOURCE (CLASSIFIED)' : community ? 'COMMUNITY DISCUSSION' : 'SECONDARY REPORT / WIRE'}</span>`;
 }
 
 /** Synthesize high-craft Executive Direct Answer answering user query upfront */
 function renderExecutiveAnswer(report, verdictKey) {
-  const target = (report._meta && report._meta.query) || '';
-  const agent = (report._meta && report._meta.agent) || '';
-  const agentLabelMap = {
-    scout: 'Scout Financial Anomaly & Corporate Intelligence',
-    brandshield: 'BrandShield Impersonation & Smear Defense',
-    trending: 'Trending Narrative Velocity & Virality Tracking',
-    personal_watch: 'Personal Watch VIP & Executive Defense',
-    claim_verifier: 'Claim Verifier'
-  };
-  const agentDisplay = agentLabelMap[agent.toLowerCase()] || agent || 'Aegis Intelligence';
-  const vLabel = (VERDICT_CONFIG[verdictKey] && VERDICT_CONFIG[verdictKey].label) || (verdictKey || 'ASSESSED');
-
-  let directAnswer = '';
-  let caveat = '';
-  const cleanTarget = esc(target) || 'the submitted inquiry';
-
-  if (agent === 'scout' || /scout/i.test(agent)) {
-    if (verdictKey === 'SUPPORTED' || !verdictKey) {
-      directAnswer = `Analysis of <strong>${cleanTarget}</strong>: Primary regulatory disclosures and market telemetry show consistent operational reporting with no verified accounting discrepancies or anomalous volume manipulation signals.`;
-    } else if (verdictKey === 'REFUTED' || verdictKey === 'MISLEADING') {
-      directAnswer = `Investigation of <strong>${cleanTarget}</strong>: Material contradictions or reporting discrepancies were identified against official regulatory filings. Circulating reports conflict with primary statutory disclosures.`;
-    } else {
-      directAnswer = `Assessment of <strong>${cleanTarget}</strong>: Public evidence is currently unverified or insufficient to confirm anomalous corporate activity. Review primary SEC filings below.`;
-    }
-    caveat = 'Volume dispersion reflects current trading ranges only and does not establish fundamental financial solvency or absence of non-market risks.';
-  } else if (agent === 'brandshield' || /brand/i.test(agent)) {
-    if (verdictKey === 'SUPPORTED' || !verdictKey) {
-      directAnswer = `Brand Defense Audit for <strong>${cleanTarget}</strong>: No active coordinated smear campaigns or verified hostile typosquat/impersonation domains were detected in monitored channels.`;
-    } else if (verdictKey === 'REFUTED' || verdictKey === 'MISLEADING') {
-      directAnswer = `Brand Defense Alert for <strong>${cleanTarget}</strong>: Potential brand disparagement or conflicting representations identified across reporting channels.`;
-    } else {
-      directAnswer = `Brand Audit for <strong>${cleanTarget}</strong>: Insufficient external observations to verify active impersonation or smear vectors.`;
-    }
-    caveat = 'Absence of observed brand threat vectors in monitored channels does not guarantee an absence of targeted or private adversary activity.';
-  } else if (agent === 'trending' || /trend/i.test(agent)) {
-    const activeClusters = (report.agent_intelligence && report.agent_intelligence.recent_developments && report.agent_intelligence.recent_developments.length) || 0;
-    if (activeClusters > 0) {
-      directAnswer = `Narrative Tracking for <strong>${cleanTarget}</strong>: Active discussion cluster identified within the current observation window. Circulating claims remain subject to primary corroboration.`;
-    } else {
-      directAnswer = `Narrative Tracking for <strong>${cleanTarget}</strong>: Zero active breakout trends or viral cascades detected within the 48-hour active window. Historical coverage and discovery leads are archived below.`;
-    }
-    caveat = 'Platform discovery counts reflect sampled queries and do not measure absolute reach, audience sentiment, or narrative veracity.';
-  } else if (agent === 'personal_watch' || /personal/i.test(agent)) {
-    directAnswer = `Executive Integrity Audit for <strong>${cleanTarget}</strong>: Monitored attack vectors (synthetic media, doxxing, executive impersonation) show no verified high-severity compromise in public feeds. Quotations reflect publisher-attributed reporting.`;
-    caveat = 'Unmonitored channels, private communication platforms, and unindexed media remain unassessed; this is not proof of total personal safety.';
-  } else {
-    directAnswer = `Investigation for <strong>${cleanTarget}</strong> concluded with status <strong>${vLabel}</strong> based on indexed evidence and qualification checks.`;
-    caveat = 'Determinations are evidence-grounded and model-assisted; inspect primary source citations below.';
-  }
-
-  return `
-    <div class="ur-executive-answer">
-      <div class="ur-exec-header">
-        <span class="ur-exec-title">// EXECUTIVE CORE ANSWER</span>
-        <span class="ur-exec-meta">${esc(agentDisplay)} &bull; ${esc(vLabel)}</span>
-      </div>
-      <p class="ur-exec-text">${directAnswer}</p>
-      <div class="ur-exec-caveat">${caveat}</div>
-    </div>
-  `;
+  const meta = report._meta || {};
+  const records = retainedSources(report);
+  const count = records.length;
+  const agent = String(meta.agent || 'research');
+  const scope = {scout: 'Financial reporting and disclosures', brandshield: 'Reported brand incidents',
+    trending: 'Dated topic coverage', personal_watch: 'Attributed public statements', claim_verifier: 'Specific claim assessment'}[agent] || 'Source research';
+  const answer = report.processing_notes?.task_answer?.summary || report.summary || 'No source-linked answer was returned.';
+  return `<div class="ur-executive-answer"><div class="ur-exec-header"><span class="ur-exec-title">${esc(scope)}</span></div>
+    <p class="ur-exec-text">${esc(answer.slice(0, 480))}${answer.length > 480 ? '...' : ''}</p>
+    <p class="ur-exec-caveat">${count} retained source record(s). ${count ? 'Read the cited assertions and limits before relying on a conclusion.' : 'Coverage is insufficient; this is not evidence that no information or risk exists.'}</p></div>`;
 }
 
+function retainedSources(report) {
+  const evidence = report.evidence || {};
+  return ['primary', 'independent', 'community'].flatMap(key => array(evidence[key])).filter(item => item && typeof item === 'object');
+}
+
+function strongestSources(report) {
+  const seen = new Set();
+  const cited = new Set(array(report.evidence_workbench?.passages).map(row => row.evidence_id));
+  const time = item => Date.parse(String(item.timestamp || '').replace(/^(\d{4}-\d{2}-\d{2})Z$/, '$1T00:00:00Z'));
+  return retainedSources(report).filter(item => cited.has(item.evidence_id) && safeEvidenceUrl(item.url) && Number.isFinite(time(item)) && time(item) <= Date.now())
+    .sort((a, b) => Number(b.source?.is_primary === true) - Number(a.source?.is_primary === true) || time(b) - time(a))
+    .filter(item => { const host = new URL(item.url).hostname.replace(/^www\./, ''); if (seen.has(host)) return false; seen.add(host); return true; }).slice(0, 3);
+}
 
 // ─── Utility helpers ──────────────────────────────────────────────────────────
 
@@ -311,30 +265,38 @@ function renderVerdictBanner(report) {
 
 /** SECTION 1 — WHAT'S HAPPENING? */
 function renderSummary(report) {
-  const target = report._meta && report._meta.query;
-  const label = report._meta && report._meta.agent === 'claim_verifier'
-    ? 'Claim under review' : 'Investigation target';
-  const banner = renderVerdictBanner(report);
+  const meta = report._meta || {};
+  const sources = strongestSources(report);
+  const gaps = [];
+  const notes = report.processing_notes || {};
+  gaps.push(...array(notes.task_answer?.gaps));
+  const metrics = notes.acquisition_metrics || {};
+  if (sources.length < 3) gaps.push(`Only ${sources.length} dated publisher source(s) qualified for this overview.`);
+  if (!retainedSources(report).some(item => item.source?.is_primary === true)) gaps.push('No primary record is retained.');
+  if (!report.corroboration_summary?.independence_verified) gaps.push('Independent confirmation is unassessed.');
+  if (metrics.failed_reads_by_cause && Object.keys(metrics.failed_reads_by_cause).length) gaps.push('Some selected source reads failed; coverage is incomplete.');
+  const action = notes.task_answer?.next_action || array(report.next_steps)[0] || 'Provide an original source or a specific factual claim to investigate.';
+  const cards = sources.map(item => `<article class="ur-overview-source">${computeSourceRoleBadge(item)}
+    <a href="${esc(safeEvidenceUrl(item.url))}" target="_blank" rel="noopener noreferrer">${esc(item.title || 'Captured source')}</a>
+    <small>${esc(new URL(item.url).hostname)} · ${esc(item.timestamp)}</small>
+    <p>${esc((array(report.evidence_workbench?.passages).find(row => row.evidence_id === item.evidence_id)?.text || '').slice(0, 160))}… <a href="#ur-evidence-workbench">Full cited passage</a></p></article>`).join('');
+  return section('ur-summary', 'ANSWER AND SOURCES', `<h2 class="ur-overview-title">${esc(meta.query || 'Investigation result')}</h2>
+    ${renderVerdictBanner(report)}${renderExecutiveAnswer(report, null)}
+    <div class="ur-overview-sources">${cards || '<p>No dated, qualifying source is available to summarize.</p>'}</div>
+    <div class="ur-overview-limits"><strong>Unresolved gaps</strong>${bulletList(gaps, 'Review the source-level limitations.')}</div>
+    <p class="ur-overview-action"><strong>Next action:</strong> ${esc(action)}</p>
+    <a class="ur-evidence-jump" href="#ur-evidence-workbench">Read all cited passages</a>
+    ${renderReportLink(report)}`);
+}
 
-  let verdictKey = null;
-  if (report.investigation_status === 'ACQUISITION_FAILED') {
-    verdictKey = 'ACQUISITION_FAILED';
-  } else if (report.verdict && typeof report.verdict === 'object') {
-    verdictKey = normalizeVerdictKey(report.verdict.verdict || report.verdict.status);
-  } else if (report._meta && report._meta.verdict) {
-    verdictKey = normalizeVerdictKey(report._meta.verdict);
-  } else if (report.summary && typeof report.summary === 'string') {
-    const match = report.summary.match(/Claim is \*\*([A-Za-z_]+)\*\*/i);
-    if (match) verdictKey = normalizeVerdictKey(match[1]);
+function renderReportLink(report) {
+  const meta = report._meta || {};
+  if (!/^[a-f0-9-]{36}$/i.test(meta.investigation_id || '') || !/^\/status\.html\?report=[a-f0-9-]{36}$/i.test(meta.permalink || '')) {
+    return meta.history_status === 'UNAVAILABLE' ? '<p role="status">History could not be saved. Export this report to retain a copy.</p>' : '';
   }
-
-  const execAnswer = renderExecutiveAnswer(report, verdictKey);
-
-  const content = `${target ? `<p class="ur-target"><span>${label}</span>${esc(target)}</p>` : ''}
-    ${banner}
-    ${execAnswer}
-    <p class="ur-summary">${esc(report.summary) || '<em>No summary available.</em>'}</p>`;
-  return section('ur-summary', "WHAT'S HAPPENING?", content);
+  return `<div class="ur-report-link"><a href="${esc(meta.permalink)}">Open saved report</a>
+    <button type="button" data-copy-report-id="${esc(meta.investigation_id)}">Copy full ID</button>
+    <details><summary>Report ID</summary><code>${esc(meta.investigation_id)}</code></details><span data-copy-status role="status"></span></div>`;
 }
 
 /** CLAIM DECOMPOSITION (if sub-claims are present) */
@@ -483,7 +445,7 @@ function renderAllegationMatrix(report) {
           <div class="ur-matrix-col ur-matrix-col--evidence">
             <div class="ur-matrix-col-header">
               <span class="ur-matrix-icon">⚖️</span>
-              <h4>Verified Record & Primary Sources</h4>
+              <h4>Captured source passages</h4>
             </div>
             <p class="ur-matrix-record-summary">${esc(item.verified_record_summary || 'No records returned.')}</p>
             
@@ -503,7 +465,7 @@ function renderAllegationMatrix(report) {
   }).join('');
 
   return section('ur-allegation-matrix', 'ALLEGATION VS. EVIDENCE MATRIX', `
-    <p class="ur-ev-note">Side-by-side deconstruction of circulating allegations against verified primary public records.</p>
+    <p class="ur-ev-note">Exact captured assertions aligned to a specific claim. Alignment is heuristic; source assertions are not authenticated facts.</p>
     <div class="ur-matrix-deck">${cards}</div>
   `);
 }
@@ -514,7 +476,7 @@ function renderCorroborationIllusion(report) {
   if (!summary || typeof summary !== 'object' || !summary.total_sources_scanned) return '';
 
   const isIllusion = Boolean(summary.corroboration_illusion_detected);
-  const ratioPct = typeof summary.corroboration_ratio === 'number' ? Math.round(summary.corroboration_ratio * 100) : 100;
+  const ratioPct = summary.independence_verified === true && typeof summary.corroboration_ratio === 'number' ? Math.round(summary.corroboration_ratio * 100) + '%' : 'Unknown';
 
   const alertBox = isIllusion ? `
     <div class="ur-corrob-alert">
@@ -526,7 +488,7 @@ function renderCorroborationIllusion(report) {
     </div>` : '';
 
   const groupsHtml = array(summary.groups).map(g => {
-    const isInd = Boolean(g.is_independent);
+    const isInd = summary.independence_verified === true && g.is_independent === true;
     const pub = esc(g.primary_origin_publisher || 'Primary Origin');
     const url = safeEvidenceUrl(g.primary_origin_url);
     const reprints = array(g.reprint_publishers).map(r => `<span class="ur-corrob-reprint-pill">${esc(r)}</span>`).join(' ');
@@ -534,7 +496,7 @@ function renderCorroborationIllusion(report) {
     return `
       <div class="ur-corrob-group ${isInd ? 'ur-corrob-group--independent' : 'ur-corrob-group--syndicated'}">
         <div class="ur-corrob-group-header">
-          <span class="ur-corrob-node-type">${isInd ? 'Independent Origin' : 'Syndicated Chain'}</span>
+          <span class="ur-corrob-node-type">${isInd ? 'Confirmed independent origin' : 'Observed source group; independence unknown'}</span>
           <div class="ur-corrob-origin">
             ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${pub} ↗</a>` : `<span>${pub}</span>`}
           </div>
@@ -543,7 +505,7 @@ function renderCorroborationIllusion(report) {
           <div class="ur-corrob-reprints">
             <span class="ur-corrob-reprint-label">Syndicated to:</span>
             <div class="ur-corrob-reprint-list">${reprints}</div>
-          </div>` : '<div class="ur-corrob-reprints"><em>Standalone reporting — zero observed reprints.</em></div>'}
+          </div>` : '<div class="ur-corrob-reprints"><em>No reprint observed in this sample; independence unassessed — zero observed reprints.</em></div>'}
       </div>`;
   }).join('');
 
@@ -553,9 +515,9 @@ function renderCorroborationIllusion(report) {
     <div class="ur-corrob-metrics">
       <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${summary.total_sources_scanned}</span><span class="ur-corrob-metric-label">Sources Scanned</span></div>
       <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${summary.unique_publishers}</span><span class="ur-corrob-metric-label">Unique Publishers</span></div>
-      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val ${isIllusion ? 'ur-corrob-metric-val--alert' : ''}">${summary.independent_evidence_chains}</span><span class="ur-corrob-metric-label">Independent Chains</span></div>
+      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val ${isIllusion ? 'ur-corrob-metric-val--alert' : ''}">${summary.observed_origin_groups ?? summary.groups?.length ?? 0}</span><span class="ur-corrob-metric-label">Observed Groups</span></div>
       <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${summary.syndicated_reprints_count}</span><span class="ur-corrob-metric-label">Syndicated Reprints</span></div>
-      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${ratioPct}%</span><span class="ur-corrob-metric-label">Independence Ratio</span></div>
+      <div class="ur-corrob-metric"><span class="ur-corrob-metric-val">${ratioPct}</span><span class="ur-corrob-metric-label">Independence Ratio</span></div>
     </div>
     <div class="ur-corrob-groups-tree">${groupsHtml}</div>
   `);
@@ -660,7 +622,7 @@ function renderDiscovery(report) {
     `<p class="ur-ev-note">${candidates.length} non-evidence record(s) retained. Some are unread leads; others were captured but rejected for the research objective. Inspect the read and qualification status. Neither counts as verified claim support.</p>
      <div class="ur-historical-accordion">
        <details>
-         <summary>Archived Mentions &amp; Discovery Leads (${candidates.length} record(s) outside 48h window)</summary>
+         <summary>Archived Mentions &amp; Discovery Leads (${candidates.length} unread or unqualified record(s))</summary>
          <p class="ur-ev-note" style="margin:8px 0 12px 0;">These items represent older mentions or discovery leads captured outside the immediate active velocity window. They are retained for archival reference and are NOT promoted into verified active findings.</p>
          ${candidates.map(item => renderEvidenceCard(item)).join('')}
        </details>
@@ -720,13 +682,13 @@ function renderEvidenceWorkbench(report) {
   const omitted = (Number(accounting.omitted_by_source_budget) || 0) + (Number(accounting.omitted_by_workbench_budget) || 0);
   return section('ur-evidence-workbench', 'EVIDENCE WORKBENCH', `<div data-ur-workbench>
     <p>${esc(accounting.published_passages ?? rows.length)} unique passages · ${esc(accounting.published_unique_words ?? 'Unknown')} selected words · ${esc(accounting.observed_publisher_hosts ?? publishers.length)} observed publisher hosts.</p>
-    <p class="ur-ev-note">Exact captured text selected by relevance heuristics. Source assertions are not verified facts. Publisher hosts are not proof of independence. The 20× depth target has not been evaluated.</p>
+    <p class="ur-ev-note">Exact captured text selected by relevance heuristics. Source assertions are not verified facts. Publisher hosts are not proof of independence. Capture details retain hashes and exact offsets.</p>
     ${omitted ? `<p class="ur-ev-note">${esc(omitted)} passage observations omitted by publication budgets. Source inspection and the dossier retain their separately bounded context.</p>` : ''}
-    <div class="ur-workbench-filters">
+    <details class="ur-filter-panel"><summary>Filter passages</summary><div class="ur-workbench-filters">
       <label>Search captured passages<input type="search" maxlength="200" data-ur-wb-search placeholder="Topic, quotation or source"></label>
       <label>Publisher<select data-ur-wb-publisher><option value="">All observed publishers</option>${publishers.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select></label>
       <label>Content role<select data-ur-wb-role><option value="">All source assertions</option>${roles.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select></label>
-    </div><div data-ur-wb-results>${renderWorkbenchPage(workbench)}</div></div>`);
+    </div></details><div data-ur-wb-results>${renderWorkbenchPage(workbench)}</div></div>`);
 }
 
 function bindEvidenceWorkbench(container, report) {
@@ -1466,14 +1428,21 @@ function renderUnifiedReport(container, report) {
     }
   }
 
+  if (report.evidence_workbench) {
+    const sources = new Map(retainedSources(report).map(item => [item.evidence_id, item.source]));
+    report = {...report, evidence_workbench: {...report.evidence_workbench,
+      passages: array(report.evidence_workbench.passages).map(row => ({...row, source: sources.get(row.evidence_id) || row.source}))}};
+  }
+  if (typeof window !== 'undefined') window.AegisHistory?.remember(report);
   const html = [
     renderSummary(report),
+    renderEvidenceWorkbench(report),
+    '<details class="ur-report-details"><summary>Source records, background and report details</summary>',
     renderAllegationMatrix(report),
     renderCorroborationIllusion(report),
     renderClaimDecomposition(report),
     renderFindings(report),
     renderVisualAnalytics(report),
-    renderEvidenceWorkbench(report),
     renderEvidence(report),
     renderDiscovery(report),
     renderDisagreements(report),
@@ -1483,12 +1452,31 @@ function renderUnifiedReport(container, report) {
     renderTrust(report),
     renderCoverage(report),
     renderNextSteps(report),
+    '</details>',
     renderExportToolbar(report),
   ].filter(Boolean).join('\n');
 
   const masthead = renderSignalMasthead(report);
   container.innerHTML = `<div class="unified-report">${masthead}\n${html}</div>`;
+  container.querySelectorAll('a[href="#ur-agent-intel"]').forEach(link => link.addEventListener('click', () => {
+    const details = container.querySelector('.ur-report-details');
+    if (details) details.open = true;
+    const section = container.querySelector('#ur-agent-intel');
+    section?.classList.remove('ur-collapsed');
+    section?.querySelector('.ur-heading-button')?.setAttribute('aria-expanded', 'true');
+  }));
   bindEvidenceWorkbench(container, report);
+  container.querySelectorAll('[data-copy-report-id]').forEach(button => button.addEventListener('click', async () => {
+    const status = button.parentElement.querySelector('[data-copy-status]');
+    try { await navigator.clipboard.writeText(button.dataset.copyReportId); status.textContent = 'Full ID copied.'; }
+    catch (_) { status.textContent = 'Copy unavailable. Expand Report ID to select the full value.'; }
+  }));
+  container.querySelectorAll('.ur-section').forEach(sec => {
+    if (!['ur-summary', 'ur-evidence-workbench'].includes(sec.id)) {
+      sec.classList?.add('ur-collapsed'); sec.querySelector?.('.ur-heading-button')?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
 
   // Mount interactive high-craft visual models if AegisGraphs is available
   if (typeof AegisGraphs !== 'undefined') {

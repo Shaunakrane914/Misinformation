@@ -96,8 +96,8 @@ def test_report_builder_from_claim_result():
     assert isinstance(report, UnifiedReport)
     d = report.to_dict()
     assert d["_meta"]["agent"] == "claim_verifier"
-    assert "FALSE" in d["summary"]
-    assert len(d["findings"]) >= 1
+    assert "INSUFFICIENT_EVIDENCE" in d["summary"]
+    assert not d["findings"]
     assert d["trust"]["query_telemetry"]["queries_succeeded"] == 2
 
 
@@ -244,7 +244,7 @@ def test_report_builder_from_personal_result():
     d = report.to_dict()
     assert d["_meta"]["agent"] == "personal_watch"
     # A directory URL with no body cannot establish nominal/safe exposure.
-    assert "cannot determine identity-abuse" in d["summary"]
+    assert "No cited passage answers this task" in d["summary"]
     assert d["processing_notes"]["specialist_coverage"]["status"] == "INSUFFICIENT_EVIDENCE"
     assert d["processing_notes"]["specialist_coverage"]["records"] == 1
     assert len(d["findings"]) == 1

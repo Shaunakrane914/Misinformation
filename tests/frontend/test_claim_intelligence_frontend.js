@@ -65,7 +65,7 @@ const sampleMatrixReport = {
 const matrixHtml = renderAllegationMatrix(sampleMatrixReport);
 assert(matrixHtml.includes('ALLEGATION VS. EVIDENCE MATRIX'), 'Section header must render');
 assert(matrixHtml.includes('Circulating Allegation'), 'Allegation column must render');
-assert(matrixHtml.includes('Verified Record'), 'Record column must render');
+assert(matrixHtml.includes('Captured source passages'), 'Record column must render');
 assert(matrixHtml.includes('OUT OF CONTEXT MEDIA'), 'Deceptive framing flag must render');
 assert(matrixHtml.includes('FDA Enforcement Database'), 'Checked registry must render');
 assert(matrixHtml.includes('CORPORATE DENIAL'), 'Corporate denial badge must render');

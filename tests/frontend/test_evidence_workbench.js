@@ -23,7 +23,7 @@ assert(mount.innerHTML.includes('&lt;img'));
 assert(!mount.innerHTML.includes('<img'));
 assert(!mount.innerHTML.includes('href="javascript:'));
 assert(!mount.innerHTML.includes('Exact paragraph 24.'));
-assert(mount.innerHTML.includes('20× depth target has not been evaluated'));
+assert(mount.innerHTML.includes('Capture details retain hashes and exact offsets'));
 assert(mount.innerHTML.includes('<label>Search captured passages'));
 const licensed = {...passages[1], content_language: 'mr', source_permission: {
   author: '<script>author</script>', licence_url: 'https://creativecommons.org/licenses/by/3.0/'}};

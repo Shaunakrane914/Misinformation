@@ -17,10 +17,10 @@ def resolve_brand_entity(raw_input: str) -> Dict[str, Any]:
     parsed_req = entity_resolver.parse_request(raw_input, domain="brand")
     canonical_target = parsed_req.target_entity.canonical_name
 
-    clean_text = canonical_target if canonical_target != "Unknown" else raw_input.strip()
+    clean_text = raw_input.strip()
     upper_text = clean_text.upper()
 
-    detected_brand = clean_text
+    detected_brand = canonical_target if canonical_target != "Unknown" else clean_text
     detected_product = None
     entity_type = "brand"
     aliases: List[str] = parsed_req.target_entity.aliases or []

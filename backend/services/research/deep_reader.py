@@ -186,6 +186,10 @@ class DeepReader:
                 item.rank = rank
 
             url = item.canonical_url or ""
+            try:
+                host = (urlsplit(url).hostname or "").lower().rstrip(".")
+            except ValueError:
+                host = ""
             score = item.metadata.get("candidate_score", item.relevance_score)
             from backend.services.research.content_roles import document_role
             if document_role(item) == "BACKGROUND_REFERENCE":
@@ -203,15 +207,15 @@ class DeepReader:
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "unsupported_read"
-            elif any(sd in url.lower() for sd in ["instagram.com", "facebook.com", "threads.net"]):
+            elif any(host == sd or host.endswith("." + sd) for sd in ["instagram.com", "facebook.com", "threads.net"]):
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "social_only"
-            elif any(sd in url.lower() for sd in ["twitter.com", "x.com", "reddit.com"]) and item.content_depth == ContentDepth.SOCIAL_POST.value:
+            elif any(host == sd or host.endswith("." + sd) for sd in ["twitter.com", "x.com", "reddit.com"]) and item.content_depth == ContentDepth.SOCIAL_POST.value:
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "social_only"
-            elif any(sd in url.lower() for sd in ["bilibili.com"]):
+            elif host == "bilibili.com" or host.endswith(".bilibili.com"):
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "video_requires_transcript"
@@ -550,7 +554,7 @@ class DeepReader:
                             reported_depth = read_res.get("content_depth")
                             if not reported_depth and isinstance(read_res.get("video_metadata"), dict):
                                 reported_depth = read_res["video_metadata"].get("content_depth")
-                            if reported_depth in {"PROFILE_METADATA", "VIDEO_METADATA", "METADATA", "DIRECT_METADATA", "SOCIAL_POST", "VIDEO_TRANSCRIPT"}:
+                            if reported_depth in {"PROFILE_METADATA", "VIDEO_METADATA", "METADATA", "DIRECT_METADATA", "SOCIAL_POST", "VIDEO_TRANSCRIPT", "STRUCTURED_PUBLIC_DATA"}:
                                 orig_item.content_depth = reported_depth
                             elif orig_item.primary_source:
                                 orig_item.content_depth = ContentDepth.PRIMARY_DOCUMENT.value

@@ -442,6 +442,12 @@ def evaluate_corporate_rumor(
     # Convert evidence dicts to typed EvidenceItems
     typed_evidence = []
     for idx, e in enumerate(evidence):
+        metadata = e.get("metadata") or {}
+        body = e.get("content") or ""
+        depth = e.get("content_depth") or metadata.get("content_depth") or "UNKNOWN"
+        from backend.schemas.evidence_inspection import METADATA_DEPTHS
+        if not body or depth in METADATA_DEPTHS or not (metadata.get("read_success") or e.get("read_status") == "SUCCESS"):
+            continue
         typed_evidence.append(EvidenceItem(
             id=e.get("evidence_id", f"ev_scout_{idx+1}"),
             canonical_url=e.get("url", ""),
@@ -451,7 +457,8 @@ def evaluate_corporate_rumor(
             source_tier=e.get("source_tier", "TIER_3_AGGREGATE"),
             primary_source=e.get("source_role") in ("PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY") or e.get("primary_source", False),
             snippet=e.get("snippet", ""),
-            relevant_excerpt=e.get("content", e.get("snippet", "")),
+            content=body, content_depth=depth, metadata=metadata,
+            relevant_excerpt=e.get("relevant_excerpt", "") if e.get("relevant_excerpt", "") in body else "",
             published_at=e.get("published_at", "")
         ))
 

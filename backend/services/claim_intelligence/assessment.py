@@ -53,11 +53,7 @@ class AllegationAssessmentEngine:
         registries_checked: Optional[List[str]] = None,
     ) -> AllegationMatrixItem:
         """Construct a side-by-side Allegation vs. Evidence Matrix item."""
-        checked_regs = registries_checked or [
-            "Official Corporate Press Registry",
-            "Regulatory Filings (SEC / EDGAR / FDA / FTC)",
-            "Authoritative News Wires (Reuters, AP, Bloomberg)",
-        ]
+        checked_regs = registries_checked or []
 
         # 1. Categorize Evidence Links
         supporting: List[EvidenceLink] = []
@@ -158,9 +154,9 @@ class AllegationAssessmentEngine:
         # Case 1: Insufficient Evidence (Zero topical links or strictly empty search corpus)
         if total_evidence == 0:
             unverified_gaps.append(
-                f"No authoritative or public records found referencing '{claim.normalized_proposition}'."
+                f"No acquired passage establishes '{claim.normalized_proposition}'. Source coverage may be incomplete."
             )
-            return EpistemicOutcome.INSUFFICIENT_EVIDENCE, 0.15, unverified_gaps
+            return EpistemicOutcome.INSUFFICIENT_EVIDENCE, 0.0, unverified_gaps
 
         # Case 2: Temporal Framing Mismatch (Historical event presented as current event)
         if temporal_mismatches and not supporting:
@@ -171,10 +167,13 @@ class AllegationAssessmentEngine:
             confidence = 0.82
             if corroboration_summary and corroboration_summary.corroboration_illusion_detected:
                 confidence = max(0.65, confidence * 0.85)
-            return EpistemicOutcome.MISLEADING_CONTEXT, round(confidence, 2), unverified_gaps
+            return EpistemicOutcome.UNVERIFIED, 0.0, unverified_gaps
 
         # Case 3: Objective Refutation (Official debunking, registry confirmation of non-occurrence)
         if contradicting and not supporting:
+            if not any(link.primary_source for link in contradicting):
+                unverified_gaps.append("Captured assertions conflict with the claim; primary refutation is not established.")
+                return EpistemicOutcome.UNVERIFIED, 0.35, unverified_gaps
             confidence = 0.88 if len(contradicting) >= 2 else 0.78
             if corporate_denials:
                 unverified_gaps.append(
@@ -185,6 +184,11 @@ class AllegationAssessmentEngine:
 
         # Case 4: Objective Verification / Substantiated Claim
         if supporting and not contradicting:
+            if not any(link.primary_source for link in supporting) and not (
+                    corroboration_summary and corroboration_summary.independence_verified
+                    and (corroboration_summary.independent_evidence_chains or 0) >= 2):
+                unverified_gaps.append("Matching source assertions were found; primary authority or independent confirmation is not established.")
+                return EpistemicOutcome.UNVERIFIED, 0.35, unverified_gaps
             base_conf = 0.90 if len(supporting) >= 2 else 0.80
             # If echo chamber was detected, penalize confidence to avoid false certainty
             if corroboration_summary and corroboration_summary.corroboration_illusion_detected:
@@ -252,19 +256,19 @@ class AllegationAssessmentEngine:
         checked_regs: List[str],
     ) -> str:
         """Synthesize what the checked public record actually demonstrates."""
-        regs_str = ", ".join(checked_regs[:3])
+        regs_str = ", ".join(checked_regs[:3]) or "no registry execution was attested"
 
         if verdict == EpistemicOutcome.SUPPORTED:
             pubs = ", ".join(list({l.publisher for l in supporting})[:2])
             return (
-                f"Official public documentation confirmed by {pubs}. Primary filings substantiate the core "
-                f"proposition regarding {claim.target_entity}."
+                f"Captured passages attributed to {pubs} support the stated proposition about "
+                f"{claim.target_entity}. This heuristic alignment does not authenticate the publisher or establish primary authority."
             )
         elif verdict == EpistemicOutcome.REFUTED:
             pubs = ", ".join(list({l.publisher for l in contradicting})[:2])
             return (
-                f"Authoritative investigations and public records ({pubs}) directly refute the circulating allegation. "
-                f"Checked registries ({regs_str}) show no affirmative filings."
+                f"Captured primary-source passages attributed to {pubs} contradict the proposition. "
+                "Review their exact scope and citations; unqueried registries cannot establish non-occurrence."
             )
         elif verdict == EpistemicOutcome.MISLEADING_CONTEXT:
             if temporal_mismatches:
@@ -308,7 +312,7 @@ class AllegationAssessmentEngine:
         lines = []
 
         if verdict == EpistemicOutcome.SUPPORTED:
-            lines.append("CLAIM SUBSTANTIATED: Verified against official public documentation.")
+            lines.append("Matching captured passages support this proposition heuristically; review their authority and scope.")
         elif verdict == EpistemicOutcome.REFUTED:
             lines.append("DO NOT AMPLIFY: The allegation has been demonstrably refuted by primary documentation.")
         elif verdict == EpistemicOutcome.MISLEADING_CONTEXT:
@@ -316,7 +320,7 @@ class AllegationAssessmentEngine:
                 "CONTEXT WARNING: Do not share without clarifying that past events are being presented out of context."
             )
         elif verdict == EpistemicOutcome.UNVERIFIED:
-            lines.append("UNVERIFIED CLAIM: No primary or regulatory records corroborate this assertion.")
+            lines.append("UNVERIFIED CLAIM: The retained evidence does not establish this assertion; source coverage may be incomplete.")
         elif verdict == EpistemicOutcome.MIXED:
             lines.append("PROCEED WITH CAUTION: Reporting contains conflicting documentation.")
         else:
@@ -349,19 +353,8 @@ class AllegationAssessmentEngine:
         if not matrix_items:
             overall_verdict = EpistemicOutcome.INSUFFICIENT_EVIDENCE
         else:
-            verdicts = [item.verdict for item in matrix_items]
-            if EpistemicOutcome.REFUTED in verdicts:
-                overall_verdict = EpistemicOutcome.REFUTED
-            elif EpistemicOutcome.MISLEADING_CONTEXT in verdicts:
-                overall_verdict = EpistemicOutcome.MISLEADING_CONTEXT
-            elif EpistemicOutcome.MIXED in verdicts:
-                overall_verdict = EpistemicOutcome.MIXED
-            elif EpistemicOutcome.SUPPORTED in verdicts:
-                overall_verdict = EpistemicOutcome.SUPPORTED
-            elif EpistemicOutcome.UNVERIFIED in verdicts:
-                overall_verdict = EpistemicOutcome.UNVERIFIED
-            else:
-                overall_verdict = EpistemicOutcome.INSUFFICIENT_EVIDENCE
+            verdicts = {item.verdict for item in matrix_items}
+            overall_verdict = next(iter(verdicts)) if len(verdicts) == 1 else EpistemicOutcome.MIXED
 
         # 2. Actionability advisory mapping
         actionability = {
@@ -391,7 +384,6 @@ class AllegationAssessmentEngine:
         claim_review = {
             "@context": "https://schema.org",
             "@type": "ClaimReview",
-            "url": f"https://aegis-protocol.local/dossier/{investigation_id}",
             "claimReviewed": query,
             "reviewRating": {
                 "@type": "Rating",
@@ -440,7 +432,7 @@ class AllegationAssessmentEngine:
             provenance_edges=provenance_edges or [],
             narrative_mutations=narrative_mutations or [],
             limitations=all_limitations,
-            claim_review_schema=claim_review,
+            claim_review_schema=claim_review if matrix_items else None,
         )
 
 

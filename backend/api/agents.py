@@ -250,7 +250,8 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
             logger.warning(f"[Scout] unified_report assembly note: {_ur_err}")
             result["unified_report"] = None
 
-        return result
+        from backend.services.investigation_history import record_result
+        return await record_result(result)
     except HTTPException:
         raise
     except Exception as e:
@@ -284,7 +285,7 @@ async def trending_scan(request: TrendingScanRequest):
         # ── Unified Report (schema v3.8.0) ────────────────────────────────────
         try:
             _unified = ReportBuilder.from_trending_result(
-                query=target_name,
+                query=request.query or target_name,
                 trend_data=result,
             )
             result["unified_report"] = _unified.to_dict()
@@ -293,7 +294,8 @@ async def trending_scan(request: TrendingScanRequest):
             logger.warning(f"[Trending] unified_report assembly note: {_ur_err}")
             result["unified_report"] = None
 
-        return result
+        from backend.services.investigation_history import record_result
+        return await record_result(result)
     except HTTPException:
         raise
     except Exception as e:
@@ -385,7 +387,8 @@ async def personal_watch_scan(request: PersonalScanRequest):
         except Exception as _ur_err:
             logger.warning(f"[PersonalWatch] unified_report assembly note: {_ur_err}")
 
-        return results
+        from backend.services.investigation_history import record_result
+        return await record_result(results)
     except HTTPException:
         raise
     except Exception as e:
@@ -421,7 +424,8 @@ async def brandshield_scan(request: BrandShieldScanRequest):
         except Exception as _ur_err:
             logger.warning(f"[BrandShield] unified_report assembly note: {_ur_err}")
 
-        return results
+        from backend.services.investigation_history import record_result
+        return await record_result(results)
     except HTTPException:
         raise
     except Exception as e:

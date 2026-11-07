@@ -29,9 +29,13 @@ REGULATORY_GOVERNMENT_DOMAINS: Set[str] = {
 TIER1_PRESS_DOMAINS: Set[str] = {
     "reuters.com", "apnews.com", "bloomberg.com", "ft.com", "wsj.com",
     "economictimes.indiatimes.com", "livemint.com", "business-standard.com",
-    "moneycontrol.com", "cnbc.com", "bbc.com", "thehindu.com", "nytimes.com",
+    "moneycontrol.com", "cnbc.com", "bbc.com", "bbc.co.uk", "thehindu.com", "nytimes.com",
     "theguardian.com", "washingtonpost.com", "hindustantimes.com", "indianexpress.com",
-    "ndtv.com", "cnbctv18.com", "financialexpress.com"
+    "ndtv.com", "cnbctv18.com", "financialexpress.com", "cnn.com", "aljazeera.com",
+    "indiatoday.in", "zeenews.india.com", "news18.com", "nbcnews.com", "cbsnews.com",
+    "abcnews.go.com", "sky.com", "france24.com", "dw.com", "euronews.com",
+    "independent.co.uk", "telegraph.co.uk", "timesofindia.indiatimes.com", "indiatimes.com",
+    "theprint.in", "thewire.in", "scroll.in", "deccanherald.com", "aninews.in", "pib.gov.in"
 }
 
 SPECIALIZED_TECH_INDUSTRY_DOMAINS: Set[str] = {
@@ -211,9 +215,14 @@ class SourceQualityEngine:
             path = urllib.parse.urlsplit(url).path.lower().rstrip("/")
             is_index = path in {"", "/search", "/edgar", "/edgar/search", "/filings"} or "/submissions/" in path
             is_metadata = item.content_depth in {ContentDepth.DIRECT_METADATA.value, ContentDepth.HEADLINE_ONLY.value}
+            from backend.services.research.financial_structured import project_financial_document
+            structured = project_financial_document((item.metadata.get("page_metadata") or {}).get("financial_document"), item.content or "")
+            is_structured = bool(domain == "data.sec.gov" and item.metadata.get("read_success")
+                                 and structured and structured["source_url"] == url and structured["facts"])
             is_document = bool(not is_index and not is_metadata and (
                 has_filing_marker or path.endswith((".htm", ".html", ".pdf", ".xml")) or "/filing" in path
                 or re.search(r"/edgar/(?:10k|10q|8k)(?:/|$)", path)
+                or is_structured
             ))
             item.metadata["authority_scope"] = "REGULATORY_DOCUMENT" if is_document else "REGULATOR_REFERENCE"
             item.source_role = SourceRole.PRIMARY.value if is_document else SourceRole.DISCOVERY.value

@@ -276,7 +276,7 @@
     
     <!-- Top Spec Header Ribbon -->
     <div class="arch-ribbon ae-reveal">
-      <span>AEGIS PROTOCOL <strong>v3.7.0</strong></span>
+      <span>AEGIS PROTOCOL <strong>Architecture and scope</strong></span>
       <span style="color:var(--border-hover);">│</span>
       <span>MULTI-SOURCE RETRIEVAL</span>
       <span style="color:var(--border-hover);">│</span>
@@ -337,13 +337,14 @@
           <span class="step-badge">STEP 05</span>
           <h3 class="step-title">Synthesize Assessment</h3>
           <p class="step-desc">
-            Produces a structured verdict with calibrated confidence bounds, key findings, unresolved gaps, and a verifiable evidence chain of custody.
+            Produces a structured verdict with heuristic assessment scores, key findings, unresolved gaps, and a verifiable evidence chain of custody.
           </p>
         </div>
       </div>
     </div>
 
     <!-- ── TIER 1: PRODUCTION IMPLEMENTATION ── -->
+    <p role="note">Architecture diagrams and inspector payloads are illustrative. They do not attest live provider access, calibrated accuracy or a completed investigation.</p>
     <div class="ae-reveal" style="margin-bottom:44px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <span class="ae-badge ae-badge-green">TIER 1 &bull; PRODUCTION IMPLEMENTATION</span>
@@ -370,31 +371,31 @@
             <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">ResearchEngine</td>
             <td style="font-family:var(--font-mono);color:var(--cyan);">backend/research/engine.py</td>
             <td>Plans targeted multi-channel queries, gathers search candidates, retrieves full content text, escalates primary sources (SEC, PubMed, government bureaus), and constructs ResearchCorpus.</td>
-            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+            <td><span class="ae-badge ae-badge-green">IMPLEMENTED &bull; CONFIG-DEPENDENT</span></td>
           </tr>
           <tr>
             <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Investigator Pipeline</td>
             <td style="font-family:var(--font-mono);color:var(--purple);">backend/agents/investigator_agent.py</td>
             <td>Analyzes stance clusters, identifies contradictions between retrieved sources, calculates weighted confidence, and generates structured Truth Dossiers.</td>
-            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+            <td><span class="ae-badge ae-badge-green">IMPLEMENTED &bull; CONFIG-DEPENDENT</span></td>
           </tr>
           <tr>
             <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Domain Agents</td>
             <td style="font-family:var(--font-mono);color:var(--accent);">backend/api/ (Scout, Brand, Watch, Trending)</td>
             <td>Specialized retrieval endpoints for market anomaly catalysts, product review pattern screening, VIP impersonation alerts, and social signal velocity.</td>
-            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+            <td><span class="ae-badge ae-badge-green">IMPLEMENTED &bull; CONFIG-DEPENDENT</span></td>
           </tr>
           <tr>
             <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Ingestion &amp; Dedup</td>
             <td style="font-family:var(--font-mono);color:#fff;">backend/agents/claim_ingestion_agent.py</td>
             <td>Unicode NFKC normalization, heuristic prompt-injection stripping, entity extraction, and SHA-256 idempotency hashing to prevent duplicate investigations.</td>
-            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+            <td><span class="ae-badge ae-badge-green">IMPLEMENTED &bull; CONFIG-DEPENDENT</span></td>
           </tr>
           <tr>
             <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Provenance Ledger</td>
-            <td style="font-family:var(--font-mono);color:var(--emerald);">backend/database.py (SQLite)</td>
+            <td style="font-family:var(--font-mono);color:var(--emerald);">backend/db/database.py (SQLite)</td>
             <td>Records each retrieved source URL, domain metadata, retrieval timestamp, stance category, and execution time log.</td>
-            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PERSISTED</span></td>
+            <td><span class="ae-badge ae-badge-green">RETAINED STORAGE REQUIRED</span></td>
           </tr>
         </tbody>
       </table>
@@ -414,17 +415,17 @@
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);margin-bottom:6px;">// STATISTICAL TEXT ANALYSIS</div>
           <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Token Frequency Regularity (Zipf-Mandelbrot)</h3>
           <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.55;margin-bottom:8px;">
-            <strong>Plain English:</strong> How predictable is the word frequency pattern? Machine-generated text tends to follow rigid statistical rank decay, whereas human writing shows irregular bursts and lexical variety.
+            <strong>Plain English:</strong> How predictable is the word frequency pattern? The fit describes word-frequency regularity. It cannot reliably determine human or machine authorship.
           </p>
           <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.5;margin:0;">
-            Mathematical formula: $P(r) = P_0(r+\beta)^{-\gamma}$. Autoregressive models exhibit low lexical variance ($R^2 > 0.93$), which the Research Lab compares against empirical baselines.
+            Mathematical formula: $P(r) = P_0(r+\beta)^{-\gamma}$. R-squared measures fit to this curve; it is not a calibrated authorship probability.
           </p>
         </div>
         <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:22px;">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--amber);margin-bottom:6px;">// INFORMATION DIFFUSION DYNAMICS</div>
           <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Diffusion Dynamics (Hawkes Processes)</h3>
           <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.55;margin-bottom:8px;">
-            <strong>Plain English:</strong> Is discussion spreading organically or through self-exciting cascade bursts? Models whether new mentions arrive at a steady rate or trigger sudden viral re-shares.
+            <strong>Plain English:</strong> Explore an illustrative self-exciting process. Topic-derived parameters are simulated, not fitted to observed social activity.
           </p>
           <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.5;margin:0;">
             Mathematical formula: $\lambda(t) = \mu + \sum_{t_i < t} \alpha e^{-\beta(t - t_i)}$. Computes reproduction ratio $R_0 = \alpha / \beta$ in simulation.
@@ -434,7 +435,7 @@
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--purple);margin-bottom:6px;">// FAULT-TOLERANT AGGREGATION</div>
           <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Outlier Score Trimming (Weighted-MSR)</h3>
           <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.55;margin-bottom:8px;">
-            <strong>Plain English:</strong> Can we reach reliable agreement when one evaluator is biased or hallucinating? Prunes extreme high and low ratings so a single divergent score doesn't distort the consensus.
+            <strong>Plain English:</strong> Explore how agreement and outlier handling change fixed example scores. Agreement alone cannot establish truth or independence.
           </p>
           <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.5;margin:0;">
             Based on the Weighted Mean-Subsequence-Reduced protocol from distributed consensus, filtering outlier nodes before final score weighting.
@@ -664,7 +665,7 @@
         invariant: '\\sum P(\\text{stance}) = 1.0',
         fault: 'Neutral Fallback on Ambiguity',
         formula: '\\text{Stance}(S_i, q) \\in \\{ \\text{SUPPORT}, \\text{REFUTE}, \\text{NEUTRAL} \\}',
-        inPayload: '{\\n  "passages": 18,\\n  "claim": "NVDA CEO audio confession"\\n}'
+        inPayload: '{\\n  "passages": 18,\\n  "claim": "NVDA CEO audio confession"\\n}',
         outPayload: '{\\n  "supporting": 0,\\n  "refuting": 6,\\n  "contradictions_flagged": 2,\\n  "preliminary_verdict": "FALSE"\\n}'
       },
       5: {
@@ -683,7 +684,7 @@
       6: {
         label: 'STAGE 06 &bull; GROUNDED SYNTHESIS',
         name: 'Evidence Dossier &amp; Provenance Ledger',
-        desc: 'Compiles the formal verdict, explicit confidence bounds, key corroborating and refuting evidence passages, and a complete source provenance ledger.',
+        desc: 'Compiles the formal verdict, explicit limitations, key corroborating and refuting evidence passages, and a complete source provenance ledger.',
         badge: 'AUDIT TRAIL &bull; PERSISTED DOSSIER',
         budget: '< 25ms',
         complexity: 'O(1) Dossier Finalization',

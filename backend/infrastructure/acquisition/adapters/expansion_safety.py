@@ -25,8 +25,25 @@ HOSTS = {
     "trustpilot": ("trustpilot.com", "sitejabber.com", "complaintsboard.com", "bbb.org"),
     "reddit_deep": ("reddit.com",), "bluesky": ("bsky.app",),
     "hackernews": ("news.ycombinator.com",), "telegram": ("t.me",),
-    "factcheck": ("snopes.com", "politifact.com", "factcheck.org", "altnews.in", "boomlive.in", "fullfact.org", "googleapis.com"),
-    "news": ("reuters.com", "reutersagency.com", "apnews.com", "bbc.com", "bbc.co.uk", "pib.gov.in", "aninews.in", "thehindu.com"),
+    "factcheck": (
+        "snopes.com", "politifact.com", "factcheck.org", "altnews.in", "boomlive.in",
+        "fullfact.org", "leadstories.com", "checkyourfact.com", "afp.com", "thequint.com",
+        "vishwasnews.com", "indiatoday.in", "pib.gov.in", "healthfeedback.org",
+        "climatefeedback.org", "sciencefeedback.co", "poynter.org", "reuters.com",
+        "apnews.com", "bbc.com", "bbc.co.uk", "washingtonpost.com", "google.com", "googleapis.com"
+    ),
+    "news": (
+        "reuters.com", "reutersagency.com", "apnews.com", "bbc.com", "bbc.co.uk", "bbci.co.uk",
+        "cnn.com", "bloomberg.com", "theguardian.com", "nytimes.com", "washingtonpost.com",
+        "wsj.com", "ft.com", "cnbc.com", "aljazeera.com", "nbcnews.com", "cbsnews.com",
+        "abcnews.go.com", "sky.com", "france24.com", "dw.com", "euronews.com",
+        "independent.co.uk", "telegraph.co.uk", "thehindu.com", "indianexpress.com",
+        "ndtv.com", "timesofindia.indiatimes.com", "indiatimes.com", "hindustantimes.com",
+        "indiatoday.in", "zeenews.india.com", "news18.com", "livemint.com",
+        "business-standard.com", "theprint.in", "thewire.in", "scroll.in",
+        "deccanherald.com", "aninews.in", "pib.gov.in", "ddnews.gov.in",
+        "moneycontrol.com", "economictimes.indiatimes.com", "dj.com", "feedburner.com", "bing.com", "google.com", "news.google.com"
+    ),
     "gdelt": ("gdeltproject.org",),
 }
 

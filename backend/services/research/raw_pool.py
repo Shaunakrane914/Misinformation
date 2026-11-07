@@ -398,6 +398,10 @@ class RawAcquisitionPool:
                 record['source_permission'] = {key: value[:500] for key, value in permission.items()
                     if key in {'author', 'licence_url', 'source_url'} and isinstance(value, str)}
             record["page_metadata"] = {}
+            from backend.services.research.financial_structured import project_financial_document
+            financial_document = project_financial_document(page.get("financial_document"), content)
+            if financial_document:
+                record["page_metadata"]["financial_document"] = financial_document
             from backend.infrastructure.acquisition.adapters.web.response_diagnostics import safe_diagnostics
             diagnostic = safe_diagnostics(page.get('native_response_diagnostics'))
             if diagnostic:
@@ -482,6 +486,12 @@ class RawAcquisitionPool:
                         record["page_metadata"][key].append(safe)
             if page.get("published"):
                 record["published_at"] = _text(page["published"])[:200]
+            elif meta.get("publication_time_basis") == "CAPTURED_PUBLICATION_NOT_OBSERVED":
+                # Reconciliation rejected the feed date for this captured body.
+                # Keep it as a discovery observation, never restore it as an
+                # acquired document's publication date from an older snapshot.
+                record["discovery_published_at"] = _text(meta.get("discovery_published_at") or record["published_at"])[:200] or None
+                record["published_at"] = None
             if page.get("publication_metadata_conflict"):
                 record["discovery_published_at"] = record["published_at"]
                 record["published_at"] = None

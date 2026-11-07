@@ -7,6 +7,14 @@ _REPORT_DIRECTIVE = r"(?:identify\s+actual\s+documented|(?:clearly\s+)?distingui
 
 
 def is_research_instruction(text):
+    # Topic-first requests often put the actual instruction after a delimiter.
+    # Do not turn that instruction into a proposition or use it as search terms.
+    if re.search(r"[;:]\s*(?:show|identify|preserve|distinguish|separate|include)\b", text, re.I):
+        head = re.split(r"[;:]\s*(?:show|identify|preserve|distinguish|separate|include)\b", text, maxsplit=1, flags=re.I)[0]
+        finite = re.search(r"\b(?:is|are|was|were|has|have|had|said|says|recalled|resigned|announced|filed|acquired|denied|reported)\b", head, re.I)
+        nominal = re.search(r"\b(?:latest|recent|original)\s+(?:reported\s+)?(?:quarterly\s+|annual\s+|public\s+)?(?:results|statements|interviews|coverage|developments)\b", head, re.I)
+        if not finite or nominal:
+            return True
     return bool(re.match(r"^(?:please\s+)?" + _DIRECTIVE + r"\b", text, re.I)
                 and not re.match(r"^research\s+(?:shows|showed|found|indicates|suggests|confirms|was|is|has|by|from|at)\b", text, re.I))
 
@@ -20,6 +28,8 @@ def discovery_objective(text, entity):
     """
     if not entity or not is_research_instruction(text) or re.search(r'["“”]|https?://|\bsite:', text, re.I):
         return text
+    text = re.split(r"[;:]\s*(?:show|identify|preserve|distinguish|separate|include)\b", text, maxsplit=1, flags=re.I)[0] if not re.search(
+        r"[;:].*\d|[;:].*\b(?:not|never|false|denied|before|after|since|until)\b", text, re.I) else text
     # Only a sentence introducing another imperative is a report instruction.
     # Do not split abbreviations, decimals or subsequent factual sentences.
     parts = re.split(r"(?<=[.!?])\s+(?=(?:please\s+)?" + _REPORT_DIRECTIVE + r"\b)", text, maxsplit=1, flags=re.I)

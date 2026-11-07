@@ -305,9 +305,10 @@ class TestProductHonestyAndIntegrity:
         assert "generateResilientTrendingFallback" not in tr
         assert "signals_retrieved: 18" not in tr
 
-        # 7. dashboard: cached sample badge
+        # 7. dashboard: actual browser-scoped history, no sample feed
         dash = Path("frontend/dashboard.html").read_text(encoding="utf-8")
-        assert "CACHED SAMPLE DATA" in dash
+        assert "YOUR SAVED REPORTS" in dash
+        assert "STATIC_CLAIMS" not in Path("frontend/dashboard.js").read_text(encoding="utf-8")
 
         # 8. about.html: 4 clear tiers
         ab = Path("frontend/about.html").read_text(encoding="utf-8")

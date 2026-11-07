@@ -34,7 +34,8 @@ def test_mandelbrot_valid_text():
     assert "r_squared" in res
     assert "entropy" in res
     assert "ttr" in res
-    assert res["verdict"] in ("SYNTHETIC", "HUMAN")
+    assert res["verdict"] == "AUTHORSHIP_UNDETERMINED"
+    assert res["confidence"] is None
     assert len(res["curve_data"]) > 0
 
 

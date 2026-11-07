@@ -278,15 +278,15 @@
             <div class="db-title">Investigation Dashboard</div>
             <div class="db-live-row" id="dbStatusRow">
               <div class="db-live-dot" id="dbStatusDot" style="background:#818cf8;box-shadow:none;animation:none;"></div>
-              <span class="db-live-text" id="dbStatusText" style="color:#818cf8;">CACHED SAMPLE DATA</span>
-              <span class="db-live-sub" id="dbStatusSub">Reference truth verification records</span>
+              <span class="db-live-text" id="dbStatusText" style="color:#818cf8;">YOUR SAVED REPORTS</span>
+              <span class="db-live-sub" id="dbStatusSub">Reports opened in this browser</span>
             </div>
           </div>
         </div>
 
         <!-- Status banner -->
         <div id="statusBanner" class="waking">
-          Backend is waking up &middot; Showing cached data &middot; Live AI results will load shortly
+          Loading saved report links…
         </div>
 
         <!-- Toolbar -->
@@ -295,15 +295,15 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
-            <input type="text" id="searchInput" placeholder="Search claims by keyword...">
+            <input type="text" id="searchInput" aria-label="Search saved investigations" placeholder="Search investigations…">
           </div>
           <div class="db-filters">
             <button class="db-filter-btn active" data-filter="all">All</button>
-            <button class="db-filter-btn" data-filter="True">True</button>
-            <button class="db-filter-btn" data-filter="False">False</button>
-            <button class="db-filter-btn" data-filter="Misleading">Misleading</button>
+            <button class="db-filter-btn" data-filter="scout">Scout</button>
+            <button class="db-filter-btn" data-filter="brandshield">BrandShield</button>
+            <button class="db-filter-btn" data-filter="trending">Trending</button>
           </div>
-          <button class="db-refresh-btn" id="refreshBtn">
+          <button class="db-filter-btn" data-filter="personal_watch">Personal Watch</button><button class="db-refresh-btn" id="refreshBtn">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
               <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
               <path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
@@ -316,44 +316,7 @@
         <div id="claimsContainer"></div>
       </div>
 
-      <!-- RIGHT: Stats Sidebar -->
-      <aside class="db-sidebar">
-        <div>
-          <div class="db-sidebar-title">Verdict Distribution</div>
-          <div class="db-tel-strip">
-            <div class="db-tel-row">
-              <div class="db-tel-dot" style="background:var(--emerald);box-shadow:0 0 6px var(--emerald);"></div>
-              <span class="db-tel-label">Verified TRUE</span>
-              <span class="db-tel-count" style="color:var(--emerald);" id="trueCount">0</span>
-            </div>
-            <div class="db-tel-row">
-              <div class="db-tel-dot" style="background:var(--rose);box-shadow:0 0 6px var(--rose);"></div>
-              <span class="db-tel-label">Confirmed FALSE</span>
-              <span class="db-tel-count" style="color:var(--rose);" id="falseCount">0</span>
-            </div>
-            <div class="db-tel-row">
-              <div class="db-tel-dot" style="background:var(--amber);box-shadow:0 0 6px var(--amber);"></div>
-              <span class="db-tel-label">Misleading / Partial</span>
-              <span class="db-tel-count" style="color:var(--amber);" id="misleadingCount">0</span>
-            </div>
-            <div class="db-tel-row">
-              <div class="db-tel-dot" style="background:rgba(255,255,255,0.2);"></div>
-              <span class="db-tel-label">Unverified</span>
-              <span class="db-tel-count" style="color:var(--text-muted);" id="unverifiedCount">0</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="db-chart-card">
-          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Verdict Distribution</h3>
-          <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
-        </div>
-
-        <div class="db-chart-card">
-          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Claims Volume</h3>
-          <div class="chart-wrap-bar"><canvas id="barChart"></canvas></div>
-        </div>
-      </aside>
+      <aside class="db-sidebar"><h2>Keep a report</h2><p>Open a saved report to copy its full ID or direct link. This list uses links saved in this browser; it does not expose other users' investigations.</p><p>Reports depend on the server's retained storage. Export important results; clearing browser data removes this list.</p><a href="status.html">Look up a full report ID</a></aside>
     </div>
   </div>
 
@@ -369,51 +332,6 @@
     </div>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.db-filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.db-filter-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          filterClaims();
-        });
-      });
 
-      document.getElementById('searchInput').addEventListener('input', filterClaims);
-
-      document.getElementById('refreshBtn').addEventListener('click', () => {
-        if (typeof renderClaims === 'function') renderClaims(window._allClaims || []);
-        if (typeof initDashboard === 'function') initDashboard();
-      });
-    });
-
-    function filterClaims() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filter = document.querySelector('.db-filter-btn.active')?.dataset.filter || 'all';
-      const cards = document.querySelectorAll('#claimsContainer .claim-card');
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        const verdict = card.dataset.verdict || '';
-        const matchFilter = filter === 'all' || verdict === filter;
-        const matchSearch = !query || text.includes(query);
-        card.style.display = (matchFilter && matchSearch) ? '' : 'none';
-      });
-    }
-
-    window.setStatusBanner = function(state) {
-      const b = document.getElementById('statusBanner');
-      if (!b) return;
-      if (state === 'waking') {
-        b.className = 'waking';
-        b.textContent = 'Backend is waking up \u00b7 Showing cached data \u00b7 Live AI results will load shortly';
-      } else if (state === 'live') {
-        b.className = 'live';
-        b.textContent = 'Backend is online \u00b7 Showing live AI-verified claims';
-        setTimeout(() => { b.style.opacity='0'; setTimeout(()=>b.style.display='none',400); }, 4000);
-      } else {
-        b.style.display = 'none';
-      }
-    };
-  </script>
 </body>
 </html>

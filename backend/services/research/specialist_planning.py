@@ -56,6 +56,46 @@ def _explicit_tasks(claim, target, personal):
     return tasks
 
 
+def matches_specialist_body(item, claim, target, domain):
+    """An acquired body must address the requested task, not just name the subject.
+
+    This is a relevance check after reading. It grants no source access, claim
+    verdict or speaker authentication; rejected bodies stay in the raw pool.
+    """
+    if domain not in {"brand", "personal"}:
+        return True
+    personal = domain == "personal"
+    requested = _explicit_tasks(claim or "", target, personal)
+    if not requested:
+        return True
+    body = item.content or ""
+    observed = set(_tasks(_subjectless(body, target), personal))
+    if not personal:
+        if "COUNTERFEIT" in requested:
+            counterfeit = next(pattern for name, pattern in _PATTERNS if name == "COUNTERFEIT")
+            incident = r"\b(?:seiz\w*|intercept\w*|confiscat\w*|raid\w*|arrest\w*|charg\w*|convict\w*|investigat\w*|lawsuit|sold|selling|seller|offered|listing|ordered|bought|detected)\b"
+            # A passing caption about counterfeit prevalence is not a specific
+            # counterfeit incident. Require the mechanism in the same paragraph.
+            if not any(re.search(counterfeit, paragraph, re.I) and re.search(incident, paragraph, re.I)
+                       for paragraph in re.split(r"\n\s*\n", body)):
+                observed.discard("COUNTERFEIT")
+        from backend.services.research.passage_records import classify_passage
+        if classify_passage(body, domain="brand") == "CUSTOMER_COMPLAINT":
+            observed.add("COMPLAINT")
+    if personal:
+        from backend.services.research.address_provenance import project_address, speaker_matches
+        address = project_address((item.metadata.get("page_metadata") or {}).get("published_address"), body)
+        if address and speaker_matches(address["speaker"], target):
+            # An original statement is useful comparison material for an exact
+            # quote check. Its existence is not an authenticity verdict.
+            observed.update({"PUBLIC_STATEMENT", "FALSE_QUOTE"})
+    if "BRAND_ABUSE" in requested and observed & {"COUNTERFEIT", "PHISHING", "IMPERSONATION"}:
+        return True
+    if "IDENTITY_THREAT" in requested and observed & {"IMPERSONATION", "DEEPFAKE", "FALSE_QUOTE"}:
+        return True
+    return bool(set(requested) & observed)
+
+
 def specialist_claim_intent(claim, domain, entity=""):
     """Keep a specialist's task ahead of incidental financial/product nouns."""
     if str(domain).casefold() in {"personal", "personal_watch"}:

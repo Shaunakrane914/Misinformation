@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased — evidence-first product repairs
+
+- Expanded news verification footprint across 45+ premier international and Indian news domains.
+- Integrated 37 accredited newswire RSS feeds with concurrent priority dispatch and query-affinity scoring.
+- Added Bing News RSS discovery with instant unencrypted publisher destination URL unwrapping, bypassing wrapper token deadlocks.
+- Enforced semantic full-article HTML extraction with browser impersonation headers to prevent 403 Forbidden drops.
+- Grounded claim verification and investigator verdicts with deterministic empirical evidence calibration when LLM services are offline.
+
+- Gate factual assessments separately from topic queries and research instructions;
+  retain source roles and explicitly unknown independence.
+- Add scoped report overviews, cited source links, storage-backed report IDs and
+  browser-scoped recent investigations; fold detailed metadata on mobile.
+- Preserve structured financial documents through reading and the raw pool;
+  prevent annual amounts from inheriting quarterly periods.
+- Repair the About inspector and distinguish statistical profiles, simulations
+  and recorded offline benchmarks from researched factual conclusions.
+
 ## Unreleased — repository cleanup
 
 - Consolidated public documentation around setup, architecture, API contracts,

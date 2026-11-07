@@ -65,23 +65,20 @@ async function testPages() {
   assert.strictEqual(button.innerHTML, '');
   assert.strictEqual(personal.context.pwned, undefined);
 
-  const dashboard = pageContext('scout-agent.html');
-  vm.runInContext(fs.readFileSync(path.join(root, 'frontend', 'dashboard.js'), 'utf8'), dashboard.context);
-  for (const verdict of ['Unverified', 'Insufficient Evidence']) {
-    const card = dashboard.context.buildCard({ claim: 'A claim', verdict, record_origin: 'investigation' });
-    assert.strictEqual(card.children[1].textContent, verdict.toUpperCase());
-    assert(card.children[1].style.cssText.includes('#8b5cf6'), 'Uncertainty must not use false/red styling');
-    assert.strictEqual(card.children[2].textContent, 'Stored investigation result');
-  }
-  const historical = dashboard.context.buildCard({ claim: 'Example', verdict: 'False', record_origin: 'historical_dataset' });
-  assert(historical.children[2].textContent.includes('not a live investigation'));
-  vm.runInContext('backendAlive = true;', dashboard.context);
-  dashboard.context.fetch = async () => ({ json: async () => ({ explanation: 'Reasoning', evidence_url: 'javascript:globalThis.pwned=true' }) });
-  const unsafeLink = dashboard.context.buildCard({ claim: 'Example', verdict: 'Unverified' });
-  const evidence = unsafeLink.children[5]; evidence.style.display = 'none';
-  await unsafeLink.children[4].listeners.click();
-  assert.strictEqual(evidence.children[1].children[0].tagName, 'SPAN');
-  assert.strictEqual(dashboard.context.pwned, undefined);
+  const dashboardSource = fs.readFileSync(path.join(root, 'frontend', 'dashboard.js'), 'utf8');
+  assert(!dashboardSource.includes('STATIC_CLAIMS'));
+  assert(!dashboardSource.includes('/explain-claim'));
+  assert(dashboardSource.includes('encodeURIComponent(row.id)'));
+  assert(dashboardSource.includes('escape(row.summary'));
+  const statusPage = pageContext('status.html');
+  const escapeCode = fs.readFileSync(path.join(root, 'frontend', 'aegis-nav.js'), 'utf8').match(/window\.escapeHtml = function\(str\) \{[\s\S]*?\n  \};/)[0];
+  vm.runInContext(escapeCode, statusPage.context);
+  statusPage.context.renderResult({status: 'completed', claim_text: attack, reasoning: attack,
+    confidence: 200, evidence: [{text: attack, url: 'javascript:globalThis.pwned=true'}]});
+  const statusHtml = statusPage.elements.get('resultArea').innerHTML;
+  assert(!statusHtml.includes(attack));
+  assert(!statusHtml.includes('href="javascript:'));
+  assert(!statusHtml.includes('width:20000%'));
   personal.document.getElementById('personInput').value = attack;
   personal.context.fetch = async () => { throw new Error('API offline'); };
   const scan = personal.context.triggerScan();

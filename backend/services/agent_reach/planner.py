@@ -214,7 +214,7 @@ class RetrievalPlanner:
                 "twitter": f"{search_kw} fake OR hoax OR debunked",
                 "youtube": f"{search_kw} fact check debunked",
                 "news": f"{search_kw} fact check OR verified OR official",
-                "web": f'"{search_kw}" fact check verified truth',
+                "web": f"{search_kw} fact check OR debunked OR verified",
                 "rss": f"{search_kw} fact check official statement",
                 "github": clean_q,
                 "v2ex": clean_q,

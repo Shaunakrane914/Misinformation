@@ -149,7 +149,7 @@ class TestPhase8FIntegratedVerification:
         report = ReportBuilder.from_claim_result(claim_text=claim, verdict=verdict_data)
         dump = report.to_dict()
 
-        assert "REFUTED" in dump["summary"]
+        assert "INSUFFICIENT_EVIDENCE" in dump["summary"]  # no acquired corpus was supplied
         assert "claim_decomposition" in dump
         assert len(dump["claim_decomposition"]) >= 1
 

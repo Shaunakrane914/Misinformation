@@ -48,11 +48,18 @@ def financial_observations(text, evidence_id):
             pages = re.findall(r"\[PDF page (\d+)\]", text[:match.start()])
             headers = list(re.finditer(r"Guidance for[^\n]*|Key highlights:|For the quarter ended[^\n]*", text[:match.start()], re.I))
             guidance = bool(headers and headers[-1].group().lower().startswith("guidance for"))
+            paragraph_start = text.rfind("\n\n", 0, match.start()) + 2
+            paragraph_end = text.find("\n\n", match.end())
+            paragraph = text[max(0, paragraph_start):paragraph_end if paragraph_end >= 0 else len(text)]
+            # An annual/comparative amount cannot inherit a quarterly header
+            # simply because that is the only dated quarter in the document.
+            incompatible_period = bool(re.search(r"\b(?:annual|full[ -]year|fiscal year|year ended|prior year|previous year)\b", paragraph, re.I))
+            period_known = len(periods) == 1 and not guidance and not incompatible_period
             range_match = re.match(r"\s*[-–]\s*(\d+(?:\.\d+)?)%?", text[match.end():])
             result.append({"evidence_id": evidence_id, "metric": metric, "value": str(value),
                 "unit": "percent" if unit == "%" else unit or "currency_unit", "currency": currency,
-                "normalized_value": str(value * multiplier), "period_end": next(iter(periods)) if len(periods) == 1 and not guidance else None,
-                "period_alignment": "UNIQUE_DOCUMENT_QUARTER" if len(periods) == 1 and not guidance else "AMBIGUOUS_OR_UNKNOWN",
+                "normalized_value": str(value * multiplier), "period_end": next(iter(periods)) if period_known else None,
+                "period_alignment": "UNIQUE_DOCUMENT_QUARTER" if period_known else "AMBIGUOUS_OR_UNKNOWN",
                 "scope": "GUIDANCE" if guidance else "REPORTED_SOURCE_PROSE", "range_upper": range_match.group(1) if range_match else None,
                 "source_page": int(pages[-1]) if pages else None, "start": match.start(), "end": match.end(),
                 "text": match.group(), "status": "OBSERVED_SOURCE_ASSERTION", "table_alignment_verified": False})

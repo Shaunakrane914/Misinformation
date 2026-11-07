@@ -123,6 +123,8 @@ class EvidenceLink(BaseModel):
     is_corporate_denial: bool = False
     temporal_match: bool = Field(default=True, description="Whether evidence aligns with the claim's asserted time window")
     rationale: str
+    primary_source: bool = False
+    captured_text_sha256: Optional[str] = None
 
     @classmethod
     def create(
@@ -191,7 +193,7 @@ class CorroborationGroup(BaseModel):
     primary_origin_url: str
     reprint_publishers: List[str] = Field(default_factory=list)
     all_source_ids: List[str] = Field(default_factory=list)
-    is_independent: bool = True
+    is_independent: Optional[bool] = None
     syndication_ratio: float = Field(default=1.0, description="Reprint count / total in group")
 
 
@@ -199,10 +201,12 @@ class CorroborationSummary(BaseModel):
     """Summary of source independence and corroboration illusion assessment."""
     total_sources_scanned: int
     unique_publishers: int
-    independent_evidence_chains: int
+    independent_evidence_chains: Optional[int]
     syndicated_reprints_count: int
     corroboration_illusion_detected: bool
-    corroboration_ratio: float = Field(description="independent_chains / unique_publishers")
+    corroboration_ratio: Optional[float] = Field(description="Unknown unless reporting independence is established")
+    independence_verified: bool = False
+    observed_origin_groups: int = 0
     warning_message: Optional[str] = None
     groups: List[CorroborationGroup] = Field(default_factory=list)
 

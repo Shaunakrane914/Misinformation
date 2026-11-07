@@ -75,7 +75,7 @@ def test_threat_lab_api_endpoints(test_client: TestClient):
     })
     assert r1.status_code == 200
     assert "r_squared" in r1.json()
-    assert r1.json().get("verdict") in ("SYNTHETIC", "HUMAN", "INSUFFICIENT_DATA")
+    assert r1.json().get("verdict") in ("AUTHORSHIP_UNDETERMINED", "INSUFFICIENT_DATA")
 
     # 2. Hawkes blast radius
     r2 = test_client.post("/api/lab/blast-radius", json={

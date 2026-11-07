@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import re
+from urllib.parse import urlsplit
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.claim_intelligence.models import (
@@ -44,10 +45,10 @@ class CorroborationDetector:
             return CorroborationSummary(
                 total_sources_scanned=0,
                 unique_publishers=0,
-                independent_evidence_chains=0,
+                independent_evidence_chains=None,
                 syndicated_reprints_count=0,
                 corroboration_illusion_detected=False,
-                corroboration_ratio=1.0,
+                corroboration_ratio=None,
                 groups=[],
             ), []
 
@@ -56,7 +57,7 @@ class CorroborationDetector:
         for s in sources:
             sid = s.get("source_id") or s.get("id") or s.get("evidence_id") or "src_" + hashlib.sha256(str(s.get("url", "")).encode()).hexdigest()[:8]
             url = s.get("canonical_url") or s.get("url") or s.get("source_url") or ""
-            pub = s.get("publisher_host") or s.get("publisher") or s.get("source_domain") or "Unknown"
+            pub = (urlsplit(url).hostname or s.get("publisher_host") or s.get("source_domain") or "unknown").lower().removeprefix("www.")
             body = s.get("content") or s.get("body") or s.get("snippet") or s.get("text") or ""
             pub_date = s.get("published_at")
             shingles = self._compute_shingles(body)
@@ -84,85 +85,73 @@ class CorroborationDetector:
                 if rel:
                     relationships.append(rel)
 
-        # 3. Cluster into Corroboration Groups
-        # Union-Find or adjacency connected components for syndication clusters
+        # Connected components are observed text/origin groups, not verified independence.
+        adjacency = {s["source_id"]: set() for s in normalized_sources}
+        for rel in relationships:
+            adjacency[rel.source_a_id].add(rel.source_b_id)
+            adjacency[rel.source_b_id].add(rel.source_a_id)
+        for first in normalized_sources:
+            for second in normalized_sources:
+                if first["publisher"] != "unknown" and first["publisher"] == second["publisher"]:
+                    adjacency[first["source_id"]].add(second["source_id"])
         visited = set()
-        groups: List[CorroborationGroup] = []
-
-        for i, src in enumerate(normalized_sources):
-            sid = src["source_id"]
-            if sid in visited:
+        groups = []
+        for src in normalized_sources:
+            if src["source_id"] in visited:
                 continue
-
-            cluster_ids = {sid}
-            cluster_pubs = {src["publisher"]}
-            reprints = []
-
-            for rel in relationships:
-                if rel.relation_type in {
-                    SourceRelationType.EXPLICIT_REPRINT,
-                    SourceRelationType.QUOTES,
-                    SourceRelationType.HIGH_TEXT_SIMILARITY,
-                }:
-                    if rel.source_a_id in cluster_ids and rel.source_b_id not in cluster_ids:
-                        target = next((s for s in normalized_sources if s["source_id"] == rel.source_b_id), None)
-                        if target:
-                            cluster_ids.add(target["source_id"])
-                            cluster_pubs.add(target["publisher"])
-                            reprints.append(target["publisher"])
-                    elif rel.source_b_id in cluster_ids and rel.source_a_id not in cluster_ids:
-                        target = next((s for s in normalized_sources if s["source_id"] == rel.source_a_id), None)
-                        if target:
-                            cluster_ids.add(target["source_id"])
-                            cluster_pubs.add(target["publisher"])
-                            reprints.append(target["publisher"])
-
+            pending, cluster_ids = [src["source_id"]], set()
+            while pending:
+                sid = pending.pop()
+                if sid in cluster_ids:
+                    continue
+                cluster_ids.add(sid)
+                pending.extend(adjacency[sid] - cluster_ids)
             visited.update(cluster_ids)
-            is_indep = len(cluster_ids) == 1 or len(cluster_pubs) == 1
-            synd_ratio = len(reprints) / max(len(cluster_ids), 1)
-
+            members = [s for s in normalized_sources if s["source_id"] in cluster_ids]
+            pubs = sorted({s["publisher"] for s in members})
             groups.append(CorroborationGroup(
-                group_id=f"grp_{len(groups) + 1}",
-                primary_origin_publisher=src["publisher"],
-                primary_origin_url=src["url"],
-                reprint_publishers=sorted(list(set(reprints))),
-                all_source_ids=sorted(list(cluster_ids)),
-                is_independent=is_indep,
-                syndication_ratio=round(synd_ratio, 2),
-            ))
+                group_id=f"grp_{len(groups) + 1}", primary_origin_publisher=src["publisher"],
+                primary_origin_url=src["url"], reprint_publishers=[p for p in pubs if p != src["publisher"]],
+                all_source_ids=sorted(cluster_ids), is_independent=None,
+                syndication_ratio=round((len(members) - 1) / len(members), 2)))
 
         # 4. Generate Summary & Corroboration Illusion Alert
         total_scanned = len(normalized_sources)
-        known_publishers = {s["publisher"] for s in normalized_sources if s["publisher"] != "Unknown"}
-        unique_publishers = len(known_publishers) if known_publishers else total_scanned
+        known_publishers = {s["publisher"] for s in normalized_sources if s["publisher"] != "unknown"}
+        unique_publishers = len(known_publishers)
         independent_chains = len(groups)
-        syndicated_reprints = max(0, total_scanned - independent_chains)
+        copied_ids = set()
+        for edge in relationships:
+            if edge.relation_type == SourceRelationType.EXPLICIT_REPRINT:
+                copied_ids.add(edge.source_b_id)
+        syndicated_reprints = len(copied_ids)
 
         corroboration_ratio = min(1.0, independent_chains / max(total_scanned, 1))
         # Corroboration illusion occurs when multiple publishers parrot the same underlying origin
-        illusion_detected = (
+        illusion_detected = bool(relationships) and unique_publishers >= 2 and ((
             unique_publishers >= 3
             and independent_chains == 1
             and syndicated_reprints >= 2
         ) or (
             total_scanned >= 4 and corroboration_ratio <= 0.40
-        )
+        ))
 
         warning_msg = None
         if illusion_detected:
             warning_msg = (
                 f"CORROBORATION ILLUSION DETECTED: {unique_publishers} distinct publishers returned matching text, "
-                f"but source analysis reveals only {independent_chains} independent reporting origin. "
-                "Echo-chamber syndication detected."
+                f"but source analysis reveals only {independent_chains} observed text group. "
+                "Shared wording or attribution does not establish independent confirmation."
             )
 
         summary = CorroborationSummary(
             total_sources_scanned=total_scanned,
             unique_publishers=unique_publishers,
-            independent_evidence_chains=independent_chains,
+            independent_evidence_chains=None,
+            observed_origin_groups=len(groups),
             syndicated_reprints_count=max(syndicated_reprints, 0),
             corroboration_illusion_detected=illusion_detected,
-            corroboration_ratio=round(corroboration_ratio, 2),
+            corroboration_ratio=None,
             warning_message=warning_msg,
             groups=groups,
         )

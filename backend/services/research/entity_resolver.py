@@ -236,6 +236,107 @@ KNOWN_CANONICAL_PROFILES: Dict[str, TargetEntity] = {
         negative_entities=[],
         negative_context=[]
     ),
+    "tata motors": TargetEntity(
+        canonical_name="Tata Motors",
+        entity_type="company",
+        aliases=["Tata Motors", "Tata Motors Limited", "TATAMOTORS", "TATAMOTORS.NS"],
+        organizations=["Tata Motors", "Tata Group"],
+        ticker="TATAMOTORS.NS",
+        positive_context=["tata motors", "tatamotors", "automaker", "commercial vehicles", "passenger vehicles", "jlr", "jaguar land rover", "ev", "quarterly results", "bse", "nse"],
+        negative_entities=[],
+        negative_context=[]
+    ),
+    "tatamotors": TargetEntity(
+        canonical_name="Tata Motors",
+        entity_type="company",
+        aliases=["Tata Motors", "Tata Motors Limited", "TATAMOTORS", "TATAMOTORS.NS"],
+        organizations=["Tata Motors", "Tata Group"],
+        ticker="TATAMOTORS.NS",
+        positive_context=["tata motors", "tatamotors", "ev", "commercial vehicles", "jlr"],
+        negative_entities=[],
+        negative_context=[]
+    ),
+    "tatamotors.ns": TargetEntity(
+        canonical_name="Tata Motors",
+        entity_type="company",
+        aliases=["Tata Motors", "Tata Motors Limited", "TATAMOTORS", "TATAMOTORS.NS"],
+        organizations=["Tata Motors", "Tata Group"],
+        ticker="TATAMOTORS.NS",
+        positive_context=["tata motors", "tatamotors", "stock", "results", "earnings"],
+        negative_entities=[],
+        negative_context=[]
+    ),
+    "infosys": TargetEntity(
+        canonical_name="Infosys",
+        entity_type="company",
+        aliases=["Infosys", "Infosys Limited", "INFY", "INFY.NS"],
+        organizations=["Infosys"],
+        ticker="INFY.NS",
+        positive_context=["infosys", "infy", "it services", "quarterly results", "guidance", "bse", "nse", "bengaluru", "salil parekh"],
+        negative_entities=[],
+        negative_context=[]
+    ),
+    "infy": TargetEntity(
+        canonical_name="Infosys",
+        entity_type="company",
+        aliases=["Infosys", "Infosys Limited", "INFY", "INFY.NS"],
+        organizations=["Infosys"],
+        ticker="INFY.NS",
+        positive_context=["infosys", "infy", "shares", "results"],
+        negative_entities=[],
+        negative_context=[]
+    ),
+    "infy.ns": TargetEntity(
+        canonical_name="Infosys",
+        entity_type="company",
+        aliases=["Infosys", "Infosys Limited", "INFY", "INFY.NS"],
+        organizations=["Infosys"],
+        ticker="INFY.NS",
+        positive_context=["infosys", "infy", "stock", "results"],
+        negative_entities=[],
+        negative_context=[]
+    ),
+    "apple": TargetEntity(
+        canonical_name="Apple",
+        entity_type="company",
+        aliases=["Apple", "Apple Inc", "Apple Computer", "AAPL"],
+        organizations=["Apple"],
+        ticker="AAPL",
+        positive_context=["apple", "iphone", "ipad", "macbook", "ios", "tim cook", "aapl", "cupertino", "earnings", "app store"],
+        negative_entities=["Apple (fruit)", "Fiona Apple", "Big Apple"],
+        negative_context=["cider", "orchard", "pie recipe", "nutrition facts", "granny smith"]
+    ),
+    "aapl": TargetEntity(
+        canonical_name="Apple",
+        entity_type="company",
+        aliases=["Apple", "Apple Inc", "AAPL"],
+        organizations=["Apple"],
+        ticker="AAPL",
+        positive_context=["apple", "aapl", "iphone", "stock", "nasdaq", "earnings", "tim cook"],
+        negative_entities=[],
+        negative_context=[]
+    ),
+    "tim cook": TargetEntity(
+        canonical_name="Tim Cook",
+        entity_type="person",
+        aliases=["Tim Cook", "Timothy Cook", "Cook"],
+        handles={"twitter": ["tim_cook"]},
+        organizations=["Apple", "Apple Inc"],
+        roles=["CEO", "Chief Executive Officer"],
+        positive_context=["apple", "ceo", "iphone", "cupertino", "keynote", "wwdc", "cook", "executive", "board"],
+        negative_entities=["Dane Cook", "Captain Cook", "Cook (profession)"],
+        negative_context=["standup comedy", "recipes", "culinary", "baking", "explorer"]
+    ),
+    "nike": TargetEntity(
+        canonical_name="Nike",
+        entity_type="brand",
+        aliases=["Nike", "Nike Inc", "NKE"],
+        organizations=["Nike"],
+        ticker="NKE",
+        positive_context=["nike", "shoes", "sneakers", "apparel", "swoosh", "just do it", "footwear", "nke", "earnings"],
+        negative_entities=["Nike (Greek goddess)"],
+        negative_context=["greek mythology", "ancient greece", "winged goddess"]
+    ),
 }
 
 

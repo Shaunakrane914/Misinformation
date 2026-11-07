@@ -4167,3 +4167,30 @@ body.ae-page-exit {
     border-radius: 12px !important;
   }
 }
+
+/* Evidence-first report overview and touch-safe controls. */
+.ur-overview-title {font-size:clamp(1.35rem,3vw,2rem);overflow-wrap:anywhere}
+.ur-overview-sources {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.ur-overview-source {border:1px solid var(--border, #344155);border-radius:12px;padding:14px;min-width:0}
+.ur-overview-source a {display:block;font-weight:650;margin:8px 0;overflow-wrap:anywhere}
+.ur-overview-source small {display:block;color:var(--text-dim);font-size:.8rem;overflow-wrap:anywhere}
+.ur-overview-source p {font-size:.9rem;line-height:1.5}
+.ur-overview-limits {font-size:.9rem}.ur-overview-limits ul {margin:8px 0}
+.ur-report-link {display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}
+.ur-report-link code {overflow-wrap:anywhere}.ur-report-link button {min-height:44px;padding:8px 14px;cursor:pointer}
+.ur-filter-panel>summary {min-height:44px;cursor:pointer;padding:12px 0}
+.ur-workbench-passage details>summary {min-height:44px;cursor:pointer}
+@media(max-width:600px){
+ .ur-overview-sources {grid-template-columns:1fr;gap:8px}
+ .ur-overview-source {padding:10px}.ur-overview-source p {display:none}
+ .ur-workbench-filters {grid-template-columns:1fr}
+ .ur-section-body {padding:14px!important}.ur-ev-note {font-size:.82rem;line-height:1.5}
+ .ur-workbench-controls button,.ur-evidence-jump,.ur-section button,.ur-report-link a {min-height:44px}
+ footer a {display:inline-flex;align-items:center;min-height:44px;padding:4px}
+}
+
+.ur-section { scroll-margin-top: 108px; }
+.ur-report-details > summary { min-height:44px; padding:14px; cursor:pointer; color:var(--text); border:1px solid var(--border); border-radius:12px; }
+.ur-report-link button { padding:10px 16px; color:var(--text); background:var(--surface-card); border:1px solid var(--border); border-radius:8px; cursor:pointer; }
+.ur-overview-source a, .ur-evidence-jump { display:inline-block; padding-block:8px; }
+@media(max-width:600px) { .ur-overview-limits li { margin-block:4px; } .ur-overview-sources {gap:8px;} .ur-report-link {font-size:.82rem;} }

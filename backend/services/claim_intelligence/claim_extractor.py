@@ -60,11 +60,13 @@ class ClaimExtractor:
     def extract_claims(self, text: str, entity: Any = "") -> List[AtomicClaim]:
         """Extract atomic testable claims from user input or headline.
 
-        Always guarantees at least one valid AtomicClaim output with preserved
-        temporal scope, subject scope, and qualifiers.
+        Topics and research instructions abstain; assertions retain temporal
+        scope, subject scope and qualifiers.
         """
         clean_text = " ".join((text or "").split()).strip()
         if not clean_text:
+            return []
+        if not is_testable_claim(clean_text):
             return []
 
         if isinstance(entity, dict):
@@ -165,4 +167,21 @@ class ClaimExtractor:
 
 
 claim_extractor = ClaimExtractor()
+
+
+def is_testable_claim(text: str) -> bool:
+    """An entity, topic or research instruction is not an asserted proposition."""
+    from backend.services.research.research_objectives import is_research_instruction
+    text = re.sub(r"^(?:verify|check|fact[- ]check)\s+(?:if|whether|that)\s+", "", text.strip(), flags=re.I)
+    if is_research_instruction(text) or re.match(r"^(?:what|who|where|when|why|how|find|investigate|monitor)\b", text, re.I):
+        return False
+    if re.search(r"\bin talks to\s+\w+", text, re.I):
+        return True
+    return len(text.split()) >= 3 and bool(re.search(
+        r"\b(?:is|are|was|were|has|have|had|did|does|do|will|can|cannot|"
+        r"recalled|recalls|resigned|resigns|cancelled|canceled|shut|acquired|acquires|announced|announces|"
+        r"reported|reports|shows|showed|improved|said|says|denied|denies|died|filed|files|sued|"
+        r"confirmed|confirms|settled|settles|launched|launches|contains|contain|causes|cause|"
+        r"cures|cure|produces|produce|stole|stolen|arrested|pleaded|issued|"
+        r"increased|decreased|rose|fell|earned|posted|supports|violates)\b", text, re.I))
 

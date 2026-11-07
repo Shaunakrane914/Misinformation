@@ -1002,6 +1002,7 @@
           throw new Error('Backend endpoints unavailable');
         }
         const claimId = submitData.claim_id;
+        window.AegisHistory?.rememberClaim({...submitData, claim_text: text});
 
         const pollEndpoints = [
           (window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${claimId}`) : `/api/claims/${claimId}`)
@@ -1026,7 +1027,7 @@
         activeHeroPoll = setInterval(async () => {
           attempts++;
           const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
-          timeEl.innerText = `ELAPSED: ${elapsed}s • ID: ${claimId.slice(0, 8)}`;
+          timeEl.innerText = `ELAPSED: ${elapsed}s • ID: ${claimId}`;
 
           if (attempts === 1) {
             s2.innerHTML = `<span style="color:var(--emerald);">✓ Primary sources searched</span>`;
@@ -1081,6 +1082,7 @@
     }
 
     function renderHeroModalResult(claim, elapsedSeconds) {
+      window.AegisHistory?.rememberClaim(claim);
       const banner = document.getElementById('modalResultBanner');
       const badgeWrap = document.getElementById('modalVerdictBadgeWrap');
       const confWrap = document.getElementById('modalConfidenceWrap');
@@ -1104,24 +1106,33 @@
       s1.innerHTML = `<span style="color:var(--emerald);">✓ Claim normalized</span>`;
       const evCount = (claim.evidence && Array.isArray(claim.evidence)) ? claim.evidence.length : 0;
       s2.innerHTML = `<span style="color:var(--emerald);">✓ ${evCount} sources retrieved</span>`;
-      s3.innerHTML = `<span style="color:var(--emerald);">✓ Contradictions compared</span>`;
-      s4.innerHTML = `<span style="color:var(--emerald);">✓ Assessment synthesized</span>`;
+      s3.textContent = evCount ? 'Review captured agreement and disagreement in the full report.' : 'No acquired evidence for a contradiction comparison.';
+      s4.textContent = evCount ? 'Assessment returned; inspect its scope and citations.' : 'Assessment remains evidence-limited.';
 
       const v = (claim.verdict !== undefined && claim.verdict !== null) ? String(claim.verdict).toLowerCase() : 'unverified';
       const hasConf = (claim.confidence !== null && claim.confidence !== undefined && !isNaN(claim.confidence));
       const conf = hasConf ? Math.round(claim.confidence * 100) : null;
 
-      timeEl.innerText = `COMPLETED IN ${elapsedSeconds.toFixed(1)}s • INVESTIGATION ID: ${claim.claim_id ? claim.claim_id.slice(0, 8) : 'RECORDED'}`;
-      confWrap.innerText = hasConf ? `CONFIDENCE: ${conf}%` : 'CONFIDENCE: MODERATE';
+      timeEl.innerText = `COMPLETED IN ${elapsedSeconds.toFixed(1)}s • INVESTIGATION ID: ${claim.claim_id ? claim.claim_id : 'RECORDED'}`;
+      confWrap.innerText = hasConf ? `CONFIDENCE: ${conf}%` : 'CONFIDENCE: UNAVAILABLE';
 
       const reasonText = claim.reasoning || claim.summary || 'Evidence synthesis completed across retrieved records.';
       reasoning.innerText = reasonText;
+      if (claim.claim_id) {
+        timeEl.style.overflowWrap = 'anywhere';
+        const link = document.createElement('a'); link.href = `status.html?id=${encodeURIComponent(claim.claim_id)}`;
+        link.textContent = 'Open saved claim status'; link.className = 'ae-btn ae-btn-ghost';
+        const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'ae-btn ae-btn-ghost'; copy.textContent = 'Copy full ID';
+        copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(claim.claim_id); copy.textContent = 'Copied'; } catch (_) { copy.textContent = 'Select the full ID above'; } });
+        timeEl.append(document.createElement('br'), link, copy);
+      }
+
 
       if (v === 'true') {
         banner.style.borderColor = 'rgba(16, 185, 129, 0.4)';
         banner.style.background = 'rgba(16, 185, 129, 0.06)';
         badgeWrap.innerHTML = `<span class="ae-badge ae-badge-green">LIKELY TRUE</span>`;
-        title.innerHTML = `Supported by independent evidence`;
+        title.innerHTML = `Source-supported assessment; independence unverified`;
       } else if (v === 'false') {
         banner.style.borderColor = 'rgba(244, 63, 94, 0.4)';
         banner.style.background = 'rgba(244, 63, 94, 0.06)';

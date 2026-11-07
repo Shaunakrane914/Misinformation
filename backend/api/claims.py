@@ -299,7 +299,7 @@ def verify_claim_sync(request: ClaimVerifyRequest):
             url_val = s.get("url") if isinstance(s, dict) else None
             
             assess = relevance_gate.evaluate_item(
-                type("Item", (), {"id": "sup", "title": title_val, "snippet": text_val, "url": url_val or ""})(),
+                type("Item", (), {"id": "sup", "title": title_val, "snippet": text_val, "url": url_val or "", "canonical_url": url_val or "", "content": text_val})(),
                 target_entity=norm_text,
                 domain="fact_check"
             )
@@ -329,7 +329,7 @@ def verify_claim_sync(request: ClaimVerifyRequest):
             url_val = r.get("url") if isinstance(r, dict) else None
 
             assess = relevance_gate.evaluate_item(
-                type("Item", (), {"id": "ref", "title": title_val, "snippet": text_val, "url": url_val or ""})(),
+                type("Item", (), {"id": "ref", "title": title_val, "snippet": text_val, "url": url_val or "", "canonical_url": url_val or "", "content": text_val})(),
                 target_entity=norm_text,
                 domain="fact_check"
             )
@@ -543,10 +543,13 @@ def verify_claim_sync(request: ClaimVerifyRequest):
 
         # ── Unified Report (schema v3.8.0) ────────────────────────────────────
         try:
+            active_res = getattr(research_agent, "last_research_result", None)
+            actual_corpus = getattr(active_res, "research_corpus", None) if active_res else None
             _unified = ReportBuilder.from_claim_result(
                 claim_text=norm_text,
                 verdict={**investigation_res, "verdict": clean_verdict, "confidence": conf_int, "reasoning": explanation, "explanation": explanation} if isinstance(investigation_res, dict) else None,
-                corpus=None,  # structured corpus not yet wired through evidence_json path
+                corpus=actual_corpus or evidence_json.get("research_corpus"),
+                research_data=evidence_json if rc_dict else None,
                 execution_log=rc_dict.get("query_log") or [],
                 queries_planned=len(rc_dict.get("query_log") or []),
             )
@@ -555,7 +558,8 @@ def verify_claim_sync(request: ClaimVerifyRequest):
             logger.warning(f"[VerifySync] unified_report assembly note: {_ur_err}")
             resp_payload["unified_report"] = None
 
-        return resp_payload
+        from backend.services.investigation_history import record_result_sync
+        return record_result_sync(resp_payload)
     except HTTPException:
         raise
     except Exception as e:

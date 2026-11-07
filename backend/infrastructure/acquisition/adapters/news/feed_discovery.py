@@ -97,6 +97,10 @@ class UniversalFeedDiscovery:
                 elif hasattr(entry, "updated"):
                     published = entry.updated
 
+                source_obj = getattr(entry, "source", None)
+                pub_url = getattr(source_obj, "href", "") or getattr(source_obj, "url", "") if source_obj else ""
+                pub_name = getattr(source_obj, "title", "") or publisher if source_obj else publisher
+
                 # Clean HTML tags from summary
                 clean_snippet = re.sub(r'<[^>]+>', ' ', summary)
                 clean_snippet = re.sub(r'\s+', ' ', clean_snippet).strip()[:400]
@@ -110,7 +114,7 @@ class UniversalFeedDiscovery:
                         title=title,
                         content=clean_text or clean_snippet,
                         url=link,
-                        author=author or publisher,
+                        author=author or pub_name or publisher,
                         published=published,
                         snippet=clean_snippet,
                         score=85.0,
@@ -119,7 +123,8 @@ class UniversalFeedDiscovery:
                         native_backend_id="feedparser_universal",
                         channel_name="rss",
                         raw_metadata={
-                            "publisher": publisher,
+                            "publisher": pub_name or publisher,
+                            "publisher_source_url": pub_url,
                             "feed_url": feed_url,
                             "is_syndicated": True,
                             "linked_article_retrieved": False,

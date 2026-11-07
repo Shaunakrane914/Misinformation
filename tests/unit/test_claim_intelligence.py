@@ -180,9 +180,10 @@ class TestCorroborationIllusionDetector:
 
         assert summary.total_sources_scanned == 4
         assert summary.unique_publishers == 4
-        assert summary.independent_evidence_chains == 1
+        assert summary.independent_evidence_chains is None
+        assert summary.observed_origin_groups == 1
         assert summary.corroboration_illusion_detected is True
-        assert summary.corroboration_ratio <= 0.40
+        assert summary.corroboration_ratio is None
         assert "CORROBORATION ILLUSION DETECTED" in summary.warning_message
 
         # Check provenance edges
@@ -218,9 +219,10 @@ class TestCorroborationIllusionDetector:
 
         assert summary.total_sources_scanned == 3
         assert summary.unique_publishers == 3
-        assert summary.independent_evidence_chains == 3
+        assert summary.independent_evidence_chains is None
+        assert summary.observed_origin_groups == 3
         assert summary.corroboration_illusion_detected is False
-        assert summary.corroboration_ratio == 1.0
+        assert summary.corroboration_ratio is None
 
 
 class TestAllegationVsEvidenceMatrixAssessment:
@@ -270,11 +272,11 @@ class TestAllegationVsEvidenceMatrixAssessment:
             evidence_links=[hist_link, denial_link],
         )
 
-        assert item.verdict == EpistemicOutcome.MISLEADING_CONTEXT
+        assert item.verdict == EpistemicOutcome.UNVERIFIED
         assert DeceptiveFramingType.OUT_OF_CONTEXT_MEDIA in item.deceptive_framing_flags
         assert len(item.corporate_denials) == 1
-        assert "historical" in item.verified_record_summary.lower()
-        assert "CONTEXT WARNING" in item.action_advisory
+        assert any("historical" in gap.lower() for gap in item.unresolved_uncertainty)
+        assert "UNVERIFIED" in item.action_advisory
 
     def test_corporate_denial_alone_yields_unverified_not_refuted(self):
         """Verifies corporate denial invariant: denial != proof of falsity."""
@@ -327,6 +329,7 @@ class TestAllegationVsEvidenceMatrixAssessment:
             rationale="Official regulatory filing directly substantiates acquisition.",
         )
 
+        sec_link.primary_source = True  # attested in this controlled filing fixture
         item = assessment_engine.assess_claim(
             claim=claim,
             evidence_links=[sec_link],
@@ -405,17 +408,12 @@ class TestReportBuilderClaimIntegration:
 
         # Unified report properties
         report_dict = report.to_dict()
-        assert "allegation_matrix" in report_dict
-        assert len(report_dict["allegation_matrix"]) >= 1
-        item = report_dict["allegation_matrix"][0]
-        assert "verdict" in item
-        assert "allegation_summary" in item
-        assert "verified_record_summary" in item
-        assert "action_advisory" in item
+        assert not report_dict.get("allegation_matrix")  # topic query is not a proposition
+        assert report_dict["processing_notes"]["task_answer"]["task_passages"] == 0
 
         assert "corroboration_summary" in report_dict
         assert "corroboration_illusion_detected" in report_dict["corroboration_summary"]
 
         assert "misinformation_dossier" in report_dict
-        assert report_dict["misinformation_dossier"]["claim_review_schema"]["@type"] == "ClaimReview"
+        assert report_dict["misinformation_dossier"]["claim_review_schema"] is None
 

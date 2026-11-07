@@ -36,6 +36,32 @@ PUBLISHER_FEEDS = {
     "nvidia": "https://nvidianews.nvidia.com/releases.xml",
     "apple": "https://www.apple.com/newsroom/rss-feed.rss",
     "microsoft": "https://blogs.microsoft.com/feed/",
+    "snopes": "https://www.snopes.com/feed/",
+    "politifact": "https://www.politifact.com/rss/all/",
+    "factcheck_org": "https://www.factcheck.org/feed/",
+    "fullfact": "https://fullfact.org/feed/all/",
+    "leadstories": "https://leadstories.com/atom.xml",
+    "altnews": "https://www.altnews.in/feed/",
+    "boomlive": "https://www.boomlive.in/stories.rss",
+    "healthfeedback": "https://healthfeedback.org/feed/",
+    "reuters_wire": "https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best",
+    "thehindu": "https://www.thehindu.com/news/national/feeder/default.rss",
+    "indianexpress": "https://indianexpress.com/section/india/feed/",
+    "prnewswire": "https://www.prnewswire.com/rss/news-releases-list.rss",
+    "businesswire": "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeGVtWWw==",
+    "verge": "https://www.theverge.com/rss/index.xml",
+    "techcrunch": "https://techcrunch.com/feed/",
+    "bbc_world": "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "bbc_business": "https://feeds.bbci.co.uk/news/business/rss.xml",
+    "bbc_technology": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+    "cnn_top": "http://rss.cnn.com/rss/cnn_topstories.rss",
+    "guardian_world": "https://www.theguardian.com/world/rss",
+    "nyt_world": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+    "aljazeera": "https://www.aljazeera.com/xml/rss/all.xml",
+    "ndtv_top": "https://feeds.feedburner.com/ndtvnews-top-stories",
+    "timesofindia": "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+    "hindustantimes": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml",
+    "indiatoday": "https://www.indiatoday.in/rss/home",
 }
 
 # Original issuer indexes, not frozen quarterly answers. Child URLs must be
@@ -48,7 +74,14 @@ ISSUER_DOCUMENT_INDEXES = {
 }
 
 # Topic-specific specialist discovery, not authoritative company statements.
-TOPIC_FEEDS = {"electricvehicles": "https://electrek.co/feed/"}
+TOPIC_FEEDS = {
+    "electricvehicles": "https://electrek.co/feed/",
+    "factcheck": "https://www.snopes.com/feed/",
+    "misinformation": "https://fullfact.org/feed/all/",
+    "health_claims": "https://healthfeedback.org/feed/",
+    "cybersecurity": "https://krebsonsecurity.com/feed/",
+    "tech_policy": "https://www.eff.org/rss/updates.xml",
+}
 
 DIRECT_URL_HOSTS = {
     "reddit.com": "reddit",
@@ -557,10 +590,19 @@ class SourcePlanningEngine:
             actions.append(
                 self._action(2, "reddit", "search", query_base, "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."])
             )
+            # General claim verification directly queries accredited fact-checkers & ClaimReview
+            if "fact_check" in allowed:
+                actions.append(self._action(1, "fact_check", "search", claim, "fact_check_database", "DIRECT_METADATA", 2, "Retrieve publisher-attributed ClaimReview metadata and RSS feeds.", True))
+            if "expanded_sources" in allowed:
+                actions.append(self._action(1, "expanded_sources", "search", f"factcheck|{claim}", "accredited_fact_checkers", "DIRECT_METADATA", 1, "Search accredited fact-checking repositories and feeds.", True))
+                actions.append(self._action(2, "expanded_sources", "search", f"news_wires|{claim}", "major_news_channels", "SYNDICATED_SUMMARY", 2, "Scrape accredited global and Indian news channels.", True))
 
-        # Cross-reference claim against fact-checking databases if allowed
-        if "fact_check" in allowed and explicitly_allowed:
-            actions.append(self._action(1, "fact_check", "search", claim, "fact_check_database", "DIRECT_METADATA", 2, "Retrieve publisher-attributed ClaimReview metadata; the review body is not fetched.", True))
+        # Cross-reference claim against fact-checking databases if explicitly allowed
+        if "fact_check" in allowed and explicitly_allowed and not any(a.channel == "fact_check" for a in actions):
+            actions.append(self._action(1, "fact_check", "search", claim, "fact_check_database", "DIRECT_METADATA", 2, "Retrieve publisher-attributed ClaimReview metadata and RSS feeds.", True))
+        if "expanded_sources" in allowed and explicitly_allowed and not any(a.channel == "expanded_sources" for a in actions):
+            actions.append(self._action(1, "expanded_sources", "search", f"factcheck|{claim}", "accredited_fact_checkers", "DIRECT_METADATA", 1, "Search accredited fact-checking repositories and feeds.", True))
+            actions.append(self._action(2, "expanded_sources", "search", f"news_wires|{claim}", "major_news_channels", "SYNDICATED_SUMMARY", 2, "Scrape accredited global and Indian news channels.", True))
 
         # Additional discussion sources are opt-in or explicitly named, not
         # indiscriminately queried for financial/privacy investigations.

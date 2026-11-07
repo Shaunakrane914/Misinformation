@@ -7,6 +7,7 @@
   <meta name="description" content="View investigation timeline, evidence records, and final assessment for any claim ID.">
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="forensic-explorer.js"></script>
+  <script src="unified-report-renderer.js"></script>
   <style>
     .status-container {
       max-width: 820px;
@@ -272,7 +273,7 @@
         Claim Status &amp; Investigation Log
       </h1>
       <p style="color:var(--text-muted);font-size:0.98rem;max-width:600px;margin-top:6px;">
-        Lookup any claim ID to inspect source retrieval, evidence comparison, and the final assessment.
+        Open a saved report link or enter its full ID to inspect the original result and evidence.
       </p>
     </div>
 
@@ -311,7 +312,7 @@
     let autoRefreshTimer = null;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const urlId = urlParams.get('id');
+    const urlId = urlParams.get('report') || urlParams.get('id');
     if (urlId) {
       document.getElementById('claimIdInput').value = urlId;
       window.addEventListener('DOMContentLoaded', () => checkStatus());
@@ -357,7 +358,12 @@
       return `<span class="tl-badge ${clsMap[state] || 'tl-badge-wait'}">${state}</span>`;
     }
 
+    function safeStatusUrl(value) {
+      try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url.href : ''; } catch (_) { return ''; }
+    }
     function renderResult(data) {
+      const esc = window.escapeHtml;
+
       const area = document.getElementById('resultArea');
       const isCompleted = data.status === 'completed';
       const isPending = data.status === 'pending' || data.status === 'processing';
@@ -365,7 +371,7 @@
 
       // Stage 1: Claim Ingestion
       const s1State = (data.created_at || data.claim_text) ? 'COMPLETE' : 'NOT_STARTED';
-      const s1Desc = data.claim_id ? `Claim registered with unique identifier ${data.claim_id.slice(0, 8)}...` : 'Claim ingested into persistence store';
+      const s1Desc = data.claim_id ? `Claim registered with unique identifier ${data.claim_id}` : 'Claim ingested into persistence store';
 
       // Stage 2: Normalization
       let s2State = 'NOT_STARTED';
@@ -407,7 +413,7 @@
       let s4Desc = 'Cross-referencing source lineage and evidence confidence';
       if (data.verdict) {
         s4State = 'COMPLETE';
-        s4Desc = `Verdict rendered: ${String(data.verdict).toUpperCase()}${data.confidence != null ? ` (${Math.round(data.confidence * 100)}% confidence)` : ''}`;
+        s4Desc = `Verdict rendered: ${esc(String(data.verdict).toUpperCase())}${data.confidence != null ? ` (${Math.round(data.confidence * 100)}% confidence)` : ''}`;
       } else if (isPending) {
         s4State = 'RUNNING';
         s4Desc = 'Weighing source reliability and independence...';
@@ -433,19 +439,19 @@
         s5Desc = 'Awaiting pipeline completion...';
       }
 
-      const confPct = data.confidence != null ? Math.round(data.confidence * 100) : null;
+      const confPct = typeof data.confidence === 'number' && Number.isFinite(data.confidence) && data.confidence >= 0 && data.confidence <= 1 ? Math.round(data.confidence * 100) : null;
 
       let html = `<div class="result-card ae-reveal visible">`;
 
       html += `<div class="verdict-row">
-        <span class="v-badge v-status">${(data.status || 'UNKNOWN').toUpperCase()}</span>
-        ${data.verdict ? `<span class="v-badge ${verdictBadgeClass(data.verdict)}">${String(data.verdict).toUpperCase()}</span>` : ''}
-        ${data.severity ? `<span class="v-badge" style="background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">${String(data.severity).toUpperCase()}</span>` : ''}
+        <span class="v-badge v-status">${esc(String(data.status || 'UNKNOWN').toUpperCase())}</span>
+        ${data.verdict ? `<span class="v-badge ${verdictBadgeClass(data.verdict)}">${esc(String(data.verdict).toUpperCase())}</span>` : ''}
+        ${data.severity ? `<span class="v-badge" style="background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">${esc(String(data.severity).toUpperCase())}</span>` : ''}
       </div>`;
 
       if (data.claim_text || data.normalized_text) {
         html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:8px;">// CLAIM STATEMENT</div>
-          <div class="claim-text-box">${data.claim_text || data.normalized_text}</div>`;
+          <div class="claim-text-box">${esc(data.claim_text || data.normalized_text)}</div>`;
       }
 
       if (confPct != null) {
@@ -459,26 +465,26 @@
 
       html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// INVESTIGATION TIMELINE</div>
         <div class="timeline">
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s1State)}">${tlDotIcon(s1State)}</div><div><div class="tl-title">Claim Ingested ${tlBadge(s1State)}</div><div class="tl-desc">${s1Desc}</div>${data.created_at ? `<div class="tl-time">${new Date(data.created_at).toLocaleString()}</div>` : ''}</div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s2State)}">${tlDotIcon(s2State)}</div><div><div class="tl-title">Claim Normalization ${tlBadge(s2State)}</div><div class="tl-desc">${s2Desc}</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s3State)}">${tlDotIcon(s3State)}</div><div><div class="tl-title">Multi-Source Retrieval ${tlBadge(s3State)}</div><div class="tl-desc">${s3Desc}</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s4State)}">${tlDotIcon(s4State)}</div><div><div class="tl-title">Evidence Comparison ${tlBadge(s4State)}</div><div class="tl-desc">${s4Desc}</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s5State)}">${tlDotIcon(s5State)}</div><div><div class="tl-title">Evidence Assessment ${tlBadge(s5State)}</div><div class="tl-desc">${s5Desc}</div>${data.updated_at && isCompleted ? `<div class="tl-time">${new Date(data.updated_at).toLocaleString()}</div>` : ''}</div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s1State)}">${tlDotIcon(s1State)}</div><div><div class="tl-title">Claim Ingested ${tlBadge(s1State)}</div><div class="tl-desc">${esc(s1Desc)}</div>${data.created_at ? `<div class="tl-time">${new Date(data.created_at).toLocaleString()}</div>` : ''}</div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s2State)}">${tlDotIcon(s2State)}</div><div><div class="tl-title">Claim Normalization ${tlBadge(s2State)}</div><div class="tl-desc">${esc(s2Desc)}</div></div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s3State)}">${tlDotIcon(s3State)}</div><div><div class="tl-title">Multi-Source Retrieval ${tlBadge(s3State)}</div><div class="tl-desc">${esc(s3Desc)}</div></div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s4State)}">${tlDotIcon(s4State)}</div><div><div class="tl-title">Evidence Comparison ${tlBadge(s4State)}</div><div class="tl-desc">${esc(s4Desc)}</div></div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s5State)}">${tlDotIcon(s5State)}</div><div><div class="tl-title">Evidence Assessment ${tlBadge(s5State)}</div><div class="tl-desc">${esc(s5Desc)}</div>${data.updated_at && isCompleted ? `<div class="tl-time">${new Date(data.updated_at).toLocaleString()}</div>` : ''}</div></div>
         </div>`;
 
       if (data.reasoning) {
         html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// SYNTHESIZED REASONING</div>
-          <div class="reasoning-box">${data.reasoning}</div>`;
+          <div class="reasoning-box">${esc(data.reasoning)}</div>`;
       }
 
-      if (data.evidence && data.evidence.length > 0) {
+      if (Array.isArray(data.evidence) && data.evidence.length > 0) {
         html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// RETRIEVED EVIDENCE (${data.evidence.length} items)</div>
           <div class="evidence-list">`;
         data.evidence.forEach((ev, i) => {
           html += `<div class="ev-item">
-            <div class="ev-text">${ev.summary || ev.text || 'Evidence node ' + (i + 1)}</div>
-            ${ev.source ? `<div class="ev-source">Source: ${ev.source}</div>` : ''}
-            ${ev.url ? `<div style="margin-top:6px;"><a href="${ev.url}" target="_blank" rel="noopener" style="color:var(--accent);font-size:0.78rem;font-weight:600;text-decoration:none;">View Provenance Source &rarr;</a></div>` : ''}
+            <div class="ev-text">${esc(ev.summary || ev.text || 'Evidence node ' + (i + 1))}</div>
+            ${ev.source ? `<div class="ev-source">Source: ${esc(ev.source)}</div>` : ''}
+            ${safeStatusUrl(ev.url) ? `<div style="margin-top:6px;"><a href="${esc(safeStatusUrl(ev.url))}" target="_blank" rel="noopener" style="color:var(--accent);font-size:0.78rem;font-weight:600;text-decoration:none;">View Provenance Source &rarr;</a></div>` : ''}
           </div>`;
         });
         html += `</div>`;
@@ -527,7 +533,7 @@
             <div class="ae-loading-top">
               <div class="ae-loading-title-wrap">
                 <div class="ae-radar-spinner"></div>
-                <div class="ae-loading-title">Retrieving Investigation Status for <span style="color:var(--accent);">${id.slice(0, 8)}...</span></div>
+                <div class="ae-loading-title">Retrieving Investigation Status for <span style="color:var(--accent);overflow-wrap:anywhere;">${window.escapeHtml(id)}</span></div>
               </div>
               <div class="ae-loading-timer-badge" id="statusElapsedBadge">
                 <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span>
@@ -561,7 +567,9 @@
 
       try {
         let data = null;
+        let lookupUnavailable = false;
         const endpoints = [
+          (window.getAegisApiUrl ? window.getAegisApiUrl(`/api/investigations/${encodeURIComponent(id)}`) : `/api/investigations/${encodeURIComponent(id)}`),
           (window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${encodeURIComponent(id)}`) : `/api/claims/${encodeURIComponent(id)}`)
         ];
 
@@ -572,7 +580,8 @@
               data = await res.json();
               break;
             }
-          } catch (_) {}
+            if (res.status >= 500) lookupUnavailable = true;
+          } catch (_) { lookupUnavailable = true; }
         }
 
         if (statusTimerInterval) {
@@ -580,8 +589,12 @@
           statusTimerInterval = null;
         }
 
-        if (!data) throw new Error('Claim not found or backend node initializing');
-        renderResult(data);
+        if (!data) throw new Error(lookupUnavailable ? 'Report lookup unavailable' : 'Claim not found');
+        if (data.unified_report) {
+          area.innerHTML = '<div id="savedReport"></div>';
+          window.renderUnifiedReport(document.getElementById('savedReport'), data.unified_report);
+          document.title = String(data.unified_report._meta?.query || 'Saved investigation') + ' - Aegis';
+        } else renderResult(data);
         window.aegisAudio && window.aegisAudio.playSuccess();
       } catch (err) {
         if (statusTimerInterval) {
@@ -589,7 +602,7 @@
           statusTimerInterval = null;
         }
         area.innerHTML = `<div class="info-banner err">
-          ${err.message.includes('not found') ? 'Claim not found. Check the ID and try again.' : 'Backend is initializing or claim not found. Try again in 20 seconds.'}
+          ${err.message.includes('not found') ? 'No saved report or claim was found for this full ID. The record may have expired.' : 'Report lookup is unavailable. Your ID has not been shown to be invalid; try again when storage is reachable.'}
         </div>`;
       } finally {
         btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Check Status`;

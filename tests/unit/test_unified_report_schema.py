@@ -335,13 +335,13 @@ class TestReportBuilderClaim:
             claim_text="Claim X", verdict=verdict_false
         )
         assert report.summary is not None
-        assert "False" in report.summary
+        assert "INSUFFICIENT_EVIDENCE" in report.summary
 
     def test_findings_extracted_from_reasoning(self, verdict_false):
         report = ReportBuilder.from_claim_result(
             claim_text="Claim X", verdict=verdict_false
         )
-        assert len(report.findings) > 0
+        assert report.findings == []  # reasoning without an acquired source is not a finding
         # None of the findings should be hardcoded
         for f in report.findings:
             assert isinstance(f, str)
@@ -415,7 +415,8 @@ class TestReportBuilderOtherAgents:
             ],
         }
         report = ReportBuilder.from_trending_result(query="Story X", trend_data=trend_data)
-        assert report.summary == "Story X is trending due to controversy."
+        assert "No cited passage answers this task" in report.summary
+        assert "popularity" in report.summary
         assert len(report.findings) == 2
         assert report.agent == "trending"
 
@@ -425,7 +426,7 @@ class TestReportBuilderOtherAgents:
             "catalysts": ["EPS beat by 40%", "Revenue guidance raised"],
         }
         report = ReportBuilder.from_scout_result(query="NVDA", scout_data=scout_data)
-        assert "NVDA" in report.summary
+        assert "primary financial passage" in report.summary
         assert len(report.findings) == 2
         assert report.agent == "scout"
 

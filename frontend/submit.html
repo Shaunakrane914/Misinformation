@@ -862,6 +862,9 @@
       // Mount Native Forensic Funnel & Source Explorer
       const feMount = document.getElementById('submitForensicMount');
       const targetClaimId = data.claim_id || (data.claim && data.claim.id) || (data.id);
+      if (targetClaimId && data.unified_report?._meta?.history_status !== 'SAVED') {
+        window.AegisHistory?.rememberClaim({...claimObj, claim_id: targetClaimId});
+      }
       if (feMount && window.ForensicExplorer && targetClaimId) {
         const explorer = new window.ForensicExplorer(feMount);
         explorer.loadFromClaimId(targetClaimId);

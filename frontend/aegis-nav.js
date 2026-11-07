@@ -2,6 +2,28 @@
  * aegis-nav.js — Aegis Protocol High-Craft Global Navigation & Command Console
  */
 (function() {
+  // Remember only report identifiers; source bodies stay in the server report store.
+  const historyKey = 'aegis-investigation-links-v1';
+  window.AegisHistory = {
+    entries() {
+      try { const value = JSON.parse(localStorage.getItem(historyKey) || '[]'); return Array.isArray(value) ? value.filter(row => row && /^(?:[a-f0-9-]{36}|[a-f0-9]{64})$/i.test(row.id || '')).slice(0, 50) : []; }
+      catch (_) { return []; }
+    },
+    rememberClaim(claim) {
+      if (!/^(?:[a-f0-9-]{36}|[a-f0-9]{64})$/i.test(claim.claim_id || '')) return;
+      const rows = this.entries().filter(row => row.id !== claim.claim_id);
+      rows.unshift({id: claim.claim_id, kind: 'claim', query: String(claim.claim_text || claim.normalized_text || 'Claim status').slice(0, 1000), agent: 'claim_verifier', created_at: claim.created_at});
+      try { localStorage.setItem(historyKey, JSON.stringify(rows.slice(0, 50))); } catch (_) {}
+    },
+    remember(report) {
+      const meta = report && report._meta || {};
+      if (meta.history_status !== 'SAVED' || !/^[a-f0-9-]{36}$/i.test(meta.investigation_id || '')) return;
+      const rows = this.entries().filter(row => row.id !== meta.investigation_id);
+      rows.unshift({id: meta.investigation_id, query: String(meta.query || '').slice(0, 1000), agent: meta.agent, created_at: meta.generated_at});
+      try { localStorage.setItem(historyKey, JSON.stringify(rows.slice(0, 50))); } catch (_) { /* Report export remains available. */ }
+    }
+  };
+
   // ── Global XSS Protection Helper ──
   window.escapeHtml = function(str) {
     if (str === null || str === undefined) return '';
@@ -128,12 +150,12 @@
       </nav>
 
       <div class="ae-nav-actions">
-        <button type="button" class="ae-nav-cmd-trigger" id="aeCmdTrigger">
+        <button type="button" class="ae-nav-cmd-trigger" id="aeCmdTrigger" aria-label="Search pages and tools">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <span>Search</span>
           <kbd style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:1px 4px;border-radius:4px;font-size:0.68rem;">⌘K</kbd>
         </button>
-        <a href="submit.html" class="ae-nav-submit-btn">
+        <a href="submit.html" class="ae-nav-submit-btn" aria-label="Verify a claim">
           <span>Verify a Claim</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
@@ -221,8 +243,8 @@
       </div>
       <div class="ae-drawer-section-label">SYSTEM &amp; METHODOLOGY</div>
       <div class="ae-drawer-links-list">
-        <a href="lab.html" class="ae-drawer-sublink">🔬 Threat Intelligence Lab</a>
-        <a href="status.html" class="ae-drawer-sublink">⚡ System &amp; Operation Health</a>
+        <a href="lab.html" class="ae-drawer-sublink">🔬 Research &amp; Simulation Lab</a>
+        <a href="status.html" class="ae-drawer-sublink">⚡ Investigation History &amp; Status</a>
         <a href="about.html" class="ae-drawer-sublink">📖 Epistemic Methodology</a>
         <a href="benchmark.html" class="ae-drawer-sublink">🎯 Retrieval Benchmarks</a>
       </div>
@@ -268,7 +290,12 @@
   document.body.appendChild(drawerBackdrop);
   document.body.appendChild(bottomDock);
 
+  let drawerReturnFocus = null;
   function openMobileDrawer() {
+    drawerReturnFocus = document.activeElement;
+    drawer.setAttribute("role", "dialog");
+    drawer.setAttribute("aria-modal", "true");
+    drawer.setAttribute("aria-label", "Navigation menu");
     drawer.classList.add('open');
     drawerBackdrop.classList.add('open');
     drawer.inert = false;
@@ -276,6 +303,7 @@
     document.body.classList.add('ae-drawer-open');
     const toggle = document.getElementById('aeNavMobileToggle');
     if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    drawer.querySelector('button,a[href]')?.focus();
   }
 
   function closeMobileDrawer() {
@@ -286,6 +314,7 @@
     document.body.classList.remove('ae-drawer-open');
     const toggle = document.getElementById('aeNavMobileToggle');
     if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    drawerReturnFocus?.focus();
   }
 
   const mobToggle = document.getElementById('aeNavMobileToggle');
@@ -302,6 +331,12 @@
   if (dockMenu) dockMenu.addEventListener('click', openMobileDrawer);
 
   window.addEventListener('keydown', e => {
+    if (e.key === 'Tab' && drawer.classList.contains('open')) {
+      const links = [...drawer.querySelectorAll('button,a[href],input,select')].filter(el => !el.disabled && el.getClientRects().length);
+      const first = links[0], last = links[links.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !drawer.contains(document.activeElement))) { e.preventDefault(); last?.focus(); }
+      else if (!e.shiftKey && (document.activeElement === last || !drawer.contains(document.activeElement))) { e.preventDefault(); first?.focus(); }
+    }
     if (e.key === 'Escape' && drawer.classList.contains('open')) {
       closeMobileDrawer();
     }
@@ -472,6 +507,13 @@
     });
 
     window.addEventListener('keydown', e => {
+      if (backdrop.classList.contains('open') && e.key === 'Tab') {
+        const controls = [...backdrop.querySelectorAll('input,button,a[href]')].filter(el => !el.disabled && el.getClientRects().length);
+        const first = controls[0], last = controls[controls.length - 1];
+        if (e.shiftKey && (document.activeElement === first || !backdrop.contains(document.activeElement))) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && (document.activeElement === last || !backdrop.contains(document.activeElement))) { e.preventDefault(); first?.focus(); }
+      }
+      if (backdrop.classList.contains('open') && e.key === 'Escape') closePalette();
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
         if (backdrop.classList.contains('open')) {

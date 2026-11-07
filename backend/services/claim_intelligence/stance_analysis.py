@@ -59,16 +59,19 @@ class StanceAnalyzer:
         publisher: str,
         full_source_text: Optional[str] = None,
         published_at: Optional[str] = None,
+        primary_source: bool = False,
     ) -> EvidenceLink:
         """Evaluate how a passage relates to an atomic claim."""
-        p_clean = " ".join((passage_text or "").split()).strip()
+        p_clean = (passage_text or "").strip()
         offsets = self._calculate_offsets(p_clean, full_source_text)
         
         stance, confidence, is_denial, temporal_match, rationale = self._analyze_stance(
-            claim, p_clean, publisher, published_at
+            claim, p_clean, publisher, published_at, source_url
         )
 
-        return EvidenceLink.create(
+        if offsets[0] < 0:
+            stance, confidence, is_denial, rationale = StanceType.IRRELEVANT, 0.0, False, "Passage is not an exact substring of the capture."
+        link = EvidenceLink.create(
             claim_id=claim.claim_id,
             source_id=source_id,
             source_url=source_url,
@@ -82,6 +85,9 @@ class StanceAnalyzer:
             temporal_match=temporal_match,
             rationale=rationale,
         )
+        link.primary_source = primary_source
+        link.captured_text_sha256 = hashlib.sha256((full_source_text or p_clean).encode("utf-8")).hexdigest()
+        return link
 
     def evaluate_source_passages(
         self,
@@ -108,6 +114,7 @@ class StanceAnalyzer:
                 publisher=pub,
                 full_source_text=full_body,
                 published_at=pub_date,
+                primary_source=p.get("primary_source") is True,
             )
             if link.stance != StanceType.IRRELEVANT:
                 links.append(link)
@@ -120,11 +127,20 @@ class StanceAnalyzer:
         passage: str,
         publisher: str,
         published_at: Optional[str],
+        source_url: str = "",
     ) -> Tuple[StanceType, float, bool, bool, str]:
         """Deterministic stance extraction with corporate denial isolation."""
         lower_pass = passage.lower()
         lower_claim = claim.normalized_proposition.lower()
         entity_lower = claim.target_entity.lower()
+        from types import SimpleNamespace
+        from backend.services.research.proposition_grounding import relation
+        alignment, _ = relation(claim.normalized_proposition, claim.target_entity, SimpleNamespace(
+            canonical_url=source_url, retrieval_status="SUCCESS", source_role="SECONDARY",
+            selection_decision="ACCEPTED", content_depth="FULL_TEXT", relevant_excerpt=passage,
+            content=passage, snippet=passage, title="", metadata={}, published_at=published_at))
+        # Confirmation vocabulary elsewhere in a document cannot verify a different proposition.
+        aligned = alignment in {"SUPPORT", "CONTRADICT", "OUTDATED"}
 
         # Check entity presence
         has_entity = entity_lower in lower_pass or any(t in lower_pass for t in entity_lower.split() if len(t) > 3)
@@ -133,17 +149,20 @@ class StanceAnalyzer:
 
         # Check corporate denial patterns
         is_denial = any(re.search(pat, lower_pass, re.I) for pat in DENIAL_PATTERNS)
+        from backend.services.claim_intelligence.claim_extractor import PREDICATE_PATTERNS
+        same_action = any(label == claim.predicate and re.search(pattern, passage, re.I)
+                          for pattern, label in PREDICATE_PATTERNS)
         
         # Check temporal match
-        temporal_match = True
-        if claim.temporal_scope and claim.temporal_scope in {"today", "yesterday", "this week"}:
-            # If claim claims 'today', but passage explicitly dates to an older year
-            year_matches = re.findall(r"\b(201\d|202[0-4])\b", lower_pass)
-            if year_matches:
+        temporal_match = alignment != "OUTDATED"
+        if claim.temporal_scope in {"today", "yesterday", "this week"} and same_action:
+            from datetime import datetime, timezone
+            years = [int(value) for value in re.findall(r"\b((?:19|20)\d{2})\b", passage)]
+            if years and max(years) < datetime.now(timezone.utc).year:
                 temporal_match = False
 
         # 1. Corporate Denial Detection
-        if is_denial:
+        if is_denial and (alignment == "CONTRADICT" or same_action):
             # Denials refute the assertion's certainty, but are evidence of a denial
             rationale = (
                 f"Passage records an explicit corporate denial or refutation by {publisher}. "
@@ -153,7 +172,7 @@ class StanceAnalyzer:
 
         # 2. Objective Contradiction Detection
         has_contradiction = any(re.search(pat, lower_pass, re.I) for pat in CONTRADICTION_PATTERNS)
-        if has_contradiction:
+        if has_contradiction and alignment == "CONTRADICT":
             rationale = "Passage explicitly refutes, debunks, or contradicts the claimed assertion."
             return StanceType.CONTRADICTS, 0.90, False, temporal_match, rationale
 
@@ -161,14 +180,14 @@ class StanceAnalyzer:
         has_confirm = any(re.search(pat, lower_pass, re.I) for pat in CONFIRMATION_PATTERNS)
         predicate_matched = bool(claim.predicate and (claim.predicate in lower_pass or claim.predicate.rstrip("ed") in lower_pass))
 
-        if has_confirm or predicate_matched:
+        if aligned and (has_confirm or predicate_matched):
             if not temporal_match:
                 rationale = (
                     f"Passage confirms a historical {claim.predicate or 'event'}, but does not match "
                     f"the asserted temporal window ('{claim.temporal_scope}'). Potential misleading context."
                 )
                 return StanceType.MENTIONS, 0.70, False, False, rationale
-            elif has_confirm or (predicate_matched and claim.predicate in {"recalled", "counterfeiting", "bankruptcy", "arrested"}):
+            elif alignment == "SUPPORT":
                 rationale = "Passage provides affirmative documentation confirming the core proposition."
                 return StanceType.SUPPORTS, 0.88, False, True, rationale
 
@@ -192,11 +211,7 @@ class StanceAnalyzer:
         idx = full_text.find(passage)
         if idx != -1:
             return (idx, idx + len(passage))
-        # Case-insensitive fallback
-        idx_lower = full_text.lower().find(passage.lower())
-        if idx_lower != -1:
-            return (idx_lower, idx_lower + len(passage))
-        return (0, len(passage))
+        return (-1, -1)
 
 
 stance_analyzer = StanceAnalyzer()
